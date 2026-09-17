@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_IndexFault" Id="{ecb19297-0f13-4f56-9fbf-a851f95fec0f}">
+    <Declaration>{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_IndexFault :
+(
+    None := 0,
+    InitialPositionInvalid,
+    SupportRetractTimeout,
+    RotationTimeout,
+    StopAndLockTimeout,
+    PositionInvalid,
+    SupportExtendTimeout,
+    TwoHandReleasedDuringMovement,
+    WrongPositionTimeout,
+    SafetyLostDuringMovement,
+    MovementPermissiveLost
+);
+END_TYPE</Declaration>
+  </DUT>
+</TcPlcObject>

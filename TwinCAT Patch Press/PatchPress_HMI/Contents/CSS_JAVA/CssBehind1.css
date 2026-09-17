@@ -1,0 +1,47 @@
+
+
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.Alarm td {
+    background-color: #f87c7c; 
+}
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.Alert td {
+    background-color: #f8f1a1;
+}
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.Message td {
+    background-color: #85fe77; 
+}
+
+
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.GeneralFail td[data-column-name="sGeneralResult"] {
+    background-color: #f87c7c
+}
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.GeneralPass td[data-column-name="sGeneralResult"] {
+    background-color: #85fe77
+}
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.CameraFail td[data-column-name="sCameraResult"] {
+    background-color: #f87c7c
+}
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.CameraPass td[data-column-name="sCameraResult"] {
+    background-color: #85fe77
+}
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.LeakTesterFail td[data-column-name="sLeakTesterResult"] {
+    background-color: #f87c7c
+}
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.LeakTesterPass td[data-column-name="sLeakTesterResult"] {
+    background-color: #85fe77
+}
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.HeightTestFail td[data-column-name="sHeightTestResult"] {
+    background-color: #f87c7c
+}
+
+.TcHmi_Controls_Beckhoff_TcHmiDatagrid tr.HeightTestPass td[data-column-name="sHeightTestResult"] {
+    background-color: #85fe77
+}

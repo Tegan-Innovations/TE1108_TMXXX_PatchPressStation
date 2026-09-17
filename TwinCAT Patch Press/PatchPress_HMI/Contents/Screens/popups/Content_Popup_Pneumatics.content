@@ -1,0 +1,5 @@
+<div id="Content_Popup_Pneumatics" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="906" data-tchmi-height="550">
+
+<div id="TcHmiImage_38" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="550" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/SS_PneumaticsPopUp.png" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="906" data-tchmi-width-unit="px">
+</div>
+</div>

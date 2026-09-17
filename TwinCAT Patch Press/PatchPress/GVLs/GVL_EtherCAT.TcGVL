@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_EtherCAT" Id="{a064ef7b-02e7-4065-97aa-bbc4c525874c}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+    stTerm1_EK1100   : ST_EK1100;
+    stTerm2_EL6070   : ST_EL6070;
+    stTerm3_EL6910   : ST_EL6910;
+    stTerm4_EL1918   : ST_EL1918;
+    stTerm5_EL1918   : ST_EL1918;
+    stTerm6_EL2904   : ST_EL2904;
+    stTerm7_EL1809   : ST_EL1809;
+    stTerm8_EL1809   : ST_EL1809;
+    stTerm9_EL2809   : ST_EL2809;
+    stTerm10_EL2809  : ST_EL2809;
+    stTerm11_EL3058  : ST_EL3058;
+	stTerm13_EL2502  : ST_EL2502;
+	stTerm15_EL7201  : ST_EL7201;
+	stTerm16_EL7201  : ST_EL7201;
+	stTerm17_EL7201  : ST_EL7201;
+	stTerm18_EL2904  : ST_EL2904;
+    stTerm19_EL1809  : ST_EL1809;
+	stTerm20_EL3314  : ST_EL3314;
+	stTerm21_EL6633  : ST_EL6633;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

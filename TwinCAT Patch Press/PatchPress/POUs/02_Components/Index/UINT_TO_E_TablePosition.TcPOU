@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="UINT_TO_E_TablePosition" Id="{74f1f88a-2b96-4cb9-99c4-c5b6acc10bf1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION UINT_TO_E_TablePosition : E_TablePosition
+VAR_INPUT
+    uiPosition : UINT;
+END_VAR
+]]></Declaration>
+    <Implementation><ST><![CDATA[CASE uiPosition OF
+    1:
+        UINT_TO_E_TablePosition := E_TablePosition.Position1;
+
+    2:
+        UINT_TO_E_TablePosition := E_TablePosition.Position2;
+
+    3:
+        UINT_TO_E_TablePosition := E_TablePosition.Position3;
+
+    4:
+        UINT_TO_E_TablePosition := E_TablePosition.Position4;
+
+ELSE
+    UINT_TO_E_TablePosition := E_TablePosition.Unknown;
+END_CASE
+]]></ST></Implementation>
+  </POU>
+</TcPlcObject>

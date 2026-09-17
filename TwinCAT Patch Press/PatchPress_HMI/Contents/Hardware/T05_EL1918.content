@@ -1,0 +1,10 @@
+<div id="EL1801_31" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480">
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+<div id="IO_18" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="480" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-target-user-control="Contents/UserControl/08CH_Dig_IO_CARD.usercontrol" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="1080" data-tchmi-width-unit="px" data-tchmi-image="Images/IO/EL1918.png" data-tchmi-state_string="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.sTerminalInfo%/s%" data-tchmi-_1inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch1%/s%" data-tchmi-_2_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch2%/s%" data-tchmi-_3_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3%/s%" data-tchmi-_4_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4%/s%" data-tchmi-_5_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5%/s%" data-tchmi-_6_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6%/s%" data-tchmi-_7_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8%/s%" data-tchmi-_1_inputoutputname="Left Hand Safety Button NC" data-tchmi-_2_inputoutputname="Right Hand Safety Button NC" data-tchmi-_3_inputoutputname="Left Hand Safety Button NO" data-tchmi-_4_inputoutputname="Right Hand Safety Button NO" data-tchmi-_5_inputoutputname="Safety Flap Right Ch 1" data-tchmi-_6_inputoutputname="Safety Flap Right Ch 2" data-tchmi-_7_inputoutputname="Safety Flap Left Ch 1" data-tchmi-_8_inputoutputname="Safety Flap Left Ch 1" data-tchmi-cardoperational="%s%ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.bTerminalOperational%/s%">
+</div>
+</div>

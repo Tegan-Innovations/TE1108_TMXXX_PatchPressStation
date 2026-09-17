@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="51mm"
+   height="51mm"
+   viewBox="0 0 51 51"
+   version="1.1"
+   id="svg1"
+   inkscape:export-filename="nest3.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm">
+    <inkscape:page
+       x="0"
+       y="0"
+       width="51"
+       height="51"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g7"
+       transform="matrix(0,-2.3854754,2.3854754,0,-502.0101,-1357.4303)">
+      <rect
+         style="fill:#b4b4b4;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke markers fill"
+         id="rect2-0-9"
+         width="19.960182"
+         height="19.960182"
+         x="-589.70953"
+         y="211.15407"
+         ry="2.2435038" />
+      <rect
+         style="fill:#b4b4b4;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke markers fill"
+         id="rect2-3"
+         width="17.41769"
+         height="17.41769"
+         x="-588.43829"
+         y="212.42531"
+         ry="1.9577304" />
+      <path
+         style="font-weight:bold;font-size:16.7384px;-inkscape-font-specification:'sans-serif Bold';fill:#1a1a1a;stroke:none;stroke-width:0.136;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke markers fill"
+         d="m -583.8659,225.693 v -1.3286 h -2.65202 v -2.40313 h 2.65202 v -5.73608 h 2.52982 l 8.52597,5.54559 v 2.59362 h -8.61778 v 1.3286 z m 2.43801,-3.9097 h 3.9065 l -3.9065,-2.68945 z"
+         id="text2-4"
+         aria-label="4"
+         sodipodi:nodetypes="cccccccccccccccc" />
+    </g>
+  </g>
+</svg>

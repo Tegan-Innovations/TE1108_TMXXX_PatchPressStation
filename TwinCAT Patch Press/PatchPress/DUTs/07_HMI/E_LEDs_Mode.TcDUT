@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_LEDs_Mode" Id="{347d50ed-11dd-4b60-a96d-e9295d782249}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_LEDs_Mode :
+(
+    OFF := 0,
+    ON := 1,
+    FLASHING := 2
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_AlarmId" Id="{b01d0650-78c7-41b0-b56e-427070de79b3}">
+    <Declaration>{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_AlarmId :
+(
+    None := 0,
+    SafetyNotAvailable := 1000,
+    EmergencyStopActive := 1001,
+    MainDoorNotSafe := 1002,
+    LeftFlapSafetyActive := 1003,
+    RightFlapSafetyActive := 1004,
+    FsoeNotHealthy := 1005,
+    SafetyLogicNotHealthy := 1006,
+    IndexFault := 2000,
+    IndexPositionInvalid := 2001,
+    IndexWrongPositionTimeout := 2002,
+    ProcessCylinderFault := 3000,
+    ProcessEquipmentFault := 3001,
+    PuckRemovedWhileLocked := 4000,
+    PuckSensorMismatch := 4001,
+    OperatorExchangeFault := 5000,
+    RejectConfirmationRequired := 5001,
+    ProcessedPartRemovalRequired := 5002,
+    InitialisationTimeout := 6000,
+    StoppingTimeout := 6001
+);
+END_TYPE
+</Declaration>
+  </DUT>
+</TcPlcObject>

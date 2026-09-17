@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_ProcessStation" Id="{a3a0650b-5367-4125-b1aa-1afe6b784288}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ProcessStation
+VAR
+    ipEquipment       : I_ProcessEquipment;
+    bConfigured       : BOOL;
+    eState            : E_ProcessStationState := E_ProcessStationState.Disabled;
+    eFault            : E_ProcessStationFault := E_ProcessStationFault.None;
+    stResult          : ST_ProcessResult;
+    stStatusInternal  : ST_ProcessStationStatus;
+    tonCylinder       : TON;
+    tonProcess        : TON;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Configure" Id="{1a60dc71-cc2b-487d-8e7a-89a13246021f}">
+      <Declaration><![CDATA[METHOD PUBLIC Configure : BOOL
+VAR_INPUT
+ ipNewEquipment : I_ProcessEquipment;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ipEquipment := ipNewEquipment;
+bConfigured := TRUE;
+Configure := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Cyclic" Id="{25254c3e-857e-4fcc-8757-b9778994fc79}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic : BOOL
+VAR_INPUT
+    bEnable                  : BOOL;
+    bAutomaticStartRequest   : BOOL;
+    bManualEnable            : BOOL;
+    bManualExtendRequest     : BOOL;
+    bManualRetractRequest    : BOOL;
+    bStopRequest             : BOOL;
+    bResetRequest            : BOOL;
+    bPartPresent             : BOOL;
+    bProcessPermissive       : BOOL;
+    bIndexReady              : BOOL;
+    bIndexLocked             : BOOL;
+    bIndexBusy               : BOOL;
+    bProcessSafetyPermitted  : BOOL;
+    bMainDoorSafe            : BOOL;
+    bCylinderExtended        : BOOL;
+    bCylinderRetracted       : BOOL;
+    tCylinderTimeout         : TIME;
+    tProcessTimeout          : TIME;
+	bAirSupplySafe 			 : BOOL;
+	
+END_VAR
+VAR_OUTPUT
+    bCylinderExtendOutput    : BOOL;
+    bCylinderRetractOutput   : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bCylinderExtendOutput := FALSE;
+bCylinderRetractOutput := FALSE;
+
+IF bConfigured THEN
+    ipEquipment.Cyclic();
+END_IF
+
+stStatusInternal.bExtendPermissive :=
+    bProcessSafetyPermitted
+    AND bMainDoorSafe
+    AND bIndexReady
+    AND bIndexLocked
+	AND bAirSupplySafe
+    AND NOT bIndexBusy;
+	
+stStatusInternal.bRetractPermissive :=
+    bProcessSafetyPermitted
+    AND bAirSupplySafe
+    AND NOT bIndexBusy;
+
+IF bCylinderExtended AND bCylinderRetracted THEN
+    eFault := E_ProcessStationFault.CylinderSensorMismatch;
+    eState := E_ProcessStationState.Fault;
+END_IF
+
+// =========================================================
+// RESET
+// =========================================================
+//
+// Reset clears the Process Station fault only after the
+// contradictory cylinder-sensor condition has disappeared.
+//
+// Pneumatic position recovery is NOT performed during Fault.
+// The station returns to Disabled and will recover its safe
+// position when it is enabled again during Initialising.
+// =========================================================
+
+IF bResetRequest THEN
+
+    IF bConfigured THEN
+        ipEquipment.RequestReset();
+    END_IF
+
+    // A simultaneous Extended + Retracted indication is a real
+    // sensor contradiction and must not be cleared by Reset.
+    IF NOT (bCylinderExtended AND bCylinderRetracted) THEN
+
+        eFault := E_ProcessStationFault.None;
+        stResult.bValid := FALSE;
+
+        eState := E_ProcessStationState.Disabled;
+
+    END_IF
+
+END_IF
+
+// =========================================================
+// GLOBAL CONTROL
+// =========================================================
+
+IF NOT bConfigured THEN
+
+    eFault := E_ProcessStationFault.EquipmentFault;
+    eState := E_ProcessStationState.Fault;
+
+
+ELSIF bStopRequest THEN
+
+    // Fault / Stopping:
+    //
+    // Stop the process equipment, but do not attempt pneumatic
+    // recovery here. The machine air supply may already have
+    // been removed.
+    ipEquipment.RequestStop();
+
+    IF eState <> E_ProcessStationState.Fault THEN
+        eState := E_ProcessStationState.Disabled;
+    END_IF
+
+
+ELSIF bManualEnable THEN
+
+    ipEquipment.RequestStop();
+    eState := E_ProcessStationState.Disabled;
+
+
+ELSIF NOT bEnable THEN
+
+    // Station disabled outside Automatic / Initialising.
+    //
+    // Do not start a retract sequence here because air may not
+    // currently be available.
+    ipEquipment.RequestStop();
+
+    eState := E_ProcessStationState.Disabled;
+
+END_IF
+
+CASE eState OF
+	
+    E_ProcessStationState.Disabled:
+
+    // Recovery is only performed when the station is enabled.
+    // Machine Initialising enables the station after requesting
+    // the pneumatic supply.
+    IF bEnable THEN
+        IF bCylinderRetracted THEN
+            eState := E_ProcessStationState.Idle;
+        ELSIF stStatusInternal.bRetractPermissive THEN
+            //eState := E_ProcessStationState.Retracting;
+        END_IF
+    END_IF
+
+    E_ProcessStationState.Idle:
+        bCylinderRetractOutput := NOT bCylinderRetracted;
+        IF bManualEnable THEN
+            IF bManualExtendRequest AND bManualRetractRequest THEN
+                eFault := E_ProcessStationFault.CommandConflict;
+                eState := E_ProcessStationState.Fault;
+            ELSIF bManualExtendRequest AND stStatusInternal.bExtendPermissive THEN
+                eState := E_ProcessStationState.Advancing;
+            ELSIF bManualRetractRequest THEN
+                eState := E_ProcessStationState.Retracting;
+            END_IF
+        ELSIF bEnable AND bAutomaticStartRequest AND bPartPresent AND bProcessPermissive AND ipEquipment.IsReady() THEN
+            stResult.bValid := FALSE;
+            eState := E_ProcessStationState.Advancing;
+        END_IF
+
+    E_ProcessStationState.Advancing:
+        IF NOT stStatusInternal.bExtendPermissive THEN
+            eFault := E_ProcessStationFault.SafetyLostDuringMovement;
+            eState := E_ProcessStationState.Fault;
+        ELSE
+            bCylinderExtendOutput := NOT bCylinderExtended;
+            IF bCylinderExtended THEN
+                IF bManualEnable THEN eState := E_ProcessStationState.Advanced; ELSE eState := E_ProcessStationState.StartingEquipment; END_IF
+            END_IF
+        END_IF
+
+    E_ProcessStationState.Advanced:
+        IF bManualRetractRequest OR NOT bManualEnable THEN eState := E_ProcessStationState.Retracting; END_IF
+
+    E_ProcessStationState.StartingEquipment:
+        IF NOT bCylinderExtended OR NOT bIndexReady OR NOT bIndexLocked THEN
+            eFault := E_ProcessStationFault.IndexNotLocked;
+            eState := E_ProcessStationState.Fault;
+        ELSIF ipEquipment.RequestStart() THEN
+            eState := E_ProcessStationState.Processing;
+        ELSIF ipEquipment.IsFaulted() THEN
+            eFault := E_ProcessStationFault.EquipmentFault;
+            eState := E_ProcessStationState.Fault;
+        END_IF
+
+    E_ProcessStationState.Processing:
+        bCylinderExtendOutput := TRUE;
+        IF ipEquipment.IsDone() THEN
+            stResult := ipEquipment.GetResult();
+            eState := E_ProcessStationState.StoppingEquipment;
+        ELSIF ipEquipment.IsFaulted() THEN
+            stResult := ipEquipment.GetResult();
+            eFault := E_ProcessStationFault.EquipmentFault;
+            eState := E_ProcessStationState.Fault;
+        END_IF
+
+    E_ProcessStationState.StoppingEquipment:
+        ipEquipment.RequestStop();
+        IF NOT ipEquipment.IsBusy() THEN eState := E_ProcessStationState.Retracting; END_IF
+
+    E_ProcessStationState.Retracting:
+        bCylinderRetractOutput := NOT bCylinderRetracted;
+        IF bCylinderRetracted AND NOT ipEquipment.IsBusy() THEN
+			
+            IF stResult.bValid THEN 
+				eState := E_ProcessStationState.Complete;
+            ELSIF bEnable OR bManualEnable THEN 
+				eState := E_ProcessStationState.Idle;
+            ELSE 
+				eState := E_ProcessStationState.Disabled;
+            END_IF
+			
+        END_IF
+
+    E_ProcessStationState.Complete:
+        bCylinderRetractOutput := NOT bCylinderRetracted;
+        IF bCylinderRetracted THEN
+            IF bEnable OR bManualEnable THEN eState := E_ProcessStationState.Idle; ELSE eState := E_ProcessStationState.Disabled; END_IF
+        END_IF
+
+    E_ProcessStationState.Fault:
+
+    // Fault is a non-recovery state.
+    // Pneumatic recovery is performed during machine Initialising.
+    ipEquipment.RequestStop();
+
+    bCylinderExtendOutput := FALSE;
+    bCylinderRetractOutput := FALSE;
+END_CASE
+
+tonCylinder(
+    IN := ((eState = E_ProcessStationState.Advancing) AND NOT bCylinderExtended)
+       OR ((eState = E_ProcessStationState.Retracting) AND NOT bCylinderRetracted),
+    PT := tCylinderTimeout);
+IF tonCylinder.Q THEN
+    IF eState = E_ProcessStationState.Advancing THEN eFault := E_ProcessStationFault.CylinderExtendTimeout;
+    ELSE eFault := E_ProcessStationFault.CylinderRetractTimeout;
+    END_IF
+    eState := E_ProcessStationState.Fault;
+END_IF
+
+tonProcess(IN := eState = E_ProcessStationState.Processing, PT := tProcessTimeout);
+IF tonProcess.Q THEN
+    ipEquipment.RequestStop();
+    stResult.bValid := TRUE;
+    stResult.bPassed := FALSE;
+    stResult.eCode := E_ProcessResultCode.Timeout;
+    eFault := E_ProcessStationFault.ProcessTimeout;
+    eState := E_ProcessStationState.Fault;
+END_IF
+
+stStatusInternal.eState := eState;
+stStatusInternal.eFault := eFault;
+stStatusInternal.bReady := eState = E_ProcessStationState.Idle;
+stStatusInternal.bBusy := (eState = E_ProcessStationState.Advancing) OR (eState = E_ProcessStationState.StartingEquipment) OR (eState = E_ProcessStationState.Processing) OR (eState = E_ProcessStationState.StoppingEquipment) OR (eState = E_ProcessStationState.Retracting);
+stStatusInternal.bFaulted := eState = E_ProcessStationState.Fault;
+stStatusInternal.bSafePosition := bCylinderRetracted AND NOT ipEquipment.IsBusy();
+stStatusInternal.bCylinderExtended := bCylinderExtended;
+stStatusInternal.bCylinderRetracted := bCylinderRetracted;
+stStatusInternal.bAutomaticRequestActive := bEnable AND bAutomaticStartRequest;
+stStatusInternal.bManualRequestActive := bManualEnable AND (bManualExtendRequest OR bManualRetractRequest);
+stStatusInternal.bEquipmentReady := ipEquipment.IsReady();
+stStatusInternal.bEquipmentBusy := ipEquipment.IsBusy();
+stStatusInternal.bEquipmentFaulted := ipEquipment.IsFaulted();
+CASE eState OF
+    E_ProcessStationState.Disabled: stStatusInternal.sMessage := 'Process station disabled';
+    E_ProcessStationState.Idle: stStatusInternal.sMessage := 'Process station ready';
+    E_ProcessStationState.Advancing: stStatusInternal.sMessage := 'Advancing Silicone Support Cylinder';
+    E_ProcessStationState.Advanced: stStatusInternal.sMessage := 'Silicone Support Cylinder extended';
+    E_ProcessStationState.StartingEquipment: stStatusInternal.sMessage := 'Starting process equipment';
+    E_ProcessStationState.Processing: stStatusInternal.sMessage := 'Process in progress';
+    E_ProcessStationState.StoppingEquipment: stStatusInternal.sMessage := 'Stopping process equipment';
+    E_ProcessStationState.Retracting: stStatusInternal.sMessage := 'Retracting Silicone Support Cylinder';
+    E_ProcessStationState.Complete: stStatusInternal.sMessage := 'Process complete';
+    E_ProcessStationState.Fault: stStatusInternal.sMessage := 'Process station fault';
+END_CASE
+Cyclic := NOT stStatusInternal.bFaulted;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetResult" Id="{3c475125-d66c-4308-9b2a-f68ff2194aa1}">
+      <Declaration><![CDATA[METHOD PUBLIC GetResult : ST_ProcessResult]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetResult := stResult;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetStatus" Id="{f644a1e8-dd8b-4dd6-b316-d64d7b92731d}">
+      <Declaration><![CDATA[METHOD PUBLIC GetStatus : ST_ProcessStationStatus]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetStatus := stStatusInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IndexPermissive" Id="{997889dc-3a20-450d-96d7-f51009587f59}">
+      <Declaration><![CDATA[METHOD PUBLIC IndexPermissive : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IndexPermissive := stStatusInternal.bSafePosition AND NOT stStatusInternal.bFaulted;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialise" Id="{71e36de4-67bb-4e1c-be4c-bd41306dc2eb}">
+      <Declaration><![CDATA[METHOD PUBLIC Initialise]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stResult.bValid := FALSE;
+eFault := E_ProcessStationFault.None;
+IF bConfigured THEN eState := E_ProcessStationState.Idle; ELSE eState := E_ProcessStationState.Disabled; END_IF
+tonCylinder(IN := FALSE);
+tonProcess(IN := FALSE);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsComplete" Id="{70c796b8-ac34-42ae-afd0-5203fea00edf}">
+      <Declaration><![CDATA[METHOD PUBLIC IsComplete : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsComplete := stResult.bValid AND eState = E_ProcessStationState.Complete;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsFaulted" Id="{fb34cb32-cde5-48bf-91c3-43c99d953092}">
+      <Declaration><![CDATA[METHOD PUBLIC IsFaulted : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsFaulted := stStatusInternal.bFaulted;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsSafePosition" Id="{1aeac98f-6a40-46be-938d-eec71dd67ad0}">
+      <Declaration><![CDATA[METHOD PUBLIC IsSafePosition : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsSafePosition := stStatusInternal.bSafePosition;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ResetFault" Id="{d34a30ab-10c9-47a0-a8b7-8c32f4627111}">
+      <Declaration><![CDATA[METHOD PUBLIC ResetFault : BOOL
+VAR_INPUT
+ bCylinderExtended : BOOL;
+ bCylinderRetracted : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ResetFault := FALSE;
+IF NOT (bCylinderExtended AND bCylinderRetracted) THEN
+ eFault := E_ProcessStationFault.None;
+ eState := E_ProcessStationState.Retracting;
+ ResetFault := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

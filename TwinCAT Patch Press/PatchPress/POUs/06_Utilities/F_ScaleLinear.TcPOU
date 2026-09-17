@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="F_ScaleLinear" Id="{ec0ae242-1181-4603-9e08-253ec83bbe8e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_ScaleLinear : REAL
+VAR_INPUT
+    rRawValue : REAL;
+    rRawMin   : REAL;
+    rRawMax   : REAL;
+    rEngMin   : REAL;
+    rEngMax   : REAL;
+END_VAR
+VAR
+    rSpanRaw : REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rSpanRaw := rRawMax - rRawMin;
+
+IF ABS(rSpanRaw) > 0.000001 THEN
+
+    F_ScaleLinear :=
+        ((rRawValue - rRawMin) / rSpanRaw)
+        * (rEngMax - rEngMin)
+        + rEngMin;
+
+ELSE
+
+    F_ScaleLinear := rEngMin;
+
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

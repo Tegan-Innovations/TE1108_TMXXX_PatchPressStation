@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_PatchPressCommissioningGuard" Id="{56201a5c-caef-474b-8dad-cc0411330f28}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PatchPressCommissioningGuard
+VAR
+    // Deliberately at FB scope so values remain visible online while debugging.
+    bAllStationsCommissionedInternal : BOOL;
+    bAutoCycleAllowedInternal        : BOOL;
+    sBlockReasonInternal             : STRING(160);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{29277774-fa26-49db-b24e-1b79154df3c8}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bDispenseCommissioned : BOOL;
+    bHeatStakeCommissioned: BOOL;
+    bVisionCommissioned   : BOOL;
+    bCoreCommissioningMode: BOOL;
+    bCoreReady            : BOOL;
+END_VAR
+VAR_OUTPUT
+    bAutoCycleAllowed     : BOOL;
+    sBlockReason          : STRING(160);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bAllStationsCommissionedInternal := bDispenseCommissioned AND bHeatStakeCommissioned AND bVisionCommissioned;
+bAutoCycleAllowedInternal := bCoreReady AND (bAllStationsCommissionedInternal OR bCoreCommissioningMode);
+
+IF NOT bCoreReady THEN
+    sBlockReasonInternal := 'Core machine not ready';
+ELSIF bCoreCommissioningMode THEN
+    sBlockReasonInternal := '';
+ELSIF NOT bDispenseCommissioned THEN
+    sBlockReasonInternal := 'Patch dispense station not commissioned';
+ELSIF NOT bHeatStakeCommissioned THEN
+    sBlockReasonInternal := 'Heat stake station not commissioned';
+ELSIF NOT bVisionCommissioned THEN
+    sBlockReasonInternal := 'Vision station not commissioned';
+ELSE
+    sBlockReasonInternal := '';
+END_IF
+
+bAutoCycleAllowed := bAutoCycleAllowedInternal;
+sBlockReason := sBlockReasonInternal;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

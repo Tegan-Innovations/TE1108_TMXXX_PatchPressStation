@@ -1,0 +1,40 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# TwinCAT temporary / generated
+_CompileInfo/
+*.compileinfo
+*.tclrs
+*.tpy
+*.tmcRefac
+*.library
+*.compiled-library
+*.bak
+*.~u
+*.~*
+*.tmp
+*.temp
+
+# Build outputs
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+Packages/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# TwinCAT generated
+_Boot/
+_Libraries/
+*.tmc
+*.compiled-library
+*.compiled-library-ge33

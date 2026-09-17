@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_CycleState" Id="{058363c4-b976-456f-9e90-e45d5a8c0fea}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_CycleState :
+(
+    // CYCLE INITIALISATION
+    Disabled                        := 0,
+    Initialising                    := 10,
+    WaitingForProcessCycleTrigger   := 20,
+	
+    // INDEX POSITION RECOVERY
+    EvaluatingIndexPosition         := 30,
+    RequestingIndexPositionRecovery := 40,
+    WaitingForIndexPositionRecovery := 50,
+
+    // INDEX MOVEMENT
+    ValidatingIndexPermissives      := 60,
+    RequestingIndexMove             := 70,
+    WaitingForIndexStart            := 80,
+    WaitingForIndexComplete         := 90,
+
+    // NEST AND PROCESS PREPARATION
+    UpdatingNestPositions           := 100,
+    EvaluatingProcessNest           := 110,
+    SkippingProcessNest             := 120,
+
+    // SUPPORT EXTENSION
+    RequestingSupportsExtend        := 130,
+    WaitingForSupportsExtended      := 140,
+
+    // PROCESS EXECUTION
+    PreparingProcessStations        := 150,
+    WaitingForProcessStationsReady  := 160,
+    StartingProcesses               := 170,
+    WaitingForProcessesRunning      := 180,
+    WaitingForProcessesComplete     := 190,
+
+    // PROCESS RESULT
+    CapturingProcessResult          := 200,
+    StoringProcessResult            := 210,
+
+    // SUPPORT RETRACTION
+    RequestingSupportsRetract       := 220,
+    WaitingForSupportsRetracted     := 230,
+
+    // OPERATOR EXCHANGE
+    PreparingOperatorExchange       := 240,
+    WaitingForOperatorExchange      := 250,
+    ConfirmingOperatorExchange      := 260,
+
+    // CYCLE COMPLETION
+    CycleComplete                   := 270,
+
+    // TERMINAL STATES
+    ControlledStop                  := 900,
+    Fault                           := 999
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

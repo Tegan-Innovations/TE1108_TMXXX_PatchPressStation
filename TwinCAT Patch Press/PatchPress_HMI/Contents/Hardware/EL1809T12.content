@@ -1,0 +1,12 @@
+<div id="EL1801_11" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480">
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+<div id="IO_2" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="480" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-target-user-control="Contents/UserControl/16CH_CARD.usercontrol" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="1080" data-tchmi-width-unit="px" data-tchmi-_1_inputoutputname="Spare Channel 1" data-tchmi-image="Images/IO/EL1809.png" data-tchmi-_1inputoutputsignal="False" data-tchmi-_2_inputoutputsignal="False" data-tchmi-_3_inputoutputsignal="False" data-tchmi-_2_inputoutputname="Spare Channel 2" data-tchmi-_3_inputoutputname="Spare Channel 3" data-tchmi-_4_inputoutputname="Spare Channel 4" data-tchmi-_5_inputoutputname="Spare Channel 5" data-tchmi-_6_inputoutputname="Spare Channel 6" data-tchmi-_7_inputoutputname="Spare Channel 7" data-tchmi-_8_inputoutputname="Spare Channel 8" data-tchmi-_9_inputoutputname="Spare Channel 9" data-tchmi-_10_inputoutputname="Spare Channel 10" data-tchmi-_11_inputoutputname="Spare Channel 11" data-tchmi-_12_inputoutputname="Spare Channel 12" data-tchmi-_13_inputoutputname="Spare Channel 13" data-tchmi-_14_inputoutputname="Spare Channel 14" data-tchmi-_15_inputoutputname="Spare Channel 15" data-tchmi-_16_inputoutputname="Spare Channel 16">
+</div>
+<div id="IO_4" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="480" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-target-user-control="Contents/UserControl/16CH_Dig_IO_CARD.usercontrol" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="1080" data-tchmi-width-unit="px" data-tchmi-image="Images/IO/el1889.png" data-tchmi-_3_inputoutputsignal="True">
+</div>
+</div>

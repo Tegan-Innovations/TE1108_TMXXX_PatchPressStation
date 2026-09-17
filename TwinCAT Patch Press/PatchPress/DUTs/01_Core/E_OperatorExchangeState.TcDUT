@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_OperatorExchangeState" Id="{55d8968b-16b9-4a22-b158-3be7d73b80c3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_OperatorExchangeState :
+(
+    Idle := 0,
+    EvaluateNest := 10,
+    WaitingForPartRemoval := 20,
+    WaitingForRejectConfirmation := 30,
+    WaitingForPuckRemoval := 40,
+    WaitingForNewPuck := 50,
+    WaitingForPuckLocked := 60,
+    WaitingForPartLoading := 70,
+    ExchangeComplete := 80,
+    WaitingForTableIndexComplete := 90,
+    Fault := 999
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

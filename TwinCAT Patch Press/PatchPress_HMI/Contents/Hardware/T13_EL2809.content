@@ -1,0 +1,10 @@
+<div id="EL1801_25" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480">
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+<div id="IO_14" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="480" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-target-user-control="Contents/UserControl/16CH_Dig_IO_CARD.usercontrol" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="1080" data-tchmi-width-unit="px" data-tchmi-image="Images/IO/EL2809.png" data-tchmi-state_string="%s%ADS.PLC1.GVL_IO.dw_T09_EL2809.stTerminalInfo.sTerminalInfo%/s%" data-tchmi-_1_inputoutputname="Kistler | Start Cycle" data-tchmi-_1inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T09_EL2809.qStartButtonLED%/s%" data-tchmi-_2_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T09_EL2809.qResetButtonLED%/s%" data-tchmi-_3_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T09_EL2809.qRetractProcessCylinder1%/s%" data-tchmi-_4_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T09_EL2809.qExtendProcessCylinder1%/s%" data-tchmi-_2_inputoutputname="Kistler | Puck in Place Ready" data-tchmi-_3_inputoutputname="Kistler | Spare Input 1" data-tchmi-_4_inputoutputname="Kistler | Spare Input 2" data-tchmi-_7_inputoutputname="CH07 - SPARE" data-tchmi-_8_inputoutputname="CH08 - SPARE" data-tchmi-_9_inputoutputname="CH09 - SPARE" data-tchmi-_10_inputoutputname="CH10 - SPARE" data-tchmi-_11_inputoutputname="CH11 - SPARE" data-tchmi-cardoperational="%s%ADS.PLC1.GVL_IO.dw_T09_EL2809.stTerminalInfo.bTerminalOperational%/s%" data-tchmi-_5_inputoutputname="CH05 - SPARE" data-tchmi-_6_inputoutputname="CH06 - SPARE" data-tchmi-_12_inputoutputname="CH12 - SPARE" data-tchmi-_14_inputoutputname="CH14 - SPARE" data-tchmi-_13_inputoutputname="CH13 - SPARE" data-tchmi-_15_inputoutputname="CH15 - SPARE" data-tchmi-_16_inputoutputname="CH16 - SPARE">
+</div>
+</div>

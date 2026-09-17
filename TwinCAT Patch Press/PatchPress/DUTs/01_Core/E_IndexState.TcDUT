@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_IndexState" Id="{7e59b4b0-c11d-4446-a7cf-f938753dbb29}">
+    <Declaration>{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_IndexState :
+(
+    Disabled := 0,
+    Initialising,
+    Idle,
+    RetractingSupport,
+    WaitingSupportRetracted,
+    RotatingPortA,
+    WrongPositionRecovery,
+    StoppingPortB,
+    VerifyingPosition,
+    ExtendingSupport,
+    WaitingSupportExtended,
+    ProcessPositionReady,
+    WaitingOperatorExchange,
+    Complete,
+    Stopping,
+    Fault
+);
+END_TYPE</Declaration>
+  </DUT>
+</TcPlcObject>

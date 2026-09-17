@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_MachineAlarm" Id="{6d35003a-29ba-4395-9079-d3e776cb36b0}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_MachineAlarm :
+(
+    None := 0,
+    EmergencyStop := 1000,
+    MainDoorSafety := 1001,
+    LeftSafetyFlap := 1002,
+    RightSafetyFlap := 1003,
+    Up24VSupply := 1100,
+    Us24VSupply := 1101,
+    Up48VSupply := 1102,
+    AirSupply := 1200,
+    IndexFault := 1300,
+    InitialisationTimeout := 1400,
+    StoppingTimeout := 1401
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

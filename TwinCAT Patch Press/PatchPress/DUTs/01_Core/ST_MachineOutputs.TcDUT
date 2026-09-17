@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_MachineOutputs" Id="{54b65e3e-4603-4fb6-b710-aae3df30541a}">
+    <Declaration><![CDATA[TYPE ST_MachineOutputs :
+STRUCT
+    bSafetyRunRequest                  : BOOL;
+    bSafetyResetRequest                : BOOL;
+    bSafetyErrorAcknowledgementRequest : BOOL;
+    bAirSupplyEnable                   : BOOL;
+    bMainDoorLockRequest               : BOOL;
+    bIndexRotatePortA                  : BOOL;
+    bIndexStopPortB                    : BOOL;
+    bIndexSupportExtend                : BOOL;
+    bIndexSupportRetract               : BOOL;
+    bLedStart                          : BOOL;
+    bLedReset                          : BOOL;
+    bLedPass                           : BOOL;
+    bLedFail                           : BOOL;
+    bInternalLight                     : BOOL;
+    bNestLight                         : BOOL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

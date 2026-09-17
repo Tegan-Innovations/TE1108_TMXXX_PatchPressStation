@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_IO" Id="{9b22fda7-06ef-4b49-b901-530abe0dc890}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+    // Logical physical I/O. Link these members to the same EtherCAT/TwinSAFE channels used by Kistler.
+    // Keeping terminal-specific names outside the core makes future hardware changes local to this GVL/mapper.
+    stInputs        AT %I*   : ST_PhysicalInputs;
+    stOutputs       AT %Q*   : ST_PhysicalOutputs;   
+
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

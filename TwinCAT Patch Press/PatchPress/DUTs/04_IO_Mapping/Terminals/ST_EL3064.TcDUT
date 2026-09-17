@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_EL3064" Id="{f7b5a24e-a443-46f0-95fe-8f4ba9055cf6}">
+    <Declaration><![CDATA[TYPE ST_EL3064 :
+STRUCT
+	//--------------------------------------------------------------------------------------------------------
+	sTerminalName                                           :   STRING(200):= 'EL3064 | 4-Channel Analog Input 0..10V';
+    //============================================================================================================================	
+	// TERMINAL - EL3058 4-Channel Analog Input Terminal (Term 11)	
+	iEL3064_Ch1               				AT %I*			: 	UINT;	// EL1809 channel 1
+	iEL3064_Ch2                   			AT %I*			: 	UINT;	// EL1809 channel 2
+	iEL3064_Ch3        						AT %I*	 		: 	UINT;	// EL1809 channel 3
+	iEL3064_Ch4	   							AT %I*	 		: 	UINT;	// EL1809 channel 4
+	
+	stTerminalInfo											: 	ST_Terminal_Info;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

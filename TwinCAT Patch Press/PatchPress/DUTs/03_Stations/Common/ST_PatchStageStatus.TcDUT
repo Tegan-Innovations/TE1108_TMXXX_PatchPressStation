@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_PatchStageStatus" Id="{32e43225-256d-4e66-b64b-80efe0b796c2}">
+    <Declaration><![CDATA[TYPE ST_PatchStageStatus :
+STRUCT
+    eState              : E_PatchStationState;
+    bCommissioned       : BOOL;
+    bHome               : BOOL;
+    bReady              : BOOL;
+    bBusy               : BOOL;
+    bComplete           : BOOL;
+    bFault              : BOOL;
+    bPartPresent        : BOOL;
+    sDiagnostic         : STRING(120);
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

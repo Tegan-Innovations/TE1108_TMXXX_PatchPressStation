@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_AlarmManagerStatus" Id="{d292690f-392b-4487-bde6-6894ade42ee3}">
+    <Declaration><![CDATA[TYPE ST_AlarmManagerStatus :
+STRUCT
+    bHasFault             : BOOL;
+    bHasSafetyStopFault   : BOOL;
+    uiActiveCount         : UINT;
+    eHighestAlarm         : E_AlarmId;
+    aActive               : ARRAY[1..20] OF ST_ActiveAlarm;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

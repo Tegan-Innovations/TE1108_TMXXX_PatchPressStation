@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_WriteOutputs" Id="{44926d69-67e0-4fbe-81ef-c45a14e013c6}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_WriteOutputs
+VAR
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[GVL_IO.stOutputs.bSafetyRunRequest := GVL_MASTER.stOutputs.bSafetyRunRequest;
+GVL_IO.stOutputs.bSafetyResetRequest := GVL_MASTER.stOutputs.bSafetyResetRequest;
+GVL_IO.stOutputs.bSafetyErrorAcknowledgementRequest := GVL_MASTER.stOutputs.bSafetyErrorAcknowledgementRequest;
+GVL_IO.stOutputs.bAirSupplyEnable := GVL_MASTER.stOutputs.bAirSupplyEnable;
+GVL_IO.stOutputs.bMainDoorLockRequest := GVL_MASTER.stOutputs.bMainDoorLockRequest;
+GVL_IO.stOutputs.bIndexRotatePortA := GVL_MASTER.stOutputs.bIndexRotatePortA;
+GVL_IO.stOutputs.bIndexStopPortB := GVL_MASTER.stOutputs.bIndexStopPortB;
+GVL_IO.stOutputs.bLedStart := GVL_MASTER.stOutputs.bLedStart;
+GVL_IO.stOutputs.bLedReset := GVL_MASTER.stOutputs.bLedReset;
+GVL_IO.stOutputs.bStatusIndicator := GVL_MASTER.stOutputs.bLedPass OR GVL_MASTER.stOutputs.bLedFail;
+GVL_IO.stOutputs.bInternalLight := GVL_MASTER.stOutputs.bInternalLight;
+GVL_IO.stOutputs.bNestLight := GVL_MASTER.stOutputs.bNestLight;]]></ST></Implementation>
+  </POU>
+</TcPlcObject>

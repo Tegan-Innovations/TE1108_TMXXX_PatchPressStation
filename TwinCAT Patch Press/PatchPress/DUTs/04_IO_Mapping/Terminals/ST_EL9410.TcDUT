@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EL9410" Id="{bbf7a02f-c087-4928-bec8-4232063a19db}">
+    <Declaration><![CDATA[TYPE ST_EL9410 :
+STRUCT
+	
+	// TERMINAL - EL9410	E-Bus Power supply	 (Term 7)
+	sTerminalName                                           :   STRING(200):= 'EL9410 | E-Bus Power supply';
+	stTerminalInfo											: 	ST_Terminal_Info;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

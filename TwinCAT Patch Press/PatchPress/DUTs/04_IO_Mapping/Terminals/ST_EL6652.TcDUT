@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_EL6652" Id="{fee147c7-1485-45a0-a4e5-c18d28b5388e}">
+    <Declaration><![CDATA[TYPE ST_EL6652 :
+STRUCT
+    sTerminalName : STRING(200) := 'EL6652-0000 | EtherNet/IP Master Terminal';
+    stTerminalInfo : ST_Terminal_Info;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

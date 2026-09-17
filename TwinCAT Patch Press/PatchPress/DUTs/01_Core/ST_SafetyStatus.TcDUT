@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_SafetyStatus" Id="{e684c374-1ec9-452e-aadc-0d23f66ef757}">
+    <Declaration><![CDATA[TYPE ST_SafetyStatus :
+STRUCT
+    // Aggregate safe status returned by TwinSAFE. This is the main state-machine input.
+    bSafetyOk                  : BOOL;
+
+    // Individual TwinSAFE diagnostic aliases.
+    //bEmergencyStopOk           : BOOL;
+    bMainDoorSafe              : BOOL;
+    bLeftFlapSafe              : BOOL;
+    bRightFlapSafe             : BOOL;
+    bFlapsSafe                 : BOOL; // Aggregate diagnostic alias from TwinSAFE.
+    bFsoeOk                    : BOOL;
+    bSafetyLogicOk             : BOOL;
+
+    // Standard PLC safety permissives derived only from TwinSAFE status.
+    // Operational/process interlocks must not be included here.
+    bMotionSafetyPermitted     : BOOL;
+    bProcessSafetyPermitted    : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

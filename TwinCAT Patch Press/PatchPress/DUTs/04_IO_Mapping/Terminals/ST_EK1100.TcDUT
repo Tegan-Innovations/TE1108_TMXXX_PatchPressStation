@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EK1100" Id="{8319a722-f9cf-4617-8df3-74065a0d2499}">
+    <Declaration><![CDATA[TYPE ST_EK1100 :
+STRUCT
+	
+	// TERMINAL - K1100	EtherCAT Coupler	 (Term 1)
+	sTerminalName                                           :   STRING(200):= 'K1100 | EtherCAT Coupler';
+	stTerminalInfo											: 	ST_Terminal_Info;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

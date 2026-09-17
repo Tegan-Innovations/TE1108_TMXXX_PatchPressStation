@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_StoppingWaitReason" Id="{d1f4c3ae-5184-400f-bbc0-2efc13ebe2ab}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_StoppingWaitReason :
+(
+    None := 0,
+    IndexStillMoving := 10,
+    MainDoorTransition := 20
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

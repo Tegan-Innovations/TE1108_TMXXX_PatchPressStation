@@ -1,0 +1,109 @@
+{
+  "controlTypeValues": {
+    "TcHmi.Controls.Beckhoff.TcHmiButton": {
+      "attributes": {
+        "BackgroundColor": {
+          "angle": 0.0,
+          "stopPoints": [
+            {
+              "color": "rgba(42, 89, 130, 1)",
+              "stop": "21.64%"
+            },
+            {
+              "color": "rgba(29, 59, 98, 1)",
+              "stop": "100%"
+            }
+          ]
+        },
+        "TextColor": {
+          "color": "rgba(253, 253, 253, 1)"
+        },
+        "BoxShadow": [
+          {
+            "blur": 10.0,
+            "color": {
+              "color": "rgba(190, 190, 190, 1)"
+            },
+            "offsetX": 1.0,
+            "offsetY": 1.0,
+            "spread": 1.0
+          }
+        ]
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.Beckhoff.TcHmiCombobox": {
+      "attributes": {
+        "DropDownToggleButtonBackgroundColor": {
+          "color": "rgba(78, 104, 137, 1)"
+        }
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.System.TcHmiContainer": {
+      "attributes": {
+        "BorderColor": {
+          "color": "rgba(76, 71, 71, 1)"
+        },
+        "BackgroundColor": {
+          "color": "rgba(255, 255, 255, 1)"
+        }
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.Beckhoff.TcHmiDatagrid": {
+      "attributes": {
+        "BorderColor": {
+          "color": "rgba(255, 255, 255, 1)"
+        },
+        "BackgroundColor": {
+          "color": "rgba(255, 255, 255, 1)"
+        },
+        "HeaderBackgroundColor": {
+          "color": "rgba(78, 104, 137, 1)"
+        },
+        "RowNumbersBackgroundColor": {
+          "color": "rgba(78, 104, 137, 1)"
+        },
+        "RowNumbersTextColor": {
+          "color": "rgba(255, 255, 255, 1)"
+        }
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.System.TcHmiHtmlHost": {
+      "attributes": {
+        "MaxWidth": 100.0
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.Beckhoff.TcHmiRectangle": {
+      "attributes": {
+        "StrokeColor": {
+          "color": "rgba(144, 143, 143, 1)"
+        }
+      },
+      "themedResources": {}
+    },
+    "TcHmi.Controls.System.TcHmiView": {
+      "attributes": {
+        "BackgroundColor": {
+          "angle": 0.0,
+          "stopPoints": [
+            {
+              "color": "rgba(159, 159, 159, 1)",
+              "stop": "0%"
+            },
+            {
+              "color": "rgba(249, 249, 249, 1)",
+              "stop": "100%"
+            }
+          ]
+        }
+      },
+      "themedResources": {}
+    }
+  },
+  "controlClassValues": {},
+  "$schema": "./../../../Git/Packages/Beckhoff.TwinCAT.HMI.Framework.12.762.44/runtimes/native1.12-tchmi/Schema/ThemeDescription.Schema.json"
+}

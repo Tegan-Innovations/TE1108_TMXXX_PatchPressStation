@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_MainDoorLockStatus" Id="{b64dc9e9-4c4f-4ab4-987b-1bed53df939f}">
+    <Declaration><![CDATA[TYPE ST_MainDoorLockStatus :
+STRUCT
+    eState                  : E_MainDoorLockState;
+    eFault                  : E_MainDoorLockFault;
+    bDoorClosed             : BOOL;
+    bDoorLocked             : BOOL;
+    bDoorUnsafe             : BOOL;
+    bLockRequest            : BOOL;
+    bLockOutput             : BOOL;
+    bReadyForAutomatic      : BOOL;
+    bUnlockPermissive       : BOOL;
+    bFaulted                : BOOL;
+    sMessage                : STRING(160);
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

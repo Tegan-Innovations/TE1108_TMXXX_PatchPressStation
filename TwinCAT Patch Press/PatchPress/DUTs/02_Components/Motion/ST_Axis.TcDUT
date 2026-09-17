@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_Axis" Id="{7dc938c8-1dd2-4103-a53b-30a6ce4c891a}">
+    <Declaration><![CDATA[TYPE ST_Axis :
+STRUCT
+    // TwinCAT NC axis reference. Link this member to the corresponding NC axis.
+    Axis                : AXIS_REF;
+
+    // Standardised application-facing axis status / diagnostics.
+    // These members may be linked to NC values directly during commissioning,
+    // or populated later by the common motion component FB.
+    bEnabled            : BOOL;
+    bOperational        : BOOL;
+    bHomed              : BOOL;
+    bMoving             : BOOL;
+    bStandstill         : BOOL;
+    bError              : BOOL;
+
+    lrActPosition       : LREAL;
+    lrActVelocity       : LREAL;
+    lrActTorque         : LREAL;
+
+    udiErrorId          : UDINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_Events" Id="{d91f2867-40c6-48eb-9107-f41ea1d35528}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_Events
+VAR
+    fbEventsManager : FB_EventsManager;
+    tonUpSupplyLost : TON;
+    tonUsSupplyLost : TON;
+    ton48VSupplyLost : TON;
+    tonIndexPositionInvalid : TON;
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[GVL_MASTER.sSystemDate := '';
+GVL_MASTER.sSystemTime := '';
+GVL_MASTER.stStationEvents[0].aEvents[0].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[0].bEventFlag := NOT GVL_MASTER.stInputs.bEmergencyStopChannel1 OR NOT GVL_MASTER.stInputs.bEmergencyStopChannel2;
+GVL_MASTER.stStationEvents[0].aEvents[0].bEventText := 'E-stop activated';
+GVL_MASTER.stStationEvents[0].aEvents[0].sSolution := 'Release E-stop and reset Safety';
+GVL_MASTER.stStationEvents[0].aEvents[1].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[1].bEventFlag := NOT GVL_MASTER.stInputs.bMainDoorChannel1 OR NOT GVL_MASTER.stInputs.bMainDoorChannel2;
+GVL_MASTER.stStationEvents[0].aEvents[1].bEventText := 'Main door safety circuit open';
+GVL_MASTER.stStationEvents[0].aEvents[1].sSolution := 'Close main door and reset Safety';
+GVL_MASTER.stStationEvents[0].aEvents[2].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[2].bEventFlag := (NOT GVL_MASTER.stInputs.bLeftFlapChannel1 OR NOT GVL_MASTER.stInputs.bLeftFlapChannel2) AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp);
+GVL_MASTER.stStationEvents[0].aEvents[2].bEventText := 'Left safety flap active';
+GVL_MASTER.stStationEvents[0].aEvents[2].sSolution := 'Clear left flap and reset Safety';
+GVL_MASTER.stStationEvents[0].aEvents[3].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[3].bEventFlag := (NOT GVL_MASTER.stInputs.bRightFlapChannel1 OR NOT GVL_MASTER.stInputs.bRightFlapChannel2) AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp);
+GVL_MASTER.stStationEvents[0].aEvents[3].bEventText := 'Right safety flap active';
+GVL_MASTER.stStationEvents[0].aEvents[3].sSolution := 'Clear right flap and reset Safety';
+GVL_MASTER.stStationEvents[0].aEvents[4].bCycleStopRequest := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[4].bEventFlag := GVL_MASTER.stCommand.bStop;
+GVL_MASTER.stStationEvents[0].aEvents[4].bEventText := 'Cycle stop requested';
+GVL_MASTER.stStationEvents[0].aEvents[4].sSolution := 'Wait for cycle to stop';
+GVL_MASTER.stStationEvents[0].aEvents[5].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[5].bEventFlag := GVL_MASTER.stStatus.bInitialisationTimeoutFault;
+GVL_MASTER.stStationEvents[0].aEvents[5].bEventText := 'System initialisation timeout';
+GVL_MASTER.stStationEvents[0].aEvents[5].sSolution := 'Check initialisation conditions';
+GVL_MASTER.stStationEvents[0].aEvents[6].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[6].bEventFlag := GVL_MASTER.stStatus.bStoppingTimeoutFault;
+GVL_MASTER.stStationEvents[0].aEvents[6].bEventText := 'System stopping timeout';
+GVL_MASTER.stStationEvents[0].aEvents[6].sSolution := 'Check index and machine safe state';
+tonUpSupplyLost(IN := NOT GVL_MASTER.stInputs.bUp24VPowerSupplyOk AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp), PT := T#1S);
+GVL_MASTER.stStationEvents[0].aEvents[7].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[7].bEventFlag := tonUpSupplyLost.Q;
+GVL_MASTER.stStationEvents[0].aEvents[7].bEventText := '24 V Up supply fault';
+GVL_MASTER.stStationEvents[0].aEvents[7].sSolution := 'Check 24 V Up power supply';
+tonUsSupplyLost(IN := NOT GVL_MASTER.stInputs.bUs24VPowerSupplyOk AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp), PT := T#1S);
+GVL_MASTER.stStationEvents[0].aEvents[8].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[8].bEventFlag := tonUsSupplyLost.Q;
+GVL_MASTER.stStationEvents[0].aEvents[8].bEventText := '24 V Us supply fault';
+GVL_MASTER.stStationEvents[0].aEvents[8].sSolution := 'Check 24 V Us power supply';
+ton48VSupplyLost(IN := NOT GVL_MASTER.stInputs.b48VPowerSupplyOk AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp), PT := T#1S);
+GVL_MASTER.stStationEvents[0].aEvents[9].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[9].bEventFlag := ton48VSupplyLost.Q;
+GVL_MASTER.stStationEvents[0].aEvents[9].bEventText := '48 V Up supply fault';
+GVL_MASTER.stStationEvents[0].aEvents[9].sSolution := 'Check 48 V power supply';
+tonIndexPositionInvalid(IN := GVL_MASTER.stInputs.bIndexReady AND GVL_MASTER.stInputs.bIndexLocked AND (GVL_MASTER.stInputs.eIndexPosition = E_TablePosition.Unknown), PT := T#500MS);
+GVL_MASTER.stStationEvents[2].aEvents[0].bFault := TRUE;
+GVL_MASTER.stStationEvents[2].aEvents[0].bEventFlag := tonIndexPositionInvalid.Q;
+GVL_MASTER.stStationEvents[2].aEvents[0].bEventText := 'Index position sensors invalid';
+GVL_MASTER.stStationEvents[2].aEvents[0].sSolution := 'Check index position sensors';
+GVL_MASTER.stStationEvents[1].aEvents[0].bMessage := TRUE;
+GVL_MASTER.stStationEvents[1].aEvents[0].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[1].aEvents[0].bEventFlag := NOT GVL_MASTER.stStatus.bAllStationsCommissioned;
+GVL_MASTER.stStationEvents[1].aEvents[0].bEventText := GVL_MASTER.stStatus.sAutoCycleBlockReason;
+GVL_MASTER.stStationEvents[1].aEvents[0].sSolution := 'Commission Patch Dispense, Heat Stake and Vision stations';
+fbEventsManager(bPulse := TRUE, sSystemTime := GVL_MASTER.sSystemTime, sSystemDate := GVL_MASTER.sSystemDate, bDataWritedInCSV := FALSE, nArraySize := 4, bMachineMessage := GVL_MASTER.stStatus.sMachineMessage, eMachineState := GVL_MASTER.stStatus.eMachineState, stStationEvents := GVL_MASTER.stStationEvents, stEventsAssigment := GVL_MASTER.stEventsAssigment, bResetFaults := GVL_MASTER.stCommand.bReset, bMachineFault => GVL_MASTER.bMachineFault, bCycleStopRequest => GVL_MASTER.bCycleStopRequest, astActiveEvents => GVL_MASTER.astActiveEvents, astEventsHistory => GVL_Persistent.astEventsHistory);
+GVL_HMI.astActiveEvents := GVL_MASTER.astActiveEvents;
+GVL_HMI.astEventsHistory := GVL_Persistent.astEventsHistory;
+GVL_HMI.stEventsAssigment := GVL_MASTER.stEventsAssigment;]]></ST></Implementation>
+  </POU>
+</TcPlcObject>

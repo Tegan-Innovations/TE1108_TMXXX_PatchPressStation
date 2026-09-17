@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_PatchPressOutputs" Id="{d9607885-7ba0-4192-bf0b-c75a4a8d48a9}">
+    <Declaration><![CDATA[TYPE ST_PatchPressOutputs :
+STRUCT
+    // Pneumatic commands are logical commands only at this stage.
+    // Physical Festo manifold PDO mapping must be created after the manifold scan.
+    bStation1SupportExtend              : BOOL;
+    bStation1SupportRetract             : BOOL;
+    bStation2SupportExtend              : BOOL;
+    bStation2SupportRetract             : BOOL;
+    bStation3SupportExtend              : BOOL;
+    bStation3SupportRetract             : BOOL;
+    bHorizontalMiniSlideExtend          : BOOL;
+    bHorizontalMiniSlideRetract         : BOOL;
+    bVerticalMiniSlideExtend            : BOOL;
+    bVerticalMiniSlideRetract           : BOOL;
+    bIntermediateModuleExtend           : BOOL;
+    bIntermediateModuleRetract          : BOOL;
+    bRotaryGripperOpen                  : BOOL;
+    bRotaryGripperClose                 : BOOL;
+    bRotaryGripperPick0                 : BOOL;
+    bRotaryGripperPlace180              : BOOL;
+    bMembraneTransferExtend             : BOOL;
+    bMembraneTransferRetract            : BOOL;
+    bMiddleRockerDown                   : BOOL;
+    bMiddleRockerUp                     : BOOL;
+    bBottomRockerDown                   : BOOL;
+    bBottomRockerUp                     : BOOL;
+    bTopRockerDown                      : BOOL;
+    bTopRockerUp                        : BOOL;
+
+    // Heater / pressure logical commands.
+    rHeater1DutyPercent                 : REAL;
+    rHeater2DutyPercent                 : REAL;
+    rPressureSetpointBar                : REAL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

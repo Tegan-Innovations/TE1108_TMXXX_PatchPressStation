@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_PatchDispenseStation" Id="{307a15f9-be92-4a17-837f-7db7d76c6090}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PatchDispenseStation
+VAR
+    // Method-visible diagnostics are kept at FB scope intentionally.
+    eStateInternal      : E_PatchStationState := E_PatchStationState.Disabled;
+    bHomeInternal       : BOOL;
+    bReadyInternal      : BOOL;
+    bBusyInternal       : BOOL;
+    bCompleteInternal   : BOOL;
+    bFaultInternal      : BOOL;
+    sDiagnosticInternal : STRING(120);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{fdb008a7-926e-4981-a53d-ea84ebdd020e}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bEnable       : BOOL;
+    bCommissioned : BOOL;
+    bStart        : BOOL;
+    bReset        : BOOL;
+    bSafetyOk     : BOOL;
+END_VAR
+VAR_OUTPUT
+    stStatus      : ST_PatchStageStatus;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Patch dispense foundation shell.
+// No actuator is commanded until the mechanical sequence has been commissioned.
+bHomeInternal := FALSE;
+bReadyInternal := FALSE;
+bBusyInternal := FALSE;
+bCompleteInternal := FALSE;
+bFaultInternal := FALSE;
+
+IF NOT bCommissioned THEN
+    eStateInternal := E_PatchStationState.Disabled;
+    sDiagnosticInternal := 'Not commissioned - process sequence intentionally disabled';
+ELSIF NOT bEnable OR NOT bSafetyOk THEN
+    eStateInternal := E_PatchStationState.Disabled;
+    sDiagnosticInternal := 'Disabled by machine state / safety';
+ELSE
+    // Mechanical sequence to be implemented from released design and commissioning tests.
+    eStateInternal := E_PatchStationState.Homing;
+    sDiagnosticInternal := 'Commissioning required - homing sequence not implemented';
+END_IF
+
+stStatus.eState := eStateInternal;
+stStatus.bCommissioned := bCommissioned;
+stStatus.bHome := bHomeInternal;
+stStatus.bReady := bReadyInternal;
+stStatus.bBusy := bBusyInternal;
+stStatus.bComplete := bCompleteInternal;
+stStatus.bFault := bFaultInternal;
+stStatus.sDiagnostic := sDiagnosticInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialise" Id="{413ecfd4-8bac-4401-bc5e-bf82fe920877}">
+      <Declaration><![CDATA[METHOD PUBLIC Initialise]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[eStateInternal := E_PatchStationState.Disabled;
+bHomeInternal := FALSE;
+bReadyInternal := FALSE;
+bBusyInternal := FALSE;
+bCompleteInternal := FALSE;
+bFaultInternal := FALSE;
+sDiagnosticInternal := '';]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

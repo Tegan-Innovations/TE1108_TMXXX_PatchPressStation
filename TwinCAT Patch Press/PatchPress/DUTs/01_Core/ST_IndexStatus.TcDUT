@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_IndexStatus" Id="{091e8d29-7b5a-426a-98c2-994ffadbe34e}">
+    <Declaration><![CDATA[TYPE ST_IndexStatus :
+STRUCT
+    eState                    : E_IndexState;
+    eFault                    : E_IndexFault;
+    eCurrentPosition          : E_TablePosition;
+
+    bReady                    : BOOL;
+    bBusy                     : BOOL;
+    bFaulted                  : BOOL;
+    bDonePulse                : BOOL;
+
+    bManualMoveActive         : BOOL;
+    bPositionRecoveryActive   : BOOL;
+    bSamePositionDetected     : BOOL;
+    bWrongPositionTimerActive : BOOL;
+    bTwoHandRequired          : BOOL;
+
+    bProcessPositionReady     : BOOL;
+    bWaitingOperatorExchange  : BOOL;
+
+    bSupportRetracted         : BOOL;
+    bSupportExtended          : BOOL;
+    bTableReady               : BOOL;
+    bTableLocked              : BOOL;
+	
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

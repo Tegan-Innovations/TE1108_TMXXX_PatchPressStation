@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_HmiStatus" Id="{d41f7c8f-993e-495c-ab35-890ed277e5d6}">
+    <Declaration><![CDATA[TYPE ST_HmiStatus :
+STRUCT
+    eMachineState             : E_MachineState;
+    eIndexState               : E_IndexState;
+    eIndexPosition            : E_TablePosition;
+    iNestRotationAngle        : INT;
+    bReady                    : BOOL;
+    bBusy                     : BOOL;
+    bFaulted                  : BOOL;
+    bTwoHandsSafe             : BOOL;
+    bLoadingStationEaglePresent : BOOL;
+    bRejectChutePartPresent   : BOOL;
+    bHeatStakeEaglePresent    : BOOL;
+    bHeatStakePatchPresent    : BOOL;
+    bPbupMagnetPresent        : BOOL;
+    bIndexReady               : BOOL;
+    bIndexLocked              : BOOL;
+    bIndexCompletedSensor     : BOOL;
+    bMainDoorClosed           : BOOL;
+    bMainDoorLocked           : BOOL;
+    bStartButtonActive        : BOOL;
+    bStopButtonActive         : BOOL;
+    bResetButtonActive        : BOOL;
+    bStartButtonLamp          : BOOL;
+    bUp24VPowerSupplyOk       : BOOL;
+    bUs24VPowerSupplyOk       : BOOL;
+    b48VPowerSupplyOk         : BOOL;
+    bMainDoorDiagnosticOk     : BOOL;
+    bMs6FeedbackOk            : BOOL;
+    bAirExhausted             : BOOL;
+    bLeftFlapSafe             : BOOL;
+    bRightFlapSafe            : BOOL;
+    bEnableSettings           : BOOL;
+    bAllStationsCommissioned  : BOOL;
+    bAutoCycleAllowed         : BOOL;
+    stPatchDispense           : ST_PatchStageStatus;
+    stHeatStake               : ST_PatchStageStatus;
+    stVision                  : ST_PatchStageStatus;
+    eOperatorInstruction      : E_OperatorInstruction;
+    stOperatorStation         : ST_OperatorStationStatus;
+    aNest                     : ARRAY[1..4] OF ST_Nest;
+    sMachineMessage           : STRING(160);
+    sOperatorMessage          : STRING(255);
+    sAutoCycleBlockReason     : STRING(160);
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

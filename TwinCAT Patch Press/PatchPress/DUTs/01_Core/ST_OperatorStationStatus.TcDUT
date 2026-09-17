@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_OperatorStationStatus" Id="{648bab67-1c7c-45e5-8d7e-abeb87bda2b3}">
+    <Declaration><![CDATA[TYPE ST_OperatorStationStatus :
+STRUCT
+    eState                  : E_OperatorExchangeState;
+    eInstruction            : E_OperatorInstruction;
+    bExchangeComplete       : BOOL;
+    bIndexPermissive        : BOOL;
+    bPartRemovedConfirmed   : BOOL;
+    bRejectConfirmed        : BOOL;
+    bRejectArmed            : BOOL;
+    bRejectEdgeAccepted     : BOOL;
+    bRejectWaitingForClear  : BOOL;
+    bPartPresent            : BOOL;
+    bRejectChutePartPresent : BOOL;
+    bResultValid            : BOOL;
+    bResultPassed           : BOOL;
+    sMessage                : STRING(255);
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

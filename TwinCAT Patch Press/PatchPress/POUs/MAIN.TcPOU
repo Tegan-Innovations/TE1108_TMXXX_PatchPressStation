@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="MAIN" Id="{58171a7d-5f08-4090-a464-779d1e8200c7}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[PRG_TerminalMapping.ReadInputs();
+PRG_ReadInputs();
+PRG_HmiCommands();
+PRG_Main();
+PRG_Events();
+PRG_HmiStatus();
+PRG_WriteOutputs();
+PRG_TerminalMapping.WriteOutputs();]]></ST></Implementation>
+  </POU>
+</TcPlcObject>
