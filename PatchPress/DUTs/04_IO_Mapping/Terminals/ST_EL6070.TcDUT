@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EL6070" Id="{1689a7e5-5088-4759-b76a-5c06002d039f}">
+    <Declaration><![CDATA[TYPE ST_EL6070 :
+STRUCT
+	
+	// TERMINAL - EL6070	EtherCAT Terminal, license key FOR TwinCAT 3.1  (Term 2)
+	sTerminalName                                           :   STRING(200):= 'EtherCAT Terminal, license key FOR TwinCAT 3.1';
+	stTerminalInfo											: 	ST_Terminal_Info;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

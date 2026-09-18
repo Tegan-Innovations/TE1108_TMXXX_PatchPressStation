@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_HmiStatus" Id="{4da5e538-fb78-4127-b5c1-141c740c9ced}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_HmiStatus
+VAR
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[GVL_HMI.stStatus.eMachineState := GVL_MASTER.stStatus.eMachineState;
+GVL_HMI.stStatus.eIndexState := GVL_MASTER.stStatus.eIndexState;
+GVL_HMI.stStatus.eIndexPosition := GVL_MASTER.stInputs.eIndexPosition;
+GVL_HMI.stStatus.bReady := GVL_MASTER.stStatus.bReady;
+GVL_HMI.stStatus.bBusy := GVL_MASTER.stStatus.bBusy;
+GVL_HMI.stStatus.bFaulted := GVL_MASTER.stStatus.bFaulted;
+GVL_HMI.stStatus.bTwoHandsSafe := GVL_MASTER.stInputs.bTwoHandsSafe;
+GVL_HMI.stStatus.bLoadingStationEaglePresent := GVL_MASTER.stInputs.bLoadingStationEaglePresent;
+GVL_HMI.stStatus.bRejectChutePartPresent := GVL_MASTER.stInputs.bRejectChutePartPresent;
+GVL_HMI.stStatus.bHeatStakeEaglePresent := GVL_MASTER.stInputs.bHeatStakeEaglePresent;
+GVL_HMI.stStatus.bHeatStakePatchPresent := GVL_MASTER.stInputs.bHeatStakePatchPresent;
+GVL_HMI.stStatus.bPbupMagnetPresent := GVL_MASTER.stInputs.bPbupMagnetPresent;
+GVL_HMI.stStatus.bIndexReady := GVL_MASTER.stInputs.bIndexReady;
+GVL_HMI.stStatus.bIndexLocked := GVL_MASTER.stInputs.bIndexLocked;
+GVL_HMI.stStatus.bIndexCompletedSensor := GVL_MASTER.stInputs.bIndexCompletedSensor;
+GVL_HMI.stStatus.bMainDoorClosed := GVL_MASTER.stInputs.bMainDoorClosed;
+GVL_HMI.stStatus.bMainDoorLocked := GVL_MASTER.stInputs.bMainDoorLocked;
+GVL_HMI.stStatus.bStartButtonActive := GVL_MASTER.stInputs.bStartButton;
+GVL_HMI.stStatus.bStopButtonActive := GVL_MASTER.stInputs.bStopButton;
+GVL_HMI.stStatus.bResetButtonActive := GVL_MASTER.stInputs.bResetButton;
+GVL_HMI.stStatus.bStartButtonLamp := GVL_MASTER.stOutputs.bLedStart;
+GVL_HMI.stStatus.bUp24VPowerSupplyOk := GVL_MASTER.stInputs.bUp24VPowerSupplyOk;
+GVL_HMI.stStatus.bUs24VPowerSupplyOk := GVL_MASTER.stInputs.bUs24VPowerSupplyOk;
+GVL_HMI.stStatus.b48VPowerSupplyOk := GVL_MASTER.stInputs.b48VPowerSupplyOk;
+GVL_HMI.stStatus.bMainDoorDiagnosticOk := GVL_MASTER.stInputs.bMainDoorDiagnosticOk;
+GVL_HMI.stStatus.bMs6FeedbackOk := GVL_MASTER.stInputs.bMs6FeedbackOk;
+GVL_HMI.stStatus.bAirExhausted := GVL_MASTER.stInputs.bAirExhausted;
+GVL_HMI.stStatus.bLeftFlapSafe := GVL_MASTER.stInputs.stSafety.bLeftFlapSafe;
+GVL_HMI.stStatus.bRightFlapSafe := GVL_MASTER.stInputs.stSafety.bRightFlapSafe;
+GVL_HMI.stStatus.bEnableSettings := GVL_MASTER.stStatus.bEnableSetting;
+GVL_HMI.stStatus.bAllStationsCommissioned := GVL_MASTER.stStatus.bAllStationsCommissioned;
+GVL_HMI.stStatus.bAutoCycleAllowed := GVL_MASTER.stStatus.bAutoCycleAllowed;
+GVL_HMI.stStatus.stPatchDispense := GVL_MASTER.stStatus.stPatchDispense;
+GVL_HMI.stStatus.stHeatStake := GVL_MASTER.stStatus.stHeatStake;
+GVL_HMI.stStatus.stVision := GVL_MASTER.stStatus.stVision;
+GVL_HMI.stStatus.eOperatorInstruction := GVL_MASTER.stStatus.eOperatorInstruction;
+GVL_HMI.stStatus.stOperatorStation := GVL_MASTER.stStatus.stOperatorStation;
+GVL_HMI.stStatus.aNest := GVL_MASTER.stStatus.aNest;
+GVL_HMI.stStatus.sMachineMessage := GVL_MASTER.stStatus.sMachineMessage;
+GVL_HMI.stStatus.sOperatorMessage := GVL_MASTER.stStatus.sOperatorMessage;
+GVL_HMI.stStatus.sAutoCycleBlockReason := GVL_MASTER.stStatus.sAutoCycleBlockReason;
+GVL_HMI.stStatistics.aNest := GVL_MASTER.stStatus.aNestStatistics;
+CASE GVL_MASTER.stInputs.eIndexPosition OF
+    E_TablePosition.Position1: GVL_HMI.stStatus.iNestRotationAngle := 0;
+    E_TablePosition.Position2: GVL_HMI.stStatus.iNestRotationAngle := 270;
+    E_TablePosition.Position3: GVL_HMI.stStatus.iNestRotationAngle := 180;
+    E_TablePosition.Position4: GVL_HMI.stStatus.iNestRotationAngle := 90;
+ELSE GVL_HMI.stStatus.iNestRotationAngle := 0;
+END_CASE
+CASE GVL_MASTER.stStatus.eMachineState OF
+    E_MachineState.PowerUp: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM POWER UP'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sYELLOW; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sBLACK;
+    E_MachineState.Initialising: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM INITIALIZING'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sYELLOW; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sBLACK;
+    E_MachineState.ReadyToStart: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM READY TO START'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREEN; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.AutoCycle: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM AUTO CYCLE'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREEN; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.Stopping: GVL_HMI.StatusHMI.sMachineStatusText := 'STOPPING'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREY; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.Stopped: GVL_HMI.StatusHMI.sMachineStatusText := 'CYCLE STOPPED'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREY; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.Fault: GVL_HMI.StatusHMI.sMachineStatusText := 'IMMEDIATE FAULT'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sREDFail; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.Manual: GVL_HMI.StatusHMI.sMachineStatusText := 'MANUAL MODE'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sBLUEInProgress; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+END_CASE]]></ST></Implementation>
+  </POU>
+</TcPlcObject>

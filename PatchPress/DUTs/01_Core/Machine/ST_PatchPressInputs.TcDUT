@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_PatchPressInputs" Id="{72163a60-16a6-49d3-98a2-4ab302e6e3ec}">
+    <Declaration><![CDATA[TYPE ST_PatchPressInputs :
+STRUCT
+    // EPLAN Term 7 - EL1809
+    b48VPowerSupplyOk                   : BOOL;
+    bLoadingStationEaglePresent         : BOOL;
+    bRejectChutePartPresent             : BOOL;
+    bHeatStakeEagleAssemblyPresent      : BOOL;
+    bHeatStakePatchPresent              : BOOL;
+    bPbupMagnetPresent                  : BOOL;
+
+    // EPLAN Term 8 - EL1809
+    bStation1SupportRetracted           : BOOL;
+    bStation1SupportExtended            : BOOL;
+    bStation2SupportRetracted           : BOOL;
+    bStation2SupportExtended            : BOOL;
+    bStation3SupportRetracted           : BOOL;
+    bStation3SupportExtended            : BOOL;
+    bHorizontalMiniSlideRetracted       : BOOL;
+    bHorizontalMiniSlideExtended        : BOOL;
+    bVerticalMiniSlideRetracted         : BOOL;
+    bVerticalMiniSlideExtended          : BOOL;
+    bIntermediateModuleRetracted        : BOOL;
+    bIntermediateModuleExtended         : BOOL;
+    bRotaryGripperOpened                : BOOL;
+    bRotaryGripperClosed                : BOOL;
+    bRotaryGripperPick0                 : BOOL;
+    bRotaryGripperPlace180              : BOOL;
+
+    // EPLAN Term 19 - EL1809
+    bMembraneTransferRetracted          : BOOL;
+    bMembraneTransferExtended           : BOOL;
+    bMiddleRockerDown                   : BOOL;
+    bMiddleRockerUp                     : BOOL;
+    bBottomRockerDown                   : BOOL;
+    bBottomRockerUp                     : BOOL;
+    bTopRockerDown                      : BOOL;
+    bTopRockerUp                        : BOOL;
+
+    // EPLAN Term 11 / 20
+    iMainAirPressureRaw                 : INT;
+    iProportionalPressureActualRaw      : INT;
+    iCartridgeHeater1TemperatureRaw     : INT;
+    iCartridgeHeater2TemperatureRaw     : INT;
+    iOverTemperatureRaw                 : INT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

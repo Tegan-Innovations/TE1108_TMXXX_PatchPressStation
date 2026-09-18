@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_MainDoorLockState" Id="{8e7f0fd9-d999-432c-ad67-b39ed1140cbc}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_MainDoorLockState :
+(
+    Disabled := 0,
+    Unlocked := 10,
+    Locking := 20,
+    Locked := 30,
+    Unlocking := 40,
+    Fault := 999
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

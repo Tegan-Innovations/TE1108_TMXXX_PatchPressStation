@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_ProcessResultCode" Id="{f2031bf7-1a38-4efa-a8e9-c6b9690449a7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_ProcessResultCode :
+(
+	None := 0,
+    Pass,
+    Fail,
+    Aborted,
+    EquipmentFault,
+    CommunicationFault,
+    Timeout
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

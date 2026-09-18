@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_MachineInputs" Id="{ddda66f3-f5e8-4abd-8967-8edd9acbfb23}">
+    <Declaration><![CDATA[TYPE ST_MachineInputs :
+STRUCT
+    bStartButton                  : BOOL;
+    bStopButton                   : BOOL;
+    bResetButton                  : BOOL;
+    bTwoHandsSafe                 : BOOL;
+    bTouchButtonLeft              : BOOL;
+    bTouchButtonRight             : BOOL;
+    bUp24VPowerSupplyOk           : BOOL;
+    bUs24VPowerSupplyOk           : BOOL;
+    b48VPowerSupplyOk             : BOOL;
+    bEmergencyStopChannel1        : BOOL;
+    bEmergencyStopChannel2        : BOOL;
+    bMainDoorChannel1             : BOOL;
+    bMainDoorChannel2             : BOOL;
+    bMainDoorFeedback             : BOOL;
+    bLeftFlapChannel1             : BOOL;
+    bLeftFlapChannel2             : BOOL;
+    bRightFlapChannel1            : BOOL;
+    bRightFlapChannel2            : BOOL;
+    bMainDoorClosed               : BOOL;
+    bMainDoorLocked               : BOOL;
+    bMainDoorUnsafe               : BOOL;
+    bMainDoorDiagnosticOk         : BOOL;
+    bMs6FeedbackOk                : BOOL;
+    bAirExhausted                 : BOOL;
+    stSafety                      : ST_SafetyStatus;
+    bEventFault                   : BOOL;
+    bEventCycleStopRequest        : BOOL;
+    bIndexReady                   : BOOL;
+    bIndexLocked                  : BOOL;
+    bIndexCompletedSensor         : BOOL;
+    eIndexPosition                : E_TablePosition;
+    bLoadingStationEaglePresent   : BOOL;
+    bRejectChutePartPresent       : BOOL;
+    bHeatStakeEaglePresent        : BOOL;
+    bHeatStakePatchPresent        : BOOL;
+    bPbupMagnetPresent            : BOOL;
+    bStation1SupportRetracted     : BOOL;
+    bStation1SupportExtended      : BOOL;
+    bStation2SupportRetracted     : BOOL;
+    bStation2SupportExtended      : BOOL;
+    bStation3SupportRetracted     : BOOL;
+    bStation3SupportExtended      : BOOL;
+    bHorizontalMiniSlideRetracted : BOOL;
+    bHorizontalMiniSlideExtended  : BOOL;
+    bVerticalMiniSlideRetracted   : BOOL;
+    bVerticalMiniSlideExtended    : BOOL;
+    bIntermediateModuleRetracted  : BOOL;
+    bIntermediateModuleExtended   : BOOL;
+    bRotaryGripperOpened          : BOOL;
+    bRotaryGripperClosed          : BOOL;
+    bRotaryGripperPick0           : BOOL;
+    bRotaryGripperPlace180        : BOOL;
+    bMembraneTransferRetracted    : BOOL;
+    bMembraneTransferExtended     : BOOL;
+    bMiddleRockerDown             : BOOL;
+    bMiddleRockerUp               : BOOL;
+    bBottomRockerDown             : BOOL;
+    bBottomRockerUp               : BOOL;
+    bTopRockerDown                : BOOL;
+    bTopRockerUp                  : BOOL;
+    uiMainAirPressureRaw          : UINT;
+    uiPressureRegulatorActualRaw  : UINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

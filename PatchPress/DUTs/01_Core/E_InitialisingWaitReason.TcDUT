@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_InitialisingWaitReason" Id="{080e8214-e544-414c-8857-bb0278d91c72}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_InitialisingWaitReason :
+(
+    None := 0,
+    SafetyNotReady := 10,
+    FsoeNotReady := 20,
+    SafetyLogicNotReady := 30,
+    AirSupplyNotReady := 40,
+    MainDoorNotReady := 50,
+    IndexNotReady := 60,
+    StationsNotHome := 70
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

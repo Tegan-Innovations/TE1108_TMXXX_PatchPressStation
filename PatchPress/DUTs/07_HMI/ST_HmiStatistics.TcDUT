@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_HmiStatistics" Id="{ca8058d7-b002-43e2-934b-a3a4b1017cc2}">
+    <Declaration><![CDATA[TYPE ST_HmiStatistics :
+STRUCT
+    // OVERALL PRODUCTION
+    udiTotalCycles          : UDINT;
+    udiTotalPass            : UDINT;
+    udiTotalFail            : UDINT;
+
+    // PER-NEST PRODUCTION
+    aNest                   : ARRAY[1..4] OF ST_NestStatistics;
+
+    // MACHINE STATISTICS
+    udiEquipmentFaults      : UDINT;
+    udiIndexFaults          : UDINT;
+    udiSafetyStops          : UDINT;
+    udiAbortedCycles        : UDINT;
+
+    dtLastCycleCompleted    : DATE_AND_TIME;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

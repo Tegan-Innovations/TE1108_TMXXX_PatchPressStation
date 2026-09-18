@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_ReadInputs" Id="{43c3226a-5de4-43dd-8598-c7579847eaea}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_ReadInputs
+VAR
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[GVL_MASTER.stInputs.bStartButton := GVL_IO.stInputs.bStartButton;
+GVL_MASTER.stInputs.bStopButton := GVL_IO.stInputs.bStopButton;
+GVL_MASTER.stInputs.bResetButton := GVL_IO.stInputs.bResetButton;
+GVL_MASTER.stInputs.bTwoHandsSafe := GVL_IO.stInputs.bTwoHandsSafe;
+GVL_MASTER.stInputs.bTouchButtonLeft := GVL_IO.stInputs.bTouchButtonLeft;
+GVL_MASTER.stInputs.bTouchButtonRight := GVL_IO.stInputs.bTouchButtonRight;
+GVL_MASTER.stInputs.bUp24VPowerSupplyOk := GVL_IO.stInputs.bUp24VPowerSupplyOk;
+GVL_MASTER.stInputs.bUs24VPowerSupplyOk := GVL_IO.stInputs.bUs24VPowerSupplyOk;
+GVL_MASTER.stInputs.b48VPowerSupplyOk := GVL_IO.stInputs.b48VPowerSupplyOk;
+GVL_MASTER.stInputs.bEmergencyStopChannel1 := GVL_IO.stInputs.bEmergencyStopChannel1;
+GVL_MASTER.stInputs.bEmergencyStopChannel2 := GVL_IO.stInputs.bEmergencyStopChannel2;
+GVL_MASTER.stInputs.bMainDoorChannel1 := GVL_IO.stInputs.bMainDoorChannel1;
+GVL_MASTER.stInputs.bMainDoorChannel2 := GVL_IO.stInputs.bMainDoorChannel2;
+GVL_MASTER.stInputs.bMainDoorFeedback := GVL_IO.stInputs.bMainDoorFeedback;
+GVL_MASTER.stInputs.bLeftFlapChannel1 := GVL_IO.stInputs.bLeftFlapChannel1;
+GVL_MASTER.stInputs.bLeftFlapChannel2 := GVL_IO.stInputs.bLeftFlapChannel2;
+GVL_MASTER.stInputs.bRightFlapChannel1 := GVL_IO.stInputs.bRightFlapChannel1;
+GVL_MASTER.stInputs.bRightFlapChannel2 := GVL_IO.stInputs.bRightFlapChannel2;
+GVL_MASTER.stInputs.bMainDoorClosed := GVL_IO.stInputs.bMainDoorClosed;
+GVL_MASTER.stInputs.bMainDoorLocked := GVL_IO.stInputs.bMainDoorLocked;
+GVL_MASTER.stInputs.bMainDoorUnsafe := GVL_IO.stInputs.bMainDoorUnsafe;
+GVL_MASTER.stInputs.bMainDoorDiagnosticOk := GVL_IO.stInputs.bMainDoorDiagnosticOk;
+GVL_MASTER.stInputs.bMs6FeedbackOk := GVL_IO.stInputs.bMs6FeedbackOk;
+GVL_MASTER.stInputs.bAirExhausted := GVL_IO.stInputs.bAirExhausted;
+GVL_MASTER.stInputs.stSafety.bSafetyOk := GVL_IO.stInputs.bSafetyOk;
+GVL_MASTER.stInputs.stSafety.bMotionSafetyPermitted := GVL_IO.stInputs.bSafetyOk;
+GVL_MASTER.stInputs.stSafety.bProcessSafetyPermitted := GVL_IO.stInputs.bSafetyOk;
+GVL_MASTER.stInputs.stSafety.bMainDoorSafe := NOT GVL_IO.stInputs.bMainDoorUnsafe;
+GVL_MASTER.stInputs.stSafety.bLeftFlapSafe := GVL_Safety.bLeftFlapSafe;
+GVL_MASTER.stInputs.stSafety.bRightFlapSafe := GVL_Safety.bRightFlapSafe;
+GVL_MASTER.stInputs.bEventFault := GVL_MASTER.bMachineFault;
+GVL_MASTER.stInputs.bEventCycleStopRequest := GVL_MASTER.bCycleStopRequest;
+GVL_MASTER.stInputs.bIndexReady := GVL_IO.stInputs.bIndexReady;
+GVL_MASTER.stInputs.bIndexLocked := GVL_IO.stInputs.bIndexLocked;
+GVL_MASTER.stInputs.bIndexCompletedSensor := GVL_IO.stInputs.bIndexCompletedSensor;
+GVL_MASTER.stInputs.eIndexPosition := GVL_IO.stInputs.eIndexPosition;
+GVL_MASTER.stInputs.bLoadingStationEaglePresent := GVL_IO.stInputs.bLoadingStationEaglePresent;
+GVL_MASTER.stInputs.bRejectChutePartPresent := GVL_IO.stInputs.bRejectChutePartPresent;
+GVL_MASTER.stInputs.bHeatStakeEaglePresent := GVL_IO.stInputs.bHeatStakeEaglePresent;
+GVL_MASTER.stInputs.bHeatStakePatchPresent := GVL_IO.stInputs.bHeatStakePatchPresent;
+GVL_MASTER.stInputs.bPbupMagnetPresent := GVL_IO.stInputs.bPbupMagnetPresent;
+GVL_MASTER.stInputs.bStation1SupportRetracted := GVL_IO.stInputs.bStation1SupportRetracted;
+GVL_MASTER.stInputs.bStation1SupportExtended := GVL_IO.stInputs.bStation1SupportExtended;
+GVL_MASTER.stInputs.bStation2SupportRetracted := GVL_IO.stInputs.bStation2SupportRetracted;
+GVL_MASTER.stInputs.bStation2SupportExtended := GVL_IO.stInputs.bStation2SupportExtended;
+GVL_MASTER.stInputs.bStation3SupportRetracted := GVL_IO.stInputs.bStation3SupportRetracted;
+GVL_MASTER.stInputs.bStation3SupportExtended := GVL_IO.stInputs.bStation3SupportExtended;
+GVL_MASTER.stInputs.bHorizontalMiniSlideRetracted := GVL_IO.stInputs.bHorizontalMiniSlideRetracted;
+GVL_MASTER.stInputs.bHorizontalMiniSlideExtended := GVL_IO.stInputs.bHorizontalMiniSlideExtended;
+GVL_MASTER.stInputs.bVerticalMiniSlideRetracted := GVL_IO.stInputs.bVerticalMiniSlideRetracted;
+GVL_MASTER.stInputs.bVerticalMiniSlideExtended := GVL_IO.stInputs.bVerticalMiniSlideExtended;
+GVL_MASTER.stInputs.bIntermediateModuleRetracted := GVL_IO.stInputs.bIntermediateModuleRetracted;
+GVL_MASTER.stInputs.bIntermediateModuleExtended := GVL_IO.stInputs.bIntermediateModuleExtended;
+GVL_MASTER.stInputs.bRotaryGripperOpened := GVL_IO.stInputs.bRotaryGripperOpened;
+GVL_MASTER.stInputs.bRotaryGripperClosed := GVL_IO.stInputs.bRotaryGripperClosed;
+GVL_MASTER.stInputs.bRotaryGripperPick0 := GVL_IO.stInputs.bRotaryGripperPick0;
+GVL_MASTER.stInputs.bRotaryGripperPlace180 := GVL_IO.stInputs.bRotaryGripperPlace180;
+GVL_MASTER.stInputs.bMembraneTransferRetracted := GVL_IO.stInputs.bMembraneTransferRetracted;
+GVL_MASTER.stInputs.bMembraneTransferExtended := GVL_IO.stInputs.bMembraneTransferExtended;
+GVL_MASTER.stInputs.bMiddleRockerDown := GVL_IO.stInputs.bMiddleRockerDown;
+GVL_MASTER.stInputs.bMiddleRockerUp := GVL_IO.stInputs.bMiddleRockerUp;
+GVL_MASTER.stInputs.bBottomRockerDown := GVL_IO.stInputs.bBottomRockerDown;
+GVL_MASTER.stInputs.bBottomRockerUp := GVL_IO.stInputs.bBottomRockerUp;
+GVL_MASTER.stInputs.bTopRockerDown := GVL_IO.stInputs.bTopRockerDown;
+GVL_MASTER.stInputs.bTopRockerUp := GVL_IO.stInputs.bTopRockerUp;
+GVL_MASTER.stInputs.uiMainAirPressureRaw := GVL_IO.stInputs.uiMainAirPressureRaw;
+GVL_MASTER.stInputs.uiPressureRegulatorActualRaw := GVL_IO.stInputs.uiPressureRegulatorActualRaw;]]></ST></Implementation>
+  </POU>
+</TcPlcObject>

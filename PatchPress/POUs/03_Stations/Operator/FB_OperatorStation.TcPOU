@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_OperatorStation" Id="{ff731f13-9fb1-43b6-a19e-d679d0a53809}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_OperatorStation
+VAR
+    eState : E_OperatorExchangeState := E_OperatorExchangeState.Idle;
+    eInstruction : E_OperatorInstruction := E_OperatorInstruction.None;
+    stStatusInternal : ST_OperatorStationStatus;
+    bExchangeComplete : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{511ffeea-7deb-4d8b-b22e-31cebd596b3a}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bAutomaticActive : BOOL;
+    bIndexStable : BOOL;
+    stOperatorNest : ST_Nest;
+    bPartPresent : BOOL;
+    bRejectChutePartPresent : BOOL;
+    bRequireRejectConfirm : BOOL;
+    bAllowEmptyNestIndex : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bExchangeComplete := FALSE;
+IF NOT bAutomaticActive OR NOT bIndexStable THEN
+    eState := E_OperatorExchangeState.Idle;
+    eInstruction := E_OperatorInstruction.TableIndexing;
+ELSIF stOperatorNest.stResult.bValid AND NOT stOperatorNest.stResult.bPassed THEN
+    eState := E_OperatorExchangeState.WaitingForPartRemoval;
+    eInstruction := E_OperatorInstruction.RemoveFailedPart;
+    bExchangeComplete := NOT bPartPresent AND ((NOT bRequireRejectConfirm) OR bRejectChutePartPresent);
+ELSIF stOperatorNest.stResult.bValid AND stOperatorNest.stResult.bPassed THEN
+    eState := E_OperatorExchangeState.WaitingForPartRemoval;
+    eInstruction := E_OperatorInstruction.RemovePassedPart;
+    bExchangeComplete := NOT bPartPresent;
+ELSIF bPartPresent THEN
+    eState := E_OperatorExchangeState.ExchangeComplete;
+    eInstruction := E_OperatorInstruction.ReadyToIndex;
+    bExchangeComplete := TRUE;
+ELSIF bAllowEmptyNestIndex THEN
+    eState := E_OperatorExchangeState.ExchangeComplete;
+    eInstruction := E_OperatorInstruction.ReadyToIndexEmpty;
+    bExchangeComplete := TRUE;
+ELSE
+    eState := E_OperatorExchangeState.WaitingForPartLoading;
+    eInstruction := E_OperatorInstruction.LoadPart;
+END_IF
+stStatusInternal.eState := eState;
+stStatusInternal.eInstruction := eInstruction;
+stStatusInternal.bExchangeComplete := bExchangeComplete;
+stStatusInternal.bIndexPermissive := bExchangeComplete;
+stStatusInternal.bPartPresent := bPartPresent;
+stStatusInternal.bRejectChutePartPresent := bRejectChutePartPresent;
+stStatusInternal.bResultValid := stOperatorNest.stResult.bValid;
+stStatusInternal.bResultPassed := stOperatorNest.stResult.bPassed;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetInstruction" Id="{96151fe5-6551-4687-9395-251188bc16e1}">
+      <Declaration><![CDATA[METHOD PUBLIC GetInstruction : E_OperatorInstruction]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetInstruction := eInstruction;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetState" Id="{50b48489-931c-45af-9267-a204b226aafd}">
+      <Declaration><![CDATA[METHOD PUBLIC GetState : E_OperatorExchangeState]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetState := eState;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetStatus" Id="{e74991c2-1064-4f40-b23e-9f8304b38600}">
+      <Declaration><![CDATA[METHOD PUBLIC GetStatus : ST_OperatorStationStatus]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetStatus := stStatusInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IndexPermissive" Id="{73d11cbf-354c-424e-a2a8-318ace7b680f}">
+      <Declaration><![CDATA[METHOD PUBLIC IndexPermissive : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IndexPermissive := stStatusInternal.bIndexPermissive;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsComplete" Id="{44a76064-7b6e-440a-b915-9333a5f0a70e}">
+      <Declaration><![CDATA[METHOD PUBLIC IsComplete : BOOL]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsComplete := bExchangeComplete;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_TerminalMapping" Id="{238243cb-7891-4569-b868-8787a9e2c958}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_TerminalMapping
+VAR
+    uiIndexPositionCode : UINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="ReadInputs" Id="{dd42962b-99a1-4f07-bcc4-f10d6e3158eb}">
+      <Declaration><![CDATA[METHOD PUBLIC ReadInputs]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GVL_IO.stInputs.bEmergencyStopChannel1 := GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1;
+GVL_IO.stInputs.bEmergencyStopChannel2 := GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch2;
+GVL_IO.stInputs.bResetButton := GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch3;
+GVL_IO.stInputs.bMainDoorChannel1 := GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch4;
+GVL_IO.stInputs.bMainDoorChannel2 := GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch5;
+GVL_IO.stInputs.bMainDoorFeedback := GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch6;
+GVL_IO.stInputs.bMs6FeedbackOk := GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch7;
+GVL_IO.stInputs.bAirExhausted := GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch8;
+GVL_IO.stInputs.bTouchButtonLeft := GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3;
+GVL_IO.stInputs.bTouchButtonRight := GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4;
+GVL_IO.stInputs.bRightFlapChannel1 := GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5;
+GVL_IO.stInputs.bRightFlapChannel2 := GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6;
+GVL_IO.stInputs.bLeftFlapChannel1 := GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7;
+GVL_IO.stInputs.bLeftFlapChannel2 := GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8;
+GVL_IO.stInputs.bStartButton := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1;
+GVL_IO.stInputs.bStopButton := NOT GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch2;
+GVL_IO.stInputs.bUp24VPowerSupplyOk := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch3;
+GVL_IO.stInputs.bUs24VPowerSupplyOk := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch4;
+GVL_IO.stInputs.b48VPowerSupplyOk := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch5;
+GVL_IO.stInputs.bIndexPositionSensor1 := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch6;
+GVL_IO.stInputs.bIndexPositionSensor2 := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch7;
+GVL_IO.stInputs.bIndexPositionSensor3 := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch8;
+GVL_IO.stInputs.bIndexCompletedSensor := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9;
+GVL_IO.stInputs.bIndexLocked := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch10;
+GVL_IO.stInputs.bIndexReady := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11;
+GVL_IO.stInputs.bLoadingStationEaglePresent := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12;
+GVL_IO.stInputs.bRejectChutePartPresent := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13;
+GVL_IO.stInputs.bHeatStakeEaglePresent := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14;
+GVL_IO.stInputs.bHeatStakePatchPresent := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15;
+GVL_IO.stInputs.bPbupMagnetPresent := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16;
+uiIndexPositionCode := 0;
+IF GVL_IO.stInputs.bIndexPositionSensor1 THEN uiIndexPositionCode := uiIndexPositionCode + 1; END_IF
+IF GVL_IO.stInputs.bIndexPositionSensor2 THEN uiIndexPositionCode := uiIndexPositionCode + 2; END_IF
+IF GVL_IO.stInputs.bIndexPositionSensor3 THEN uiIndexPositionCode := uiIndexPositionCode + 4; END_IF
+IF GVL_IO.stInputs.bIndexLocked THEN GVL_IO.stInputs.eIndexPosition := UINT_TO_E_TablePosition(uiIndexPositionCode); ELSE GVL_IO.stInputs.eIndexPosition := E_TablePosition.Unknown; END_IF
+GVL_IO.stInputs.bStation1SupportRetracted := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1;
+GVL_IO.stInputs.bStation1SupportExtended := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2;
+GVL_IO.stInputs.bStation2SupportRetracted := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3;
+GVL_IO.stInputs.bStation2SupportExtended := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4;
+GVL_IO.stInputs.bStation3SupportRetracted := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5;
+GVL_IO.stInputs.bStation3SupportExtended := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6;
+GVL_IO.stInputs.bHorizontalMiniSlideRetracted := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch7;
+GVL_IO.stInputs.bHorizontalMiniSlideExtended := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch8;
+GVL_IO.stInputs.bVerticalMiniSlideRetracted := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch9;
+GVL_IO.stInputs.bVerticalMiniSlideExtended := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch10;
+GVL_IO.stInputs.bIntermediateModuleRetracted := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11;
+GVL_IO.stInputs.bIntermediateModuleExtended := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12;
+GVL_IO.stInputs.bRotaryGripperOpened := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch13;
+GVL_IO.stInputs.bRotaryGripperClosed := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch14;
+GVL_IO.stInputs.bRotaryGripperPick0 := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch15;
+GVL_IO.stInputs.bRotaryGripperPlace180 := GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch16;
+GVL_IO.stInputs.bMembraneTransferRetracted := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9;
+GVL_IO.stInputs.bMembraneTransferExtended := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10;
+GVL_IO.stInputs.bMiddleRockerDown := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11;
+GVL_IO.stInputs.bMiddleRockerUp := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12;
+GVL_IO.stInputs.bBottomRockerDown := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13;
+GVL_IO.stInputs.bBottomRockerUp := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14;
+GVL_IO.stInputs.bTopRockerDown := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15;
+GVL_IO.stInputs.bTopRockerUp := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16;
+GVL_IO.stInputs.uiMainAirPressureRaw := GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch1;
+GVL_IO.stInputs.uiPressureRegulatorActualRaw := GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch2;
+GVL_IO.stInputs.bSafetyOk := GVL_Safety.bSafetyOk;
+GVL_IO.stInputs.bTwoHandsSafe := GVL_Safety.bTwoHandSafe;
+GVL_IO.stInputs.bMainDoorClosed := GVL_Safety.bMainDoorClosed;
+GVL_IO.stInputs.bMainDoorLocked := GVL_Safety.bMainDoorLocked;
+GVL_IO.stInputs.bMainDoorUnsafe := GVL_Safety.bMainDoorUnSafe;
+GVL_IO.stInputs.bMainDoorDiagnosticOk := GVL_Safety.bMainDoorDiagnosticOk;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="WriteOutputs" Id="{d5ba67cb-64f8-4d86-bcb1-1981d0b6759b}">
+      <Declaration><![CDATA[METHOD PUBLIC WriteOutputs]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GVL_Safety.bSafetyRunRequest := GVL_IO.stOutputs.bSafetyRunRequest;
+GVL_Safety.bSafetyResetRequest := GVL_IO.stOutputs.bSafetyResetRequest;
+GVL_Safety.bSafetyErrorAcknowledgementRequest := GVL_IO.stOutputs.bSafetyErrorAcknowledgementRequest;
+GVL_Safety.bAirSupplyEnableRequest := GVL_IO.stOutputs.bAirSupplyEnable;
+GVL_Safety.bMainDoorLockRequest := GVL_IO.stOutputs.bMainDoorLockRequest;
+GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1 := GVL_IO.stOutputs.bLedStart;
+GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2 := GVL_IO.stOutputs.bLedReset;
+GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3 := GVL_IO.stOutputs.bStatusIndicator;
+GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4 := GVL_IO.stOutputs.bInternalLight;
+GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5 := GVL_IO.stOutputs.bNestLight;
+
+// Temporary assumption for Patch Press commissioning:
+// Reuse the validated Silicone Station index valve mapping on Term 10.
+GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1 := GVL_IO.stOutputs.bIndexStopPortB;
+GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch2 := GVL_IO.stOutputs.bIndexRotatePortA;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

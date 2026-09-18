@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_MachineCommand" Id="{2c23b498-612b-4807-9b9e-fd8aed679576}">
+    <Declaration><![CDATA[TYPE ST_MachineCommand :
+STRUCT
+    bStart                : BOOL;
+    bStop                 : BOOL;
+    bReset                : BOOL;
+    bManualRequest        : BOOL;
+    bManualIndexForward   : BOOL;
+    bManualIndexHome      : BOOL;
+    bIndexerManualEnable  : BOOL;
+    bManualMainDoorUnlock : BOOL;
+    bAcknowledge          : BOOL;
+    bAcknowledgePuckRemovalFault : BOOL;
+    uiResetStatisticsNestId : UINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

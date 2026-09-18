@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_Terminal_Info" Id="{8674490a-6304-4125-8c29-3c1ed402d291}">
+    <Declaration><![CDATA[TYPE ST_Terminal_Info :
+STRUCT
+	
+	nTerminal_State                        AT %I*			:    UINT;	// Terminal State from IO Terminal Info Data
+	sTerminalInfo                                           :    STRING;
+    fbTerminalInfo                                          :    FB_TerminalInfo;
+	bTerminalOperational									: 	 BOOL;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

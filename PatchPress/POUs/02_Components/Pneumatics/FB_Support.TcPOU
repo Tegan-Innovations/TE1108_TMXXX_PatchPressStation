@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_Support" Id="{9c620d6c-efa3-4dcf-8317-199a23b8c643}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Support
+VAR
+    tonMovementTimeout : TON;
+
+    bFaultInternal     : BOOL;
+    bExtendOutputInternal  : BOOL;
+    bRetractOutputInternal : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{41a5e876-ca65-465a-b8d6-b3346df2c6d6}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bEnable          : BOOL;
+    bRaiseRequest    : BOOL;
+    bLowerRequest    : BOOL;
+    bStopRequest     : BOOL;
+
+    bExtended        : BOOL;
+    bRetracted       : BOOL;
+
+    tMovementTimeout : TIME;
+END_VAR
+
+VAR_OUTPUT
+    bExtendOutput    : BOOL;
+    bRetractOutput   : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// =========================================================
+// DEFAULT OUTPUTS
+// =========================================================
+
+bExtendOutputInternal := FALSE;
+bRetractOutputInternal := FALSE;
+
+
+// =========================================================
+// FAULT DETECTION
+// =========================================================
+
+IF bExtended AND bRetracted THEN
+    bFaultInternal := TRUE;
+END_IF
+
+IF bRaiseRequest AND bLowerRequest THEN
+    bFaultInternal := TRUE;
+END_IF
+
+
+// =========================================================
+// STOP HANDLING
+// =========================================================
+//
+// Stop does not reset the component.
+// Stop commands the station support to its safe position.
+
+IF bStopRequest THEN
+
+    tonMovementTimeout(
+        IN := NOT bRetracted,
+        PT := tMovementTimeout
+    );
+
+    IF NOT bRetracted AND NOT bFaultInternal THEN
+        bRetractOutputInternal := TRUE;
+    END_IF
+
+    IF tonMovementTimeout.Q THEN
+        bFaultInternal := TRUE;
+    END_IF
+
+
+// =========================================================
+// COMPONENT DISABLED OR FAULTED
+// =========================================================
+
+ELSIF NOT bEnable OR bFaultInternal THEN
+
+    tonMovementTimeout(IN := FALSE);
+
+
+// =========================================================
+// NORMAL MOVEMENT CONTROL
+// =========================================================
+
+ELSE
+
+    // -----------------------------------------------------
+    // EXTEND
+    // -----------------------------------------------------
+
+    IF bRaiseRequest AND NOT bLowerRequest THEN
+
+        tonMovementTimeout(
+            IN := (GVL_MASTER.stStatus.eMachineState <> E_MachineState.Manual)
+        AND NOT bExtended, 
+            PT := tMovementTimeout
+        );
+
+        IF NOT bExtended THEN
+            bExtendOutputInternal := TRUE;
+        END_IF
+
+        IF tonMovementTimeout.Q THEN
+            bFaultInternal := TRUE;
+        END_IF
+
+
+    // -----------------------------------------------------
+    // RETRACT
+    // -----------------------------------------------------
+
+    ELSIF bLowerRequest AND NOT bRaiseRequest THEN
+
+        tonMovementTimeout(
+            IN := (GVL_MASTER.stStatus.eMachineState <> E_MachineState.Manual)
+        AND NOT bRetracted,
+            PT := tMovementTimeout
+        );
+
+        IF NOT bRetracted THEN
+            bRetractOutputInternal := TRUE;
+        END_IF
+
+        IF tonMovementTimeout.Q THEN
+            bFaultInternal := TRUE;
+        END_IF
+
+
+    // -----------------------------------------------------
+    // NO COMMAND
+    // -----------------------------------------------------
+
+    ELSE
+
+        tonMovementTimeout(IN := FALSE);
+
+    END_IF
+
+END_IF
+
+
+// =========================================================
+// OUTPUT MAPPING
+// =========================================================
+
+bExtendOutput := bExtendOutputInternal;
+bRetractOutput := bRetractOutputInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsFaulted" Id="{a453501d-f880-418f-8fd0-ebc39e95d411}">
+      <Declaration><![CDATA[METHOD IsFaulted : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsFaulted := bFaultInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{cdac9f0c-ab08-402e-8f43-019a2c51101e}">
+      <Declaration><![CDATA[METHOD PUBLIC Reset]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bFaultInternal := FALSE;
+
+bExtendOutputInternal := FALSE;
+bRetractOutputInternal := FALSE;
+
+tonMovementTimeout(IN := FALSE);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

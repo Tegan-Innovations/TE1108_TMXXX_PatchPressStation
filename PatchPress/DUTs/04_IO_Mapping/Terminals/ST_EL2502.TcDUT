@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_EL2502" Id="{7e50c181-ea00-4633-bc4d-e6f8687f1bc6}">
+    <Declaration><![CDATA[TYPE ST_EL2502 :
+STRUCT
+	sTerminalName : STRING(80) := 'EL2502 | 2-Channel PWM Output';
+
+    iEL2502_Ch1  AT %Q* : UINT;
+    iEL2502_Ch2  AT %Q* : UINT;
+
+    stTerminalInfo : ST_Terminal_Info;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

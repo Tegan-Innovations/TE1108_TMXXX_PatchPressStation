@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_HmiCommands" Id="{79ca2d46-ae82-4bc2-94f7-f8309ae52790}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_HmiCommands
+VAR
+    rtStart : R_TRIG;
+    rtReset : R_TRIG;
+    rtAck : R_TRIG;
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[rtStart(CLK := GVL_MASTER.stInputs.bStartButton OR GVL_HMI.stCommands.bStart);
+rtReset(CLK := GVL_MASTER.stInputs.bResetButton OR GVL_HMI.stCommands.bReset);
+rtAck(CLK := GVL_HMI.stCommands.bAcknowledge);
+GVL_MASTER.stCommand.bStart := rtStart.Q;
+GVL_MASTER.stCommand.bStop := GVL_MASTER.stInputs.bStopButton OR GVL_HMI.stCommands.bStop;
+GVL_MASTER.stCommand.bReset := rtReset.Q;
+GVL_MASTER.stCommand.bAcknowledge := rtAck.Q;
+GVL_MASTER.stCommand.bManualRequest := GVL_HMI.stCommands.bManualRequest;
+GVL_MASTER.stCommand.bIndexerManualEnable := GVL_HMI.stCommands.bIndexerManualEnable;
+GVL_MASTER.stCommand.bManualIndexForward := GVL_HMI.stCommands.bManualIndexForward;
+GVL_MASTER.stCommand.bManualIndexHome := GVL_HMI.stCommands.bManualIndexHome;
+GVL_MASTER.stCommand.bManualMainDoorUnlock := GVL_HMI.stCommands.bManualMainDoorUnlock;
+GVL_MASTER.stCommand.uiResetStatisticsNestId := GVL_HMI.stCommands.uiResetStatisticsNestId;]]></ST></Implementation>
+  </POU>
+</TcPlcObject>

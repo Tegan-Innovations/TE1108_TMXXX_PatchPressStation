@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EventsHistory" Id="{793d00e7-01a7-4124-a2aa-4d13c2a3022a}">
+    <Declaration><![CDATA[TYPE ST_EventsHistory :
+STRUCT
+	sEventTex									: STRING(255);
+	sType										: STRING(255);
+	sDate										: STRING(255);
+	sTime										: STRING(255);
+	nEventsAmount								: DINT;
+	abType										: DINT;					//1:Alarm
+																		//2:Alert
+																		//3:Message
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

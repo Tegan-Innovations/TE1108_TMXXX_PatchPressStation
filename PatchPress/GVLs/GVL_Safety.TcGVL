@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_Safety" Id="{280ea5c7-dc99-4e3c-80f5-6f1c0df6296a}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+    // ---------------------------------------------------------------------
+    // TwinSAFE -> standard PLC aliases (link as PLC inputs in the Safety
+    // project). These are validated statuses/diagnostics, not reconstructed
+    // safety logic in the standard PLC.
+    // ---------------------------------------------------------------------
+    bSafetyOk                  AT %I* : BOOL;
+    bEmergencyStopOk           AT %I* : BOOL;
+    bMainDoorUnSafe            AT %I* : BOOL;
+    bLeftFlapSafe              AT %I* : BOOL;
+    bRightFlapSafe             AT %I* : BOOL;
+    bFlapsSafe                 AT %I* : BOOL;
+    bTwoHandSafe               AT %I* : BOOL;
+    bAirSupplySafe             AT %I* : BOOL;
+    bFsoeOk                    AT %I* : BOOL;
+    bSafetyLogicOk             AT %I* : BOOL;
+
+    // Diagnostic/command feedback exported by TwinSAFE.
+    bResetButtonPressed        AT %I* : BOOL;
+    bMainDoorClosed            AT %I* : BOOL;
+    bMainDoorLocked            AT %I* : BOOL;
+    bMainDoorDiagnosticOk      AT %I* : BOOL;
+    bMs6FeedbackOk             AT %I* : BOOL;
+    bAirExhausted              AT %I* : BOOL;
+
+    // ---------------------------------------------------------------------
+    // Standard PLC -> TwinSAFE request aliases (link as PLC outputs in the
+    // Safety project). TwinSAFE remains the owner of EL2904 safe outputs.
+    // ---------------------------------------------------------------------
+    bSafetyRunRequest          AT %Q* : BOOL;
+    bSafetyResetRequest        AT %Q* : BOOL;
+    bAirSupplyEnableRequest    AT %Q* : BOOL;
+    bMainDoorLockRequest       AT %Q* : BOOL;
+	bMachineFaultRequest 			  : BOOL;
+	bSafetyErrorAcknowledgementRequest : BOOL;
+	
+	
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

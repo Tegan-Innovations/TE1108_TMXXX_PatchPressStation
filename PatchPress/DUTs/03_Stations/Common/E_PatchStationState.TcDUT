@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_PatchStationState" Id="{62539f0d-2450-4897-b6f7-bdd25f1dc86b}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_PatchStationState :
+(
+    Disabled := 0,
+    Homing := 10,
+    Ready := 20,
+    Processing := 30,
+    Complete := 40,
+    Fault := 100
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

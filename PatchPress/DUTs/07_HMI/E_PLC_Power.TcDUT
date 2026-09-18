@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_PLC_Power" Id="{a6d29c75-7f44-4352-8572-77ccfb932fe2}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_PLC_Power :
+(
+    Idle := 0,
+    Reboot := 1,
+    Shutdown := 2,
+    Cancel := 3
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EVENT" Id="{1484a772-49f4-4b43-84b8-80911ca1d53f}">
+    <Declaration><![CDATA[TYPE ST_EVENT :
+STRUCT
+	bFault								: BOOL;
+	bCycleStopRequest					: BOOL;
+	bMessage							: BOOL;
+	bPersistentMessage				: BOOL; // Live message; clears only when condition becomes FALSE
+	
+	bAssignedID							: DINT;
+	
+	bEventFlag							: BOOL;
+	bEventTimer							: TON;
+	bEventText							: STRING(255);
+	bEventTextHMI						: STRING(255);
+	sSolution							: STRING(255);
+	bActive								: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

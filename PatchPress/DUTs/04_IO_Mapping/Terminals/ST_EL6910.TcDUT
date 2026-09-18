@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EL6910" Id="{88323c5e-5169-4252-81dd-45e9b175c575}">
+    <Declaration><![CDATA[TYPE ST_EL6910 :
+STRUCT
+	
+	// TERMINAL - EL6910	TwinSAFE logic	 (Term 3)
+	sTerminalName                                           :   STRING(200):= 'EL6910 | TwinSAFE logic';
+	stTerminalInfo											: 	ST_Terminal_Info;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

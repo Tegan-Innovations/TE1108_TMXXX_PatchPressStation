@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_EL2809" Id="{3ac64aa4-72a2-4288-a236-e7fe613e08f5}">
+    <Declaration>TYPE ST_EL2809 :
+STRUCT
+    sTerminalName : STRING(80) := 'EL2809-0015 | 16-Channel Digital Output';
+
+    iEL2809_Ch1  AT %Q* : BOOL;
+    iEL2809_Ch2  AT %Q* : BOOL;
+    iEL2809_Ch3  AT %Q* : BOOL;
+    iEL2809_Ch4  AT %Q* : BOOL;
+    iEL2809_Ch5  AT %Q* : BOOL;
+    iEL2809_Ch6  AT %Q* : BOOL;
+    iEL2809_Ch7  AT %Q* : BOOL;
+    iEL2809_Ch8  AT %Q* : BOOL;
+    iEL2809_Ch9  AT %Q* : BOOL;
+    iEL2809_Ch10 AT %Q* : BOOL;
+    iEL2809_Ch11 AT %Q* : BOOL;
+    iEL2809_Ch12 AT %Q* : BOOL;
+    iEL2809_Ch13 AT %Q* : BOOL;
+    iEL2809_Ch14 AT %Q* : BOOL;
+    iEL2809_Ch15 AT %Q* : BOOL;
+    iEL2809_Ch16 AT %Q* : BOOL;
+
+    stTerminalInfo : ST_Terminal_Info;
+END_STRUCT
+END_TYPE
+</Declaration>
+  </DUT>
+</TcPlcObject>

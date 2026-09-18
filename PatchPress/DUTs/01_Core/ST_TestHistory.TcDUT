@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_TestHistory" Id="{8f95c2b7-897e-44e9-9705-3bacc38e3876}">
+    <Declaration><![CDATA[TYPE ST_TestHistory :
+STRUCT
+    uiNestId            : UINT;
+    eResult             : E_PartDisposition;
+    bPatchDispenseValid : BOOL;
+    bPatchDispensePass  : BOOL;
+    bHeatStakeValid     : BOOL;
+    bHeatStakePass      : BOOL;
+    bVisionValid        : BOOL;
+    bVisionPass         : BOOL;
+    sResult             : STRING(20);
+    sPatchDispenseResult: STRING(20);
+    sHeatStakeResult    : STRING(20);
+    sVisionResult       : STRING(20);
+    sTime               : STRING(255);
+    sDate               : STRING(255);
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

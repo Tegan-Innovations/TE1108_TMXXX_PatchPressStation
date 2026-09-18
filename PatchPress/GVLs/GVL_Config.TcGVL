@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_Config" Id="{0cc8a96c-a7b2-4e2a-9a0f-0879484f2576}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL PERSISTENT RETAIN
+    stMachine : ST_MachineConfig := (
+        tInitialiseTimeout := T#20S,
+        tStoppingTimeout := T#15S,
+        tIndexTimeout := T#10S,
+        eOperatorPosition := E_TablePosition.Position1,
+        ePatchDispensePosition := E_TablePosition.Position2,
+        eHeatStakePosition := E_TablePosition.Position3,
+        eVisionPosition := E_TablePosition.Position4,
+        eRejectPosition := E_TablePosition.Position1,
+        bAllowEmptyNestIndex := TRUE,
+        bRequireRejectConfirm := TRUE
+    );
+    aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

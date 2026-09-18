@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_HMI" Id="{5828944f-83a4-4424-b97b-86bf15c25bfa}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+    stCommands : ST_HmiCommands;
+    stStatus : ST_HmiStatus;
+    StatusHMI : ST_StatusBanner;
+    astActiveEvents : ARRAY[0..50] OF ST_ActiveEvents;
+    astEventsHistory : ARRAY[0..200] OF ST_EventsHistory;
+    astTestHistory : ARRAY[0..2000] OF ST_TestHistory;
+    stEventsAssigment : ST_EventsAssigmentGeneral;
+    sSystemTime : STRING(255);
+    sSystemDate : STRING(255);
+    stStatistics : ST_HmiStatistics;
+    bBlink_1Hz : BOOL;
+    bHMIAlive : BOOL;
+END_VAR
+VAR_GLOBAL CONSTANT
+    sWHITE : STRING(40) := '{"color":"rgba(255,255,255,255)"}';
+    sBLACK : STRING(40) := '{"color":"rgba(0,0,0,1)"}';
+    sYELLOW : STRING(40) := '{"color":"rgba(255,255,0,1)"}';
+    sGREEN : STRING(40) := '{"color":"rgba(70,166,63,1)"}';
+    sRED : STRING(40) := '{"color":"rgba(255,0,0,1)"}';
+    sBLUEInProgress : STRING(40) := '{"color":"rgba(54,100,221,1)"}';
+    sGREY : STRING(40) := '{"color":"rgba(164,158,158,1)"}';
+    sDARKGREY : STRING(40) := '{"color":"rgba(50,50,50,1)"}';
+    sTRANSP : STRING(40) := '{"color":"rgba(255,255,255,0)"}';
+    sREDFail : STRING(40) := '{"color":"rgba(244,68,68,255)"}';
+    sSystemName : STRING := 'Patch Press';
+    sApplication : STRING := 'Patch Press Machine';
+    sProjectID : STRING := 'TE1108';
+    sSoftwareVersion : STRING := 'v0.1.0-foundation';
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

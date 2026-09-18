@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <Itf Name="I_ProcessEquipment" Id="{1b6c15d8-7730-4fdb-b277-0b57a03216aa}">
+    <Declaration><![CDATA[INTERFACE I_ProcessEquipment
+]]></Declaration>
+    <Method Name="Cyclic" Id="{6453acf0-3741-4c14-af31-d41ff7c6cacd}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetResult" Id="{bd2ca7ee-77f9-45b2-9457-ef85a73a2061}">
+      <Declaration><![CDATA[METHOD PUBLIC GetResult : ST_ProcessResult
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="GetState" Id="{bf00303b-1a36-498a-b0a8-6d5484e9e80e}">
+      <Declaration><![CDATA[METHOD PUBLIC GetState : E_ProcessEquipmentState
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsBusy" Id="{76edbf11-2f78-4db2-9f42-daeaf6860f78}">
+      <Declaration><![CDATA[METHOD PUBLIC IsBusy : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsDone" Id="{e4a8cac0-19e6-4857-8cb7-7a00ebe8bd84}">
+      <Declaration><![CDATA[METHOD PUBLIC IsDone : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsFaulted" Id="{ce4750da-9796-49c2-8b3b-8f40c28eb58f}">
+      <Declaration><![CDATA[METHOD PUBLIC IsFaulted : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="IsReady" Id="{0ae2b684-69df-4d8c-9d52-69785448aed9}">
+      <Declaration><![CDATA[METHOD PUBLIC IsReady : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="RequestReset" Id="{676ae10d-ffb6-4852-9c5f-c6df6be823ac}">
+      <Declaration><![CDATA[METHOD PUBLIC RequestReset
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="RequestStart" Id="{52c5aee9-c7f9-4465-b2f5-0956dcf3243f}">
+      <Declaration><![CDATA[METHOD PUBLIC RequestStart : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="RequestStop" Id="{bede1dad-524a-41e5-a628-a1941bc5d3d4}">
+      <Declaration><![CDATA[METHOD PUBLIC RequestStop
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="SetRecipe" Id="{9d7a62c3-d93a-4d91-a58e-77b1d7b27bd8}">
+      <Declaration><![CDATA[METHOD PUBLIC SetRecipe : BOOL
+VAR_INPUT
+	usiRecipe : USINT;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

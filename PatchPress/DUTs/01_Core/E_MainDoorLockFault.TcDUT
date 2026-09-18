@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_MainDoorLockFault" Id="{1bc2ac89-19d2-4594-86c5-d254306be667}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_MainDoorLockFault :
+(
+    None := 0,
+    LockTimeout := 10,
+    UnlockTimeout := 20,
+    DoorNotClosed := 30,
+    FeedbackMismatch := 40
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

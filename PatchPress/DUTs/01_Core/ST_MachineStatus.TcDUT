@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_MachineStatus" Id="{ede7ab68-974c-4ea1-931a-df520c97456a}">
+    <Declaration><![CDATA[TYPE ST_MachineStatus :
+STRUCT
+    eMachineState           : E_MachineState;
+    eIndexState             : E_IndexState;
+    stIndexStatus           : ST_IndexStatus;
+    stMainDoorLock          : ST_MainDoorLockStatus;
+    eInitialisingWaitReason : E_InitialisingWaitReason;
+    eStoppingWaitReason     : E_StoppingWaitReason;
+    eOperatorExchangeState  : E_OperatorExchangeState;
+    eOperatorInstruction    : E_OperatorInstruction;
+    stOperatorStation       : ST_OperatorStationStatus;
+    stPatchDispense         : ST_PatchStageStatus;
+    stHeatStake             : ST_PatchStageStatus;
+    stVision                : ST_PatchStageStatus;
+    bReady                  : BOOL;
+    bBusy                   : BOOL;
+    bFaulted                : BOOL;
+    bInitialisationTimeoutFault : BOOL;
+    bStoppingTimeoutFault   : BOOL;
+    bSafetyStopRequested    : BOOL;
+    bSafetyRunRequested     : BOOL;
+    bEventFault             : BOOL;
+    bCycleStopRequested     : BOOL;
+    bIndexPermissive        : BOOL;
+    bEnableSetting          : BOOL;
+    bAllStationsCommissioned: BOOL;
+    bAutoCycleAllowed       : BOOL;
+    stPermissives           : ST_MachinePermissives;
+    stLastResult            : ST_ProcessResult;
+    aNest                   : ARRAY[1..4] OF ST_Nest;
+    aNestStatistics         : ARRAY[1..4] OF ST_NestStatistics;
+    sMachineMessage         : STRING(160);
+    sOperatorMessage        : STRING(255);
+    sAutoCycleBlockReason   : STRING(160);
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

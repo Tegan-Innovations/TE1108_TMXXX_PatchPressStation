@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_PatchPressStation" Id="{a5f96b81-5751-4607-a106-4b58d72076ea}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_PatchPressStation :
+(
+    Unknown := 0,
+    Operator := 1,
+    PatchDispense := 2,
+    HeatStake := 3,
+    Vision := 4
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

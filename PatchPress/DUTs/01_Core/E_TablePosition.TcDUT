@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_TablePosition" Id="{e280bd82-08da-4350-85b4-89d497839c1a}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_TablePosition :
+(
+	Unknown := 0,
+    Position1 := 1,
+    Position2 := 2,
+    Position3 := 3,
+    Position4 := 4
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

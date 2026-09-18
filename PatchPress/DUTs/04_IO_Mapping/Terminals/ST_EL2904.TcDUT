@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_EL2904" Id="{b47fa1ee-8218-430d-bdaf-20385f9eef63}">
+    <Declaration>TYPE ST_EL2904 :
+STRUCT
+    sTerminalName : STRING(80) := 'EL2904 | 4-Channel TwinSAFE Digital Output';
+
+    // Diagnostic representation only. Functional commands are exchanged
+    // through GVL_Safety aliases and evaluated inside the TwinSAFE project.
+    bOutput : ARRAY[1..4] OF BOOL;
+    bError  : BOOL;
+    bReady  : BOOL;
+
+    stTerminalInfo : ST_Terminal_Info;
+END_STRUCT
+END_TYPE
+</Declaration>
+  </DUT>
+</TcPlcObject>

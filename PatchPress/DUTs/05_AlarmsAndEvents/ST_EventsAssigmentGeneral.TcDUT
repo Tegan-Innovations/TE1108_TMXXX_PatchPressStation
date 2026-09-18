@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EventsAssigmentGeneral" Id="{8d08378b-1afc-47d0-8dda-743aa321699a}">
+    <Declaration><![CDATA[TYPE ST_EventsAssigmentGeneral :
+STRUCT
+	astFaultEvents						: ARRAY [1..100] OF ST_EventsAssigment;
+	astCycleStopRequestEvents			: ARRAY [1..100] OF ST_EventsAssigment;
+	astMessage							: ARRAY [1..100] OF ST_EventsAssigment;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

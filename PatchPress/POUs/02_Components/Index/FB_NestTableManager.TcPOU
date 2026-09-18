@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_NestTableManager" Id="{7d4da875-9776-4fb9-89ad-14daa86147a0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_NestTableManager
+VAR
+    aNestInternal           : ARRAY[1..4] OF ST_Nest;
+    aNestStatisticsInternal : ARRAY[1..4] OF ST_NestStatistics;
+    aPositionToNest         : ARRAY[1..4] OF UINT := [1,2,3,4];
+    bInitialised            : BOOL;
+    i                       : INT;
+    uiNest                  : UINT;
+    uiMethodNestId          : UINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="ClearOperatorNest" Id="{49a5db95-39d9-4d1e-a633-d63e9985b5f5}">
+      <Declaration><![CDATA[METHOD PUBLIC ClearOperatorNest
+VAR_INPUT ePosition : E_TablePosition; END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[uiMethodNestId := GetNestIdAtPosition(ePosition); IF uiMethodNestId >= 1 AND uiMethodNestId <= 4 THEN aNestInternal[uiMethodNestId].bProcessRequired := FALSE; aNestInternal[uiMethodNestId].bProcessComplete := FALSE; aNestInternal[uiMethodNestId].eDisposition := E_PartDisposition.None; aNestInternal[uiMethodNestId].bDispositionSent := FALSE; aNestInternal[uiMethodNestId].bOperatorExchangeComplete := FALSE; aNestInternal[uiMethodNestId].stPatchDispenseResult.bValid := FALSE; aNestInternal[uiMethodNestId].stHeatStakeResult.bValid := FALSE; aNestInternal[uiMethodNestId].stVisionResult.bValid := FALSE; aNestInternal[uiMethodNestId].stResult.bValid := FALSE; aNestInternal[uiMethodNestId].bStatisticsCounted := FALSE; END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Cyclic" Id="{5b54e275-1e8e-4728-a765-bebaee4a975e}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bIndexStable : BOOL;
+    eIndexPosition : E_TablePosition;
+    eOperatorPosition : E_TablePosition;
+    bPartPresent : BOOL;
+    aNestEnabled : ARRAY[1..4] OF BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF NOT bInitialised THEN
+    FOR i := 1 TO 4 DO
+        aNestInternal[i].nId := INT_TO_UINT(i);
+        aNestStatisticsInternal[i].uiNestId := INT_TO_UINT(i);
+    END_FOR
+    bInitialised := TRUE;
+END_IF
+FOR i := 1 TO 4 DO aNestInternal[i].bEnabled := aNestEnabled[i]; END_FOR
+IF bIndexStable AND (eIndexPosition <> E_TablePosition.Unknown) THEN
+    CASE eIndexPosition OF
+        E_TablePosition.Position1:
+            aPositionToNest[1] := 1;
+            aPositionToNest[2] := 4;
+            aPositionToNest[3] := 3;
+            aPositionToNest[4] := 2;
+        E_TablePosition.Position2:
+            aPositionToNest[1] := 2;
+            aPositionToNest[2] := 1;
+            aPositionToNest[3] := 4;
+            aPositionToNest[4] := 3;
+        E_TablePosition.Position3:
+            aPositionToNest[1] := 3;
+            aPositionToNest[2] := 2;
+            aPositionToNest[3] := 1;
+            aPositionToNest[4] := 4;
+        E_TablePosition.Position4:
+            aPositionToNest[1] := 4;
+            aPositionToNest[2] := 3;
+            aPositionToNest[3] := 2;
+            aPositionToNest[4] := 1;
+    END_CASE
+    FOR i := 1 TO 4 DO
+        aNestInternal[aPositionToNest[i]].ePosition := UINT_TO_E_TablePosition(INT_TO_UINT(i));
+        aNestInternal[i].bPartLoadedPulse := FALSE;
+        aNestInternal[i].bPartRemovedPulse := FALSE;
+    END_FOR
+    uiNest := aPositionToNest[TO_UINT(eOperatorPosition)];
+    aNestInternal[uiNest].bPartLoadedPulse := bPartPresent AND NOT aNestInternal[uiNest].bPreviousPartPresent;
+    aNestInternal[uiNest].bPartRemovedPulse := NOT bPartPresent AND aNestInternal[uiNest].bPreviousPartPresent;
+    aNestInternal[uiNest].bPreviousPartPresent := bPartPresent;
+    aNestInternal[uiNest].bPartPresent := bPartPresent;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetAllNests" Id="{aa3853bc-758e-419d-be3c-5d9c11c9ea70}">
+      <Declaration><![CDATA[METHOD PUBLIC GetAllNests : ARRAY[1..4] OF ST_Nest]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetAllNests := aNestInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetAllNestStatistics" Id="{8b696e48-6e5b-41e1-b556-e697dd3d4800}">
+      <Declaration><![CDATA[METHOD PUBLIC GetAllNestStatistics : ARRAY[1..4] OF ST_NestStatistics]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetAllNestStatistics := aNestStatisticsInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetNestAtPosition" Id="{6f45a335-2486-4b63-8916-a95158ba88ea}">
+      <Declaration><![CDATA[METHOD PUBLIC GetNestAtPosition : ST_Nest
+VAR_INPUT ePosition : E_TablePosition; END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[uiMethodNestId := GetNestIdAtPosition(ePosition); IF uiMethodNestId >= 1 AND uiMethodNestId <= 4 THEN GetNestAtPosition := aNestInternal[uiMethodNestId]; END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetNestIdAtPosition" Id="{b88cece0-cb19-43ea-b8fc-aa98089534fa}">
+      <Declaration><![CDATA[METHOD PUBLIC GetNestIdAtPosition : UINT
+VAR_INPUT ePosition : E_TablePosition; END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF ePosition >= E_TablePosition.Position1 AND ePosition <= E_TablePosition.Position4 THEN GetNestIdAtPosition := aPositionToNest[TO_UINT(ePosition)]; ELSE GetNestIdAtPosition := 0; END_IF]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

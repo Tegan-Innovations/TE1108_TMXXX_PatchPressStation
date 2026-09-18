@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_PatchPress_Interface" Id="{b45dd829-ca08-4f40-ae9c-30f015682d1c}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+    bPatchDispenseCommissioned : BOOL := FALSE;
+    bHeatStakeCommissioned     : BOOL := FALSE;
+    bVisionCommissioned        : BOOL := FALSE;
+    // Engineering-only mode for commissioning the validated core before the
+    // three process stations are available. Keep FALSE for production.
+    bCoreCommissioningMode     : BOOL := FALSE;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

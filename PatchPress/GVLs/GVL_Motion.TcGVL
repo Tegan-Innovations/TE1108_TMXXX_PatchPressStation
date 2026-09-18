@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_Motion" Id="{3416d637-ab84-4ceb-8026-c8fe82671b72}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+    // Term 15 - EL7201-9014 - Axis 1 - Reel Payout
+    AxisReelPayout      : ST_Axis;
+
+    // Term 16 - EL7201-9014 - Axis 2 - Material Index
+    AxisMaterialIndex   : ST_Axis;
+
+    // Term 17 - EL7201-9014 - Axis 3 - Slack
+    AxisSlack           : ST_Axis;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

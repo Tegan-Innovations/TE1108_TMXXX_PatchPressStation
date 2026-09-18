@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_PuckLocker" Id="{47561d76-fb54-4ffa-850c-bf58094fedb3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PuckLocker
+VAR
+    eState                   : E_PuckLockerState := E_PuckLockerState.Disabled;
+    stStatusInternal         : ST_PuckLockerStatus;
+    bReleaseRequested        : BOOL;
+    bPartRemoved             : BOOL;
+    bPreviousPuckDetected    : BOOL;
+    bAcknowledgePrevious     : BOOL;
+    tonRemovalConfirm        : TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{21a17087-2b69-46b0-960d-7dc2f0063799}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    eMode                    : E_PuckLockerMode;
+    bSensorUp                : BOOL;
+    bSensorDown              : BOOL;
+    bPartRemovedFromNest     : BOOL;
+    bReleasePassPuck         : BOOL;
+    bAcknowledgeFault        : BOOL;
+    bEmptyPuckBypass         : BOOL;
+    tRemovalConfirm          : TIME;
+END_VAR
+VAR_OUTPUT bPinCommandUp : BOOL; END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bEnabledInternal := eMode <> E_PuckLockerMode.Disabled;
+bDetectedInternal := bSensorUp OR bSensorDown;
+bAckPulseInternal := bAcknowledgeFault AND NOT bAcknowledgePrevious;
+bAcknowledgePrevious := bAcknowledgeFault;
+
+stStatusInternal.eMode := eMode;
+stStatusInternal.bPuckDetected := bDetectedInternal;
+stStatusInternal.bPuckSensorMismatch := bSensorUp XOR bSensorDown;
+stStatusInternal.bPuckLocked := bPinCommandUp AND bDetectedInternal;
+stStatusInternal.bMachinePermissive := NOT stStatusInternal.bUnexpectedRemovalFault AND NOT stStatusInternal.bPuckSensorMismatch;
+stStatusInternal.bIndexPermissive := stStatusInternal.bMachinePermissive AND eState <> E_PuckLockerState.UnexpectedPuckRemovalFault;
+
+IF bReleasePassPuck THEN bReleaseRequested := TRUE; END_IF
+IF bPartRemovedFromNest THEN bPartRemoved := TRUE; END_IF
+
+CASE eState OF
+E_PuckLockerState.Disabled:
+    bPinCommandUp := FALSE;
+    stStatusInternal.bRemovalAllowed := TRUE;
+    stStatusInternal.sMessage := 'Puck locker disabled';
+    bReleaseRequested := FALSE; bPartRemoved := FALSE;
+    IF bEnabledInternal THEN
+        IF bDetectedInternal THEN eState := E_PuckLockerState.LockingPuck; ELSE eState := E_PuckLockerState.WaitingForPuck; END_IF
+    END_IF
+
+E_PuckLockerState.WaitingForPuck:
+    bPinCommandUp := FALSE;
+    stStatusInternal.bRemovalAllowed := TRUE;
+    stStatusInternal.sMessage := 'Load puck';
+    IF NOT bEnabledInternal THEN eState := E_PuckLockerState.Disabled;
+    ELSIF bDetectedInternal THEN eState := E_PuckLockerState.LockingPuck;
+    END_IF
+
+E_PuckLockerState.LockingPuck:
+    bPinCommandUp := TRUE;
+    stStatusInternal.bRemovalAllowed := FALSE;
+    stStatusInternal.sMessage := 'Locking puck';
+    IF NOT bEnabledInternal THEN eState := E_PuckLockerState.Disabled;
+    ELSIF bDetectedInternal THEN eState := E_PuckLockerState.Locked;
+    END_IF
+
+E_PuckLockerState.Locked:
+    bPinCommandUp := TRUE;
+    stStatusInternal.bRemovalAllowed := FALSE;
+    stStatusInternal.sMessage := 'Puck locked';
+    IF NOT bEnabledInternal THEN eState := E_PuckLockerState.Disabled;
+    ELSIF NOT bDetectedInternal THEN
+        stStatusInternal.bUnexpectedRemovalFault := TRUE;
+        eState := E_PuckLockerState.UnexpectedPuckRemovalFault;
+    ELSIF bReleaseRequested THEN
+        eState := E_PuckLockerState.WaitingForPartRemoval;
+    ELSIF bEmptyPuckBypass AND eMode = E_PuckLockerMode.EnabledWithEmptyPuckBypass THEN
+        eState := E_PuckLockerState.ReleasingPuck;
+    END_IF
+
+E_PuckLockerState.WaitingForPartRemoval:
+    bPinCommandUp := TRUE;
+    stStatusInternal.sMessage := 'Remove processed part';
+    IF NOT bDetectedInternal THEN
+        stStatusInternal.bUnexpectedRemovalFault := TRUE;
+        eState := E_PuckLockerState.UnexpectedPuckRemovalFault;
+    ELSIF bPartRemoved THEN eState := E_PuckLockerState.ReleasingPuck;
+    END_IF
+
+E_PuckLockerState.ReleasingPuck:
+    bPinCommandUp := FALSE;
+    stStatusInternal.bRemovalAllowed := TRUE;
+    stStatusInternal.sMessage := 'Remove released puck';
+    tonRemovalConfirm(IN := NOT bDetectedInternal, PT := tRemovalConfirm);
+    IF tonRemovalConfirm.Q THEN
+        bReleaseRequested := FALSE; bPartRemoved := FALSE;
+        tonRemovalConfirm(IN := FALSE);
+        eState := E_PuckLockerState.WaitingForPuck;
+    END_IF
+
+E_PuckLockerState.UnexpectedPuckRemovalFault:
+    bPinCommandUp := TRUE;
+    stStatusInternal.bUnexpectedRemovalFault := TRUE;
+    stStatusInternal.sMessage := 'Restore puck and acknowledge';
+    IF bAckPulseInternal AND bDetectedInternal THEN
+        stStatusInternal.bUnexpectedRemovalFault := FALSE;
+        eState := E_PuckLockerState.Locked;
+    END_IF
+END_CASE
+
+stStatusInternal.eState := eState;
+stStatusInternal.bReleaseRequested := bReleaseRequested;
+stStatusInternal.bPartRemovalConfirmed := bPartRemoved;
+stStatusInternal.bDispositionPending := bReleaseRequested OR (eState = E_PuckLockerState.WaitingForPartRemoval) OR (eState = E_PuckLockerState.ReleasingPuck);
+stStatusInternal.bPuckLocked := bPinCommandUp AND bDetectedInternal;
+stStatusInternal.bIndexPermissive := NOT stStatusInternal.bUnexpectedRemovalFault AND NOT stStatusInternal.bPuckSensorMismatch;
+stStatusInternal.bMachinePermissive := stStatusInternal.bIndexPermissive;
+bPreviousPuckDetected := bDetectedInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetStatus" Id="{b7d875db-25bf-4fab-9850-8a9998093e85}">
+      <Declaration><![CDATA[METHOD PUBLIC GetStatus : ST_PuckLockerStatus
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetStatus := stStatusInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsFaulted" Id="{7f61b371-28cb-49c9-8730-74c01e8765bf}">
+      <Declaration><![CDATA[METHOD PUBLIC IsFaulted : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsFaulted := stStatusInternal.bUnexpectedRemovalFault OR stStatusInternal.bPuckSensorMismatch;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsLocked" Id="{013db210-f97c-4cc1-b18f-daf52fa7eb1d}">
+      <Declaration><![CDATA[METHOD PUBLIC IsLocked : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsLocked := stStatusInternal.bPuckLocked AND eState = E_PuckLockerState.Locked;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

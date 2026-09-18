@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EventsAssigment" Id="{c7d9d8a9-0f93-47bb-873a-1aa0c542fd69}">
+    <Declaration><![CDATA[TYPE ST_EventsAssigment :
+STRUCT
+	sEventText	: STRING(255);
+	sSolution	: STRING(255);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

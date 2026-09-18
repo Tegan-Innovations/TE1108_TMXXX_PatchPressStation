@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_EL1809" Id="{75a73e5d-4ca3-4f42-b76f-6978af3e18bb}">
+    <Declaration><![CDATA[TYPE ST_EL1809 :
+STRUCT
+	//--------------------------------------------------------------------------------------------------------
+	sTerminalName                                           :   STRING(200):= 'EL1809 | 16-Channel Digital Input';
+    //============================================================================================================================	
+	// TERMINAL - EL1809 16-Channel Digital Input Terminal (Term 8)	
+	iEL1809_Ch1	                AT %I*			: 	BOOL;	// EL1809 channel 1
+	iEL1809_Ch2                 AT %I*			: 	BOOL;	// EL1809 channel 2
+	iEL1809_Ch3        			AT %I*	 		: 	BOOL;	// EL1809 channel 3
+	iEL1809_Ch4		   			AT %I*	 		: 	BOOL;	// EL1809 channel 4
+	iEL1809_Ch5         		AT %I*	 		: 	BOOL;	// EL1809 channel 5 		     			
+	iEL1809_Ch6 				AT %I*			: 	BOOL;	// EL1809 channel 6
+	iEL1809_Ch7               	AT %I*          :   BOOL;   // EL1809 channel 7 
+    iEL1809_Ch8          		AT %I*          :   BOOL;   // EL1809 channel 8
+    iEL1809_Ch9           		AT %I*          :   BOOL;   // EL1809 channel 9
+	iEL1809_Ch10              	AT %I*          :   BOOL;   // EL1809 channel 10
+	iEL1809_Ch11             	AT %I*          :   BOOL;   // EL1809 channel 11
+	iEL1809_Ch12			    AT %I*          :   BOOL;   // EL1809 channel 12	   
+	iEL1809_Ch13         		AT %I*	 		: 	BOOL;	// EL1809 channel 13   
+	iEL1809_Ch14       			AT %I*	 		: 	BOOL;	// EL1809 channel 14 
+	iEL1809_Ch15				AT %I*			: 	BOOL;	// EL1809 channel 15  
+	iEL1809_Ch16				AT %I*	 		: 	BOOL;	// EL1809 channel 16  	
+	
+	stTerminalInfo								: 	ST_Terminal_Info;
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

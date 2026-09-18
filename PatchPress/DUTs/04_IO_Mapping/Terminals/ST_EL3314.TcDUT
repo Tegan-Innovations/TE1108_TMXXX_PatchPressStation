@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_EL3314" Id="{58990ad5-fbff-4f7b-bc33-021e91ef6a78}">
+    <Declaration><![CDATA[TYPE ST_EL3314 :
+STRUCT
+ 
+	//--------------------------------------------------------------------------------------------------------
+	sTerminalName                                           :   STRING(200):= 'EL3314-0092 | 4-channel Analog Input, Thermocouple, TwinSAFE SC';
+    //============================================================================================================================	
+	// TERMINAL - EL3314-0092 | 4-channel Analog Input, Thermocouple, TwinSAFE SC (Term 20)	
+	iEL3314_Ch1               				AT %I*			: 	DINT;	// EL3314 channel 1
+	iEL3314_Ch2                   			AT %I*			: 	DINT;	// EL3314 channel 2
+	iEL3314_Ch3        						AT %I*	 		: 	DINT;	// EL3314 channel 3
+	iEL3314_Ch4	   							AT %I*	 		: 	DINT;	// EL3314 channel 4
+
+	stTerminalInfo											: 	ST_Terminal_Info;	
+
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

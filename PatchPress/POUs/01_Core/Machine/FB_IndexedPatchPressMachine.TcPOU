@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_IndexedPatchPressMachine" Id="{cd45b888-3938-49e7-a56e-6a78ef36b4a7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_IndexedPatchPressMachine
+VAR
+    fbIndex : FB_IndexTable4;
+    fbMainDoorLock : FB_MainDoorLock;
+    fbNestManager : FB_NestTableManager;
+    fbOperatorStation : FB_OperatorStation;
+    fbPatchDispense : FB_PatchDispenseStation;
+    fbHeatStake : FB_HeatStakeStation;
+    fbVision : FB_VisionStation;
+    fbCommissioningGuard : FB_PatchPressCommissioningGuard;
+    eMachineState : E_MachineState := E_MachineState.PowerUp;
+    eInitialisingWaitReason : E_InitialisingWaitReason := E_InitialisingWaitReason.None;
+    eStoppingWaitReason : E_StoppingWaitReason := E_StoppingWaitReason.None;
+    stOutputsInternal : ST_MachineOutputs;
+    stIndexStatus : ST_IndexStatus;
+    stMainDoorStatus : ST_MainDoorLockStatus;
+    stOperatorStatus : ST_OperatorStationStatus;
+    stPatchDispenseStatus : ST_PatchStageStatus;
+    stHeatStakeStatus : ST_PatchStageStatus;
+    stVisionStatus : ST_PatchStageStatus;
+    stOperatorNest : ST_Nest;
+    stPermissives : ST_MachinePermissives;
+    tonInitialising : TON;
+    tonStopping : TON;
+    bInitialisationTimeoutFault : BOOL;
+    bStoppingTimeoutFault : BOOL;
+    bAutoCycleAllowed : BOOL;
+    sAutoCycleBlockReason : STRING(160);
+    bIndexMoveAccepted : BOOL;
+    bDoorLockOutput : BOOL;
+    rtManualIndexMove : R_TRIG;
+    rtCoreAutoIndexMove : R_TRIG;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{a779d1da-ccea-489e-9adf-3c1ac0c82903}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    stInputs : ST_MachineInputs;
+    stCommand : ST_MachineCommand;
+    stConfig : ST_MachineConfig;
+    bPatchDispenseCommissioned : BOOL;
+    bHeatStakeCommissioned : BOOL;
+    bVisionCommissioned : BOOL;
+    bCoreCommissioningMode : BOOL;
+    bLogoutHMI : BOOL;
+END_VAR
+VAR_OUTPUT
+    stOutputs : ST_MachineOutputs;
+    stStatus : ST_MachineStatus;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ResetCyclicOutputs();
+fbNestManager.Cyclic(bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked, eIndexPosition := stInputs.eIndexPosition, eOperatorPosition := stConfig.eOperatorPosition, bPartPresent := stInputs.bLoadingStationEaglePresent, aNestEnabled := stConfig.aNestEnabled);
+stOperatorNest := fbNestManager.GetNestAtPosition(stConfig.eOperatorPosition);
+fbOperatorStation.Cyclic(bAutomaticActive := (eMachineState = E_MachineState.AutoCycle), bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked, stOperatorNest := stOperatorNest, bPartPresent := stInputs.bLoadingStationEaglePresent, bRejectChutePartPresent := stInputs.bRejectChutePartPresent, bRequireRejectConfirm := stConfig.bRequireRejectConfirm, bAllowEmptyNestIndex := stConfig.bAllowEmptyNestIndex);
+stOperatorStatus := fbOperatorStation.GetStatus();
+fbPatchDispense.Cyclic(bEnable := (eMachineState = E_MachineState.AutoCycle), bCommissioned := bPatchDispenseCommissioned, bStart := FALSE, bReset := stCommand.bReset, bSafetyOk := stInputs.stSafety.bSafetyOk, stStatus => stPatchDispenseStatus);
+fbHeatStake.Cyclic(bEnable := (eMachineState = E_MachineState.AutoCycle), bCommissioned := bHeatStakeCommissioned, bStart := FALSE, bReset := stCommand.bReset, bSafetyOk := stInputs.stSafety.bSafetyOk, stStatus => stHeatStakeStatus);
+fbVision.Cyclic(bEnable := (eMachineState = E_MachineState.AutoCycle), bCommissioned := bVisionCommissioned, bStart := FALSE, bReset := stCommand.bReset, bSafetyOk := stInputs.stSafety.bSafetyOk, stStatus => stVisionStatus);
+stPermissives.bAirSupplyReady := GVL_Safety.bAirSupplySafe;
+stPermissives.bDoorInitialisationReady := stInputs.bMainDoorClosed AND NOT stInputs.bMainDoorUnsafe;
+stPermissives.bIndexInitialisationReady := NOT fbIndex.IsFaulted();
+stPermissives.bStationsHome := TRUE;
+stPermissives.bInitialisationAllowed := stInputs.stSafety.bSafetyOk AND stPermissives.bAirSupplyReady AND stPermissives.bDoorInitialisationReady AND stPermissives.bIndexInitialisationReady;
+stPermissives.bSafetyIndexPermissive := stInputs.stSafety.bMotionSafetyPermitted;
+stPermissives.bOperatorIndexPermissive := stOperatorStatus.bIndexPermissive;
+stPermissives.bStationsIndexPermissive := TRUE;
+stPermissives.bIndexMoveAllowed := stPermissives.bSafetyIndexPermissive AND stPermissives.bStationsIndexPermissive;
+fbCommissioningGuard.Cyclic(bDispenseCommissioned := bPatchDispenseCommissioned, bHeatStakeCommissioned := bHeatStakeCommissioned, bVisionCommissioned := bVisionCommissioned, bCoreCommissioningMode := bCoreCommissioningMode, bCoreReady := ((eMachineState = E_MachineState.ReadyToStart) OR (eMachineState = E_MachineState.AutoCycle)), bAutoCycleAllowed => bAutoCycleAllowed, sBlockReason => sAutoCycleBlockReason);
+stPermissives.bAutoCycleAllowed := bAutoCycleAllowed;
+IF stInputs.bEventFault OR fbIndex.IsFaulted() OR fbMainDoorLock.IsFaulted() THEN eMachineState := E_MachineState.Fault; END_IF
+CASE eMachineState OF
+E_MachineState.PowerUp:
+    // Same lifecycle used by the validated Silicone Station core:
+    // always enter a controlled stop before waiting for Reset.
+    tonInitialising(IN := FALSE);
+    tonStopping(IN := FALSE);
+    eMachineState := E_MachineState.Stopping;
+
+E_MachineState.Stopping:
+    tonInitialising(IN := FALSE);
+    tonStopping(IN := stIndexStatus.bBusy, PT := stConfig.tStoppingTimeout);
+    bStoppingTimeoutFault := tonStopping.Q;
+    IF bStoppingTimeoutFault THEN
+        eMachineState := E_MachineState.Fault;
+    ELSIF NOT stIndexStatus.bBusy THEN
+        eMachineState := E_MachineState.Stopped;
+    END_IF
+
+E_MachineState.Stopped:
+    tonInitialising(IN := FALSE);
+    tonStopping(IN := FALSE);
+    IF stCommand.bReset AND stInputs.stSafety.bSafetyOk THEN
+        eMachineState := E_MachineState.Initialising;
+    END_IF
+
+E_MachineState.Initialising:
+    stOutputsInternal.bSafetyRunRequest := TRUE;
+    stOutputsInternal.bAirSupplyEnable := TRUE;
+    tonStopping(IN := FALSE);
+    tonInitialising(IN := NOT stPermissives.bInitialisationAllowed, PT := stConfig.tInitialiseTimeout);
+    bInitialisationTimeoutFault := tonInitialising.Q;
+    IF bInitialisationTimeoutFault THEN
+        eMachineState := E_MachineState.Fault;
+    ELSIF stPermissives.bInitialisationAllowed THEN
+        tonInitialising(IN := FALSE);
+        eMachineState := E_MachineState.ReadyToStart;
+    END_IF
+
+E_MachineState.ReadyToStart:
+    stOutputsInternal.bSafetyRunRequest := TRUE;
+    stOutputsInternal.bAirSupplyEnable := TRUE;
+    IF stCommand.bStop THEN
+        eMachineState := E_MachineState.Stopping;
+    ELSIF stCommand.bManualRequest
+        AND stInputs.stSafety.bSafetyOk
+        AND NOT stIndexStatus.bBusy
+        AND NOT fbIndex.IsFaulted()
+    THEN
+        eMachineState := E_MachineState.Manual;
+    ELSIF stCommand.bStart AND bAutoCycleAllowed AND fbMainDoorLock.IsReadyForAutomatic() THEN
+        eMachineState := E_MachineState.AutoCycle;
+    END_IF
+
+E_MachineState.AutoCycle:
+    stOutputsInternal.bSafetyRunRequest := TRUE;
+    stOutputsInternal.bAirSupplyEnable := TRUE;
+    IF stCommand.bStop OR stInputs.bEventCycleStopRequest THEN
+        eMachineState := E_MachineState.Stopping;
+    END_IF
+
+E_MachineState.Manual:
+    stOutputsInternal.bSafetyRunRequest := TRUE;
+    stOutputsInternal.bAirSupplyEnable := TRUE;
+    IF stCommand.bStop OR NOT stCommand.bManualRequest THEN
+        eMachineState := E_MachineState.Stopping;
+    END_IF
+
+E_MachineState.Fault:
+    tonInitialising(IN := FALSE);
+    tonStopping(IN := FALSE);
+    IF stCommand.bReset
+        AND NOT stInputs.bEventFault
+        AND stInputs.stSafety.bSafetyOk
+    THEN
+        bInitialisationTimeoutFault := FALSE;
+        bStoppingTimeoutFault := FALSE;
+        fbIndex.Reset();
+        eMachineState := E_MachineState.Stopping;
+    END_IF
+END_CASE
+
+// Manual Index follows the validated Silicone Station behaviour:
+// enable the Indexer on the HMI, then a fresh two-hand actuation requests one move.
+rtManualIndexMove(CLK :=
+    (eMachineState = E_MachineState.Manual)
+    AND stCommand.bIndexerManualEnable
+    AND stInputs.bTwoHandsSafe);
+
+IF rtManualIndexMove.Q THEN
+    bIndexMoveAccepted := fbIndex.RequestManualMove();
+END_IF
+
+// Engineering-only automatic index commissioning. This is deliberately
+// isolated from the future production ProcessCycle. Every fresh two-hand
+// actuation requests exactly one index step.
+rtCoreAutoIndexMove(CLK :=
+    (eMachineState = E_MachineState.AutoCycle)
+    AND bCoreCommissioningMode
+    AND stInputs.bTwoHandsSafe);
+
+IF rtCoreAutoIndexMove.Q THEN
+    bIndexMoveAccepted := fbIndex.RequestMove();
+END_IF
+fbIndex.Cyclic(bEnable := (eMachineState <> E_MachineState.PowerUp) AND (eMachineState <> E_MachineState.Fault), bReset := stCommand.bReset, bAutomaticMode := (eMachineState = E_MachineState.AutoCycle), bManualMode := (eMachineState = E_MachineState.Manual), bMovePermissive := stPermissives.bIndexMoveAllowed, bSafetyMotionPermitted := stInputs.stSafety.bMotionSafetyPermitted, bTwoHandsSafe := stInputs.bTwoHandsSafe, bStationsHome := TRUE, bProcessToolingRetracted := TRUE, bTableReady := stInputs.bIndexReady, bTableLocked := stInputs.bIndexLocked, bCompletedSensor := stInputs.bIndexCompletedSensor, bSupportExtended := TRUE, bSupportRetracted := TRUE, eCurrentPosition := stInputs.eIndexPosition, tRotateDelay := stConfig.tIndexRotateDelay, tStopDelay := stConfig.tIndexStopDelay, tSupportTimeout := stConfig.tIndexSupportTimeout, tMovementTimeout := stConfig.tIndexTimeout, tTwoHandHold := stConfig.tTwoHandHold, tTwoHandRecoveryTimeout := stConfig.tTwoHandRecoveryTimeout, bRotatePortA => stOutputsInternal.bIndexRotatePortA, bStopPortB => stOutputsInternal.bIndexStopPortB, bSupportExtendRequest => stOutputsInternal.bIndexSupportExtend, bSupportRetractRequest => stOutputsInternal.bIndexSupportRetract);
+stIndexStatus := fbIndex.GetStatus();
+fbMainDoorLock.Cyclic(bEnableAutomatic := (eMachineState = E_MachineState.Initialising) OR (eMachineState = E_MachineState.ReadyToStart) OR (eMachineState = E_MachineState.AutoCycle), bManualEnable := (eMachineState = E_MachineState.Manual), bManualLockRequest := NOT stCommand.bManualMainDoorUnlock, bManualUnlockRequest := stCommand.bManualMainDoorUnlock, bStopRequest := (eMachineState = E_MachineState.Stopping), bResetRequest := stCommand.bReset, bDoorClosed := stInputs.bMainDoorClosed, bDoorLocked := stInputs.bMainDoorLocked, bIndexBusy := stIndexStatus.bBusy, bProcessSafePosition := TRUE, tLockTimeout := stConfig.tDoorLockTimeout, tUnlockTimeout := stConfig.tDoorUnlockTimeout, bDoorUnsafe := stInputs.bMainDoorUnsafe, bLockOutput => bDoorLockOutput);
+stOutputsInternal.bMainDoorLockRequest := bDoorLockOutput;
+stMainDoorStatus := fbMainDoorLock.GetStatus();
+stOutputsInternal.bSafetyResetRequest := stCommand.bReset;
+stOutputsInternal.bSafetyErrorAcknowledgementRequest := stCommand.bReset;
+stOutputsInternal.bLedStart := (eMachineState = E_MachineState.ReadyToStart);
+stOutputsInternal.bLedReset := (eMachineState = E_MachineState.Fault);
+stOutputsInternal.bLedPass := (eMachineState = E_MachineState.AutoCycle);
+stOutputsInternal.bLedFail := (eMachineState = E_MachineState.Fault);
+stOutputsInternal.bInternalLight := TRUE;
+stOutputsInternal.bNestLight := TRUE;
+stOutputs := stOutputsInternal;
+stStatus.eMachineState := eMachineState;
+stStatus.eIndexState := fbIndex.GetState();
+stStatus.stIndexStatus := stIndexStatus;
+stStatus.stMainDoorLock := stMainDoorStatus;
+stStatus.eInitialisingWaitReason := eInitialisingWaitReason;
+stStatus.eStoppingWaitReason := eStoppingWaitReason;
+stStatus.eOperatorExchangeState := fbOperatorStation.GetState();
+stStatus.eOperatorInstruction := fbOperatorStation.GetInstruction();
+stStatus.stOperatorStation := stOperatorStatus;
+stStatus.stPatchDispense := stPatchDispenseStatus;
+stStatus.stHeatStake := stHeatStakeStatus;
+stStatus.stVision := stVisionStatus;
+stStatus.bReady := (eMachineState = E_MachineState.ReadyToStart);
+stStatus.bBusy := (eMachineState = E_MachineState.AutoCycle) OR stIndexStatus.bBusy;
+stStatus.bFaulted := (eMachineState = E_MachineState.Fault);
+stStatus.bInitialisationTimeoutFault := bInitialisationTimeoutFault;
+stStatus.bStoppingTimeoutFault := bStoppingTimeoutFault;
+stStatus.bSafetyStopRequested := NOT stInputs.stSafety.bSafetyOk;
+stStatus.bSafetyRunRequested := stOutputsInternal.bSafetyRunRequest;
+stStatus.bEventFault := stInputs.bEventFault;
+stStatus.bCycleStopRequested := stInputs.bEventCycleStopRequest;
+stStatus.bIndexPermissive := stPermissives.bIndexMoveAllowed;
+stStatus.bEnableSetting := (eMachineState = E_MachineState.Stopped) OR (eMachineState = E_MachineState.Manual);
+stStatus.bAllStationsCommissioned := bPatchDispenseCommissioned AND bHeatStakeCommissioned AND bVisionCommissioned;
+stStatus.bAutoCycleAllowed := bAutoCycleAllowed;
+stStatus.stPermissives := stPermissives;
+stStatus.aNest := fbNestManager.GetAllNests();
+stStatus.aNestStatistics := fbNestManager.GetAllNestStatistics();
+stStatus.sAutoCycleBlockReason := sAutoCycleBlockReason;
+CASE eMachineState OF
+    E_MachineState.PowerUp: stStatus.sMachineMessage := 'System power up';
+    E_MachineState.Initialising: stStatus.sMachineMessage := 'System initialising';
+    E_MachineState.ReadyToStart: IF bAutoCycleAllowed THEN stStatus.sMachineMessage := 'System ready to start'; ELSE stStatus.sMachineMessage := sAutoCycleBlockReason; END_IF
+    E_MachineState.AutoCycle: stStatus.sMachineMessage := 'System auto cycle';
+    E_MachineState.Manual: stStatus.sMachineMessage := 'Manual mode';
+    E_MachineState.Stopping: stStatus.sMachineMessage := 'Stopping';
+    E_MachineState.Stopped: stStatus.sMachineMessage := 'Cycle stopped';
+    E_MachineState.Fault: stStatus.sMachineMessage := 'Immediate fault';
+END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ResetCyclicOutputs" Id="{2afcae24-43c4-4871-871e-9348e38cf5c0}">
+      <Declaration><![CDATA[METHOD PRIVATE ResetCyclicOutputs]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stOutputsInternal.bSafetyRunRequest := FALSE;
+stOutputsInternal.bSafetyResetRequest := FALSE;
+stOutputsInternal.bSafetyErrorAcknowledgementRequest := FALSE;
+stOutputsInternal.bAirSupplyEnable := FALSE;
+stOutputsInternal.bMainDoorLockRequest := FALSE;
+stOutputsInternal.bIndexRotatePortA := FALSE;
+stOutputsInternal.bIndexStopPortB := FALSE;
+stOutputsInternal.bIndexSupportExtend := FALSE;
+stOutputsInternal.bIndexSupportRetract := FALSE;
+stOutputsInternal.bLedStart := FALSE;
+stOutputsInternal.bLedReset := FALSE;
+stOutputsInternal.bLedPass := FALSE;
+stOutputsInternal.bLedFail := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

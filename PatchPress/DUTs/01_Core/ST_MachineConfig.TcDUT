@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_MachineConfig" Id="{70557d70-e861-4c2e-a387-0a0390a9001b}">
+    <Declaration><![CDATA[TYPE ST_MachineConfig :
+STRUCT
+    tInitialiseTimeout       : TIME := T#20S;
+    tStoppingTimeout         : TIME := T#15S;
+    tIndexTimeout            : TIME := T#10S;
+    tIndexRotateDelay        : TIME := T#500MS;
+    tIndexStopDelay          : TIME := T#1S;
+    tIndexSupportTimeout     : TIME := T#5S;
+    tTwoHandHold             : TIME := T#500MS;
+    tTwoHandRecoveryTimeout  : TIME := T#10S;
+    tDoorLockTimeout         : TIME := T#10S;
+    tDoorUnlockTimeout       : TIME := T#10S;
+    tOperatorIdleTimeout     : TIME := T#30S;
+    eOperatorPosition        : E_TablePosition := E_TablePosition.Position1;
+    ePatchDispensePosition   : E_TablePosition := E_TablePosition.Position2;
+    eHeatStakePosition       : E_TablePosition := E_TablePosition.Position3;
+    eVisionPosition          : E_TablePosition := E_TablePosition.Position4;
+    eRejectPosition          : E_TablePosition := E_TablePosition.Position1;
+    bRequireTwoHandsForIndex : BOOL := TRUE;
+    bAllowEmptyNestIndex     : BOOL := TRUE;
+    bRequireRejectConfirm    : BOOL := TRUE;
+    aNestEnabled             : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>
