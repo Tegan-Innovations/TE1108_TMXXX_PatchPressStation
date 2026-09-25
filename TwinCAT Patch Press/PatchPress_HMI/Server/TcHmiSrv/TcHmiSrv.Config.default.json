@@ -225,6 +225,39 @@
                 ],
                 "type": "integer"
             },
+            "ADS-PLC1.E_NestStageStatus": {
+                "attributes": {
+                    "generate_implicit_init_function": "",
+                    "qualified_only": "",
+                    "strict": "",
+                    "to_string": ""
+                },
+                "enum": [
+                    0,
+                    5,
+                    10,
+                    20
+                ],
+                "options": [
+                    {
+                        "label": "Waiting",
+                        "value": 0
+                    },
+                    {
+                        "label": "NotTested",
+                        "value": 5
+                    },
+                    {
+                        "label": "Complete",
+                        "value": 10
+                    },
+                    {
+                        "label": "Fail",
+                        "value": 20
+                    }
+                ],
+                "type": "integer"
+            },
             "ADS-PLC1.E_PLC_Power": {
                 "attributes": {
                     "generate_implicit_init_function": "",
@@ -287,6 +320,54 @@
                     {
                         "label": "Reject",
                         "value": 20
+                    }
+                ],
+                "type": "integer"
+            },
+            "ADS-PLC1.E_ProcessResultCode": {
+                "attributes": {
+                    "generate_implicit_init_function": "",
+                    "qualified_only": "",
+                    "strict": "",
+                    "to_string": ""
+                },
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                ],
+                "options": [
+                    {
+                        "label": "None",
+                        "value": 0
+                    },
+                    {
+                        "label": "Pass",
+                        "value": 1
+                    },
+                    {
+                        "label": "Fail",
+                        "value": 2
+                    },
+                    {
+                        "label": "Aborted",
+                        "value": 3
+                    },
+                    {
+                        "label": "EquipmentFault",
+                        "value": 4
+                    },
+                    {
+                        "label": "CommunicationFault",
+                        "value": 5
+                    },
+                    {
+                        "label": "Timeout",
+                        "value": 6
                     }
                 ],
                 "type": "integer"
@@ -354,10 +435,86 @@
                 ],
                 "type": "integer"
             },
+            "ADS-PLC1.E_StationResultStatus": {
+                "attributes": {
+                    "generate_implicit_init_function": "",
+                    "qualified_only": "",
+                    "strict": "",
+                    "to_string": ""
+                },
+                "enum": [
+                    0,
+                    10,
+                    20
+                ],
+                "options": [
+                    {
+                        "label": "NotTested",
+                        "value": 0
+                    },
+                    {
+                        "label": "Pass",
+                        "value": 10
+                    },
+                    {
+                        "label": "Fail",
+                        "value": 20
+                    }
+                ],
+                "type": "integer"
+            },
+            "ADS-PLC1.E_TablePosition": {
+                "attributes": {
+                    "generate_implicit_init_function": "",
+                    "qualified_only": "",
+                    "strict": "",
+                    "to_string": ""
+                },
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "options": [
+                    {
+                        "label": "Unknown",
+                        "value": 0
+                    },
+                    {
+                        "label": "Position1",
+                        "value": 1
+                    },
+                    {
+                        "label": "Position2",
+                        "value": 2
+                    },
+                    {
+                        "label": "Position3",
+                        "value": 3
+                    },
+                    {
+                        "label": "Position4",
+                        "value": 4
+                    }
+                ],
+                "type": "integer"
+            },
             "ADS-PLC1.STRING-120": {
                 "allOf": [
                     {
                         "maxLength": 120
+                    },
+                    {
+                        "$ref": "tchmi:general#/definitions/String"
+                    }
+                ]
+            },
+            "ADS-PLC1.STRING-20": {
+                "allOf": [
+                    {
+                        "maxLength": 20
                     },
                     {
                         "$ref": "tchmi:general#/definitions/String"
@@ -954,7 +1111,7 @@
             "ADS-PLC1.ST_TestHistory": {
                 "additionalProperties": false,
                 "properties": {
-                    "bAssemblyPass": {
+                    "bHeatStakePass": {
                         "allOf": [
                             {
                                 "$ref": "tchmi:general#/definitions/BOOL"
@@ -964,7 +1121,7 @@
                             }
                         ]
                     },
-                    "bAssemblyValid": {
+                    "bHeatStakeValid": {
                         "allOf": [
                             {
                                 "$ref": "tchmi:general#/definitions/BOOL"
@@ -974,7 +1131,7 @@
                             }
                         ]
                     },
-                    "bSiliconePass": {
+                    "bPatchDispensePass": {
                         "allOf": [
                             {
                                 "$ref": "tchmi:general#/definitions/BOOL"
@@ -984,13 +1141,33 @@
                             }
                         ]
                     },
-                    "bSiliconeValid": {
+                    "bPatchDispenseValid": {
                         "allOf": [
                             {
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
                                 "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "bVisionPass": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "bVisionValid": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 7
                             }
                         ]
                     },
@@ -1010,7 +1187,37 @@
                                 "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
                             },
                             {
-                                "propertyOrder": 7
+                                "propertyOrder": 14
+                            }
+                        ]
+                    },
+                    "sHeatStakeResult": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-20"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "sPatchDispenseResult": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-20"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "sResult": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-20"
+                            },
+                            {
+                                "propertyOrder": 9
                             }
                         ]
                     },
@@ -1020,7 +1227,17 @@
                                 "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
                             },
                             {
-                                "propertyOrder": 8
+                                "propertyOrder": 13
+                            }
+                        ]
+                    },
+                    "sVisionResult": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-20"
+                            },
+                            {
+                                "propertyOrder": 12
                             }
                         ]
                     },
@@ -1038,12 +1255,18 @@
                 "required": [
                     "uiNestId",
                     "eResult",
-                    "bSiliconeValid",
-                    "bSiliconePass",
-                    "bAssemblyValid",
-                    "bAssemblyPass",
-                    "sDate",
-                    "sTime"
+                    "bPatchDispenseValid",
+                    "bPatchDispensePass",
+                    "bHeatStakeValid",
+                    "bHeatStakePass",
+                    "bVisionValid",
+                    "bVisionPass",
+                    "sResult",
+                    "sPatchDispenseResult",
+                    "sHeatStakeResult",
+                    "sVisionResult",
+                    "sTime",
+                    "sDate"
                 ],
                 "type": "object"
             }
@@ -4252,14 +4475,7 @@
             "DYNAMIC": true,
             "MAPPING": "PLC1::GVL_HMI::StatusHMI",
             "SCHEMA": {
-                "allOf": [
-                    {
-                        "comment": "Dynamic machine-state banner. Names retained from the Kistler HMI."
-                    },
-                    {
-                        "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_StatusBanner"
-                    }
-                ]
+                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_StatusBanner"
             },
             "USEMAPPING": true
         },
@@ -4269,14 +4485,7 @@
             "DYNAMIC": true,
             "MAPPING": "PLC1::GVL_HMI::astActiveEvents",
             "SCHEMA": {
-                "allOf": [
-                    {
-                        "comment": "Structures retained from the Kistler HMI concept for alarm/message grids.\r\n Replace the placeholder types with the existing TE1108 DUTs when imported.\r\n StatusHMI       : ST_StatusBanner;\r\n arrAlarmHistory : ARRAY[1..100] OF ST_AlarmHistory;\r\n astActiveEvents : ARRAY[0..50] OF ST_ActiveEvents;"
-                    },
-                    {
-                        "$ref": "tchmi:server#/definitions/ADS-PLC1.ARRAY_0..50_OF-ST_ActiveEvents"
-                    }
-                ]
+                "$ref": "tchmi:server#/definitions/ADS-PLC1.ARRAY_0..50_OF-ST_ActiveEvents"
             },
             "USEMAPPING": true
         },
@@ -4605,6 +4814,24 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.bInternalLight": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bInternalLight",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "Main-screen internal-light toggle.\r\n Default TRUE preserves the existing machine behaviour after download.",
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.bIvekMaintenanceStop": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -4705,6 +4932,24 @@
                     {
                         "comment": "Manual enable for Silicone/Assembly nest support cylinders",
                         "propertyOrder": 33
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bOperatorLight": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bOperatorLight",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "Main-screen operator/nest light toggle.\r\n Physical output: Term 9 EL2809 Ch6 (bNestLight).",
+                        "propertyOrder": 10
                     }
                 ]
             },
@@ -4940,7 +5185,7 @@
                         "$ref": "tchmi:general#/definitions/UDINT"
                     },
                     {
-                        "propertyOrder": 3
+                        "propertyOrder": 4
                     }
                 ]
             },
@@ -4957,7 +5202,7 @@
                         "$ref": "tchmi:general#/definitions/UDINT"
                     },
                     {
-                        "propertyOrder": 2
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -4974,7 +5219,7 @@
                         "$ref": "tchmi:general#/definitions/UDINT"
                     },
                     {
-                        "propertyOrder": 3
+                        "propertyOrder": 4
                     }
                 ]
             },
@@ -4991,7 +5236,7 @@
                         "$ref": "tchmi:general#/definitions/UDINT"
                     },
                     {
-                        "propertyOrder": 2
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5008,7 +5253,7 @@
                         "$ref": "tchmi:general#/definitions/UDINT"
                     },
                     {
-                        "propertyOrder": 3
+                        "propertyOrder": 4
                     }
                 ]
             },
@@ -5025,7 +5270,7 @@
                         "$ref": "tchmi:general#/definitions/UDINT"
                     },
                     {
-                        "propertyOrder": 2
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5042,7 +5287,7 @@
                         "$ref": "tchmi:general#/definitions/UDINT"
                     },
                     {
-                        "propertyOrder": 3
+                        "propertyOrder": 4
                     }
                 ]
             },
@@ -5059,7 +5304,7 @@
                         "$ref": "tchmi:general#/definitions/UDINT"
                     },
                     {
-                        "propertyOrder": 2
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5152,6 +5397,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPartPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::bPartPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPreviousPartPresent": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5204,6 +5466,91 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.eDisposition": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::eDisposition",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_PartDisposition"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.eHeatStakeStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::eHeatStakeStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 17
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.ePatchDispenseStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::ePatchDispenseStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 16
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.ePosition": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::ePosition",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_TablePosition"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.eVisionStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::eVisionStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 18
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stAssemblyResult.bPassed": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5233,6 +5580,40 @@
                     },
                     {
                         "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stHeatStakeResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::stHeatStakeResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stPatchDispenseResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::stPatchDispenseResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5272,6 +5653,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::stResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stSiliconeResult.bPassed": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5301,6 +5699,23 @@
                     },
                     {
                         "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stVisionResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::stVisionResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5341,6 +5756,40 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPartPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::bPartPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPreviousPartPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::bPreviousPartPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bProcessComplete": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5370,6 +5819,91 @@
                     },
                     {
                         "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.eDisposition": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::eDisposition",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_PartDisposition"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.eHeatStakeStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::eHeatStakeStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 17
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.ePatchDispenseStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::ePatchDispenseStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 16
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.ePosition": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::ePosition",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_TablePosition"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.eVisionStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::eVisionStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 18
                     }
                 ]
             },
@@ -5409,6 +5943,40 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stHeatStakeResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::stHeatStakeResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stPatchDispenseResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::stPatchDispenseResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stResult.bPassed": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5421,6 +5989,40 @@
                     },
                     {
                         "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stResult.bValid": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::stResult::bValid",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::stResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5455,6 +6057,23 @@
                     },
                     {
                         "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stVisionResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::stVisionResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5495,6 +6114,40 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPartPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::bPartPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPreviousPartPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::bPreviousPartPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bProcessComplete": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5524,6 +6177,91 @@
                     },
                     {
                         "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.eDisposition": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::eDisposition",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_PartDisposition"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.eHeatStakeStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::eHeatStakeStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 17
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.ePatchDispenseStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::ePatchDispenseStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 16
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.ePosition": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::ePosition",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_TablePosition"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.eVisionStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::eVisionStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 18
                     }
                 ]
             },
@@ -5563,6 +6301,40 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stHeatStakeResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::stHeatStakeResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stPatchDispenseResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::stPatchDispenseResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stResult.bPassed": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5575,6 +6347,40 @@
                     },
                     {
                         "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stResult.bValid": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::stResult::bValid",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::stResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5609,6 +6415,23 @@
                     },
                     {
                         "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stVisionResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::stVisionResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5649,6 +6472,40 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPartPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::bPartPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPreviousPartPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::bPreviousPartPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bProcessComplete": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5678,6 +6535,91 @@
                     },
                     {
                         "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.eDisposition": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::eDisposition",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_PartDisposition"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.eHeatStakeStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::eHeatStakeStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 17
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.ePatchDispenseStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::ePatchDispenseStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 16
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.ePosition": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::ePosition",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_TablePosition"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.eVisionStage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::eVisionStage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                    },
+                    {
+                        "propertyOrder": 18
                     }
                 ]
             },
@@ -5717,6 +6659,40 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stHeatStakeResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::stHeatStakeResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stPatchDispenseResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::stPatchDispenseResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stResult.bPassed": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5729,6 +6705,40 @@
                     },
                     {
                         "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stResult.bValid": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::stResult::bValid",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::stResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -5763,6 +6773,23 @@
                     },
                     {
                         "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stVisionResult.eCode": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::stVisionResult::eCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                    },
+                    {
+                        "propertyOrder": 3
                     }
                 ]
             },
@@ -6007,6 +7034,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.bLoadingStationEaglePresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bLoadingStationEaglePresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 9
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.bRejectPopup": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -6103,7 +7147,177 @@
                         "$ref": "tchmi:general#/definitions/INT"
                     },
                     {
-                        "propertyOrder": 16
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bBusy": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStake::bBusy",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bFault": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStake::bFault",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bHome": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStake::bHome",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bReady": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStake::bReady",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.eResultStatus": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStake::eResultStatus",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_StationResultStatus"
+                    },
+                    {
+                        "propertyOrder": 8
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bBusy": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stPatchDispense::bBusy",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bFault": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stPatchDispense::bFault",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bHome": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stPatchDispense::bHome",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bReady": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stPatchDispense::bReady",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.eResultStatus": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stPatchDispense::eResultStatus",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_StationResultStatus"
+                    },
+                    {
+                        "propertyOrder": 8
                     }
                 ]
             },
@@ -6126,6 +7340,91 @@
             "MAPPING": "PLC1::GVL_HMI::stStatus::stSiliconeSupply::aReservoir[1]",
             "SCHEMA": {
                 "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_SiliconeReservoirStatus"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stVision.bBusy": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stVision::bBusy",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stVision.bFault": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stVision::bFault",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stVision.bHome": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stVision::bHome",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stVision.bReady": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stVision::bReady",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stVision.eResultStatus": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stVision::eResultStatus",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_StationResultStatus"
+                    },
+                    {
+                        "propertyOrder": 8
+                    }
+                ]
             },
             "USEMAPPING": true
         },
@@ -6234,6 +7533,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_IO.stInputs.bTouchButtonLeft": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_IO::stInputs::bTouchButtonLeft",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 9
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_IO.stInputs.bTouchButtonRight": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -6245,7 +7561,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 6
+                        "propertyOrder": 10
                     }
                 ]
             },
@@ -9793,12 +11109,14 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bAssemblySupportRetract": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bExternalLight": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bIndexerManualEnable": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bInternalLight": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bIvekMaintenanceStop": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bIvekPrime": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bIvekReference": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bManualModeEnable": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bManualModeRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bNestCylindersManualEnable": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bOperatorLight": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReservoir1Degass": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReservoir1Select": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReservoir2Degass": 3,
@@ -9826,42 +11144,88 @@
                 "ADS.PLC1.GVL_HMI.stStatistics.udiTotalPass": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bGearboxAssemblyPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPartComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPreviousPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bProcessComplete": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bReservoirPartPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.eDisposition": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.eHeatStakeStage": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.ePatchDispenseStage": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.ePosition": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.eVisionStage": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stAssemblyResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stAssemblyResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stHeatStakeResult.eCode": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stPatchDispenseResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stSiliconeResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stSiliconeResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.stVisionResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bGearboxAssemblyPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPartComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPartPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPreviousPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bProcessComplete": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bReservoirPartPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.eDisposition": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.eHeatStakeStage": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.ePatchDispenseStage": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.ePosition": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.eVisionStage": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stAssemblyResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stAssemblyResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stHeatStakeResult.eCode": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stPatchDispenseResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stResult.bPassed": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stSiliconeResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stSiliconeResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.stVisionResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bGearboxAssemblyPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPartComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPartPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPreviousPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bProcessComplete": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bReservoirPartPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.eDisposition": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.eHeatStakeStage": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.ePatchDispenseStage": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.ePosition": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.eVisionStage": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stAssemblyResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stAssemblyResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stHeatStakeResult.eCode": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stPatchDispenseResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stResult.bPassed": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stSiliconeResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stSiliconeResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.stVisionResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bGearboxAssemblyPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPartComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPartPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPreviousPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bProcessComplete": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bReservoirPartPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.eDisposition": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.eHeatStakeStage": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.ePatchDispenseStage": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.ePosition": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.eVisionStage": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stAssemblyResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stAssemblyResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stHeatStakeResult.eCode": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stPatchDispenseResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stResult.bPassed": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stSiliconeResult.bPassed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stSiliconeResult.bValid": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.stVisionResult.eCode": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bAssemblyStationManualStartPermissive": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bAssemblyStationPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bAssemblyStationPartSiliconized": 3,
@@ -9876,20 +11240,37 @@
                 "ADS.PLC1.GVL_HMI.stStatus.bIvekReady": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bIvekReferencePermissive": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bIvekReferenceRequired": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bLoadingStationEaglePresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bRejectPopup": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bReservoirDegassingPopup": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bSiliconeStationManualStartPermissive": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bSiliconeStationPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bSiliconeStationReady": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.iNestRotationAngle": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bBusy": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bFault": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bHome": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bReady": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.eResultStatus": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bBusy": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bFault": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bHome": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bReady": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.eResultStatus": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stSiliconeSupply.aReservoir.0": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stSiliconeSupply.aReservoir.1": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stVision.bBusy": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stVision.bFault": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stVision.bHome": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stVision.bReady": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stVision.eResultStatus": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.uiAssemblyStationNestId": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.uiSiliconeStationNestId": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.usiReservoirDegassingPopup": 3,
                 "ADS.PLC1.GVL_IO.stInputs.bBothPartPresent": 3,
                 "ADS.PLC1.GVL_IO.stInputs.bGearboxAssemblyPartPresent": 3,
                 "ADS.PLC1.GVL_IO.stInputs.bReservoirPartPresent": 3,
+                "ADS.PLC1.GVL_IO.stInputs.bTouchButtonLeft": 3,
                 "ADS.PLC1.GVL_IO.stInputs.bTouchButtonRight": 3,
                 "ADS.PLC1.GVL_IO.stInputs.bTouchButtonleft": 3,
                 "ADS.PLC1.GVL_IO.stOutputs.bExternalLight": 3,

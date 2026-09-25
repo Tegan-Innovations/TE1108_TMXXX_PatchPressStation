@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <DUT Name="ST_Nest" Id="{e9c52966-abb7-45b8-ba6f-050cecbcb7e1}">
     <Declaration><![CDATA[TYPE ST_Nest :
@@ -18,6 +18,11 @@ STRUCT
     stPatchDispenseResult     : ST_ProcessResult;
     stHeatStakeResult         : ST_ProcessResult;
     stVisionResult            : ST_ProcessResult;
+
+    ePatchDispenseStage       : E_NestStageStatus := E_NestStageStatus.Waiting;
+    eHeatStakeStage           : E_NestStageStatus := E_NestStageStatus.Waiting;
+    eVisionStage              : E_NestStageStatus := E_NestStageStatus.Waiting;
+
     stResult                  : ST_ProcessResult;
     bStatisticsCounted        : BOOL;
 END_STRUCT

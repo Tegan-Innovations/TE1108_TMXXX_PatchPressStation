@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <GVL Name="GVL_Config" Id="{0cc8a96c-a7b2-4e2a-9a0f-0879484f2576}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
@@ -7,6 +7,7 @@ VAR_GLOBAL PERSISTENT RETAIN
         tInitialiseTimeout := T#20S,
         tStoppingTimeout := T#15S,
         tIndexTimeout := T#10S,
+        tStationSupportTimeout := T#5S,
         eOperatorPosition := E_TablePosition.Position1,
         ePatchDispensePosition := E_TablePosition.Position2,
         eHeatStakePosition := E_TablePosition.Position3,

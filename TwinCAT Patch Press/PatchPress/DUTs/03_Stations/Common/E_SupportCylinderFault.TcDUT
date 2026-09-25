@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_SupportCylinderFault" Id="{02533905-a4b1-4eb2-9523-234417623e3f}">
+    <Declaration><![CDATA[TYPE E_SupportCylinderFault :
+(
+    None := 0,
+    ExtendTimeout := 1,
+    RetractTimeout := 2,
+    ContradictorySensors := 3
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

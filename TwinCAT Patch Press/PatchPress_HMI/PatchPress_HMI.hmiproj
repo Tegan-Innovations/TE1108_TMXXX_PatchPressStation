@@ -510,6 +510,9 @@
     <Content Include="Images\Client\JabilMasterLogo.png">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Images\Client\minimed_logo.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Images\Icons\box.svg">
       <SubType>Content</SubType>
     </Content>
@@ -765,31 +768,7 @@
     <Content Include="Images\Project\Cylinders\SiliconeCylinderRetracted_V2.png">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Images\Project\IndexKistler_1.png">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="Images\Project\IVEK_DigiSpence4000BT.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\KistlerMAchine.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\Kistler.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\kistler_.PNG">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\kistler_Main.PNG">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\Kistler_Nest2.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\Kistler_Nest.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\kistler_pos_2.PNG">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\Project\ManualModeBaseIndex.png">

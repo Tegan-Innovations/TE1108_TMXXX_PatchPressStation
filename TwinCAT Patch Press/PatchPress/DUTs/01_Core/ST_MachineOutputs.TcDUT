@@ -12,6 +12,13 @@ STRUCT
     bIndexStopPortB                    : BOOL;
     bIndexSupportExtend                : BOOL;
     bIndexSupportRetract               : BOOL;
+
+    bStation1SupportExtend             : BOOL;
+    bStation1SupportRetract            : BOOL;
+    bStation2SupportExtend             : BOOL;
+    bStation2SupportRetract            : BOOL;
+    bStation3SupportExtend             : BOOL;
+    bStation3SupportRetract            : BOOL;
     bLedStart                          : BOOL;
     bLedReset                          : BOOL;
     bLedPass                           : BOOL;

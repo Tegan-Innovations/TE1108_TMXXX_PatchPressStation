@@ -108,10 +108,25 @@
     <Compile Include="DUTs\02_Components\Motion\ST_Axis.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\03_Stations\Common\E_NestStageStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\03_Stations\Common\E_StationResultStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\03_Stations\Common\E_SupportCylinderFault.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\04_IO_Mapping\ST_PhysicalOutputs.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL3314.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL6633.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_VABX_A_S_BV_V4A.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\07_HMI\E_LEDs_Mode.TcDUT">
@@ -142,9 +157,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\ST_PhysicalInputs.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\04_IO_Mapping\ST_PhysicalOutputs.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EK1100.TcDUT">

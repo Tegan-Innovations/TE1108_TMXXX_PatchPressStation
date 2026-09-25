@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <DUT Name="ST_PhysicalOutputs" Id="{c6982397-4202-4d85-945a-2aa8bb403ca0}">
     <Declaration><![CDATA[TYPE ST_PhysicalOutputs :
@@ -10,11 +10,21 @@ STRUCT
     bMainDoorLockRequest               : BOOL;
     bIndexRotatePortA                  : BOOL;
     bIndexStopPortB                    : BOOL;
+
+    // Link to Festo EtherCAT valve-manifold PDOs during commissioning.
+    bStation1SupportExtend             : BOOL;
+    bStation1SupportRetract            : BOOL;
+    bStation2SupportExtend             : BOOL;
+    bStation2SupportRetract            : BOOL;
+    bStation3SupportExtend             : BOOL;
+    bStation3SupportRetract            : BOOL;
+
     bLedStart                          : BOOL;
     bLedReset                          : BOOL;
-    bStatusIndicator                  : BOOL;
-    bInternalLight                    : BOOL;
-    bNestLight                        : BOOL;
+    bStatusIndicatorRed                : BOOL;
+    bStatusIndicatorGreen              : BOOL;
+    bInternalLight                     : BOOL;
+    bNestLight                         : BOOL;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

@@ -1,73 +1,506 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_VisionStation" Id="{da682161-7fdb-47e3-b49b-f4968c8b1f16}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_VisionStation
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VisionStation IMPLEMENTS I_ProcessEquipment
 VAR
-    // Method-visible diagnostics are kept at FB scope intentionally.
+    // Simulation result selector for commissioning / software test.
+    // FALSE = simulated process PASS (default)
+    // TRUE  = simulated process FAIL
+    bSimulatedFail             : BOOL := FALSE;
+
+    // Simulates a MACHINE/STATION fault, independently from simulated
+    // product PASS/FAIL above. Reset will only recover after this is FALSE.
+    bSimulatedFault            : BOOL := FALSE;
+
+    bEnableInternal           : BOOL;
+    bCommissionedInternal     : BOOL;
+    bSafetyOkInternal         : BOOL;
+    bSupervisionEnableInternal : BOOL;
+    bSupportRetractedInternal : BOOL;
+    bSupportExtendedInternal  : BOOL;
+
     eStateInternal      : E_PatchStationState := E_PatchStationState.Disabled;
+    usiStepInternal     : USINT := 0;
     bHomeInternal       : BOOL;
     bReadyInternal      : BOOL;
     bBusyInternal       : BOOL;
     bCompleteInternal   : BOOL;
     bFaultInternal      : BOOL;
     sDiagnosticInternal : STRING(120);
+
+    bSupportExtendRequestInternal  : BOOL;
+    bSupportRetractRequestInternal : BOOL;
+    bStopRequestInternal           : BOOL;
+
+    eSupportFaultInternal : E_SupportCylinderFault := E_SupportCylinderFault.None;
+
+    tonSupportExtendTimeout  : TON;
+    tonSupportRetractTimeout : TON;
+    tSupportMoveTimeout      : TIME := T#5S;
+
+    tonProcessSimulation : TON;
+    tProcessSimulation   : TIME := T#3S;
+
+    stResultInternal : ST_ProcessResult;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="Cyclic" Id="{d6ca35d2-371e-47e4-9c98-bc198efb699c}">
+    <Method Name="Cyclic" Id="{65862579-9f61-4da1-8e48-a04cc629adc5}">
       <Declaration><![CDATA[METHOD PUBLIC Cyclic
 VAR_INPUT
-    bEnable       : BOOL;
-    bCommissioned : BOOL;
-    bStart        : BOOL;
-    bReset        : BOOL;
-    bSafetyOk     : BOOL;
-END_VAR
-VAR_OUTPUT
-    stStatus      : ST_PatchStageStatus;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Vision inspection foundation shell.
-// No actuator is commanded until the mechanical sequence has been commissioned.
+        <ST><![CDATA[
+// Temporary commissioning sequence:
+// Ready/retracted -> extend -> 3 s simulated process -> retract -> Complete.
+
+bSupportExtendRequestInternal := FALSE;
+bSupportRetractRequestInternal := FALSE;
+bFaultInternal := FALSE;
+
+// Explicit station-fault simulation for alarm/fault-flow testing.
+// This is intentionally different from bSimulatedFail:
+//   bSimulatedFail  -> bad PRODUCT, machine keeps running.
+//   bSimulatedFault -> station MACHINE fault, machine goes to Fault.
+IF bEnableInternal
+    AND bSimulatedFault
+THEN
+    tonProcessSimulation(IN := FALSE);
+    eStateInternal := E_PatchStationState.Fault;
+    usiStepInternal := 0;
+    bFaultInternal := TRUE;
+    eSupportFaultInternal := E_SupportCylinderFault.None;
+    stResultInternal.bValid := FALSE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.None;
+    stResultInternal.udiFaultCode := 0;
+    stResultInternal.udiAlertCode := 0;
+    stResultInternal.sDetail := '';
+    sDiagnosticInternal := 'Vision: simulated station fault';
+END_IF
+
+// Sensor plausibility check.
+// Both end-position sensors TRUE at the same time is not a valid pneumatic
+// state and must block the cycle/index.
+IF NOT bFaultInternal
+    AND bSupervisionEnableInternal
+    AND bSafetyOkInternal
+    AND bSupportRetractedInternal
+    AND bSupportExtendedInternal
+THEN
+    tonProcessSimulation(IN := FALSE);
+    eStateInternal := E_PatchStationState.Fault;
+    usiStepInternal := 0;
+    bFaultInternal := TRUE;
+    eSupportFaultInternal := E_SupportCylinderFault.ContradictorySensors;
+    stResultInternal.bValid := TRUE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.Fail;
+    stResultInternal.udiFaultCode := 3;
+    stResultInternal.sDetail := 'Vision: contradictory support sensors';
+    sDiagnosticInternal := 'Vision: contradictory support sensors';
+END_IF
+
+IF bFaultInternal THEN
+    // Keep outputs de-energised. Recovery requires Reset after the sensor
+    // condition has been corrected.
+
+ELSIF bStopRequestInternal THEN
+    tonProcessSimulation(IN := FALSE);
+    eStateInternal := E_PatchStationState.Homing;
+    usiStepInternal := 30;
+    bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+    sDiagnosticInternal := 'Vision: stop requested - retracting support';
+
+    IF bSupportRetractedInternal THEN
+        bStopRequestInternal := FALSE;
+        usiStepInternal := 0;
+        IF bEnableInternal AND bCommissionedInternal AND bSafetyOkInternal THEN
+            eStateInternal := E_PatchStationState.Ready;
+        ELSE
+            eStateInternal := E_PatchStationState.Disabled;
+        END_IF
+    END_IF
+
+ELSIF NOT bCommissionedInternal THEN
+    tonProcessSimulation(IN := FALSE);
+    eStateInternal := E_PatchStationState.Disabled;
+    usiStepInternal := 0;
+    sDiagnosticInternal := 'Vision: station disabled';
+
+ELSIF NOT bSafetyOkInternal THEN
+    tonProcessSimulation(IN := FALSE);
+    eStateInternal := E_PatchStationState.Disabled;
+    usiStepInternal := 0;
+    sDiagnosticInternal := 'Vision: disabled by Safety';
+
+ELSIF NOT bEnableInternal THEN
+    tonProcessSimulation(IN := FALSE);
+
+    IF bSupportRetractedInternal THEN
+        eStateInternal := E_PatchStationState.Disabled;
+        usiStepInternal := 0;
+        sDiagnosticInternal := 'Vision: disabled - support retracted';
+    ELSE
+        eStateInternal := E_PatchStationState.Homing;
+        usiStepInternal := 30;
+        bSupportRetractRequestInternal := TRUE;
+        sDiagnosticInternal := 'Vision: disabled - retracting support';
+    END_IF
+
+ELSE
+    CASE eStateInternal OF
+
+        E_PatchStationState.Disabled,
+        E_PatchStationState.Homing:
+            tonProcessSimulation(IN := FALSE);
+
+            IF bSupportRetractedInternal THEN
+                eStateInternal := E_PatchStationState.Ready;
+                usiStepInternal := 0;
+                sDiagnosticInternal := 'Vision: ready';
+            ELSE
+                eStateInternal := E_PatchStationState.Homing;
+                usiStepInternal := 30;
+                bSupportRetractRequestInternal := TRUE;
+                sDiagnosticInternal := 'Vision: retracting support to home';
+            END_IF
+
+        E_PatchStationState.Ready:
+            tonProcessSimulation(IN := FALSE);
+            sDiagnosticInternal := 'Vision: ready - waiting for cycle start';
+
+            IF NOT bSupportRetractedInternal THEN
+                eStateInternal := E_PatchStationState.Homing;
+                usiStepInternal := 30;
+            END_IF
+
+        E_PatchStationState.Processing:
+            CASE usiStepInternal OF
+
+                10:
+                    tonProcessSimulation(IN := FALSE);
+                    bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
+                    sDiagnosticInternal := 'Vision: extending support';
+
+                    IF bSupportExtendedInternal THEN
+                        usiStepInternal := 20;
+                    END_IF
+
+                20:
+                    bSupportExtendRequestInternal := TRUE;
+                    tonProcessSimulation(IN := TRUE, PT := tProcessSimulation);
+                    sDiagnosticInternal := 'Vision: simulated process - 3 s';
+
+                    IF tonProcessSimulation.Q THEN
+                        tonProcessSimulation(IN := FALSE);
+                        usiStepInternal := 30;
+                    END_IF
+
+                30:
+                    tonProcessSimulation(IN := FALSE);
+                    bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+                    sDiagnosticInternal := 'Vision: retracting support';
+
+                    IF bSupportRetractedInternal THEN
+                        stResultInternal.bValid := TRUE;
+                        stResultInternal.udiFaultCode := 0;
+                        stResultInternal.udiAlertCode := 0;
+
+                        // Simulated process result. This is a PROCESS result,
+                        // not a machine/component fault.
+                        IF bSimulatedFail THEN
+                            stResultInternal.bPassed := FALSE;
+                            stResultInternal.eCode := E_ProcessResultCode.Fail;
+                            stResultInternal.sDetail := 'Vision simulated process failed';
+                        ELSE
+                            stResultInternal.bPassed := TRUE;
+                            stResultInternal.eCode := E_ProcessResultCode.Pass;
+                            stResultInternal.sDetail := 'Vision simulated process passed';
+                        END_IF
+
+                        eStateInternal := E_PatchStationState.Complete;
+                        usiStepInternal := 0;
+                    END_IF
+
+                ELSE
+                    usiStepInternal := 30;
+            END_CASE
+
+        E_PatchStationState.Complete:
+            tonProcessSimulation(IN := FALSE);
+            sDiagnosticInternal := 'Vision: complete - support retracted';
+
+        E_PatchStationState.Fault:
+            tonProcessSimulation(IN := FALSE);
+            bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+            sDiagnosticInternal := 'Vision: fault';
+
+        ELSE
+            eStateInternal := E_PatchStationState.Fault;
+
+    END_CASE
+END_IF
+
+// ---------------------------------------------------------
+// Support-cylinder feedback supervision
+// ---------------------------------------------------------
+// A commanded movement must reach the corresponding end-position sensor
+// within tSupportMoveTimeout, but ONLY while cylinder supervision is enabled.
+//
+// Supervision is intentionally active only in:
+//   ReadyToStart
+//   AutoCycle
+//   Manual
+//
+// It is disabled during Fault / Stopping / Stopped / Initialising so the
+// machine can restore air and recover a cylinder that stopped between sensors
+// without immediately re-triggering the same feedback alarm.
+
+tonSupportExtendTimeout(
+    IN := bSupervisionEnableInternal
+        AND bSafetyOkInternal
+        AND bSupportExtendRequestInternal
+        AND NOT bSupportExtendedInternal
+        AND (eStateInternal <> E_PatchStationState.Fault),
+    PT := tSupportMoveTimeout
+);
+
+tonSupportRetractTimeout(
+    IN := bSupervisionEnableInternal
+        AND bSafetyOkInternal
+        AND bSupportRetractRequestInternal
+        AND NOT bSupportRetractedInternal
+        AND (eStateInternal <> E_PatchStationState.Fault),
+    PT := tSupportMoveTimeout
+);
+
+IF tonSupportExtendTimeout.Q THEN
+    bSupportExtendRequestInternal := FALSE;
+    bSupportRetractRequestInternal := FALSE;
+    eSupportFaultInternal := E_SupportCylinderFault.ExtendTimeout;
+    eStateInternal := E_PatchStationState.Fault;
+    usiStepInternal := 0;
+
+    stResultInternal.bValid := TRUE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.Fail;
+    stResultInternal.udiFaultCode := 1;
+    stResultInternal.udiAlertCode := 0;
+    stResultInternal.sDetail := 'Vision: support UP feedback timeout';
+
+    sDiagnosticInternal := 'Vision: support UP feedback timeout';
+
+ELSIF tonSupportRetractTimeout.Q THEN
+    bSupportExtendRequestInternal := FALSE;
+    bSupportRetractRequestInternal := FALSE;
+    eSupportFaultInternal := E_SupportCylinderFault.RetractTimeout;
+    eStateInternal := E_PatchStationState.Fault;
+    usiStepInternal := 0;
+
+    stResultInternal.bValid := TRUE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.Fail;
+    stResultInternal.udiFaultCode := 2;
+    stResultInternal.udiAlertCode := 0;
+    stResultInternal.sDetail := 'Vision: support DOWN feedback timeout';
+
+    sDiagnosticInternal := 'Vision: support DOWN feedback timeout';
+END_IF
+
+bHomeInternal := bSupportRetractedInternal;
+bReadyInternal := (eStateInternal = E_PatchStationState.Ready) AND bSupportRetractedInternal;
+bBusyInternal := (eStateInternal = E_PatchStationState.Processing)
+    OR ((eStateInternal = E_PatchStationState.Homing) AND NOT bSupportRetractedInternal);
+bCompleteInternal := (eStateInternal = E_PatchStationState.Complete);
+bFaultInternal := (eStateInternal = E_PatchStationState.Fault);
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetResult" Id="{7bfc6964-8b28-4f8c-8568-3f1997d1b2ca}">
+      <Declaration><![CDATA[METHOD PUBLIC GetResult : ST_ProcessResult
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetResult := stResultInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Initialise" Id="{b60352d8-fc31-480d-8c87-753db464b955}">
+      <Declaration><![CDATA[METHOD PUBLIC Initialise]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+tonProcessSimulation(IN := FALSE);
+tonSupportExtendTimeout(IN := FALSE);
+tonSupportRetractTimeout(IN := FALSE);
+eSupportFaultInternal := E_SupportCylinderFault.None;
+eStateInternal := E_PatchStationState.Disabled;
+usiStepInternal := 0;
 bHomeInternal := FALSE;
 bReadyInternal := FALSE;
 bBusyInternal := FALSE;
 bCompleteInternal := FALSE;
 bFaultInternal := FALSE;
+bSupportExtendRequestInternal := FALSE;
+bSupportRetractRequestInternal := FALSE;
+bStopRequestInternal := FALSE;
+sDiagnosticInternal := '';
 
-IF NOT bCommissioned THEN
-    eStateInternal := E_PatchStationState.Disabled;
-    sDiagnosticInternal := 'Not commissioned - process sequence intentionally disabled';
-ELSIF NOT bEnable OR NOT bSafetyOk THEN
-    eStateInternal := E_PatchStationState.Disabled;
-    sDiagnosticInternal := 'Disabled by machine state / safety';
+stResultInternal.bValid := FALSE;
+stResultInternal.bPassed := FALSE;
+stResultInternal.eCode := E_ProcessResultCode.None;
+stResultInternal.udiFaultCode := 0;
+stResultInternal.udiAlertCode := 0;
+stResultInternal.sDetail := '';
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsBusy" Id="{6b8107df-1d67-4933-b0f5-867eee51379e}">
+      <Declaration><![CDATA[METHOD PUBLIC IsBusy : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsBusy := bBusyInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsDone" Id="{463ff2bb-de2f-4777-9e7f-15ce22a41f36}">
+      <Declaration><![CDATA[METHOD PUBLIC IsDone : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsDone := bCompleteInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsFaulted" Id="{02d98b44-e482-4a3a-a664-c71e4343e0af}">
+      <Declaration><![CDATA[METHOD PUBLIC IsFaulted : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsFaulted := bFaultInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsReady" Id="{f1d3b7b6-df6d-491f-8e1a-6d304eece17e}">
+      <Declaration><![CDATA[METHOD PUBLIC IsReady : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsReady := bReadyInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestReset" Id="{849d3e61-29bd-4d8e-807b-09a357055065}">
+      <Declaration><![CDATA[METHOD PUBLIC RequestReset
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+tonProcessSimulation(IN := FALSE);
+tonSupportExtendTimeout(IN := FALSE);
+tonSupportRetractTimeout(IN := FALSE);
+eSupportFaultInternal := E_SupportCylinderFault.None;
+bStopRequestInternal := FALSE;
+
+stResultInternal.bValid := FALSE;
+stResultInternal.bPassed := FALSE;
+stResultInternal.eCode := E_ProcessResultCode.None;
+stResultInternal.udiFaultCode := 0;
+stResultInternal.udiAlertCode := 0;
+stResultInternal.sDetail := '';
+
+IF bEnableInternal AND bCommissionedInternal AND bSafetyOkInternal THEN
+    IF bSupportRetractedInternal THEN
+        eStateInternal := E_PatchStationState.Ready;
+        usiStepInternal := 0;
+    ELSE
+        eStateInternal := E_PatchStationState.Homing;
+        usiStepInternal := 30;
+    END_IF
 ELSE
-    // Mechanical sequence to be implemented from released design and commissioning tests.
-    eStateInternal := E_PatchStationState.Homing;
-    sDiagnosticInternal := 'Commissioning required - homing sequence not implemented';
+    eStateInternal := E_PatchStationState.Disabled;
+    usiStepInternal := 0;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestStart" Id="{a1f1fc65-484d-43e4-b289-6715c8e6c817}">
+      <Declaration><![CDATA[METHOD PUBLIC RequestStart : BOOL
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+RequestStart := FALSE;
+
+IF bEnableInternal
+    AND bCommissionedInternal
+    AND bSafetyOkInternal
+    AND bReadyInternal
+    AND bSupportRetractedInternal
+THEN
+    stResultInternal.bValid := FALSE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.None;
+    stResultInternal.sDetail := '';
+
+    eStateInternal := E_PatchStationState.Processing;
+    usiStepInternal := 10;
+    RequestStart := TRUE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestStop" Id="{c0843154-582c-4b39-b05f-d6fcabc70c1d}">
+      <Declaration><![CDATA[METHOD PUBLIC RequestStop
+VAR_INPUT
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bStopRequestInternal := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update" Id="{632cb56e-471f-4b5a-b14f-7c50434086c7}">
+      <Declaration><![CDATA[METHOD PUBLIC Update
+VAR_INPUT
+    bEnable           : BOOL;
+    bCommissioned     : BOOL;
+    bSafetyOk         : BOOL;
+    bSupervisionEnable : BOOL;
+    bReset            : BOOL;
+    bSupportRetracted : BOOL;
+    bSupportExtended  : BOOL;
+    tSupportTimeout   : TIME;
+END_VAR
+VAR_OUTPUT
+    stStatus               : ST_PatchStageStatus;
+    bSupportExtendRequest  : BOOL;
+    bSupportRetractRequest : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+bEnableInternal := bEnable;
+bCommissionedInternal := bCommissioned;
+bSafetyOkInternal := bSafetyOk;
+bSupervisionEnableInternal := bSupervisionEnable;
+bSupportRetractedInternal := bSupportRetracted;
+bSupportExtendedInternal := bSupportExtended;
+tSupportMoveTimeout := tSupportTimeout;
+
+IF bReset THEN
+    RequestReset();
 END_IF
 
+Cyclic();
+
 stStatus.eState := eStateInternal;
-stStatus.bCommissioned := bCommissioned;
+stStatus.bCommissioned := bCommissionedInternal;
 stStatus.bHome := bHomeInternal;
 stStatus.bReady := bReadyInternal;
 stStatus.bBusy := bBusyInternal;
 stStatus.bComplete := bCompleteInternal;
 stStatus.bFault := bFaultInternal;
-stStatus.sDiagnostic := sDiagnosticInternal;]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="Initialise" Id="{a7504b1c-c4be-469a-a329-4ba3cb33981a}">
-      <Declaration><![CDATA[METHOD PUBLIC Initialise]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[eStateInternal := E_PatchStationState.Disabled;
-bHomeInternal := FALSE;
-bReadyInternal := FALSE;
-bBusyInternal := FALSE;
-bCompleteInternal := FALSE;
-bFaultInternal := FALSE;
-sDiagnosticInternal := '';]]></ST>
+stStatus.eSupportFault := eSupportFaultInternal;
+stStatus.sDiagnostic := sDiagnosticInternal;
+
+bSupportExtendRequest := bSupportExtendRequestInternal;
+bSupportRetractRequest := bSupportRetractRequestInternal;
+]]></ST>
       </Implementation>
     </Method>
   </POU>

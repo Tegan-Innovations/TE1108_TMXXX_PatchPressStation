@@ -2,8 +2,7 @@
 
 <div id="TcHmiTextblock_1168" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="%f%%pp%Text_Value%/pp%%/f%" data-tchmi-top="5" data-tchmi-top-unit="px" data-tchmi-width="88" data-tchmi-width-unit="px" data-tchmi-word-wrap="True">
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%GreenRed%/pp%",
     "actions": [
@@ -86,7 +85,6 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 </div>

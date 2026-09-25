@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_VABX_A_S_BV_V4A" Id="{7fad953a-1913-4009-99ed-57f148cbf204}">
+    <Declaration><![CDATA[TYPE ST_VABX_A_S_BV_V4A :
+STRUCT
+    sModuleName : STRING(80) := 'VABX-A-S-BV-V4A | 8-Coil Valve Module';
+
+    bCoil0 AT %Q* : BOOL;
+    bCoil1 AT %Q* : BOOL;
+    bCoil2 AT %Q* : BOOL;
+    bCoil3 AT %Q* : BOOL;
+    bCoil4 AT %Q* : BOOL;
+    bCoil5 AT %Q* : BOOL;
+    bCoil6 AT %Q* : BOOL;
+    bCoil7 AT %Q* : BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

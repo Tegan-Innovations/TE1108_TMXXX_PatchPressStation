@@ -99,8 +99,7 @@ void) = null
 </script>
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "TcHmiTextbox_38.onTextChanged",
     "actions": [
@@ -168,8 +167,7 @@ void) = null
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="currentGroupField" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="52" data-tchmi-height-unit="px" data-tchmi-left="58" data-tchmi-left-unit="px" data-tchmi-text="%i%UserGroups%/i%" data-tchmi-top="160" data-tchmi-top-unit="px" data-tchmi-width="551" data-tchmi-width-unit="px" data-tchmi-zindex="3" data-tchmi-creator-locked="True">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -250,8 +248,7 @@ void) = null
 ]
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onSelectedItemChanged",
     "actions": [
@@ -470,8 +467,7 @@ void) = null
       }
     ]
   }
-]
-</script>
+]</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-radius" type="application/json">
 {
@@ -528,8 +524,7 @@ void) = null
 </div>
 <div id="TcHmiContainer_48" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="199" data-tchmi-height-unit="px" data-tchmi-left="38" data-tchmi-left-unit="px" data-tchmi-top="254" data-tchmi-top-unit="px" data-tchmi-width="593" data-tchmi-width-unit="px">
 <div id="Button_CreateUser" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="30" data-tchmi-left-unit="px" data-tchmi-text="Create \nUser" data-tchmi-top="30" data-tchmi-top-unit="px" data-tchmi-width="160" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-zindex="4" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Auto" data-tchmi-creator-locked="True">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "TcHmiTextbox_38.onTextChanged",
     "actions": []
@@ -594,8 +589,7 @@ void) = null
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -624,8 +618,7 @@ void) = null
 </script>
 </div>
 <div id="Button_RemoveUser" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-text="Remove \nUser" data-tchmi-width="160" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-zindex="4" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Auto" data-tchmi-left="30" data-tchmi-bottom="30" data-tchmi-creator-locked="True">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
     "actions": [
@@ -686,8 +679,7 @@ void) = null
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -716,8 +708,7 @@ void) = null
 </script>
 </div>
 <div id="Button_ChangeName" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="220" data-tchmi-left-unit="px" data-tchmi-text="Change\nName" data-tchmi-top="30" data-tchmi-top-unit="px" data-tchmi-width="160" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-zindex="4" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Auto" data-tchmi-creator-locked="True">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
     "actions": [
@@ -778,8 +769,7 @@ void) = null
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -808,8 +798,7 @@ void) = null
 </script>
 </div>
 <div id="Button_AddGroup" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-text="Add\nGroup" data-tchmi-top="30" data-tchmi-top-unit="px" data-tchmi-width="160" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-zindex="4" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Auto" data-tchmi-right="30" data-tchmi-creator-locked="True">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
     "actions": [
@@ -870,8 +859,7 @@ void) = null
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -900,8 +888,7 @@ void) = null
 </script>
 </div>
 <div id="Button_ChangePassword" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="220" data-tchmi-left-unit="px" data-tchmi-text="Change\nPassword" data-tchmi-width="160" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-zindex="4" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Auto" data-tchmi-bottom="30" data-tchmi-creator-locked="True">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
     "actions": [
@@ -962,8 +949,7 @@ void) = null
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -992,8 +978,7 @@ void) = null
 </script>
 </div>
 <div id="Button_RemoveGroup" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-text="Remove\nGroup" data-tchmi-width="160" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-zindex="4" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Auto" data-tchmi-bottom="30" data-tchmi-right="30" data-tchmi-creator-locked="True">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
     "actions": [
@@ -1054,8 +1039,7 @@ void) = null
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 

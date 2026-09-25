@@ -157,8 +157,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.1%/s%",
     "actions": [
@@ -221,8 +220,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiContainer_101" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="90" data-tchmi-height-unit="px" data-tchmi-left="332" data-tchmi-left-unit="px" data-tchmi-top="178" data-tchmi-top-unit="px" data-tchmi-width="65" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
@@ -268,8 +266,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.3%/s%",
     "actions": [
@@ -332,8 +329,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiContainer_100" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="65" data-tchmi-height-unit="px" data-tchmi-left="203" data-tchmi-left-unit="px" data-tchmi-top="307" data-tchmi-top-unit="px" data-tchmi-width="90" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
@@ -381,8 +377,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.0%/s%",
     "actions": [
@@ -445,8 +440,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiContainer_99" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="65" data-tchmi-height-unit="px" data-tchmi-left="203" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="90" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
@@ -492,8 +486,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.2%/s%",
     "actions": [
@@ -556,8 +549,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiImage_40" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="325" data-tchmi-height-unit="px" data-tchmi-left="86" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/SiliconeIndexTableV4.png" data-tchmi-top="60" data-tchmi-top-unit="px" data-tchmi-width="325" data-tchmi-width-unit="px" data-tchmi-zindex="0">
 </div>

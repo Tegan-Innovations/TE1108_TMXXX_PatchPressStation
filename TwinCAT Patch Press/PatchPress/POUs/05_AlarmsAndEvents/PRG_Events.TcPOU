@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="PRG_Events" Id="{d91f2867-40c6-48eb-9107-f41ea1d35528}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Events
@@ -9,64 +9,293 @@ VAR
     ton48VSupplyLost : TON;
     tonIndexPositionInvalid : TON;
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[GVL_MASTER.sSystemDate := '';
+    <Implementation>
+      <ST><![CDATA[GVL_MASTER.sSystemDate := '';
 GVL_MASTER.sSystemTime := '';
+
 GVL_MASTER.stStationEvents[0].aEvents[0].bFault := TRUE;
-GVL_MASTER.stStationEvents[0].aEvents[0].bEventFlag := NOT GVL_MASTER.stInputs.bEmergencyStopChannel1 OR NOT GVL_MASTER.stInputs.bEmergencyStopChannel2;
+GVL_MASTER.stStationEvents[0].aEvents[0].bEventFlag :=
+    (NOT GVL_MASTER.stInputs.bEmergencyStopChannel1 OR NOT GVL_MASTER.stInputs.bEmergencyStopChannel2)
+    AND NOT GVL_MASTER.stInputs.stSafety.bSafetyOk;
 GVL_MASTER.stStationEvents[0].aEvents[0].bEventText := 'E-stop activated';
 GVL_MASTER.stStationEvents[0].aEvents[0].sSolution := 'Release E-stop and reset Safety';
+
 GVL_MASTER.stStationEvents[0].aEvents[1].bFault := TRUE;
-GVL_MASTER.stStationEvents[0].aEvents[1].bEventFlag := NOT GVL_MASTER.stInputs.bMainDoorChannel1 OR NOT GVL_MASTER.stInputs.bMainDoorChannel2;
+GVL_MASTER.stStationEvents[0].aEvents[1].bEventFlag :=
+    (NOT GVL_MASTER.stInputs.bMainDoorChannel1 OR NOT GVL_MASTER.stInputs.bMainDoorChannel2)
+    AND NOT GVL_MASTER.stInputs.stSafety.bSafetyOk;
 GVL_MASTER.stStationEvents[0].aEvents[1].bEventText := 'Main door safety circuit open';
 GVL_MASTER.stStationEvents[0].aEvents[1].sSolution := 'Close main door and reset Safety';
+
+
 GVL_MASTER.stStationEvents[0].aEvents[2].bFault := TRUE;
-GVL_MASTER.stStationEvents[0].aEvents[2].bEventFlag := (NOT GVL_MASTER.stInputs.bLeftFlapChannel1 OR NOT GVL_MASTER.stInputs.bLeftFlapChannel2) AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp);
+GVL_MASTER.stStationEvents[0].aEvents[2].bEventFlag :=
+    (NOT GVL_MASTER.stInputs.bLeftFlapChannel1 OR NOT GVL_MASTER.stInputs.bLeftFlapChannel2)
+    AND NOT GVL_MASTER.stInputs.stSafety.bSafetyOk
+    AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp);
 GVL_MASTER.stStationEvents[0].aEvents[2].bEventText := 'Left safety flap active';
 GVL_MASTER.stStationEvents[0].aEvents[2].sSolution := 'Clear left flap and reset Safety';
+
+
 GVL_MASTER.stStationEvents[0].aEvents[3].bFault := TRUE;
-GVL_MASTER.stStationEvents[0].aEvents[3].bEventFlag := (NOT GVL_MASTER.stInputs.bRightFlapChannel1 OR NOT GVL_MASTER.stInputs.bRightFlapChannel2) AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp);
+GVL_MASTER.stStationEvents[0].aEvents[3].bEventFlag :=
+    (NOT GVL_MASTER.stInputs.bRightFlapChannel1 OR NOT GVL_MASTER.stInputs.bRightFlapChannel2)
+    AND NOT GVL_MASTER.stInputs.stSafety.bSafetyOk
+    AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp);
 GVL_MASTER.stStationEvents[0].aEvents[3].bEventText := 'Right safety flap active';
 GVL_MASTER.stStationEvents[0].aEvents[3].sSolution := 'Clear right flap and reset Safety';
+
+
 GVL_MASTER.stStationEvents[0].aEvents[4].bCycleStopRequest := TRUE;
 GVL_MASTER.stStationEvents[0].aEvents[4].bEventFlag := GVL_MASTER.stCommand.bStop;
 GVL_MASTER.stStationEvents[0].aEvents[4].bEventText := 'Cycle stop requested';
 GVL_MASTER.stStationEvents[0].aEvents[4].sSolution := 'Wait for cycle to stop';
+
 GVL_MASTER.stStationEvents[0].aEvents[5].bFault := TRUE;
 GVL_MASTER.stStationEvents[0].aEvents[5].bEventFlag := GVL_MASTER.stStatus.bInitialisationTimeoutFault;
 GVL_MASTER.stStationEvents[0].aEvents[5].bEventText := 'System initialisation timeout';
 GVL_MASTER.stStationEvents[0].aEvents[5].sSolution := 'Check initialisation conditions';
+
+
 GVL_MASTER.stStationEvents[0].aEvents[6].bFault := TRUE;
 GVL_MASTER.stStationEvents[0].aEvents[6].bEventFlag := GVL_MASTER.stStatus.bStoppingTimeoutFault;
 GVL_MASTER.stStationEvents[0].aEvents[6].bEventText := 'System stopping timeout';
 GVL_MASTER.stStationEvents[0].aEvents[6].sSolution := 'Check index and machine safe state';
+
+
 tonUpSupplyLost(IN := NOT GVL_MASTER.stInputs.bUp24VPowerSupplyOk AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp), PT := T#1S);
+
 GVL_MASTER.stStationEvents[0].aEvents[7].bFault := TRUE;
 GVL_MASTER.stStationEvents[0].aEvents[7].bEventFlag := tonUpSupplyLost.Q;
 GVL_MASTER.stStationEvents[0].aEvents[7].bEventText := '24 V Up supply fault';
 GVL_MASTER.stStationEvents[0].aEvents[7].sSolution := 'Check 24 V Up power supply';
+
+
 tonUsSupplyLost(IN := NOT GVL_MASTER.stInputs.bUs24VPowerSupplyOk AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp), PT := T#1S);
+
 GVL_MASTER.stStationEvents[0].aEvents[8].bFault := TRUE;
 GVL_MASTER.stStationEvents[0].aEvents[8].bEventFlag := tonUsSupplyLost.Q;
 GVL_MASTER.stStationEvents[0].aEvents[8].bEventText := '24 V Us supply fault';
 GVL_MASTER.stStationEvents[0].aEvents[8].sSolution := 'Check 24 V Us power supply';
+
+
 ton48VSupplyLost(IN := NOT GVL_MASTER.stInputs.b48VPowerSupplyOk AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp), PT := T#1S);
+
 GVL_MASTER.stStationEvents[0].aEvents[9].bFault := TRUE;
 GVL_MASTER.stStationEvents[0].aEvents[9].bEventFlag := ton48VSupplyLost.Q;
 GVL_MASTER.stStationEvents[0].aEvents[9].bEventText := '48 V Up supply fault';
 GVL_MASTER.stStationEvents[0].aEvents[9].sSolution := 'Check 48 V power supply';
+
+
 tonIndexPositionInvalid(IN := GVL_MASTER.stInputs.bIndexReady AND GVL_MASTER.stInputs.bIndexLocked AND (GVL_MASTER.stInputs.eIndexPosition = E_TablePosition.Unknown), PT := T#500MS);
+
 GVL_MASTER.stStationEvents[2].aEvents[0].bFault := TRUE;
 GVL_MASTER.stStationEvents[2].aEvents[0].bEventFlag := tonIndexPositionInvalid.Q;
 GVL_MASTER.stStationEvents[2].aEvents[0].bEventText := 'Index position sensors invalid';
 GVL_MASTER.stStationEvents[2].aEvents[0].sSolution := 'Check index position sensors';
+
+
+
+// -----------------------------------------------------------------------------
+// PATCH PRESS STATION SUPPORT CYLINDERS
+// Station group [3] is reserved here for process-station pneumatic faults.
+// Each event is a machine fault and therefore participates in the existing
+// bEventFault -> bSafetyDropRequest -> Immediate Fault chain.
+// -----------------------------------------------------------------------------
+
+// Patch Dispense support cylinder.
+GVL_MASTER.stStationEvents[3].aEvents[0].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[0].bEventFlag :=
+    GVL_MASTER.stStatus.stPatchDispense.eSupportFault = E_SupportCylinderFault.ExtendTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[0].bEventText := 'Patch Dispense support cylinder UP feedback timeout';
+GVL_MASTER.stStationEvents[3].aEvents[0].sSolution := 'Check UP sensor, air pressure, tubing, valve and cylinder mechanics';
+
+GVL_MASTER.stStationEvents[3].aEvents[1].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[1].bEventFlag :=
+    GVL_MASTER.stStatus.stPatchDispense.eSupportFault = E_SupportCylinderFault.RetractTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[1].bEventText := 'Patch Dispense support cylinder DOWN feedback timeout';
+GVL_MASTER.stStationEvents[3].aEvents[1].sSolution := 'Check DOWN sensor, air pressure, tubing, valve and cylinder mechanics';
+
+GVL_MASTER.stStationEvents[3].aEvents[2].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[2].bEventFlag :=
+    GVL_MASTER.stStatus.stPatchDispense.eSupportFault = E_SupportCylinderFault.ContradictorySensors;
+GVL_MASTER.stStationEvents[3].aEvents[2].bEventText := 'Patch Dispense support cylinder sensor conflict';
+GVL_MASTER.stStationEvents[3].aEvents[2].sSolution := 'Check support-cylinder UP/DOWN sensors and mechanical adjustment';
+
+// Generic process-station faults.
+// Support-cylinder faults already have their own more specific alarms below,
+// therefore these generic events are active only when no support fault exists.
+
+GVL_MASTER.stStationEvents[3].aEvents[9].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[9].bEventFlag :=
+    GVL_MASTER.stStatus.stPatchDispense.bFault
+    AND (GVL_MASTER.stStatus.stPatchDispense.eSupportFault = E_SupportCylinderFault.None);
+GVL_MASTER.stStationEvents[3].aEvents[9].bEventText := 'Patch Dispense station fault';
+GVL_MASTER.stStationEvents[3].aEvents[9].sSolution :=
+    'Check Patch Dispense station diagnostic, process equipment and simulation fault request';
+
+GVL_MASTER.stStationEvents[3].aEvents[10].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[10].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStake.bFault
+    AND (GVL_MASTER.stStatus.stHeatStake.eSupportFault = E_SupportCylinderFault.None);
+GVL_MASTER.stStationEvents[3].aEvents[10].bEventText := 'Heat Stake station fault';
+GVL_MASTER.stStationEvents[3].aEvents[10].sSolution :=
+    'Check Heat Stake station diagnostic, process equipment and simulation fault request';
+
+GVL_MASTER.stStationEvents[3].aEvents[11].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[11].bEventFlag :=
+    GVL_MASTER.stStatus.stVision.bFault
+    AND (GVL_MASTER.stStatus.stVision.eSupportFault = E_SupportCylinderFault.None);
+GVL_MASTER.stStationEvents[3].aEvents[11].bEventText := 'Vision station fault';
+GVL_MASTER.stStationEvents[3].aEvents[11].sSolution :=
+    'Check Vision station diagnostic, process equipment and simulation fault request';
+
+// Heat Stake support cylinder.
+GVL_MASTER.stStationEvents[3].aEvents[3].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[3].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStake.eSupportFault = E_SupportCylinderFault.ExtendTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[3].bEventText := 'Heat Stake support cylinder UP feedback timeout';
+GVL_MASTER.stStationEvents[3].aEvents[3].sSolution := 'Check UP sensor, air pressure, tubing, valve and cylinder mechanics';
+
+GVL_MASTER.stStationEvents[3].aEvents[4].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[4].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStake.eSupportFault = E_SupportCylinderFault.RetractTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[4].bEventText := 'Heat Stake support cylinder DOWN feedback timeout';
+GVL_MASTER.stStationEvents[3].aEvents[4].sSolution := 'Check DOWN sensor, air pressure, tubing, valve and cylinder mechanics';
+
+GVL_MASTER.stStationEvents[3].aEvents[5].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[5].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStake.eSupportFault = E_SupportCylinderFault.ContradictorySensors;
+GVL_MASTER.stStationEvents[3].aEvents[5].bEventText := 'Heat Stake support cylinder sensor conflict';
+GVL_MASTER.stStationEvents[3].aEvents[5].sSolution := 'Check support-cylinder UP/DOWN sensors and mechanical adjustment';
+
+// Vision support cylinder.
+GVL_MASTER.stStationEvents[3].aEvents[6].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[6].bEventFlag :=
+    GVL_MASTER.stStatus.stVision.eSupportFault = E_SupportCylinderFault.ExtendTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[6].bEventText := 'Vision support cylinder UP feedback timeout';
+GVL_MASTER.stStationEvents[3].aEvents[6].sSolution := 'Check UP sensor, air pressure, tubing, valve and cylinder mechanics';
+
+GVL_MASTER.stStationEvents[3].aEvents[7].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[7].bEventFlag :=
+    GVL_MASTER.stStatus.stVision.eSupportFault = E_SupportCylinderFault.RetractTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[7].bEventText := 'Vision support cylinder DOWN feedback timeout';
+GVL_MASTER.stStationEvents[3].aEvents[7].sSolution := 'Check DOWN sensor, air pressure, tubing, valve and cylinder mechanics';
+
+GVL_MASTER.stStationEvents[3].aEvents[8].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[8].bEventFlag :=
+    GVL_MASTER.stStatus.stVision.eSupportFault = E_SupportCylinderFault.ContradictorySensors;
+GVL_MASTER.stStationEvents[3].aEvents[8].bEventText := 'Vision support cylinder sensor conflict';
+GVL_MASTER.stStationEvents[3].aEvents[8].sSolution := 'Check support-cylinder UP/DOWN sensors and mechanical adjustment';
+
+
+
+// -----------------------------------------------------------------------------
+// INDEX TABLE COMPONENT FAULTS
+// These faults are latched inside FB_IndexTable4 until Reset.
+// They are explicit bFault events so every Immediate Fault caused by the index
+// is visible in the standard Active Events DataGrid.
+// -----------------------------------------------------------------------------
+
+GVL_MASTER.stStationEvents[0].aEvents[10].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[10].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.InitialPositionInvalid;
+GVL_MASTER.stStationEvents[0].aEvents[10].bEventText := 'Index initial position invalid';
+GVL_MASTER.stStationEvents[0].aEvents[10].sSolution := 'Check index position sensors and table mechanical position';
+
+GVL_MASTER.stStationEvents[0].aEvents[11].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[11].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.SupportRetractTimeout;
+GVL_MASTER.stStationEvents[0].aEvents[11].bEventText := 'Index support retract timeout';
+GVL_MASTER.stStationEvents[0].aEvents[11].sSolution := 'Check support feedback and pneumatic movement';
+
+GVL_MASTER.stStationEvents[0].aEvents[12].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[12].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.RotationTimeout;
+GVL_MASTER.stStationEvents[0].aEvents[12].bEventText := 'Index rotation timeout';
+GVL_MASTER.stStationEvents[0].aEvents[12].sSolution := 'Check index pneumatic supply, valve outputs and table movement';
+
+GVL_MASTER.stStationEvents[0].aEvents[13].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[13].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.StopAndLockTimeout;
+GVL_MASTER.stStationEvents[0].aEvents[13].bEventText := 'Index stop / lock timeout';
+GVL_MASTER.stStationEvents[0].aEvents[13].sSolution := 'Check Index Ready, Locked and Completed feedbacks';
+
+GVL_MASTER.stStationEvents[0].aEvents[14].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[14].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.PositionInvalid;
+GVL_MASTER.stStationEvents[0].aEvents[14].bEventText := 'Index position invalid after movement';
+GVL_MASTER.stStationEvents[0].aEvents[14].sSolution := 'Check index position sensors and final table position';
+
+GVL_MASTER.stStationEvents[0].aEvents[15].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[15].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.SupportExtendTimeout;
+GVL_MASTER.stStationEvents[0].aEvents[15].bEventText := 'Index support extend timeout';
+GVL_MASTER.stStationEvents[0].aEvents[15].sSolution := 'Check support feedback and pneumatic movement';
+
+GVL_MASTER.stStationEvents[0].aEvents[16].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[16].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.TwoHandReleasedDuringMovement;
+GVL_MASTER.stStationEvents[0].aEvents[16].bEventText := 'Two-hand control released during index movement';
+GVL_MASTER.stStationEvents[0].aEvents[16].sSolution := 'Hold both touch buttons until index movement is complete';
+
+GVL_MASTER.stStationEvents[0].aEvents[17].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[17].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.WrongPositionTimeout;
+GVL_MASTER.stStationEvents[0].aEvents[17].bEventText := 'Index wrong-position recovery timeout';
+GVL_MASTER.stStationEvents[0].aEvents[17].sSolution := 'Check table position sensors and index mechanical alignment';
+
+GVL_MASTER.stStationEvents[0].aEvents[18].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[18].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.SafetyLostDuringMovement;
+GVL_MASTER.stStationEvents[0].aEvents[18].bEventText := 'Index motion safety lost during movement';
+GVL_MASTER.stStationEvents[0].aEvents[18].sSolution := 'Check TwinSAFE motion permissive and safety devices';
+
+GVL_MASTER.stStationEvents[0].aEvents[19].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[19].bEventFlag :=
+    GVL_MASTER.stStatus.stIndexStatus.eFault = E_IndexFault.MovementPermissiveLost;
+GVL_MASTER.stStationEvents[0].aEvents[19].bEventText := 'Index movement permissive lost during movement';
+GVL_MASTER.stStationEvents[0].aEvents[19].sSolution := 'Check support cylinders and index movement permissives';
+
+// -----------------------------------------------------------------------------
+// AUTOMATIC PROCESS CYCLE
+// -----------------------------------------------------------------------------
+
+GVL_MASTER.stStationEvents[1].aEvents[1].bFault := TRUE;
+GVL_MASTER.stStationEvents[1].aEvents[1].bEventFlag :=
+    GVL_MASTER.stStatus.bProcessCycleTimeoutFault;
+GVL_MASTER.stStationEvents[1].aEvents[1].bEventText :=
+    'Automatic process cycle timeout';
+GVL_MASTER.stStationEvents[1].aEvents[1].sSolution :=
+    'Check ProcessCycle state, index permissives and required station completion';
+
 GVL_MASTER.stStationEvents[1].aEvents[0].bMessage := TRUE;
 GVL_MASTER.stStationEvents[1].aEvents[0].bPersistentMessage := TRUE;
 GVL_MASTER.stStationEvents[1].aEvents[0].bEventFlag := NOT GVL_MASTER.stStatus.bAllStationsCommissioned;
 GVL_MASTER.stStationEvents[1].aEvents[0].bEventText := GVL_MASTER.stStatus.sAutoCycleBlockReason;
 GVL_MASTER.stStationEvents[1].aEvents[0].sSolution := 'Commission Patch Dispense, Heat Stake and Vision stations';
-fbEventsManager(bPulse := TRUE, sSystemTime := GVL_MASTER.sSystemTime, sSystemDate := GVL_MASTER.sSystemDate, bDataWritedInCSV := FALSE, nArraySize := 4, bMachineMessage := GVL_MASTER.stStatus.sMachineMessage, eMachineState := GVL_MASTER.stStatus.eMachineState, stStationEvents := GVL_MASTER.stStationEvents, stEventsAssigment := GVL_MASTER.stEventsAssigment, bResetFaults := GVL_MASTER.stCommand.bReset, bMachineFault => GVL_MASTER.bMachineFault, bCycleStopRequest => GVL_MASTER.bCycleStopRequest, astActiveEvents => GVL_MASTER.astActiveEvents, astEventsHistory => GVL_Persistent.astEventsHistory);
+
+
+fbEventsManager(	bPulse := TRUE, 
+					sSystemTime := GVL_MASTER.sSystemTime, 
+					sSystemDate := GVL_MASTER.sSystemDate, 
+					bDataWritedInCSV := FALSE, 
+					nArraySize := 4, 
+					bMachineMessage := GVL_MASTER.stStatus.sMachineMessage, 
+					eMachineState := GVL_MASTER.stStatus.eMachineState, 
+					stStationEvents := GVL_MASTER.stStationEvents, 
+					stEventsAssigment := GVL_MASTER.stEventsAssigment, 
+					bResetFaults := GVL_MASTER.stCommand.bReset, 
+					bMachineFault => GVL_MASTER.bMachineFault, 
+					bCycleStopRequest => GVL_MASTER.bCycleStopRequest, 
+					astActiveEvents => GVL_MASTER.astActiveEvents, 
+					astEventsHistory => GVL_Persistent.astEventsHistory
+				);
+
+
 GVL_HMI.astActiveEvents := GVL_MASTER.astActiveEvents;
 GVL_HMI.astEventsHistory := GVL_Persistent.astEventsHistory;
-GVL_HMI.stEventsAssigment := GVL_MASTER.stEventsAssigment;]]></ST></Implementation>
+GVL_HMI.stEventsAssigment := GVL_MASTER.stEventsAssigment;]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

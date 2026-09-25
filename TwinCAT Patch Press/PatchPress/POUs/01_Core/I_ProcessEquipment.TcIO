@@ -15,12 +15,6 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="GetState" Id="{bf00303b-1a36-498a-b0a8-6d5484e9e80e}">
-      <Declaration><![CDATA[METHOD PUBLIC GetState : E_ProcessEquipmentState
-VAR_INPUT
-END_VAR
-]]></Declaration>
-    </Method>
     <Method Name="IsBusy" Id="{76edbf11-2f78-4db2-9f42-daeaf6860f78}">
       <Declaration><![CDATA[METHOD PUBLIC IsBusy : BOOL
 VAR_INPUT
@@ -60,13 +54,6 @@ END_VAR
     <Method Name="RequestStop" Id="{bede1dad-524a-41e5-a628-a1941bc5d3d4}">
       <Declaration><![CDATA[METHOD PUBLIC RequestStop
 VAR_INPUT
-END_VAR
-]]></Declaration>
-    </Method>
-    <Method Name="SetRecipe" Id="{9d7a62c3-d93a-4d91-a58e-77b1d7b27bd8}">
-      <Declaration><![CDATA[METHOD PUBLIC SetRecipe : BOOL
-VAR_INPUT
-	usiRecipe : USINT;
 END_VAR
 ]]></Declaration>
     </Method>

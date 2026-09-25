@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <DUT Name="ST_MachineStatus" Id="{ede7ab68-974c-4ea1-931a-df520c97456a}">
     <Declaration><![CDATA[TYPE ST_MachineStatus :
 STRUCT
     eMachineState           : E_MachineState;
+    eProcessCycleState      : E_CycleState;
     eIndexState             : E_IndexState;
     stIndexStatus           : ST_IndexStatus;
     stMainDoorLock          : ST_MainDoorLockStatus;
@@ -20,6 +21,7 @@ STRUCT
     bFaulted                : BOOL;
     bInitialisationTimeoutFault : BOOL;
     bStoppingTimeoutFault   : BOOL;
+    bProcessCycleTimeoutFault : BOOL;
     bSafetyStopRequested    : BOOL;
     bSafetyRunRequested     : BOOL;
     bEventFault             : BOOL;

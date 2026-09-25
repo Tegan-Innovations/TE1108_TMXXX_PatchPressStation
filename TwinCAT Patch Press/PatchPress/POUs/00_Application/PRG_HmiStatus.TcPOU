@@ -1,17 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="PRG_HmiStatus" Id="{4da5e538-fb78-4127-b5c1-141c740c9ced}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_HmiStatus
 VAR
+    fbBlinkTimer    : TON;
+    bBlinkTimerQOld : BOOL;
+    bFlash          : BOOL;
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[GVL_HMI.stStatus.eMachineState := GVL_MASTER.stStatus.eMachineState;
+    <Implementation><ST><![CDATA[// Same 500 ms toggle used by the validated Silicone Station banner.
+fbBlinkTimer(IN := NOT fbBlinkTimer.Q, PT := T#500MS);
+
+IF fbBlinkTimer.Q AND NOT bBlinkTimerQOld THEN
+    GVL_HMI.bBlink_1Hz := NOT GVL_HMI.bBlink_1Hz;
+END_IF
+
+bBlinkTimerQOld := fbBlinkTimer.Q;
+bFlash := GVL_HMI.bBlink_1Hz;
+
+GVL_HMI.stStatus.eMachineState := GVL_MASTER.stStatus.eMachineState;
 GVL_HMI.stStatus.eIndexState := GVL_MASTER.stStatus.eIndexState;
 GVL_HMI.stStatus.eIndexPosition := GVL_MASTER.stInputs.eIndexPosition;
 GVL_HMI.stStatus.bReady := GVL_MASTER.stStatus.bReady;
 GVL_HMI.stStatus.bBusy := GVL_MASTER.stStatus.bBusy;
 GVL_HMI.stStatus.bFaulted := GVL_MASTER.stStatus.bFaulted;
 GVL_HMI.stStatus.bTwoHandsSafe := GVL_MASTER.stInputs.bTwoHandsSafe;
-GVL_HMI.stStatus.bLoadingStationEaglePresent := GVL_MASTER.stInputs.bLoadingStationEaglePresent;
+// Physical operator-nest part-present indication.
+// This is intentionally NOT derived from nest tracking/result state.
+// It follows the real sensor immediately whenever the operator places/removes
+// a part in the nest currently located at the operator position.
+GVL_HMI.stStatus.bLoadingStationEaglePresent :=
+    GVL_IO.stInputs.bLoadingStationEaglePresent;
 GVL_HMI.stStatus.bRejectChutePartPresent := GVL_MASTER.stInputs.bRejectChutePartPresent;
 GVL_HMI.stStatus.bHeatStakeEaglePresent := GVL_MASTER.stInputs.bHeatStakeEaglePresent;
 GVL_HMI.stStatus.bHeatStakePatchPresent := GVL_MASTER.stInputs.bHeatStakePatchPresent;
@@ -42,8 +60,21 @@ GVL_HMI.stStatus.stVision := GVL_MASTER.stStatus.stVision;
 GVL_HMI.stStatus.eOperatorInstruction := GVL_MASTER.stStatus.eOperatorInstruction;
 GVL_HMI.stStatus.stOperatorStation := GVL_MASTER.stStatus.stOperatorStation;
 GVL_HMI.stStatus.aNest := GVL_MASTER.stStatus.aNest;
-GVL_HMI.stStatus.sMachineMessage := GVL_MASTER.stStatus.sMachineMessage;
+
+// Dedicated operator message remains available for a dedicated HMI label.
 GVL_HMI.stStatus.sOperatorMessage := GVL_MASTER.stStatus.sOperatorMessage;
+
+// Keep compatibility with the existing message control inherited from
+// Silicone: during AutoCycle, show the operator instruction in the main
+// message field when one is active.
+IF (GVL_MASTER.stStatus.eMachineState = E_MachineState.AutoCycle)
+    AND (LEN(GVL_MASTER.stStatus.sOperatorMessage) > 0)
+THEN
+    GVL_HMI.stStatus.sMachineMessage := GVL_MASTER.stStatus.sOperatorMessage;
+ELSE
+    GVL_HMI.stStatus.sMachineMessage := GVL_MASTER.stStatus.sMachineMessage;
+END_IF
+
 GVL_HMI.stStatus.sAutoCycleBlockReason := GVL_MASTER.stStatus.sAutoCycleBlockReason;
 GVL_HMI.stStatistics.aNest := GVL_MASTER.stStatus.aNestStatistics;
 CASE GVL_MASTER.stInputs.eIndexPosition OF
@@ -56,11 +87,27 @@ END_CASE
 CASE GVL_MASTER.stStatus.eMachineState OF
     E_MachineState.PowerUp: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM POWER UP'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sYELLOW; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sBLACK;
     E_MachineState.Initialising: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM INITIALIZING'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sYELLOW; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sBLACK;
-    E_MachineState.ReadyToStart: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM READY TO START'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREEN; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.ReadyToStart:
+        GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM READY TO START';
+        IF bFlash THEN
+            GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREEN;
+            GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+        ELSE
+            GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sWHITE;
+            GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sGREEN;
+        END_IF
     E_MachineState.AutoCycle: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM AUTO CYCLE'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREEN; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
     E_MachineState.Stopping: GVL_HMI.StatusHMI.sMachineStatusText := 'STOPPING'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREY; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
     E_MachineState.Stopped: GVL_HMI.StatusHMI.sMachineStatusText := 'CYCLE STOPPED'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREY; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
-    E_MachineState.Fault: GVL_HMI.StatusHMI.sMachineStatusText := 'IMMEDIATE FAULT'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sREDFail; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.Fault:
+        GVL_HMI.StatusHMI.sMachineStatusText := 'IMMEDIATE FAULT';
+        IF bFlash THEN
+            GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sREDFail;
+            GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+        ELSE
+            GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sWHITE;
+            GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sREDFail;
+        END_IF
     E_MachineState.Manual: GVL_HMI.StatusHMI.sMachineStatusText := 'MANUAL MODE'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sBLUEInProgress; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
 END_CASE]]></ST></Implementation>
   </POU>

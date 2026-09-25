@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_NestStageStatus" Id="{41cfcbf7-72aa-4c6c-9123-a1c0b2351e8d}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_NestStageStatus :
+(
+    Waiting := 0,
+    NotTested := 5,
+    Complete := 10,
+    Fail := 20
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

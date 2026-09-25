@@ -259,8 +259,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%CardOperational%/pp%",
     "actions": [
@@ -343,8 +342,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -399,8 +397,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_1InputOutputSignal%/pp%",
     "actions": [
@@ -483,8 +480,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -533,8 +529,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_2_InputOutputSignal%/pp%",
     "actions": [
@@ -617,8 +612,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -667,8 +661,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_3_InputOutputSignal%/pp%",
     "actions": [
@@ -751,8 +744,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -801,8 +793,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_4_InputOutputSignal%/pp%",
     "actions": [
@@ -885,8 +876,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -935,8 +925,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_5_InputOutputSignal%/pp%",
     "actions": [
@@ -1019,8 +1008,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1069,8 +1057,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_6_InputOutputSignal%/pp%",
     "actions": [
@@ -1153,8 +1140,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1203,8 +1189,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_7_InputOutputSignal%/pp%",
     "actions": [
@@ -1287,8 +1272,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1337,8 +1321,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_8_InputOutputSignal%/pp%",
     "actions": [
@@ -1421,8 +1404,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1471,8 +1453,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_9_InputOutputSignal%/pp%",
     "actions": [
@@ -1555,8 +1536,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1605,8 +1585,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_10_InputOutputSignal%/pp%",
     "actions": [
@@ -1689,8 +1668,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1739,8 +1717,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_11_InputOutputSignal%/pp%",
     "actions": [
@@ -1823,8 +1800,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1873,8 +1849,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_12_InputOutputSignal%/pp%",
     "actions": [
@@ -1957,8 +1932,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -2007,8 +1981,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_13_InputOutputSignal%/pp%",
     "actions": [
@@ -2091,8 +2064,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -2141,8 +2113,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_14_InputOutputSignal%/pp%",
     "actions": [
@@ -2225,8 +2196,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -2275,8 +2245,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_15_InputOutputSignal%/pp%",
     "actions": [
@@ -2359,8 +2328,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -2409,8 +2377,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%_16_InputOutputSignal%/pp%",
     "actions": [
@@ -2493,8 +2460,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 

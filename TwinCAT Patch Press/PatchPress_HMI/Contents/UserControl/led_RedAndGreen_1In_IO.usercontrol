@@ -31,8 +31,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%pp%Input%/pp%",
     "actions": [
@@ -115,8 +114,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 

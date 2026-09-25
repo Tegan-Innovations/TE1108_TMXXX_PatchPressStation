@@ -220,23 +220,17 @@ CASE eState OF
 
     E_IndexState.Idle:
 
-        // Current commissioning requirements:
-        //
+        // Index movement permissives follow the validated Silicone pattern.
+        // A move can start only when:
         // 1. A movement request is pending.
-        // 2. Manual movement is permitted.
-        // 3. Motion safety is available.
-        // 4. The two-hand signal is active.
-        //
-        // Support-cylinder feedback is temporarily excluded.
+        // 2. Machine/index permissives are valid.
+        // 3. ALL process station supports are physically home/retracted.
+        // 4. Motion Safety is available.
+        // 5. The validated TwinSAFE two-hand signal is active.
         IF bRequestPending
             AND bMovePermissive
-
-            // Temporarily disabled until the support cylinders
-            // are commissioned.
-            //
-            // AND bStationsHome
-            // AND bProcessToolingRetracted
-
+            AND bStationsHome
+            AND bProcessToolingRetracted
             AND bSafetyMotionPermitted
             AND bTwoHandsSafe
         THEN
@@ -329,9 +323,9 @@ CASE eState OF
 
     E_IndexState.RotatingPortA:
 
-        // Support output remains disabled until the cylinder is commissioned.
-        //
-        // bSupportRetractRequest := TRUE;
+        // The generic index-support cylinder is not fitted on Patch Press.
+        // The three station support cylinders are supervised through
+        // bStationsHome / bProcessToolingRetracted and bMovePermissive.
 
         // The two-hand condition must be evaluated first because
         // TwinSAFE may remove bSafetyMotionPermitted immediately when
@@ -444,9 +438,8 @@ CASE eState OF
 
     E_IndexState.StoppingPortB:
 
-        // Support output temporarily disabled.
-        //
-        // bSupportRetractRequest := TRUE;
+        // Station-support cylinders must remain physically retracted.
+        // bMovePermissive is lost if any support leaves its safe sensor.
 
         // Continue requiring two hands until the table is locked.
         // This check must be evaluated before bSafetyMotionPermitted.

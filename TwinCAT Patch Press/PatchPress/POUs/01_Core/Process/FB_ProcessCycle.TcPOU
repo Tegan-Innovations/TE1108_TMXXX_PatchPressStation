@@ -3,29 +3,15 @@
   <POU Name="FB_ProcessCycle" Id="{622f2bef-5510-4430-be8a-312a17e95422}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_ProcessCycle
 VAR
-    // STATE MACHINE
-    eState                     : E_CycleState := E_CycleState.Disabled;
+    eStateInternal      : E_CycleState := E_CycleState.Disabled;
 
-    // REQUESTS AND STATUS
-    stRequestsInternal         : ST_ProcessCycleRequests;
-    stStatusInternal           : ST_ProcessCycleStatus;
+    rtCycleTrigger      : R_TRIG;
+    tonSequenceTimeout  : TON;
 
-    // EDGE DETECTION
-    rtProcessCycleTrigger      : R_TRIG;
-
-    // SIMULATED PROCESS STATIONS
-    tonAssemblyProcess         : TON;
-    tonSiliconeProcess         : TON;
-	
-	// Timeout
-	tonProcessCycleTimeout 		: TON;
-	tonAutoCycleIdleTimeout 	: TON;
-	
-	bStopPending 				: BOOL;
-	
-	bSiliconeProcessCompleteLatched : BOOL;
-    bAssemblyProcessCompleteLatched : BOOL;
-	
+    bStopPending        : BOOL;
+    bStartIssued        : BOOL;
+    bIndexRequestIssued : BOOL;
+    bSequenceTimeoutFaultInternal : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -33,830 +19,314 @@ END_VAR]]></Declaration>
     <Method Name="Cyclic" Id="{e84fc6ef-4070-40dd-8010-e10d3773e159}">
       <Declaration><![CDATA[METHOD PUBLIC Cyclic
 VAR_INPUT
-    bEnable          : BOOL;
-    bResetRequest    : BOOL;
-    bStopRequest     : BOOL;
-    tSequenceTimeout : TIME;
+    bEnable                   : BOOL;
+    bResetRequest             : BOOL;
+    bStopRequest              : BOOL;
+    bTwoHandsSafe             : BOOL;
+    bSafetyOk                 : BOOL;
 
-    stInputs         : ST_ProcessCycleInputs;
+    bIndexReady               : BOOL;
+    bIndexLocked              : BOOL;
+    bIndexBusy                : BOOL;
+    bIndexFaulted             : BOOL;
+    bStationsIndexPermissive  : BOOL;
+    bOperatorIndexPermissive  : BOOL;
 
+    bAllStationsReady         : BOOL;
+    bAllStationsComplete      : BOOL;
+    bAnyStationFault          : BOOL;
+
+    tSequenceTimeout          : TIME;
 END_VAR
-
 VAR_OUTPUT
-    stRequests       : ST_ProcessCycleRequests;
-    stStatus         : ST_ProcessCycleStatus;
+    bStartStations            : BOOL;
+    bStopStations             : BOOL;
+    bRequestIndex             : BOOL;
+
+    bCycleActive              : BOOL;
+    bCompletePulse            : BOOL;
+    bFault                    : BOOL;
+    bSequenceTimeoutFault     : BOOL;
+    bStopPendingStatus        : BOOL;
+
+    eState                    : E_CycleState;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// The Process Cycle coordinates objects.
-// It does not operate physical outputs directly.
+        <ST><![CDATA[
+// Generic indexed-machine process coordinator.
+//
+// Commissioning sequence aligned with the validated Silicone Station pattern:
+//
+//   AutoCycle enabled
+//      -> initialise
+//      -> wait until stations are Ready and supports are physically down
+//      -> wait for a FRESH validated two-hand actuation
+//      -> validate index permissives
+//      -> request ONE index movement
+//      -> wait for index complete
+//      -> start Patch Dispense / Heat Stake / Vision in parallel
+//      -> each station extends its own support
+//      -> 3 s simulated process
+//      -> each station retracts its support
+//      -> all stations Complete
+//      -> CycleComplete
+//      -> wait for next two-hand actuation
+//
+// The index FB itself remains the final authority for movement:
+// it requires Safety Motion Permitted, Two-Hand Safe, and all station
+// supports physically retracted before energising the index outputs.
 
+bStartStations := FALSE;
+bStopStations := FALSE;
+bRequestIndex := FALSE;
+bCompletePulse := FALSE;
 
-// =========================================================
-// CYCLIC DEFAULTS
-// =========================================================
+rtCycleTrigger(CLK := bTwoHandsSafe);
 
-// stRequestsInternal.bStartProcessStation 			:= FALSE;
-// stRequestsInternal.bStopProcessStation 				:= FALSE;
-// stRequestsInternal.bCaptureProcessResult 			:= FALSE;
-// stRequestsInternal.bStoreProcessResult 				:= FALSE;
+// ---------------------------------------------------------
+// ENABLE / RESET / STOP HANDLING
+// ---------------------------------------------------------
 
-stRequestsInternal.bSiliconeSupportExtend 			:= FALSE;
-stRequestsInternal.bSiliconeSupportRetract 			:= FALSE;
-stRequestsInternal.bAssemblySupportExtend 			:= FALSE;
-stRequestsInternal.bAssemblySupportRetract 			:= FALSE;
+IF bResetRequest THEN
+    bStopPending := FALSE;
+    bStartIssued := FALSE;
+    bIndexRequestIssued := FALSE;
+    bSequenceTimeoutFaultInternal := FALSE;
 
-stRequestsInternal.bStartSiliconeProcess 			:= FALSE;
-stRequestsInternal.bStopSiliconeProcess 			:= FALSE;
-stRequestsInternal.bCaptureSiliconeResult 			:= FALSE;
-stRequestsInternal.bStoreSiliconeResult 			:= FALSE;
+    IF bEnable THEN
+        eStateInternal := E_CycleState.Initialising;
+    ELSE
+        eStateInternal := E_CycleState.Disabled;
+    END_IF
 
-stRequestsInternal.bStartAssemblyProcess 			:= FALSE;
-stRequestsInternal.bStopAssemblyProcess 			:= FALSE;
-stRequestsInternal.bCaptureAssemblyResult 			:= FALSE;
-stRequestsInternal.bStoreAssemblyResult 			:= FALSE;
+ELSIF NOT bEnable THEN
+    bStopPending := FALSE;
+    bStartIssued := FALSE;
+    bIndexRequestIssued := FALSE;
+    bSequenceTimeoutFaultInternal := FALSE;
+    eStateInternal := E_CycleState.Disabled;
 
-stRequestsInternal.bPrepareOperatorExchange 		:= FALSE;
-stRequestsInternal.bConfirmOperatorExchange 		:= FALSE;
+ELSE
+    // Enter the ProcessCycle automatically when the machine enters AutoCycle.
+    IF eStateInternal = E_CycleState.Disabled THEN
+        bStopPending := FALSE;
+        bStartIssued := FALSE;
+        bIndexRequestIssued := FALSE;
+        eStateInternal := E_CycleState.Initialising;
+    END_IF
 
-stRequestsInternal.bRequestIndex 					:= FALSE;
-stRequestsInternal.bRequestIndexRecovery 			:= FALSE;
-stRequestsInternal.bUpdateNestPositions 			:= FALSE;
+    IF bStopRequest THEN
+        bStopPending := TRUE;
+    END_IF
+END_IF
 
-stStatusInternal.bCompletePulse 					:= FALSE;
+// ---------------------------------------------------------
+// FAULT SUPERVISION
+// ---------------------------------------------------------
 
-// =========================================================
-// PROCESS TRIGGER EDGE DETECTION
-// =========================================================
+IF bIndexFaulted
+    OR bAnyStationFault
+    OR (bEnable AND NOT bSafetyOk)
+THEN
+    eStateInternal := E_CycleState.Fault;
+END_IF
 
-rtProcessCycleTrigger(
-    CLK := stInputs.bTwoHandsSafe
-);
-
-// =========================================================
-// TIMEOUTS
-// =========================================================
-
-tonProcessCycleTimeout(
-    IN := eState <> E_CycleState.Disabled
-        AND eState <> E_CycleState.Initialising
-        AND eState <> E_CycleState.WaitingForProcessCycleTrigger
-        AND eState <> E_CycleState.CycleComplete
-        AND eState <> E_CycleState.ControlledStop
-		AND eState <> E_CycleState.WaitingForOperatorExchange
-        AND eState <> E_CycleState.Fault,
+// Do not supervise the idle/waiting states.
+tonSequenceTimeout(
+    IN := bEnable
+        AND (eStateInternal <> E_CycleState.Disabled)
+        AND (eStateInternal <> E_CycleState.WaitingForProcessCycleTrigger)
+        AND (eStateInternal <> E_CycleState.CycleComplete)
+        AND (eStateInternal <> E_CycleState.ControlledStop)
+        AND (eStateInternal <> E_CycleState.Fault),
     PT := tSequenceTimeout
 );
 
-IF tonProcessCycleTimeout.Q THEN
-	stStatusInternal.bTimeoutFault := TRUE;
-    eState := E_CycleState.Fault;
+IF tonSequenceTimeout.Q THEN
+    bSequenceTimeoutFaultInternal := TRUE;
+    eStateInternal := E_CycleState.Fault;
 END_IF
 
+// ---------------------------------------------------------
+// PROCESS CYCLE
+// ---------------------------------------------------------
 
-/// =========================================================
-// GLOBAL STATE CONTROL
-// =========================================================
-
-IF bResetRequest THEN
-    // A reset starts a new process-cycle context.
-    bStopPending := FALSE;
-    bSiliconeProcessCompleteLatched := FALSE;
-    bAssemblyProcessCompleteLatched := FALSE;
-    stStatusInternal.bTimeoutFault := FALSE;
-    eState := E_CycleState.Initialising;
-
-ELSIF NOT bEnable THEN
-    // No Stop request may remain stored while the
-    // Process Cycle is disabled.
-    bStopPending := FALSE;
-    eState := E_CycleState.Disabled;
-
-END_IF
-
-// =========================================================
-// STOP REQUEST LATCH
-// ========================================================
-
-// Memorise Stop only while the Process Cycle is enabled.
-// The request remains stored until the current process and
-// operator disposition have completed.
-IF bEnable
-    AND NOT bResetRequest AND bStopRequest THEN
-    bStopPending := TRUE;
-END_IF
-
-// =========================================================
-// PROCESS CYCLE STATE MACHINE
-// =========================================================
-
-CASE eState OF
-
-    // -----------------------------------------------------
-    // DISABLED
-    // -----------------------------------------------------
+CASE eStateInternal OF
 
     E_CycleState.Disabled:
-
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.None;
-
-        IF bEnable THEN
-
-            eState :=
-                E_CycleState.Initialising;
-
-        END_IF
-
-
-    // -----------------------------------------------------
-    // INITIALISING
-    // -----------------------------------------------------
+        // Waiting for machine AutoCycle.
 
     E_CycleState.Initialising:
+        bStartIssued := FALSE;
+        bIndexRequestIssued := FALSE;
 
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.InitialisingProcessCycle;
-
-        IF bEnable
-            AND stInputs.bSafetyOk
-            AND stInputs.bIndexReady
-            AND stInputs.bIndexLocked
-            AND stInputs.bSiliconeSupportRetracted
-            AND stInputs.bAssemblySupportRetracted
+        // Match the Silicone philosophy:
+        // do not arm the operator trigger until the index is stable AND all
+        // process tooling is physically in the safe/retracted position.
+        IF bSafetyOk
+            AND bIndexReady
+            AND bIndexLocked
+            AND bStationsIndexPermissive
+            AND bOperatorIndexPermissive
+            AND bAllStationsReady
         THEN
-
-            eState :=
-                E_CycleState.WaitingForProcessCycleTrigger;
-
+            eStateInternal := E_CycleState.WaitingForProcessCycleTrigger;
         END_IF
 
+    E_CycleState.WaitingForProcessCycleTrigger:
 
-    // -----------------------------------------------------
-    // WAITING FOR PROCESS CYCLE TRIGGER
-    // -----------------------------------------------------
+        IF bStopPending THEN
+            eStateInternal := E_CycleState.ControlledStop;
 
-   E_CycleState.WaitingForProcessCycleTrigger:
-
-		stStatusInternal.eMessage := E_ProcessCycleMessage.WaitingForProcessCycleTrigger;
-		// -----------------------------------------------------
-		// SAFE STOP POINT
-		// -----------------------------------------------------
-		// No automatic process is active at this point.
-		// A pending Stop request may therefore be executed
-		// immediately without starting another cycle.
-		IF bStopPending THEN
-	
-			bStopPending := FALSE;
-			eState := E_CycleState.ControlledStop;
-	
-		ELSIF stInputs.bIndexFaulted
-			OR stInputs.bSiliconeSupportFaulted
-			OR stInputs.bAssemblySupportFaulted
-		THEN
-			eState := E_CycleState.Fault;
-	
-		ELSIF rtProcessCycleTrigger.Q
-			AND stInputs.bSafetyOk
-			AND stInputs.bIndexMoveAllowed
-			AND stInputs.bIndexReady
-			//AND stInputs.bIndexLocked
-			AND stInputs.bSiliconeSupportRetracted
-			AND stInputs.bAssemblySupportRetracted
-		THEN
-			eState := E_CycleState.ValidatingIndexPermissives;
-		END_IF
-		
-		// -----------------------------------------------------
-		// PREPARING OPERATOR EXCHANGE
-		// -----------------------------------------------------
-		
-	E_CycleState.PreparingOperatorExchange:
-		
-			stStatusInternal.eMessage :=
-				E_ProcessCycleMessage.PreparingOperatorExchange;
-		
-			stRequestsInternal.bPrepareOperatorExchange := TRUE;
-		
-			eState :=
-				E_CycleState.WaitingForOperatorExchange;
-		// -----------------------------------------------------
-		// WAITING FOR OPERATOR EXCHANGE
-		// -----------------------------------------------------
-		
-	E_CycleState.WaitingForOperatorExchange:
-		
-			stStatusInternal.eMessage :=
-				E_ProcessCycleMessage.WaitingOperatorExchange;
-	
-		
-			IF stInputs.bOperatorExchangeComplete THEN
-		
-				eState :=
-					E_CycleState.ConfirmingOperatorExchange;
-		
-			END_IF
-
-	// -----------------------------------------------------
-	// CONFIRMING OPERATOR EXCHANGE
-	// -----------------------------------------------------
-	
-	E_CycleState.ConfirmingOperatorExchange:
-	
-		stStatusInternal.eMessage := E_ProcessCycleMessage.ConfirmingOperatorExchange;
-		stRequestsInternal.bConfirmOperatorExchange := TRUE;
-		// -----------------------------------------------------
-		// EXECUTE PENDING STOP
-		// -----------------------------------------------------
-		// The automatic cycle and operator disposition are
-		// complete. A pending Stop request may now be executed.
-		IF bStopPending THEN
-	
-			bStopPending := FALSE;
-			eState := E_CycleState.ControlledStop;
-		ELSE
-			eState := E_CycleState.WaitingForProcessCycleTrigger;
-		END_IF
-    // -----------------------------------------------------
-    // VALIDATING INDEX PERMISSIVES
-    // -----------------------------------------------------
+        // Fresh two-hand actuation starts the cycle, exactly as on Silicone.
+        ELSIF rtCycleTrigger.Q
+            AND bSafetyOk
+            AND bIndexReady
+            AND bIndexLocked
+            AND NOT bIndexBusy
+            AND bStationsIndexPermissive
+            AND bOperatorIndexPermissive
+            AND bAllStationsReady
+        THEN
+            eStateInternal := E_CycleState.ValidatingIndexPermissives;
+        END_IF
 
     E_CycleState.ValidatingIndexPermissives:
 
-        stStatusInternal.eMessage := E_ProcessCycleMessage.ValidatingIndexPermissives;
-		
-        IF stInputs.bIndexFaulted THEN
-            eState :=E_CycleState.Fault;
+        IF bStopPending THEN
+            eStateInternal := E_CycleState.ControlledStop;
 
-        ELSIF stInputs.bIndexMoveAllowed
-            AND stInputs.bIndexReady
-            AND stInputs.bIndexLocked
-            AND stInputs.bSiliconeSupportRetracted
-            AND stInputs.bAssemblySupportRetracted
+        ELSIF bSafetyOk
+            AND bStationsIndexPermissive
+            AND bOperatorIndexPermissive
+            AND bIndexReady
+            AND bIndexLocked
+            AND NOT bIndexBusy
         THEN
-
-            eState :=
-                E_CycleState.RequestingIndexMove;
-
+            eStateInternal := E_CycleState.RequestingIndexMove;
         END_IF
-
-
-    // -----------------------------------------------------
-    // REQUESTING INDEX MOVE
-    // -----------------------------------------------------
 
     E_CycleState.RequestingIndexMove:
-
-        stRequestsInternal.bRequestIndex := TRUE;
-
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.RequestingIndexMove;
-
-        IF stInputs.bIndexRequestAccepted THEN
-
-            eState :=
-                E_CycleState.WaitingForIndexStart;
-
-        END_IF
-
-
-    // -----------------------------------------------------
-    // WAITING FOR INDEX START
-    // -----------------------------------------------------
+        // One-scan request. FB_IndexTable4 still requires Two-Hand Safe before
+        // it energises Coil0/Coil1.
+        bRequestIndex := TRUE;
+        bIndexRequestIssued := TRUE;
+        eStateInternal := E_CycleState.WaitingForIndexStart;
 
     E_CycleState.WaitingForIndexStart:
 
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.WaitingForIndexStart;
+        IF bStopPending THEN
+            eStateInternal := E_CycleState.ControlledStop;
 
-        IF stInputs.bIndexFaulted THEN
-
-            eState :=
-                E_CycleState.Fault;
-
-        ELSIF stInputs.bIndexBusy
-            OR stInputs.bIndexDone
-        THEN
-
-            eState :=
-                E_CycleState.WaitingForIndexComplete;
-
+        ELSIF bIndexBusy THEN
+            eStateInternal := E_CycleState.WaitingForIndexComplete;
         END_IF
-
-
-    // -----------------------------------------------------
-    // WAITING FOR INDEX COMPLETE
-    // -----------------------------------------------------
 
     E_CycleState.WaitingForIndexComplete:
 
-        stStatusInternal.eMessage :=E_ProcessCycleMessage.WaitingForIndexComplete;
+        IF bStopPending THEN
+            eStateInternal := E_CycleState.ControlledStop;
 
-       IF stInputs.bIndexFaulted THEN
-			eState := E_CycleState.Fault;
-		
-		ELSIF stInputs.bIndexDone THEN
-		
-			IF stInputs.bIndexSamePositionDetected THEN
-				stStatusInternal.eMessage := E_ProcessCycleMessage.IndexSamePositionDetected;
-				eState := E_CycleState.CycleComplete;
-		
-			ELSIF stInputs.bSiliconeProcessRequired
-				OR stInputs.bAssemblyProcessRequired
-			THEN
-				eState := E_CycleState.RequestingSupportsExtend;
-		
-			ELSE
-				eState := E_CycleState.CycleComplete;
-			END_IF
-		
-		END_IF
-
-
-    // -----------------------------------------------------
-    // REQUESTING SUPPORTS EXTEND
-    // -----------------------------------------------------
-
-    E_CycleState.RequestingSupportsExtend:
-
-        stRequestsInternal.bSiliconeSupportExtend := stInputs.bSiliconeProcessRequired;
-		stRequestsInternal.bAssemblySupportExtend := FALSE;
-
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.RequestingSupportsExtend;
-
-        eState :=
-            E_CycleState.WaitingForSupportsExtended;
-
-
-    // -----------------------------------------------------
-    // WAITING FOR SUPPORTS EXTENDED
-    // -----------------------------------------------------
-
-    E_CycleState.WaitingForSupportsExtended:
-
-		stRequestsInternal.bSiliconeSupportExtend := stInputs.bSiliconeProcessRequired;
-		stRequestsInternal.bAssemblySupportExtend := FALSE;
-	
-		stStatusInternal.eMessage :=
-			E_ProcessCycleMessage.WaitingForSupportsExtended;
-	
-		IF (stInputs.bSiliconeProcessRequired AND stInputs.bSiliconeSupportFaulted)
-			OR (stInputs.bAssemblyProcessRequired AND stInputs.bAssemblySupportFaulted)
-		THEN
-			eState := E_CycleState.Fault;
-	
-		ELSIF NOT stInputs.bSiliconeProcessRequired
-			OR stInputs.bSiliconeSupportExtended
-		THEN
-			eState := E_CycleState.PreparingProcessStations;
-		END_IF
-
-
-    // -----------------------------------------------------
-    // PREPARING PROCESS STATIONS
-    // -----------------------------------------------------
+        ELSIF NOT bIndexBusy
+            AND bIndexReady
+            AND bIndexLocked
+        THEN
+            bIndexRequestIssued := FALSE;
+            eStateInternal := E_CycleState.PreparingProcessStations;
+        END_IF
 
     E_CycleState.PreparingProcessStations:
 
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.PreparingProcessStation;
+        // After the index has locked in its new position, ensure all three
+        // station objects are ready before issuing process start.
+        IF bStopPending THEN
+            eStateInternal := E_CycleState.ControlledStop;
 
-        eState :=
-            E_CycleState.StartingProcesses;
+        ELSIF bAllStationsReady THEN
+            eStateInternal := E_CycleState.StartingProcesses;
+        END_IF
 
+    E_CycleState.StartingProcesses:
+        bStartStations := TRUE;
+        bStartIssued := TRUE;
+        eStateInternal := E_CycleState.WaitingForProcessesRunning;
 
-    // -----------------------------------------------------
-	// STARTING PROCESSES
-	// -----------------------------------------------------
+    E_CycleState.WaitingForProcessesRunning:
 
-	E_CycleState.StartingProcesses:
-	
-		stStatusInternal.eMessage := E_ProcessCycleMessage.StartingProcessEquipment;
-			
-		// Reset completion memory for the new process cycle.
-		bSiliconeProcessCompleteLatched := FALSE;
-		bAssemblyProcessCompleteLatched := FALSE;
-	
-		// Start only the processes required at the current
-		// table positions.
-		stRequestsInternal.bStartSiliconeProcess :=
-			stInputs.bSiliconeProcessRequired;
-	
-		stRequestsInternal.bStartAssemblyProcess :=
-			stInputs.bAssemblyProcessRequired;
-	
-		eState :=
-			E_CycleState.WaitingForProcessesRunning;
+        IF bStopPending THEN
+            bStopStations := TRUE;
+            eStateInternal := E_CycleState.ControlledStop;
 
+        // IMPORTANT:
+        // If no physical nest at any process station contains a part, all
+        // stations are intentionally skipped. In that case
+        // bAllStationsReady remains TRUE forever, while
+        // bAllStationsComplete is already TRUE.
+        //
+        // Without this branch the ProcessCycle waits here until the global
+        // sequence timeout and sends the machine to Immediate Fault.
+        ELSIF bAllStationsComplete THEN
+            eStateInternal := E_CycleState.WaitingForProcessesComplete;
 
-	 // -----------------------------------------------------
-	// WAITING FOR PROCESSES RUNNING
-	// -----------------------------------------------------
-	
-	E_CycleState.WaitingForProcessesRunning:
-	
-	    // Raise Assembly Support only after the flipping station
-    	// has reached the physical 0 degree position.
-    	stRequestsInternal.bAssemblySupportExtend :=
-        stInputs.bAssemblyProcessRequired
-        AND
-        (
-            stInputs.bAssemblyAtZeroPosition
-            OR stInputs.bAssemblySupportExtended
-        );
+        // Normal case: at least one required station has left Ready and
+        // entered its process sequence.
+        ELSIF NOT bAllStationsReady THEN
+            eStateInternal := E_CycleState.WaitingForProcessesComplete;
+        END_IF
 
-		IF stInputs.bSiliconeProcessRequired
-			AND stInputs.bSiliconeProcessComplete
-		THEN
-			bSiliconeProcessCompleteLatched := TRUE;
-		END_IF
-		
-		IF stInputs.bAssemblyProcessRequired
-			AND stInputs.bAssemblyProcessComplete
-		THEN
-			bAssemblyProcessCompleteLatched := TRUE;
-		END_IF
-	
-		stStatusInternal.eMessage :=
-			E_ProcessCycleMessage.StartingProcessEquipment;
-	
-		// Process equipment fault
-		IF (stInputs.bSiliconeProcessRequired
-				AND stInputs.bSiliconeProcessFaulted)
-			OR
-		   (stInputs.bAssemblyProcessRequired
-				AND stInputs.bAssemblyProcessFaulted)
-		THEN
-	
-			eState :=
-				E_CycleState.Fault;
-	
-		// All required processes have started
-		ELSIF
-			(NOT stInputs.bSiliconeProcessRequired
-				OR stInputs.bSiliconeProcessBusy
-				OR bSiliconeProcessCompleteLatched)
-			AND
-			(NOT stInputs.bAssemblyProcessRequired
-				OR stInputs.bAssemblyProcessBusy
-				OR bAssemblyProcessCompleteLatched)
-		THEN
-	
-			eState :=
-				E_CycleState.WaitingForProcessesComplete;
-	
-		END_IF
+    E_CycleState.WaitingForProcessesComplete:
 
+        IF bStopPending THEN
+            bStopStations := TRUE;
+            eStateInternal := E_CycleState.ControlledStop;
 
-    // -----------------------------------------------------
-	// WAITING FOR PROCESSES COMPLETE
-	// -----------------------------------------------------
-	
-	E_CycleState.WaitingForProcessesComplete:
-		
-			stRequestsInternal.bAssemblySupportExtend :=
-		stInputs.bAssemblyProcessRequired
-		AND
-		(
-			stInputs.bAssemblyAtZeroPosition
-			OR stInputs.bAssemblySupportExtended
-		);
-	
-		stStatusInternal.eMessage :=
-			E_ProcessCycleMessage.WaitingForProcessesComplete;
-			
-		// Latch process completion.
-		// Each process may complete at a different time and may be
-		// reset by the machine coordinator after its result is stored.
-		IF stInputs.bSiliconeProcessRequired AND stInputs.bSiliconeProcessComplete THEN
-			bSiliconeProcessCompleteLatched := TRUE;
-		END_IF
-	
-		IF stInputs.bAssemblyProcessRequired AND stInputs.bAssemblyProcessComplete THEN
-			bAssemblyProcessCompleteLatched := TRUE;
-		END_IF
-	
-		// Process fault
-		IF (stInputs.bSiliconeProcessRequired
-				AND stInputs.bSiliconeProcessFaulted)
-			OR
-		   (stInputs.bAssemblyProcessRequired
-				AND stInputs.bAssemblyProcessFaulted)
-		THEN
-	
-			eState :=
-				E_CycleState.Fault;
-	
-		// All required processes completed
-		ELSIF
-			(NOT stInputs.bSiliconeProcessRequired
-				OR bSiliconeProcessCompleteLatched)
-			AND
-			(NOT stInputs.bAssemblyProcessRequired
-				OR bAssemblyProcessCompleteLatched)
-		THEN
-	
-			eState :=
-				E_CycleState.RequestingSupportsRetract;
-	
-		END_IF
-
-    // -----------------------------------------------------
-    // REQUESTING SUPPORTS RETRACT
-    // -----------------------------------------------------
-
-    E_CycleState.RequestingSupportsRetract:
-
-        stRequestsInternal.bSiliconeSupportRetract := NOT stInputs.bSiliconeSupportRetracted;
-		stRequestsInternal.bAssemblySupportRetract := NOT stInputs.bAssemblySupportRetracted;
-
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.RequestingSupportsRetract;
-
-        eState :=
-            E_CycleState.WaitingForSupportsRetracted;
-
-
-    // -----------------------------------------------------
-    // WAITING FOR SUPPORTS RETRACTED
-    // -----------------------------------------------------
-
-    E_CycleState.WaitingForSupportsRetracted:
-
-        stRequestsInternal.bSiliconeSupportRetract := NOT stInputs.bSiliconeSupportRetracted;
-		stRequestsInternal.bAssemblySupportRetract := NOT stInputs.bAssemblySupportRetracted;
-
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.WaitingForSupportsRetracted;
-
-        IF (stInputs.bSiliconeProcessRequired AND stInputs.bSiliconeSupportFaulted)
-			OR (stInputs.bAssemblyProcessRequired AND stInputs.bAssemblySupportFaulted)
-		THEN
-		
-			eState := E_CycleState.Fault;
-		
-		ELSIF (NOT stInputs.bSiliconeProcessRequired OR stInputs.bSiliconeSupportRetracted)
-			AND (NOT stInputs.bAssemblyProcessRequired OR stInputs.bAssemblySupportRetracted) 
-			AND stInputs.bIndexMoveAllowed
-		THEN
-		
-			eState := E_CycleState.CycleComplete;
-		
-		END_IF
-
-
-    // -----------------------------------------------------
-    // CYCLE COMPLETE
-    // -----------------------------------------------------
+        ELSIF bAllStationsComplete
+            AND bStationsIndexPermissive
+        THEN
+            // Complete is accepted only after all three supports have
+            // physically returned to their safe/retracted sensors.
+            bStartIssued := FALSE;
+            eStateInternal := E_CycleState.CycleComplete;
+        END_IF
 
     E_CycleState.CycleComplete:
+        bCompletePulse := TRUE;
 
-        stStatusInternal.bCompletePulse := TRUE;
+        IF bStopPending THEN
+            eStateInternal := E_CycleState.ControlledStop;
+        ELSE
+            eStateInternal := E_CycleState.WaitingForProcessCycleTrigger;
+        END_IF
 
-        stStatusInternal.eMessage :=
-            E_ProcessCycleMessage.ProcessCycleComplete;
+    E_CycleState.ControlledStop:
+        bStopStations := TRUE;
 
-        eState :=
-    		E_CycleState.PreparingOperatorExchange;
+        // Safe stop is complete only when the index has stopped and every
+        // support cylinder is physically retracted.
+        IF NOT bIndexBusy
+            AND bStationsIndexPermissive
+        THEN
+            bStopPending := FALSE;
+            eStateInternal := E_CycleState.Disabled;
+        END_IF
 
-
-    // -----------------------------------------------------
-	// CONTROLLED STOP
-	// -----------------------------------------------------
-	
-	E_CycleState.ControlledStop:
-	
-		// Stop both station processes.
-		stRequestsInternal.bStopSiliconeProcess := TRUE;
-		stRequestsInternal.bStopAssemblyProcess := TRUE;
-	
-		// Retract supports only after their respective process has stopped.
-        // This prevents the Silicone Support from moving away while the IVEK
-        // dispense sequence is still active.
-		stRequestsInternal.bSiliconeSupportRetract := NOT stInputs.bSiliconeProcessBusy;
-
-        // Keep the Assembly Support in position until the flipping station has
-        // completed its controlled return to home.
-		stRequestsInternal.bAssemblySupportRetract := NOT stInputs.bAssemblyProcessBusy;
-	
-		stStatusInternal.eMessage :=
-			E_ProcessCycleMessage.ControlledStopping;
-	
-		// Controlled stop is complete only when:
-		// - Index is stopped
-		// - Silicone process is not running
-		// - Assembly process is not running
-		// - Both supports are retracted
-		IF NOT stInputs.bIndexBusy
-			AND NOT stInputs.bSiliconeProcessBusy
-			AND NOT stInputs.bAssemblyProcessBusy
-			AND stInputs.bSiliconeSupportRetracted
-			AND stInputs.bAssemblySupportRetracted
-		THEN
-	
-			eState :=
-				E_CycleState.Disabled;
-	
-		END_IF
-
-    // -----------------------------------------------------
-    // FAULT
-    // -----------------------------------------------------
-	
-	E_CycleState.Fault:
-	
-		// Stop both station processes.
-		stRequestsInternal.bStopSiliconeProcess := TRUE;
-		stRequestsInternal.bStopAssemblyProcess := TRUE;
-	
-		stStatusInternal.eMessage :=
-			E_ProcessCycleMessage.ProcessCycleFault;
-
-END_CASE
-
-
-// =========================================================
-// STATUS MAPPING
-// =========================================================
-
-stStatusInternal.eState :=
-    eState;
-
-stStatusInternal.bActive :=
-    bEnable
-    AND eState <> E_CycleState.Disabled;
-
-stStatusInternal.bIdle :=
-    eState = E_CycleState.WaitingForProcessCycleTrigger;
-
-stStatusInternal.bFaulted :=
-    eState = E_CycleState.Fault;
-
-stStatusInternal.bWaitingForPart :=
-    FALSE;
-
-stStatusInternal.bWaitingForOperator :=
-    FALSE;
-
-stStatusInternal.bWaitingForIndex :=
-    eState = E_CycleState.ValidatingIndexPermissives
-    OR eState = E_CycleState.RequestingIndexMove
-    OR eState = E_CycleState.WaitingForIndexStart
-    OR eState = E_CycleState.WaitingForIndexComplete;
-
-stStatusInternal.bWaitingForSupports :=
-    eState = E_CycleState.RequestingSupportsExtend
-    OR eState = E_CycleState.WaitingForSupportsExtended
-    OR eState = E_CycleState.RequestingSupportsRetract
-    OR eState = E_CycleState.WaitingForSupportsRetracted;
-
-stStatusInternal.bSiliconeSupportExtended :=
-    stInputs.bSiliconeSupportExtended;
-
-stStatusInternal.bSiliconeSupportRetracted :=
-    stInputs.bSiliconeSupportRetracted;
-
-stStatusInternal.bAssemblySupportExtended :=
-    stInputs.bAssemblySupportExtended;
-
-stStatusInternal.bAssemblySupportRetracted :=
-    stInputs.bAssemblySupportRetracted;
-
-// =========================================================
-// PROCESS STATUS
-// =========================================================
-
-stStatusInternal.bSiliconeProcessRunning :=
-    stInputs.bSiliconeProcessRequired
-    AND stInputs.bSiliconeProcessBusy;
-
-stStatusInternal.bSiliconeProcessComplete :=
-    NOT stInputs.bSiliconeProcessRequired
-    OR stInputs.bSiliconeProcessComplete;
-
-
-stStatusInternal.bAssemblyProcessRunning :=
-    stInputs.bAssemblyProcessRequired
-    AND stInputs.bAssemblyProcessBusy;
-
-stStatusInternal.bAssemblyProcessComplete :=
-    NOT stInputs.bAssemblyProcessRequired
-    OR stInputs.bAssemblyProcessComplete;
-// =========================================================
-// MESSAGE MAPPING
-// =========================================================
-
-CASE stStatusInternal.eMessage OF
-
-    E_ProcessCycleMessage.None:
-        stStatusInternal.sMessage := '';
-	
-	E_ProcessCycleMessage.IndexSamePositionDetected:
-    stStatusInternal.sMessage :=
-        'Index returned to the same position - press and hold the two-hand controls to retry';
-
-    E_ProcessCycleMessage.InitialisingProcessCycle:
-        stStatusInternal.sMessage := 'Initialising automatic process cycle';
-
-    E_ProcessCycleMessage.WaitingForProcessCycleTrigger:
-        stStatusInternal.sMessage := 'Place both hands on the two-hand controls to start the cycle';
-
-    E_ProcessCycleMessage.ValidatingIndexPermissives:
-        stStatusInternal.sMessage := 'Validating index movement conditions';
-
-    E_ProcessCycleMessage.RequestingIndexMove:
-        stStatusInternal.sMessage := 'Requesting index table movement';
-
-    E_ProcessCycleMessage.WaitingForIndexStart:
-        stStatusInternal.sMessage := 'Waiting for index table movement to start';
-
-    E_ProcessCycleMessage.WaitingForIndexComplete:
-        stStatusInternal.sMessage := 'Index table moving';
-
-    E_ProcessCycleMessage.RequestingSupportsExtend:
-        stStatusInternal.sMessage := 'Requesting support extension';
-
-    E_ProcessCycleMessage.WaitingForSupportsExtended:
-        stStatusInternal.sMessage := 'Waiting for Silicone and Assembly Supports to extend';
-
-    E_ProcessCycleMessage.PreparingProcessStation:
-        stStatusInternal.sMessage := 'Preparing Assembly and Silicone processes';
-
-    E_ProcessCycleMessage.StartingProcessEquipment:
-        stStatusInternal.sMessage := 'Starting Assembly and Silicone processes';
-
-    E_ProcessCycleMessage.WaitingForProcessesComplete:
-        //stStatusInternal.sMessage := 'Assembly and Silicone processes in progress';
-		IF stInputs.bSiliconeProcessRequired AND stInputs.bAssemblyProcessRequired THEN
-			
-			stStatusInternal.sMessage := 'Assembly and Silicone processes in progress';
-	
-		ELSIF stInputs.bSiliconeProcessRequired THEN
-	
-			stStatusInternal.sMessage := 'Silicone in progress';
-	
-		ELSIF stInputs.bAssemblyProcessRequired THEN
-	
-			stStatusInternal.sMessage := 'Assembly in progress';
-	
-		ELSE
-	
-			stStatusInternal.sMessage := 'Processes in progress';
-	
-		END_IF
-
-    E_ProcessCycleMessage.RequestingSupportsRetract:
-        stStatusInternal.sMessage := 'Requesting support retraction';
-
-    E_ProcessCycleMessage.WaitingForSupportsRetracted:
-        stStatusInternal.sMessage := 'Waiting for Silicone and Assembly Supports to retract';
-
-    E_ProcessCycleMessage.ProcessCycleComplete:
-        stStatusInternal.sMessage := 'Automatic process cycle complete';
-
-    E_ProcessCycleMessage.ControlledStopping:
-        stStatusInternal.sMessage := 'Stopping automatic cycle safely';
-
-    E_ProcessCycleMessage.ProcessCycleFault:
-        stStatusInternal.sMessage := 'Automatic process cycle fault';
+    E_CycleState.Fault:
+        bStopStations := TRUE;
 
 ELSE
-
-    stStatusInternal.sMessage := '';
+    eStateInternal := E_CycleState.Fault;
 
 END_CASE
 
+bCycleActive :=
+    (eStateInternal <> E_CycleState.Disabled)
+    AND (eStateInternal <> E_CycleState.Fault);
 
-
-// =========================================================
-// OUTPUT PUBLICATION
-// =========================================================
-
-stRequests :=
-    stRequestsInternal;
-
-stStatus :=
-    stStatusInternal;]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="Initialise" Id="{927d8406-5eba-41e0-aa89-1016258d8a70}">
-      <Declaration><![CDATA[METHOD PUBLIC Initialise]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[eState := E_CycleState.Disabled;
-
-bStopPending := FALSE;
-bSiliconeProcessCompleteLatched := FALSE;
-bAssemblyProcessCompleteLatched := FALSE;
-
-stRequestsInternal.bPrepareOperatorExchange := FALSE;
-stRequestsInternal.bConfirmOperatorExchange := FALSE;
-stRequestsInternal.bRequestIndex := FALSE;
-stRequestsInternal.bRequestIndexRecovery := FALSE;
-stRequestsInternal.bUpdateNestPositions := FALSE;
-stStatusInternal.bCompletePulse := FALSE;
-stStatusInternal.bFaulted := FALSE;
-stStatusInternal.bTimeoutFault := FALSE;
-stStatusInternal.eMessage := E_ProcessCycleMessage.None;]]></ST>
+bFault := (eStateInternal = E_CycleState.Fault);
+bSequenceTimeoutFault := bSequenceTimeoutFaultInternal;
+bStopPendingStatus := bStopPending;
+eState := eStateInternal;
+]]></ST>
       </Implementation>
     </Method>
   </POU>
