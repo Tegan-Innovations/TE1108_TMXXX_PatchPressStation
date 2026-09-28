@@ -30,16 +30,16 @@
     "Name": "Settings",
     "children": [
       {
-        "Name": "IVEK DigiSense"
-      },
-      {
         "Name": "Enable Nests"
       },
       {
-        "Name": "Puck Gate"
+        "Name": "Heat Stake"
       },
       {
-        "Name": "Silicone Reservoirs"
+        "Name": "Patch Dispense"
+      },
+      {
+        "Name": "Others"
       }
     ]
   }
@@ -67,7 +67,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onSelectedItemChanged",
     "actions": [
@@ -84,7 +85,7 @@
             "caseValue": {
               "objectType": "StaticValue",
               "valueType": "tchmi:general#/definitions/Any",
-              "value": "IVEK DigiSense"
+              "value": "Heat Stake"
             },
             "actions": [
               {
@@ -94,7 +95,7 @@
                 "value": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/ContentPath",
-                  "value": "Contents/Screens/Settings/settings_IVEK.content"
+                  "value": "Contents/Screens/Settings/settings_HeatStake.content"
                 },
                 "asyncWait": true
               }
@@ -124,7 +125,7 @@
             "caseValue": {
               "objectType": "StaticValue",
               "valueType": "tchmi:general#/definitions/Any",
-              "value": "Puck Gate"
+              "value": "Patch Dispense"
             },
             "actions": [
               {
@@ -134,7 +135,7 @@
                 "value": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/ContentPath",
-                  "value": "Contents/Screens/Settings/settings_Puck.content"
+                  "value": "Contents/Screens/Settings/settings_PatchDispense.content"
                 },
                 "asyncWait": true
               }
@@ -144,7 +145,7 @@
             "caseValue": {
               "objectType": "StaticValue",
               "valueType": "tchmi:general#/definitions/Any",
-              "value": "Silicone Reservoirs"
+              "value": "Others"
             },
             "actions": [
               {
@@ -154,7 +155,7 @@
                 "value": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/ContentPath",
-                  "value": "Contents/Screens/Settings/settings_Reservoirs.content"
+                  "value": "Contents/Screens/Settings/Settings_HeatStake_1.content"
                 },
                 "asyncWait": true
               }
@@ -165,7 +166,8 @@
       }
     ]
   }
-]</script>
+]
+</script>
 </div>
 <div id="IO_Region_18" data-tchmi-type="TcHmi.Controls.System.TcHmiRegion" data-tchmi-height="480" data-tchmi-height-unit="px" data-tchmi-left="260" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="1080" data-tchmi-width-unit="px" data-tchmi-target-content="%i%Settings_Screen%/i%">
 

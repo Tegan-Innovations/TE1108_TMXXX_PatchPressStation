@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="PRG_Main" Id="{fe8f5db4-2dbe-44c9-ba3e-79c06469fde0}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Main
@@ -9,6 +9,7 @@ END_VAR]]></Declaration>
     stInputs := GVL_MASTER.stInputs,
     stCommand := GVL_MASTER.stCommand,
     stConfig := GVL_Config.stMachine,
+    stHeatStakeTemperatureSettings := GVL_Persistent.stHeatStakeTemperatureSettings,
     bPatchDispenseCommissioned := GVL_PatchPress_Interface.bPatchDispenseCommissioned,
     bHeatStakeCommissioned := GVL_PatchPress_Interface.bHeatStakeCommissioned,
     bVisionCommissioned := GVL_PatchPress_Interface.bVisionCommissioned,

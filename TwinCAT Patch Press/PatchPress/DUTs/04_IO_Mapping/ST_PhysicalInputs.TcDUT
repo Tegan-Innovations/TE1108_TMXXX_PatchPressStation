@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <DUT Name="ST_PhysicalInputs" Id="{0b76b804-3200-41de-8e70-7c9593647312}">
     <Declaration><![CDATA[TYPE ST_PhysicalInputs :
@@ -60,6 +60,9 @@ STRUCT
     bTopRockerUp : BOOL;
     uiMainAirPressureRaw : UINT;
     uiPressureRegulatorActualRaw : UINT;
+    diHeatStakeTc1Raw : DINT;
+    diHeatStakeTc2Raw : DINT;
+    diHeatStakeTc3Raw : DINT;
     bSafetyOk : BOOL;
     bMainDoorClosed : BOOL;
     bMainDoorLocked : BOOL;

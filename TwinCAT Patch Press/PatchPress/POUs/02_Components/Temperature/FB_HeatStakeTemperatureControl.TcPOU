@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_HeatStakeTemperatureControl" Id="{959a892b-dde4-4c09-a046-21eaa4bb5efe}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HeatStakeTemperatureControl
+VAR
+    fbPid1 : FB_CTRL_PID;
+    fbPid2 : FB_CTRL_PID;
+
+    stPid1Params : ST_CTRL_PID_PARAMS;
+    stPid2Params : ST_CTRL_PID_PARAMS;
+
+    tonLowTemperatureFault : TON;
+
+    rTc1C : LREAL;
+    rTc2C : LREAL;
+    rTc3C : LREAL;
+    rDifferenceC : LREAL;
+    rAverageC : LREAL;
+
+    rPidOut1 : LREAL;
+    rPidOut2 : LREAL;
+
+    bHighTemperatureInternal : BOOL;
+    bOverTemperatureInternal : BOOL;
+    bDiscrepancyInternal : BOOL;
+    bLowTemperatureInternal : BOOL;
+    bControlAllowed : BOOL;
+    bWarmupBoost1 : BOOL;
+    bWarmupBoost2 : BOOL;
+
+    ePidMode : E_CTRL_MODE;
+END_VAR
+
+VAR CONSTANT
+    // Fixed, validated TwinSAFE SC threshold. HMI cannot raise this limit.
+    cSafeOverTempLimitC : LREAL := 90.0;
+
+    // EL3314 screenshot / CoE Presentation = 1/10 °C.
+    cTcScaleCPerDigit : LREAL := 0.1;
+
+    // EL2502 signed/default presentation: 32767 = 100%.
+    cPwmFullScale : LREAL := 32767.0;
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[]]></ST></Implementation>
+
+    <Method Name="Cyclic" Id="{73a8a83a-3b5c-49fb-a066-6fda31dbdc27}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bEnable                 : BOOL;
+    bAutoCycleActive        : BOOL;
+    bSafetyOk               : BOOL;
+    diTc1Raw                : DINT;
+    diTc2Raw                : DINT;
+    diTc3Raw                : DINT;
+    stSettings              : ST_HeatStakeTemperatureSettings;
+END_VAR
+VAR_OUTPUT
+    uiPwm1Raw               : UINT;
+    uiPwm2Raw               : UINT;
+    stStatus                : ST_HeatStakeTemperatureStatus;
+END_VAR
+VAR
+    rOut1Limited : LREAL;
+    rOut2Limited : LREAL;
+END_VAR]]></Declaration>
+      <Implementation><ST><![CDATA[
+// Engineering scaling from EL3314-0092.
+rTc1C := DINT_TO_LREAL(diTc1Raw) * cTcScaleCPerDigit;
+rTc2C := DINT_TO_LREAL(diTc2Raw) * cTcScaleCPerDigit;
+rTc3C := DINT_TO_LREAL(diTc3Raw) * cTcScaleCPerDigit;
+
+rAverageC := (rTc1C + rTc2C) * 0.5;
+rDifferenceC := ABS(rTc1C - rTc2C);
+
+// Process supervision.
+bLowTemperatureInternal :=
+    (rTc1C < stSettings.rLowLimitC)
+    OR (rTc2C < stSettings.rLowLimitC);
+
+bHighTemperatureInternal :=
+    (rTc1C > stSettings.rHighLimitC)
+    OR (rTc2C > stSettings.rHighLimitC);
+
+// Avoid nuisance discrepancy during cold warm-up. Once either heater reaches
+// the minimum process temperature, the configured difference is enforced.
+bDiscrepancyInternal :=
+    (
+        (rTc1C >= stSettings.rLowLimitC)
+        OR (rTc2C >= stSettings.rLowLimitC)
+    )
+    AND (rDifferenceC > stSettings.rMaxTcDifferenceC);
+
+// Independent overtemperature TC3. TwinSAFE SC must supervise this channel
+// independently at the same fixed threshold.
+bOverTemperatureInternal := rTc3C >= cSafeOverTempLimitC;
+
+// In AutoCycle low temperature is a warning / index inhibit for 5 minutes,
+// then escalates to Fault.
+tonLowTemperatureFault(
+    IN :=
+        bAutoCycleActive
+        AND bLowTemperatureInternal
+        AND NOT bHighTemperatureInternal
+        AND NOT bOverTemperatureInternal
+        AND NOT bDiscrepancyInternal,
+    PT := stSettings.tLowTemperatureTimeout
+);
+
+// Beckhoff Controller Toolbox parameters.
+// Project PLC task = 10 ms; temperature loop defaults to 100 ms.
+stPid1Params.tTaskCycleTime := T#10MS;
+stPid1Params.tCtrlCycleTime := stSettings.tControllerCycle;
+stPid1Params.fKp := stSettings.rKp;
+stPid1Params.tTn := stSettings.tTn;
+stPid1Params.tTv := stSettings.tTv;
+stPid1Params.tTd := stSettings.tTd;
+stPid1Params.fOutMaxLimit := stSettings.rOutputMaxPercent;
+stPid1Params.fOutMinLimit := stSettings.rOutputMinPercent;
+stPid1Params.bPInTheFeedbackPath := FALSE;
+stPid1Params.bDInTheFeedbackPath := TRUE;
+stPid1Params.bARWOnIPartOnly := FALSE;
+
+stPid2Params.tTaskCycleTime := T#10MS;
+stPid2Params.tCtrlCycleTime := stSettings.tControllerCycle;
+stPid2Params.fKp := stSettings.rKp;
+stPid2Params.tTn := stSettings.tTn;
+stPid2Params.tTv := stSettings.tTv;
+stPid2Params.tTd := stSettings.tTd;
+stPid2Params.fOutMaxLimit := stSettings.rOutputMaxPercent;
+stPid2Params.fOutMinLimit := stSettings.rOutputMinPercent;
+stPid2Params.bPInTheFeedbackPath := FALSE;
+stPid2Params.bDInTheFeedbackPath := TRUE;
+stPid2Params.bARWOnIPartOnly := FALSE;
+
+bControlAllowed :=
+    bEnable
+    AND bSafetyOk
+    AND NOT bHighTemperatureInternal
+    AND NOT bOverTemperatureInternal
+    AND NOT bDiscrepancyInternal
+    AND NOT tonLowTemperatureFault.Q;
+
+IF bControlAllowed THEN
+    ePidMode := eCTRL_MODE_ACTIVE;
+ELSE
+    ePidMode := eCTRL_MODE_RESET;
+END_IF
+
+fbPid1(
+    fSetpointValue := stSettings.rSetpointC,
+    fActualValue := rTc1C,
+    fManSyncValue := 0.0,
+    bSync := FALSE,
+    eMode := ePidMode,
+    bHold := FALSE,
+    stParams := stPid1Params
+);
+
+fbPid2(
+    fSetpointValue := stSettings.rSetpointC,
+    fActualValue := rTc2C,
+    fManSyncValue := 0.0,
+    bSync := FALSE,
+    eMode := ePidMode,
+    bHold := FALSE,
+    stParams := stPid2Params
+);
+
+// Warm-up boost is applied independently to each heater.
+// While a heater is more than rWarmupBoostDeltaC below setpoint, drive it at
+// the configured boost output. Once it enters the near-setpoint zone, PID
+// takes over for stable regulation.
+bWarmupBoost1 :=
+    bControlAllowed
+    AND stSettings.bWarmupBoostEnabled
+    AND (rTc1C < (stSettings.rSetpointC - stSettings.rWarmupBoostDeltaC));
+
+bWarmupBoost2 :=
+    bControlAllowed
+    AND stSettings.bWarmupBoostEnabled
+    AND (rTc2C < (stSettings.rSetpointC - stSettings.rWarmupBoostDeltaC));
+
+IF bControlAllowed AND NOT fbPid1.bError THEN
+    IF bWarmupBoost1 THEN
+        rPidOut1 := stSettings.rWarmupBoostOutputPercent;
+    ELSE
+        rPidOut1 := fbPid1.fOut;
+    END_IF
+ELSE
+    rPidOut1 := 0.0;
+END_IF
+
+IF bControlAllowed AND NOT fbPid2.bError THEN
+    IF bWarmupBoost2 THEN
+        rPidOut2 := stSettings.rWarmupBoostOutputPercent;
+    ELSE
+        rPidOut2 := fbPid2.fOut;
+    END_IF
+ELSE
+    rPidOut2 := 0.0;
+END_IF
+
+rOut1Limited := LIMIT(0.0, rPidOut1, 100.0);
+rOut2Limited := LIMIT(0.0, rPidOut2, 100.0);
+
+uiPwm1Raw := LREAL_TO_UINT((rOut1Limited / 100.0) * cPwmFullScale);
+uiPwm2Raw := LREAL_TO_UINT((rOut2Limited / 100.0) * cPwmFullScale);
+
+// Status.
+stStatus.rHeater1TemperatureC := rTc1C;
+stStatus.rHeater2TemperatureC := rTc2C;
+stStatus.rOverTempTemperatureC := rTc3C;
+stStatus.rAverageTemperatureC := rAverageC;
+stStatus.rTemperatureDifferenceC := rDifferenceC;
+
+stStatus.rHeater1OutputPercent := rOut1Limited;
+stStatus.rHeater2OutputPercent := rOut2Limited;
+stStatus.uiHeater1PwmRaw := uiPwm1Raw;
+stStatus.uiHeater2PwmRaw := uiPwm2Raw;
+
+stStatus.bControlEnabled := bControlAllowed;
+stStatus.bHeating := (rOut1Limited > 0.1) OR (rOut2Limited > 0.1);
+stStatus.bWarmupBoostActive := bWarmupBoost1 OR bWarmupBoost2;
+
+stStatus.bLowTemperature := bLowTemperatureInternal;
+stStatus.bHighTemperature := bHighTemperatureInternal;
+stStatus.bTemperatureDiscrepancy := bDiscrepancyInternal;
+stStatus.bOverTemperature := bOverTemperatureInternal;
+stStatus.bLowTemperatureTimeout := tonLowTemperatureFault.Q;
+stStatus.bPid1Fault := fbPid1.bError;
+stStatus.bPid2Fault := fbPid2.bError;
+
+stStatus.bFault :=
+    bHighTemperatureInternal
+    OR bDiscrepancyInternal
+    OR bOverTemperatureInternal
+    OR tonLowTemperatureFault.Q
+    OR fbPid1.bError
+    OR fbPid2.bError;
+
+stStatus.bAtTemperature :=
+    NOT bLowTemperatureInternal
+    AND NOT bHighTemperatureInternal
+    AND NOT bDiscrepancyInternal
+    AND NOT bOverTemperatureInternal
+    AND NOT fbPid1.bError
+    AND NOT fbPid2.bError;
+
+stStatus.bIndexTemperatureReady := stStatus.bAtTemperature;
+
+stStatus.rSetpointC := stSettings.rSetpointC;
+stStatus.rLowLimitC := stSettings.rLowLimitC;
+stStatus.rHighLimitC := stSettings.rHighLimitC;
+stStatus.rMaxTcDifferenceC := stSettings.rMaxTcDifferenceC;
+stStatus.rSafeOverTempLimitC := cSafeOverTempLimitC;
+stStatus.tLowTemperatureElapsed := tonLowTemperatureFault.ET;
+
+IF bOverTemperatureInternal THEN
+    stStatus.sDiagnostic := 'Independent overtemperature thermocouple above safe limit';
+ELSIF bHighTemperatureInternal THEN
+    stStatus.sDiagnostic := 'Heat Stake process temperature above high limit';
+ELSIF bDiscrepancyInternal THEN
+    stStatus.sDiagnostic := 'Heat Stake thermocouple discrepancy';
+ELSIF tonLowTemperatureFault.Q THEN
+    stStatus.sDiagnostic := 'Heat Stake low temperature timeout';
+ELSIF fbPid1.bError OR fbPid2.bError THEN
+    stStatus.sDiagnostic := 'Heat Stake PID controller fault';
+ELSIF bWarmupBoost1 OR bWarmupBoost2 THEN
+    stStatus.sDiagnostic := 'Heat Stake warm-up boost active';
+ELSIF bLowTemperatureInternal THEN
+    stStatus.sDiagnostic := 'Heat Stake warming up - temperature below low limit';
+ELSIF stStatus.bAtTemperature THEN
+    stStatus.sDiagnostic := 'Heat Stake temperature ready';
+ELSE
+    stStatus.sDiagnostic := 'Heat Stake temperature control idle';
+END_IF
+]]></ST></Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

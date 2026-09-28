@@ -27,6 +27,8 @@ GVL_IO.stOutputs.bStatusIndicatorRed := GVL_MASTER.stOutputs.bLedFail;
 GVL_IO.stOutputs.bStatusIndicatorGreen := GVL_MASTER.stOutputs.bLedPass;
 
 GVL_IO.stOutputs.bInternalLight := GVL_MASTER.stOutputs.bInternalLight;
-GVL_IO.stOutputs.bNestLight := GVL_MASTER.stOutputs.bNestLight;]]></ST></Implementation>
+GVL_IO.stOutputs.bNestLight := GVL_MASTER.stOutputs.bNestLight;
+GVL_IO.stOutputs.uiHeatStakePwm1Raw := GVL_MASTER.stOutputs.uiHeatStakePwm1Raw;
+GVL_IO.stOutputs.uiHeatStakePwm2Raw := GVL_MASTER.stOutputs.uiHeatStakePwm2Raw;]]></ST></Implementation>
   </POU>
 </TcPlcObject>

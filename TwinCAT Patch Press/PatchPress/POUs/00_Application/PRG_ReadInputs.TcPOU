@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="PRG_ReadInputs" Id="{43c3226a-5de4-43dd-8598-c7579847eaea}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_ReadInputs
@@ -70,6 +70,9 @@ GVL_MASTER.stInputs.bBottomRockerUp := GVL_IO.stInputs.bBottomRockerUp;
 GVL_MASTER.stInputs.bTopRockerDown := GVL_IO.stInputs.bTopRockerDown;
 GVL_MASTER.stInputs.bTopRockerUp := GVL_IO.stInputs.bTopRockerUp;
 GVL_MASTER.stInputs.uiMainAirPressureRaw := GVL_IO.stInputs.uiMainAirPressureRaw;
-GVL_MASTER.stInputs.uiPressureRegulatorActualRaw := GVL_IO.stInputs.uiPressureRegulatorActualRaw;]]></ST></Implementation>
+GVL_MASTER.stInputs.uiPressureRegulatorActualRaw := GVL_IO.stInputs.uiPressureRegulatorActualRaw;
+GVL_MASTER.stInputs.diHeatStakeTc1Raw := GVL_IO.stInputs.diHeatStakeTc1Raw;
+GVL_MASTER.stInputs.diHeatStakeTc2Raw := GVL_IO.stInputs.diHeatStakeTc2Raw;
+GVL_MASTER.stInputs.diHeatStakeTc3Raw := GVL_IO.stInputs.diHeatStakeTc3Raw;]]></ST></Implementation>
   </POU>
 </TcPlcObject>

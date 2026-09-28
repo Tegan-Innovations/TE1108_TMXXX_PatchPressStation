@@ -1463,8 +1463,8 @@ External Setpoint Generation:
 			</Properties>
 		</DataType>
 		<DataType>
-			<Name GUID="{F443653B-094A-5E9F-ACCB-A71641B6B98B}" AutoDeleteType="true">ST_PhysicalInputs</Name>
-			<BitSize>544</BitSize>
+			<Name GUID="{2D3116E6-5F0C-7710-E2C8-1CFAA26C7E17}" AutoDeleteType="true">ST_PhysicalInputs</Name>
+			<BitSize>672</BitSize>
 			<SubItem>
 				<Name>bEmergencyStopChannel1</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
@@ -1808,45 +1808,63 @@ External Setpoint Generation:
 				<BitOffs>480</BitOffs>
 			</SubItem>
 			<SubItem>
+				<Name>diHeatStakeTc1Raw</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>512</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>diHeatStakeTc2Raw</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>544</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>diHeatStakeTc3Raw</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>576</BitOffs>
+			</SubItem>
+			<SubItem>
 				<Name>bSafetyOk</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>496</BitOffs>
+				<BitOffs>608</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>bMainDoorClosed</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>504</BitOffs>
+				<BitOffs>616</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>bMainDoorLocked</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>512</BitOffs>
+				<BitOffs>624</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>bMainDoorUnsafe</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>520</BitOffs>
+				<BitOffs>632</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>bMainDoorDiagnosticOk</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>528</BitOffs>
+				<BitOffs>640</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>bTwoHandsSafe</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>536</BitOffs>
+				<BitOffs>648</BitOffs>
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{0050C631-CFEA-0678-02C8-D24529B9EC69}" AutoDeleteType="true">ST_PhysicalOutputs</Name>
-			<BitSize>152</BitSize>
+			<Name GUID="{07656288-0D19-9843-3D0E-3C7ABC0AFD59}" AutoDeleteType="true">ST_PhysicalOutputs</Name>
+			<BitSize>192</BitSize>
 			<SubItem>
 				<Name>bSafetyRunRequest</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
@@ -1962,6 +1980,18 @@ External Setpoint Generation:
 				<BitSize>8</BitSize>
 				<BitOffs>144</BitOffs>
 			</SubItem>
+			<SubItem>
+				<Name>uiHeatStakePwm1Raw</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>uiHeatStakePwm2Raw</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>176</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
 			<Name GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..4] OF BOOL</Name>
@@ -1971,6 +2001,199 @@ External Setpoint Generation:
 				<LBound>1</LBound>
 				<Elements>4</Elements>
 			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}" AutoDeleteType="true">ST_EventsHistory</Name>
+			<BitSize>8256</BitSize>
+			<SubItem>
+				<Name>sEventTex</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sType</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>2048</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sDate</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>4096</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>6144</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nEventsAmount</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>8192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>abType</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<Comment><![CDATA[1:Alarm]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>8224</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..200] OF ST_EventsHistory</Name>
+			<BitSize>1659456</BitSize>
+			<BaseType GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}">ST_EventsHistory</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>201</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{20D43E19-F458-3A50-9DE7-B5AF9EE94CAC}" AutoDeleteType="true">ST_HeatStakeTemperatureSettings</Name>
+			<BitSize>832</BitSize>
+			<SubItem>
+				<Name>rSetpointC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>80</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rLowLimitC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>70</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rHighLimitC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>90</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rMaxTcDifferenceC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tLowTemperatureTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+				<Default>
+					<DateTime>T#5M</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rKp</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[ Conservative initial tuning. FB_CTRL_PID is used with D disabled,
+ therefore the initial behaviour is PI.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>320</BitOffs>
+				<Default>
+					<Value>4</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tTn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+				<Default>
+					<DateTime>T#15S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tTv</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+				<Default>
+					<DateTime>T#0S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tTd</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+				<Default>
+					<DateTime>T#0S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tControllerCycle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+				<Default>
+					<DateTime>T#100MS</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rOutputMinPercent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>512</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rOutputMaxPercent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>576</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>bWarmupBoostEnabled</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[ Warm-up boost: full power while the process is well below setpoint.
+ PID takes over once the PV reaches Setpoint - WarmupBoostDelta.]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>640</BitOffs>
+				<Default>
+					<Bool>true</Bool>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rWarmupBoostDeltaC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>704</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rWarmupBoostOutputPercent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>768</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
 		</DataType>
 		<DataType>
 			<Name GUID="{68065BE5-A146-2E7E-F2BA-79DBBE7AA8F5}" AutoDeleteType="true">ST_MachineConfig</Name>
@@ -2183,56 +2406,6 @@ External Setpoint Generation:
 					</SubItem>
 				</Default>
 			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}" AutoDeleteType="true">ST_EventsHistory</Name>
-			<BitSize>8256</BitSize>
-			<SubItem>
-				<Name>sEventTex</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sType</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>2048</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sDate</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>4096</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sTime</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>6144</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nEventsAmount</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>8192</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>abType</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
-				<Comment><![CDATA[1:Alarm]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>8224</BitOffs>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..200] OF ST_EventsHistory</Name>
-			<BitSize>1659456</BitSize>
-			<BaseType GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}">ST_EventsHistory</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>201</Elements>
-			</ArrayInfo>
 		</DataType>
 		<DataType>
 			<Name GUID="{2438F91B-E188-4ED7-8594-54354F9ED6A4}" Namespace="Safety" TcBaseType="true">FSOE_6</Name>
@@ -2474,6 +2647,7 @@ External Setpoint Generation:
 			<Licenses>
 				<Target>
 					<ManualSelect>{796D380F-D49E-4C0C-A05F-500052FAC883}</ManualSelect>
+					<ManualSelect>{777F1598-583B-4503-99BB-7C02E0ABD97E}</ManualSelect>
 				</Target>
 			</Licenses>
 			<Tasks>
@@ -2920,14 +3094,25 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{726CA2C8-75CE-D7CC-32DA-6A17A5956610}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{63ADCC74-F95E-55E5-C7B9-68B778913943}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
 						<Name>PlcTask Retains</Name>
 						<Var>
-							<Name>GVL_Config.aNestEnabled</Name>
+							<Name>GVL_Persistent.aNestEnabled</Name>
+							<Comment><![CDATA[ Persistent authority for the four index-table nest enable states.]]></Comment>
 							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.astEventsHistory</Name>
+							<Type GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}">ARRAY [0..200] OF ST_EventsHistory</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.stHeatStakeTemperatureSettings</Name>
+							<Type GUID="{20D43E19-F458-3A50-9DE7-B5AF9EE94CAC}">ST_HeatStakeTemperatureSettings</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
@@ -2936,8 +3121,8 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
-							<Name>GVL_Persistent.astEventsHistory</Name>
-							<Type GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}">ARRAY [0..200] OF ST_EventsHistory</Type>
+							<Name>GVL_Config.aNestEnabled</Name>
+							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
 							<InOut>7</InOut>
 						</Var>
 					</Vars>
@@ -2945,7 +3130,7 @@ External Setpoint Generation:
 						<Name>PlcTask Outputs</Name>
 						<Var>
 							<Name>GVL_IO.stOutputs</Name>
-							<Type GUID="{0050C631-CFEA-0678-02C8-D24529B9EC69}">ST_PhysicalOutputs</Type>
+							<Type GUID="{07656288-0D19-9843-3D0E-3C7ABC0AFD59}">ST_PhysicalOutputs</Type>
 						</Var>
 						<Var>
 							<Name>GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1</Name>
@@ -3148,14 +3333,14 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>GVL_Safety.bEmergencyStopOk</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>GVL_IO.stInputs</Name>
 							<Comment><![CDATA[ Logical physical I/O. Link these members to the same EtherCAT/TwinSAFE channels used by Kistler.
  Keeping terminal-specific names outside the core makes future hardware changes local to this GVL/mapper.]]></Comment>
-							<Type GUID="{F443653B-094A-5E9F-ACCB-A71641B6B98B}">ST_PhysicalInputs</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bEmergencyStopOk</Name>
-							<Type>BOOL</Type>
+							<Type GUID="{2D3116E6-5F0C-7710-E2C8-1CFAA26C7E17}">ST_PhysicalInputs</Type>
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bMainDoorUnSafe</Name>
@@ -3163,6 +3348,14 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bLeftFlapSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bRightFlapSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bFlapsSafe</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -3639,14 +3832,6 @@ External Setpoint Generation:
 							<Name>GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State</Name>
 							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
 							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bRightFlapSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bFlapsSafe</Name>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bTwoHandSafe</Name>
@@ -9849,6 +10034,10 @@ Bit 8 - 15 : reserved]]></Comment>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8" VarB="AI Standard Channel 8^Value"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 13 (EL2502)">
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1" VarB="PWM Outputs Channel 1^PWM output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2" VarB="PWM Outputs Channel 2^PWM output"/>
+			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)">
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1" VarB="Channel 1^Input"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10" VarB="Channel 10^Input"/>
@@ -9867,6 +10056,12 @@ Bit 8 - 15 : reserved]]></Comment>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8" VarB="Channel 8^Input"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9" VarB="Channel 9^Input"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL3314-0092)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1" VarB="TC Inputs Channel 1^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2" VarB="TC Inputs Channel 2^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3" VarB="TC Inputs Channel 3^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4" VarB="TC Inputs Channel 4^Value"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)">
 				<Link VarA="PlcTask Inputs^GVL_Safety.bAirSupplySafe" VarB="StandardInputs^Standard Out Var 13"/>

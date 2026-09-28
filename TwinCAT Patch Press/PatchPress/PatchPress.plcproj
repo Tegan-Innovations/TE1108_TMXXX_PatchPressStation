@@ -108,6 +108,12 @@
     <Compile Include="DUTs\02_Components\Motion\ST_Axis.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\02_Components\Temperature\ST_HeatStakeTemperatureSettings.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\02_Components\Temperature\ST_HeatStakeTemperatureStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\03_Stations\Common\E_NestStageStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -264,6 +270,9 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\00_Application\PRG_HeatStakeTemperatureSettings.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\00_Application\PRG_HmiCommands.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -271,6 +280,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\00_Application\PRG_Main.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\00_Application\PRG_NestSettings.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\00_Application\PRG_ReadInputs.TcPOU">
@@ -312,6 +324,9 @@
     <Compile Include="POUs\02_Components\Pneumatics\FB_Support.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\02_Components\Temperature\FB_HeatStakeTemperatureControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\03_Stations\HeatStake\FB_HeatStakeStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -351,6 +366,7 @@
     <Folder Include="DUTs\01_Core\Process" />
     <Folder Include="DUTs\01_Core\Operator" />
     <Folder Include="DUTs\02_Components\Motion" />
+    <Folder Include="DUTs\02_Components\Temperature" />
     <Folder Include="DUTs\07_HMI" />
     <Folder Include="DUTs\03_Stations" />
     <Folder Include="DUTs\03_Stations\Common" />
@@ -369,6 +385,7 @@
     <Folder Include="POUs\02_Components" />
     <Folder Include="POUs\02_Components\Door" />
     <Folder Include="POUs\02_Components\Index" />
+    <Folder Include="POUs\02_Components\Temperature" />
     <Folder Include="POUs\02_Components\Pneumatics" />
     <Folder Include="POUs\03_Stations" />
     <Folder Include="POUs\03_Stations\HeatStake" />
@@ -382,6 +399,10 @@
     <Folder Include="POUs" />
   </ItemGroup>
   <ItemGroup>
+    <PlaceholderReference Include="Tc2_ControllerToolbox">
+      <DefaultResolution>Tc2_ControllerToolbox, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_ControllerToolbox</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Standard">
       <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Standard</Namespace>
@@ -389,6 +410,10 @@
     <PlaceholderReference Include="Tc2_System">
       <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Utilities">
+      <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Utilities</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

@@ -4,8 +4,6 @@
     <Declaration><![CDATA[FUNCTION_BLOCK FB_EventsManager
 VAR_INPUT
 	bPulse					: BOOL;
-	sSystemTime				: STRING(255);
-	sSystemDate				: STRING(255);
 	bDataWritedInCSV		: BOOL;
 	nArraySize				: DINT;
 	bMachineMessage			: STRING;
@@ -14,6 +12,8 @@ END_VAR
 VAR_OUTPUT
     bMachineFault            : BOOL;
     bCycleStopRequest        : BOOL;
+    sSystemDate              : STRING(10);
+    sSystemTime              : STRING(8);
 	astActiveEvents			: ARRAY [0..50] OF ST_ActiveEvents;
 	astEventsHistory		: ARRAY[0..200] OF ST_EventsHistory;
 END_VAR
@@ -28,6 +28,9 @@ VAR
 	bEventsAssigmentSignal			: BOOL		:= TRUE;
     bStationFaultCondition   : BOOL;
     bStationStopCondition    : BOOL;
+
+    // Local IPC clock used internally for event-history timestamps.
+    fbLocalSystemTime        : FB_LocalSystemTime;
 END_VAR
 
 VAR_IN_OUT
@@ -38,7 +41,9 @@ VAR_IN_OUT
 	
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[ACT_FaultTrig();
+      <ST><![CDATA[UpdateSystemDateTime();
+
+ACT_FaultTrig();
 
 ACT_EventTextAssigment();
 
@@ -523,5 +528,84 @@ FOR i[0] := 0 TO nArraySize DO
 END_FOR]]></ST>
       </Implementation>
     </Action>
+    <Method Name="UpdateSystemDateTime" Id="{14a21f98-57c6-4a84-a16e-d3b4abaff015}">
+      <Declaration><![CDATA[METHOD PRIVATE UpdateSystemDateTime
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Read the local Windows/IPC clock.
+fbLocalSystemTime(
+    sNetID := '',
+    bEnable := TRUE,
+    dwCycle := 5,
+    dwOpt := 1,
+    tTimeout := T#5S
+);
+
+// Date: DD/MM/YYYY
+sSystemDate := '';
+
+IF fbLocalSystemTime.systemTime.wDay < 10 THEN
+    sSystemDate := CONCAT(sSystemDate, '0');
+END_IF
+
+sSystemDate := CONCAT(
+    sSystemDate,
+    UINT_TO_STRING(fbLocalSystemTime.systemTime.wDay)
+);
+
+sSystemDate := CONCAT(sSystemDate, '/');
+
+IF fbLocalSystemTime.systemTime.wMonth < 10 THEN
+    sSystemDate := CONCAT(sSystemDate, '0');
+END_IF
+
+sSystemDate := CONCAT(
+    sSystemDate,
+    UINT_TO_STRING(fbLocalSystemTime.systemTime.wMonth)
+);
+
+sSystemDate := CONCAT(sSystemDate, '/');
+
+sSystemDate := CONCAT(
+    sSystemDate,
+    UINT_TO_STRING(fbLocalSystemTime.systemTime.wYear)
+);
+
+// Time: HH:MM:SS
+sSystemTime := '';
+
+IF fbLocalSystemTime.systemTime.wHour < 10 THEN
+    sSystemTime := CONCAT(sSystemTime, '0');
+END_IF
+
+sSystemTime := CONCAT(
+    sSystemTime,
+    UINT_TO_STRING(fbLocalSystemTime.systemTime.wHour)
+);
+
+sSystemTime := CONCAT(sSystemTime, ':');
+
+IF fbLocalSystemTime.systemTime.wMinute < 10 THEN
+    sSystemTime := CONCAT(sSystemTime, '0');
+END_IF
+
+sSystemTime := CONCAT(
+    sSystemTime,
+    UINT_TO_STRING(fbLocalSystemTime.systemTime.wMinute)
+);
+
+sSystemTime := CONCAT(sSystemTime, ':');
+
+IF fbLocalSystemTime.systemTime.wSecond < 10 THEN
+    sSystemTime := CONCAT(sSystemTime, '0');
+END_IF
+
+sSystemTime := CONCAT(
+    sSystemTime,
+    UINT_TO_STRING(fbLocalSystemTime.systemTime.wSecond)
+);]]></ST>
+      </Implementation>
+    </Method>
   </POU>
 </TcPlcObject>

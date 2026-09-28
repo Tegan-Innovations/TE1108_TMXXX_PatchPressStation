@@ -31,6 +31,8 @@ VAR_INPUT
     bIndexFaulted             : BOOL;
     bStationsIndexPermissive  : BOOL;
     bOperatorIndexPermissive  : BOOL;
+    bTemperatureIndexPermissive : BOOL;
+    bNestEnableIndexPermissive : BOOL;
 
     bAllStationsReady         : BOOL;
     bAllStationsComplete      : BOOL;
@@ -48,6 +50,7 @@ VAR_OUTPUT
     bFault                    : BOOL;
     bSequenceTimeoutFault     : BOOL;
     bStopPendingStatus        : BOOL;
+    bDisabledNestIndexAttempt : BOOL;
 
     eState                    : E_CycleState;
 END_VAR]]></Declaration>
@@ -80,6 +83,7 @@ bStartStations := FALSE;
 bStopStations := FALSE;
 bRequestIndex := FALSE;
 bCompletePulse := FALSE;
+bDisabledNestIndexAttempt := FALSE;
 
 rtCycleTrigger(CLK := bTwoHandsSafe);
 
@@ -168,6 +172,7 @@ CASE eStateInternal OF
             AND bIndexLocked
             AND bStationsIndexPermissive
             AND bOperatorIndexPermissive
+            AND bTemperatureIndexPermissive
             AND bAllStationsReady
         THEN
             eStateInternal := E_CycleState.WaitingForProcessCycleTrigger;
@@ -178,6 +183,11 @@ CASE eStateInternal OF
         IF bStopPending THEN
             eStateInternal := E_CycleState.ControlledStop;
 
+        // The disabled-nest interlock is reported only after a fresh operator
+        // index attempt. The machine stays in this state and does not index.
+        ELSIF rtCycleTrigger.Q AND NOT bNestEnableIndexPermissive THEN
+            bDisabledNestIndexAttempt := TRUE;
+
         // Fresh two-hand actuation starts the cycle, exactly as on Silicone.
         ELSIF rtCycleTrigger.Q
             AND bSafetyOk
@@ -187,6 +197,7 @@ CASE eStateInternal OF
             AND bStationsIndexPermissive
             AND bOperatorIndexPermissive
             AND bAllStationsReady
+            AND bNestEnableIndexPermissive
         THEN
             eStateInternal := E_CycleState.ValidatingIndexPermissives;
         END_IF
@@ -199,6 +210,8 @@ CASE eStateInternal OF
         ELSIF bSafetyOk
             AND bStationsIndexPermissive
             AND bOperatorIndexPermissive
+            AND bTemperatureIndexPermissive
+            AND bNestEnableIndexPermissive
             AND bIndexReady
             AND bIndexLocked
             AND NOT bIndexBusy

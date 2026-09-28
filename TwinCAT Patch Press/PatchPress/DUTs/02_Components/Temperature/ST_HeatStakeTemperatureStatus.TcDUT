@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_HeatStakeTemperatureStatus" Id="{d523ff42-e192-49bb-9b33-04691c1302b2}">
+    <Declaration><![CDATA[TYPE ST_HeatStakeTemperatureStatus :
+STRUCT
+    rHeater1TemperatureC     : LREAL;
+    rHeater2TemperatureC     : LREAL;
+    rOverTempTemperatureC    : LREAL;
+    rAverageTemperatureC     : LREAL;
+    rTemperatureDifferenceC  : LREAL;
+
+    rHeater1OutputPercent    : LREAL;
+    rHeater2OutputPercent    : LREAL;
+    uiHeater1PwmRaw          : UINT;
+    uiHeater2PwmRaw          : UINT;
+
+    bControlEnabled          : BOOL;
+    bHeating                 : BOOL;
+    bWarmupBoostActive       : BOOL;
+    bAtTemperature           : BOOL;
+    bIndexTemperatureReady   : BOOL;
+
+    bLowTemperature          : BOOL;
+    bHighTemperature         : BOOL;
+    bTemperatureDiscrepancy  : BOOL;
+    bOverTemperature         : BOOL;
+    bLowTemperatureTimeout   : BOOL;
+    bPid1Fault               : BOOL;
+    bPid2Fault               : BOOL;
+    bFault                   : BOOL;
+
+    rSetpointC               : LREAL;
+    rLowLimitC               : LREAL;
+    rHighLimitC              : LREAL;
+    rMaxTcDifferenceC        : LREAL;
+    rSafeOverTempLimitC      : LREAL;
+    tLowTemperatureElapsed   : TIME;
+
+    sDiagnostic              : STRING(255);
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

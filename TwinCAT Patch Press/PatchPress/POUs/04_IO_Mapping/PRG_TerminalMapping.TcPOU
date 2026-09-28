@@ -133,6 +133,15 @@ GVL_IO.stInputs.uiPressureRegulatorActualRaw := GVL_EtherCAT.stTerm11_EL3058.iEL
 
 (*
 ======================================================================================================================
+ Terminal 20 | EL3314-0092 | Heat Stake Thermocouples
+======================================================================================================================
+*)
+GVL_IO.stInputs.diHeatStakeTc1Raw := GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1;
+GVL_IO.stInputs.diHeatStakeTc2Raw := GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2;
+GVL_IO.stInputs.diHeatStakeTc3Raw := GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3;
+
+(*
+======================================================================================================================
  SAFETY ALIAS Inputs
 ======================================================================================================================
 *)
@@ -169,6 +178,14 @@ GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3 := GVL_IO.stOutputs.bStatusIndicatorRed;
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4 := GVL_IO.stOutputs.bStatusIndicatorGreen;
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5 := GVL_IO.stOutputs.bInternalLight;
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6 := GVL_IO.stOutputs.bNestLight;
+
+(*
+======================================================================================================================
+ Terminal 13 | EL2502 | Heat Stake PWM Outputs
+======================================================================================================================
+*)
+GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1 := GVL_IO.stOutputs.uiHeatStakePwm2Raw;
+GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2 := GVL_IO.stOutputs.uiHeatStakePwm1Raw;
 
 (*
 ======================================================================================================================

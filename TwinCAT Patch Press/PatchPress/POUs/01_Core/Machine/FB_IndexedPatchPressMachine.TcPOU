@@ -9,6 +9,7 @@ VAR
     fbOperatorStation : FB_OperatorStation;
     fbPatchDispense : FB_PatchDispenseStation;
     fbHeatStake : FB_HeatStakeStation;
+    fbHeatStakeTemperature : FB_HeatStakeTemperatureControl;
     fbVision : FB_VisionStation;
     fbProcessCycle : FB_ProcessCycle;
     fbCommissioningGuard : FB_PatchPressCommissioningGuard;
@@ -21,6 +22,7 @@ VAR
     stOperatorStatus : ST_OperatorStationStatus;
     stPatchDispenseStatus : ST_PatchStageStatus;
     stHeatStakeStatus : ST_PatchStageStatus;
+    stHeatStakeTemperatureStatus : ST_HeatStakeTemperatureStatus;
     stVisionStatus : ST_PatchStageStatus;
     stOperatorNest : ST_Nest;
     stPatchDispenseNest : ST_Nest;
@@ -68,6 +70,14 @@ VAR
     bProcessCycleTimeoutFault   : BOOL;
     bProcessStopPending         : BOOL;
     eProcessCycleState          : E_CycleState;
+    bDisabledNestIndexAttempt   : BOOL;
+
+    aNestSnapshot               : ARRAY[1..4] OF ST_Nest;
+    bDisabledNestPartPresent    : BOOL;
+    uiDisabledNestPartNestId    : UINT;
+    bDisabledNestPartPopupRequest : BOOL;
+    uiDisabledNestPartPopupNestId : UINT;
+    iNestCheck                  : INT;
 
     bStation1SupportExtendRequest  : BOOL;
     bStation1SupportRetractRequest : BOOL;
@@ -99,6 +109,7 @@ VAR_INPUT
     stInputs : ST_MachineInputs;
     stCommand : ST_MachineCommand;
     stConfig : ST_MachineConfig;
+    stHeatStakeTemperatureSettings : ST_HeatStakeTemperatureSettings;
     bPatchDispenseCommissioned : BOOL;
     bHeatStakeCommissioned : BOOL;
     bVisionCommissioned : BOOL;
@@ -132,11 +143,44 @@ IF rtLedBlink.Q THEN
     bLedBlinkState := NOT bLedBlinkState;
 END_IF
 
+// Heat Stake temperature preheat/control.
+fbHeatStakeTemperature.Cyclic(
+    bEnable :=
+        (eMachineState = E_MachineState.ReadyToStart)
+        OR (eMachineState = E_MachineState.AutoCycle),
+    bAutoCycleActive := (eMachineState = E_MachineState.AutoCycle),
+    bSafetyOk := stInputs.stSafety.bSafetyOk,
+    diTc1Raw := stInputs.diHeatStakeTc1Raw,
+    diTc2Raw := stInputs.diHeatStakeTc2Raw,
+    diTc3Raw := stInputs.diHeatStakeTc3Raw,
+    stSettings := stHeatStakeTemperatureSettings,
+    uiPwm1Raw => stOutputsInternal.uiHeatStakePwm1Raw,
+    uiPwm2Raw => stOutputsInternal.uiHeatStakePwm2Raw,
+    stStatus => stHeatStakeTemperatureStatus
+);
+
 fbNestManager.Cyclic(bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked, eIndexPosition := stInputs.eIndexPosition, eOperatorPosition := stConfig.eOperatorPosition, bPartPresent := stInputs.bLoadingStationEaglePresent, aNestEnabled := stConfig.aNestEnabled);
 stOperatorNest := fbNestManager.GetNestAtPosition(stConfig.eOperatorPosition);
 stPatchDispenseNest := fbNestManager.GetNestAtPosition(stConfig.ePatchDispensePosition);
 stHeatStakeNest := fbNestManager.GetNestAtPosition(stConfig.eHeatStakePosition);
 stVisionNest := fbNestManager.GetNestAtPosition(stConfig.eVisionPosition);
+
+aNestSnapshot := fbNestManager.GetAllNests();
+
+bDisabledNestPartPresent := FALSE;
+uiDisabledNestPartNestId := 0;
+
+FOR iNestCheck := 1 TO 4 DO
+    IF (NOT stConfig.aNestEnabled[iNestCheck])
+        AND aNestSnapshot[iNestCheck].bPartPresent
+    THEN
+        bDisabledNestPartPresent := TRUE;
+
+        IF uiDisabledNestPartNestId = 0 THEN
+            uiDisabledNestPartNestId := INT_TO_UINT(iNestCheck);
+        END_IF
+    END_IF
+END_FOR
 
 // A process is required only when:
 // - the physical nest contains a part;
@@ -414,6 +458,8 @@ fbProcessCycle.Cyclic(
     bIndexFaulted := fbIndex.IsFaulted(),
     bStationsIndexPermissive := stPermissives.bStationsIndexPermissive,
     bOperatorIndexPermissive := stPermissives.bOperatorIndexPermissive,
+    bTemperatureIndexPermissive := stHeatStakeTemperatureStatus.bIndexTemperatureReady,
+    bNestEnableIndexPermissive := NOT bDisabledNestPartPresent,
     bAllStationsReady := bAllRequiredStationsReady,
     bAllStationsComplete := bAllRequiredStationsComplete,
     bAnyStationFault :=
@@ -429,8 +475,20 @@ fbProcessCycle.Cyclic(
     bFault => bProcessCycleFault,
     bSequenceTimeoutFault => bProcessCycleTimeoutFault,
     bStopPendingStatus => bProcessStopPending,
+    bDisabledNestIndexAttempt => bDisabledNestIndexAttempt,
     eState => eProcessCycleState
 );
+
+IF bDisabledNestIndexAttempt AND bDisabledNestPartPresent THEN
+    bDisabledNestPartPopupRequest := TRUE;
+    uiDisabledNestPartPopupNestId := uiDisabledNestPartNestId;
+END_IF
+
+// Popup OK only closes the request. If the part is still present, the next
+// fresh index attempt requests the popup again.
+IF stCommand.bAcknowledgeDisabledNestPartPopup THEN
+    bDisabledNestPartPopupRequest := FALSE;
+END_IF
 
 IF bProcessRequestIndex THEN
     bIndexMoveAccepted := fbIndex.RequestMove();
@@ -449,6 +507,7 @@ IF stInputs.bEventFault
     OR fbIndex.IsFaulted()
     OR fbMainDoorLock.IsFaulted()
     OR bProcessCycleFault
+    OR stHeatStakeTemperatureStatus.bFault
 THEN
     bSafetyDropRequest := TRUE;
     eMachineState := E_MachineState.Fault;
@@ -606,6 +665,7 @@ IF stInputs.bEventFault
     OR fbIndex.IsFaulted()
     OR fbMainDoorLock.IsFaulted()
     OR bProcessCycleFault
+    OR stHeatStakeTemperatureStatus.bFault
     OR bInitialisationTimeoutFault
     OR bStoppingTimeoutFault
 THEN
@@ -751,6 +811,7 @@ stStatus.eOperatorInstruction := fbOperatorStation.GetInstruction();
 stStatus.stOperatorStation := stOperatorStatus;
 stStatus.stPatchDispense := stPatchDispenseStatus;
 stStatus.stHeatStake := stHeatStakeStatus;
+stStatus.stHeatStakeTemperature := stHeatStakeTemperatureStatus;
 stStatus.stVision := stVisionStatus;
 stStatus.bReady := (eMachineState = E_MachineState.ReadyToStart);
 stStatus.bBusy := (eMachineState = E_MachineState.AutoCycle) OR stIndexStatus.bBusy;
@@ -766,8 +827,11 @@ stStatus.bIndexPermissive := stPermissives.bIndexMoveAllowed;
 stStatus.bEnableSetting := (eMachineState = E_MachineState.Stopped) OR (eMachineState = E_MachineState.Manual);
 stStatus.bAllStationsCommissioned := bPatchDispenseCommissioned AND bHeatStakeCommissioned AND bVisionCommissioned;
 stStatus.bAutoCycleAllowed := bAutoCycleAllowed;
+stStatus.bDisabledNestPartIndexBlocked := bDisabledNestPartPresent;
+stStatus.bDisabledNestPartPopupRequest := bDisabledNestPartPopupRequest;
+stStatus.uiDisabledNestPartPopupNestId := uiDisabledNestPartPopupNestId;
 stStatus.stPermissives := stPermissives;
-stStatus.aNest := fbNestManager.GetAllNests();
+stStatus.aNest := aNestSnapshot;
 stStatus.aNestStatistics := fbNestManager.GetAllNestStatistics();
 stStatus.sAutoCycleBlockReason := sAutoCycleBlockReason;
 stStatus.sOperatorMessage := stOperatorStatus.sMessage;
@@ -780,7 +844,9 @@ CASE eMachineState OF
         stStatus.sMachineMessage := 'System initialising';
 
     E_MachineState.ReadyToStart:
-        IF bAutoCycleAllowed THEN
+        IF stHeatStakeTemperatureStatus.bLowTemperature THEN
+            stStatus.sMachineMessage := 'Heat Stake preheating';
+        ELSIF bAutoCycleAllowed THEN
             stStatus.sMachineMessage := 'System ready to start';
         ELSE
             stStatus.sMachineMessage := sAutoCycleBlockReason;
@@ -797,7 +863,12 @@ CASE eMachineState OF
         //    explicitly tell the operator the machine is ready to index.
         // 4. Fall back to the current OperatorStation message.
 
-        IF bAnyStationInProcess THEN
+        IF stHeatStakeTemperatureStatus.bLowTemperature
+            AND NOT stHeatStakeTemperatureStatus.bFault
+        THEN
+            stStatus.sMachineMessage := 'Heat Stake warming up - index inhibited';
+
+        ELSIF bAnyStationInProcess THEN
             stStatus.sMachineMessage := 'In process';
 
         ELSIF

@@ -19,7 +19,12 @@ GVL_MASTER.stCommand.bIndexerManualEnable := GVL_HMI.stCommands.bIndexerManualEn
 GVL_MASTER.stCommand.bManualIndexForward := GVL_HMI.stCommands.bManualIndexForward;
 GVL_MASTER.stCommand.bManualIndexHome := GVL_HMI.stCommands.bManualIndexHome;
 GVL_MASTER.stCommand.bManualMainDoorUnlock := GVL_HMI.stCommands.bManualMainDoorUnlock;
+
+// Main-screen LIGHT toggle -> operator/nest light command.
 GVL_MASTER.stCommand.bOperatorLight := GVL_HMI.stCommands.bOperatorLight;
+
+GVL_MASTER.stCommand.bAcknowledgeDisabledNestPartPopup :=
+    GVL_HMI.stCommands.bAcknowledgeDisabledNestPartPopup;
 GVL_MASTER.stCommand.uiResetStatisticsNestId := GVL_HMI.stCommands.uiResetStatisticsNestId;]]></ST></Implementation>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_HeatStakeTemperatureSettings" Id="{2a734ffa-9d09-4e42-9645-dcedd81202d5}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_HeatStakeTemperatureSettings
+VAR
+    fbWritePersistentData : FB_WritePersistentData;
+    bWriteStart : BOOL;
+    bCommandBufferInitialised : BOOL;
+
+    bSettingsValid : BOOL;
+    bApplyAccepted : BOOL;
+    bApplyRejected : BOOL;
+
+    // Persistent-write handshake/result.
+    // Successful/failed/rejected results remain latched until the next Apply request
+    // so the HMI cannot miss a one-scan acknowledgement.
+    bSavePending : BOOL;
+    bWriteBusySeen : BOOL;
+    bSaveSuccessful : BOOL;
+    bSaveFailed : BOOL;
+
+    bWriteBusy : BOOL;
+    bWriteError : BOOL;
+    udiWriteErrorId : UDINT;
+
+    sApplyRejectReason : STRING(255);
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[IF NOT bCommandBufferInitialised THEN
+    GVL_HMI.stCommands.stHeatStakeTemperatureSettings :=
+        GVL_Persistent.stHeatStakeTemperatureSettings;
+    bCommandBufferInitialised := TRUE;
+END_IF
+
+// START is a one-scan pulse generated only after a valid Apply request.
+bWriteStart := FALSE;
+
+// General settings validity.
+// The independent TwinSAFE overtemperature threshold is a separate validated safety setting.
+// Do not change the TwinSAFE threshold from the standard HMI settings page.
+bSettingsValid :=
+    (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rLowLimitC >= 0.0)
+    AND (
+        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rLowLimitC
+        < GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC
+    )
+    AND (
+        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC
+        < GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rHighLimitC
+    )
+    AND (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rMaxTcDifferenceC > 0.0)
+    AND (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rKp > 0.0)
+    AND (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tControllerCycle >= T#10MS)
+    AND (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMinPercent >= 0.0)
+    AND (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMaxPercent <= 100.0)
+    AND (
+        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMinPercent
+        < GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMaxPercent
+    )
+    AND (
+        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC
+        > 0.0
+    )
+    AND (
+        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent
+        >= 0.0
+    )
+    AND (
+        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent
+        <= 100.0
+    );
+
+// Reset clears transaction-result diagnostics once no persistent write is active.
+// This does not cancel an in-progress save.
+IF GVL_MASTER.stCommand.bReset AND NOT bSavePending AND NOT fbWritePersistentData.BUSY THEN
+    bApplyAccepted := FALSE;
+    bApplyRejected := FALSE;
+    bSaveSuccessful := FALSE;
+    bSaveFailed := FALSE;
+    bWriteBusySeen := FALSE;
+    bWriteError := FALSE;
+    udiWriteErrorId := 0;
+    sApplyRejectReason := '';
+END_IF
+
+// HMI -> PLC command handshake.
+// The HMI only writes TRUE. The PLC consumes the request and immediately
+// returns the command to FALSE. This avoids relying on an HMI onReleased event.
+IF GVL_HMI.stCommands.bApplyHeatStakeTemperatureSettings THEN
+
+    // A new request clears the previous result/rejection reason.
+    sApplyRejectReason := '';
+
+    // A new request clears the previous result.
+    bApplyAccepted := FALSE;
+    bApplyRejected := FALSE;
+    bSaveSuccessful := FALSE;
+    bSaveFailed := FALSE;
+    udiWriteErrorId := 0;
+
+    IF
+        (GVL_MASTER.stStatus.eMachineState = E_MachineState.Stopped)
+        AND bSettingsValid
+        AND NOT fbWritePersistentData.BUSY
+        AND NOT bSavePending
+    THEN
+        GVL_Persistent.stHeatStakeTemperatureSettings :=
+            GVL_HMI.stCommands.stHeatStakeTemperatureSettings;
+
+        bWriteStart := TRUE;
+        bApplyAccepted := TRUE;
+        bSavePending := TRUE;
+        bWriteBusySeen := FALSE;
+    ELSE
+        bApplyRejected := TRUE;
+
+        IF GVL_MASTER.stStatus.eMachineState <> E_MachineState.Stopped THEN
+            sApplyRejectReason := 'Heat Stake settings rejected - machine must be Stopped';
+
+        ELSIF fbWritePersistentData.BUSY OR bSavePending THEN
+            sApplyRejectReason := 'Heat Stake settings rejected - persistent save already in progress';
+
+        ELSIF NOT bSettingsValid THEN
+            // Return the most useful validation reason to the HMI/Event DataGrid.
+            IF NOT (
+                GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rLowLimitC
+                < GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC
+            ) THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - Low Limit must be below Setpoint';
+
+            ELSIF NOT (
+                GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC
+                < GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rHighLimitC
+            ) THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - Setpoint must be below High Limit';
+
+            ELSIF GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rLowLimitC < 0.0 THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - Low Limit cannot be negative';
+
+            ELSIF GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rMaxTcDifferenceC <= 0.0 THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - Max TC Difference must be greater than 0';
+
+            ELSIF GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rKp <= 0.0 THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - Kp must be greater than 0';
+
+            ELSIF GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tControllerCycle < T#10MS THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - Controller Cycle must be at least 10 ms';
+
+            ELSIF
+                (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMinPercent < 0.0)
+                OR (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMaxPercent > 100.0)
+                OR (
+                    GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMinPercent
+                    >= GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMaxPercent
+                )
+            THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - invalid PID output limits';
+
+            ELSIF
+                (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC <= 0.0)
+                OR (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent < 0.0)
+                OR (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent > 100.0)
+            THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - invalid Warm-up Boost settings';
+
+            ELSE
+                sApplyRejectReason := 'Heat Stake settings rejected - invalid parameter combination';
+            END_IF
+
+        ELSE
+            sApplyRejectReason := 'Heat Stake settings rejected';
+        END_IF
+    END_IF
+
+    // PLC acknowledgement/consumption of the HMI request.
+    GVL_HMI.stCommands.bApplyHeatStakeTemperatureSettings := FALSE;
+END_IF
+
+fbWritePersistentData(
+    NETID := '',
+    PORT := 851,
+    START := bWriteStart,
+    TMOUT := T#2S,
+    MODE := SPDM_VAR_BOOST
+);
+
+bWriteBusy := fbWritePersistentData.BUSY;
+bWriteError := fbWritePersistentData.ERR;
+
+// Track the asynchronous persistent write until it actually finishes.
+// Do not report "saved successfully" merely because the request was accepted.
+IF bSavePending THEN
+
+    IF fbWritePersistentData.BUSY THEN
+        bWriteBusySeen := TRUE;
+    END_IF
+
+    IF fbWritePersistentData.ERR THEN
+        bSaveFailed := TRUE;
+        bSaveSuccessful := FALSE;
+        udiWriteErrorId := fbWritePersistentData.ERRID;
+        bSavePending := FALSE;
+        bWriteBusySeen := FALSE;
+
+    ELSIF bWriteBusySeen AND NOT fbWritePersistentData.BUSY THEN
+        bSaveSuccessful := TRUE;
+        bSaveFailed := FALSE;
+        udiWriteErrorId := 0;
+        bSavePending := FALSE;
+        bWriteBusySeen := FALSE;
+    END_IF
+END_IF
+]]></ST></Implementation>
+  </POU>
+</TcPlcObject>

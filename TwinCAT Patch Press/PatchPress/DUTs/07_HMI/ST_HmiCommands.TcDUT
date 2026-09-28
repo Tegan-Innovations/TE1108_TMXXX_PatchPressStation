@@ -17,6 +17,15 @@ STRUCT
     // Physical output: Term 9 EL2809 Ch6 (bNestLight).
     bOperatorLight          : BOOL := TRUE;
 
+    stHeatStakeTemperatureSettings : ST_HeatStakeTemperatureSettings;
+    bApplyHeatStakeTemperatureSettings : BOOL;
+
+    // Nest settings command buffer. Every change is persisted automatically.
+    aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
+
+    // Popup OK acknowledgement.
+    bAcknowledgeDisabledNestPartPopup : BOOL;
+
     uiResetStatisticsNestId: UINT;
 END_STRUCT
 END_TYPE]]></Declaration>

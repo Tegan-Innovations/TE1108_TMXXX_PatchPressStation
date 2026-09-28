@@ -25,6 +25,8 @@ STRUCT
     bStatusIndicatorGreen              : BOOL;
     bInternalLight                     : BOOL;
     bNestLight                         : BOOL;
+    uiHeatStakePwm1Raw                 : UINT;
+    uiHeatStakePwm2Raw                 : UINT;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

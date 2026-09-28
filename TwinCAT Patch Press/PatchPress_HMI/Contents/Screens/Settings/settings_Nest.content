@@ -83,7 +83,7 @@
 </script>
 </div>
 </div>
-<div id="TcHmiToggleSwitch_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="55" data-tchmi-height-unit="px" data-tchmi-left="665" data-tchmi-left-unit="px" data-tchmi-text="Nest 1" data-tchmi-top="299" data-tchmi-top-unit="px" data-tchmi-width="170" data-tchmi-width-unit="px" data-tchmi-zindex="31" data-tchmi-text-font-size="150" data-tchmi-text-font-size-unit="%" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.0%/s%">
+<div id="TcHmiToggleSwitch_Nest1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="55" data-tchmi-height-unit="px" data-tchmi-left="665" data-tchmi-left-unit="px" data-tchmi-text="Nest 1" data-tchmi-top="299" data-tchmi-top-unit="px" data-tchmi-width="170" data-tchmi-width-unit="px" data-tchmi-zindex="31" data-tchmi-text-font-size="150" data-tchmi-text-font-size-unit="%" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.0|BindingMode=TwoWay%/s%">
 </div>
 <div id="TcHmiTextblock_1341" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="520" data-tchmi-left-unit="px" data-tchmi-text="Select the check box raleted of the nest you want to Enable/Desable" data-tchmi-top="100" data-tchmi-top-unit="px" data-tchmi-width="460" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="29" data-tchmi-text-font-size="140" data-tchmi-text-font-size-unit="%" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-font-style="Italic" data-tchmi-background-image-horizontal-alignment="Center">
 </div>
@@ -106,13 +106,13 @@
 }
 </script>
 </div>
-<div id="TcHmiToggleSwitch_8" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="55" data-tchmi-height-unit="px" data-tchmi-left="665" data-tchmi-left-unit="px" data-tchmi-text="Nest 3" data-tchmi-top="136" data-tchmi-top-unit="px" data-tchmi-width="170" data-tchmi-width-unit="px" data-tchmi-zindex="30" data-tchmi-text-font-size="150" data-tchmi-text-font-size-unit="%" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.2%/s%">
+<div id="TcHmiToggleSwitch_Nest3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="55" data-tchmi-height-unit="px" data-tchmi-left="665" data-tchmi-left-unit="px" data-tchmi-text="Nest 3" data-tchmi-top="136" data-tchmi-top-unit="px" data-tchmi-width="170" data-tchmi-width-unit="px" data-tchmi-zindex="30" data-tchmi-text-font-size="150" data-tchmi-text-font-size-unit="%" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.2|BindingMode=TwoWay%/s%">
 </div>
-<div id="TcHmiToggleSwitch_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="55" data-tchmi-height-unit="px" data-tchmi-left="793" data-tchmi-left-unit="px" data-tchmi-text="Nest 4" data-tchmi-top="220" data-tchmi-top-unit="px" data-tchmi-width="170" data-tchmi-width-unit="px" data-tchmi-zindex="30" data-tchmi-text-font-size="150" data-tchmi-text-font-size-unit="%" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.3%/s%">
+<div id="TcHmiToggleSwitch_Nest4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="55" data-tchmi-height-unit="px" data-tchmi-left="793" data-tchmi-left-unit="px" data-tchmi-text="Nest 4" data-tchmi-top="220" data-tchmi-top-unit="px" data-tchmi-width="170" data-tchmi-width-unit="px" data-tchmi-zindex="30" data-tchmi-text-font-size="150" data-tchmi-text-font-size-unit="%" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.3|BindingMode=TwoWay%/s%">
 </div>
-<div id="TcHmiToggleSwitch_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="55" data-tchmi-height-unit="px" data-tchmi-left="541" data-tchmi-left-unit="px" data-tchmi-text="Nest 2" data-tchmi-top="220" data-tchmi-top-unit="px" data-tchmi-width="170" data-tchmi-width-unit="px" data-tchmi-zindex="30" data-tchmi-text-font-size="150" data-tchmi-text-font-size-unit="%" data-tchmi-toggle-state="Normal" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.1%/s%">
+<div id="TcHmiToggleSwitch_Nest2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-height="55" data-tchmi-height-unit="px" data-tchmi-left="541" data-tchmi-left-unit="px" data-tchmi-text="Nest 2" data-tchmi-top="220" data-tchmi-top-unit="px" data-tchmi-width="170" data-tchmi-width-unit="px" data-tchmi-zindex="30" data-tchmi-text-font-size="150" data-tchmi-text-font-size-unit="%" data-tchmi-toggle-state="Normal" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.1|BindingMode=TwoWay%/s%">
 </div>
-<div id="TcHmiContainer_102" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="90" data-tchmi-height-unit="px" data-tchmi-left="100" data-tchmi-left-unit="px" data-tchmi-top="177" data-tchmi-top-unit="px" data-tchmi-width="65" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
+<div id="TcHmiContainer_Nest2Blocked" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="90" data-tchmi-height-unit="px" data-tchmi-left="100" data-tchmi-left-unit="px" data-tchmi-top="177" data-tchmi-top-unit="px" data-tchmi-width="65" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
 
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
 {
@@ -157,9 +157,10 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
-    "event": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.1%/s%",
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest2Blocked%/s%",
     "actions": [
       {
         "objectType": "Condition",
@@ -171,12 +172,12 @@
                 "compare1": {
                   "objectType": "Symbol",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.1%/s%"
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest2Blocked%/s%"
                 },
                 "compare2": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "value": true
+                  "value": false
                 },
                 "compareOperator": "==",
                 "logic": null
@@ -220,9 +221,10 @@
       }
     ]
   }
-]</script>
+]
+</script>
 </div>
-<div id="TcHmiContainer_101" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="90" data-tchmi-height-unit="px" data-tchmi-left="332" data-tchmi-left-unit="px" data-tchmi-top="178" data-tchmi-top-unit="px" data-tchmi-width="65" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
+<div id="TcHmiContainer_Nest4Blocked" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="90" data-tchmi-height-unit="px" data-tchmi-left="332" data-tchmi-left-unit="px" data-tchmi-top="178" data-tchmi-top-unit="px" data-tchmi-width="65" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
 {
   "left": "Solid",
@@ -266,9 +268,10 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
-    "event": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.3%/s%",
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest4Blocked%/s%",
     "actions": [
       {
         "objectType": "Condition",
@@ -280,12 +283,12 @@
                 "compare1": {
                   "objectType": "Symbol",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.3%/s%"
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest4Blocked%/s%"
                 },
                 "compare2": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "value": true
+                  "value": false
                 },
                 "compareOperator": "==",
                 "logic": null
@@ -329,9 +332,10 @@
       }
     ]
   }
-]</script>
+]
+</script>
 </div>
-<div id="TcHmiContainer_100" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="65" data-tchmi-height-unit="px" data-tchmi-left="203" data-tchmi-left-unit="px" data-tchmi-top="307" data-tchmi-top-unit="px" data-tchmi-width="90" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
+<div id="TcHmiContainer_Nest1Blocked" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="65" data-tchmi-height-unit="px" data-tchmi-left="203" data-tchmi-left-unit="px" data-tchmi-top="307" data-tchmi-top-unit="px" data-tchmi-width="90" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
 {
   "left": "Solid",
@@ -377,9 +381,10 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
-    "event": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.0%/s%",
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest1Blocked%/s%",
     "actions": [
       {
         "objectType": "Condition",
@@ -391,12 +396,12 @@
                 "compare1": {
                   "objectType": "Symbol",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.0%/s%"
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest1Blocked%/s%"
                 },
                 "compare2": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "value": true
+                  "value": false
                 },
                 "compareOperator": "==",
                 "logic": null
@@ -440,9 +445,10 @@
       }
     ]
   }
-]</script>
+]
+</script>
 </div>
-<div id="TcHmiContainer_99" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="65" data-tchmi-height-unit="px" data-tchmi-left="203" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="90" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
+<div id="TcHmiContainer_Nest3Blocked" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="65" data-tchmi-height-unit="px" data-tchmi-left="203" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="90" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="1">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
 {
   "left": "Solid",
@@ -486,9 +492,10 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
-    "event": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.2%/s%",
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest3Blocked%/s%",
     "actions": [
       {
         "objectType": "Condition",
@@ -500,12 +507,12 @@
                 "compare1": {
                   "objectType": "Symbol",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%s%ADS.PLC1.GVL_Config.stMachine.aNestEnabled.2%/s%"
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest3Blocked%/s%"
                 },
                 "compare2": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "value": true
+                  "value": false
                 },
                 "compareOperator": "==",
                 "logic": null
@@ -549,7 +556,8 @@
       }
     ]
   }
-]</script>
+]
+</script>
 </div>
 <div id="TcHmiImage_40" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="325" data-tchmi-height-unit="px" data-tchmi-left="86" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/SiliconeIndexTableV4.png" data-tchmi-top="60" data-tchmi-top-unit="px" data-tchmi-width="325" data-tchmi-width-unit="px" data-tchmi-zindex="0">
 </div>

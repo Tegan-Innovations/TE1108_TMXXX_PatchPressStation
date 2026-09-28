@@ -15,6 +15,7 @@ STRUCT
     stOperatorStation       : ST_OperatorStationStatus;
     stPatchDispense         : ST_PatchStageStatus;
     stHeatStake             : ST_PatchStageStatus;
+    stHeatStakeTemperature  : ST_HeatStakeTemperatureStatus;
     stVision                : ST_PatchStageStatus;
     bReady                  : BOOL;
     bBusy                   : BOOL;
@@ -30,6 +31,9 @@ STRUCT
     bEnableSetting          : BOOL;
     bAllStationsCommissioned: BOOL;
     bAutoCycleAllowed       : BOOL;
+    bDisabledNestPartIndexBlocked : BOOL;
+    bDisabledNestPartPopupRequest : BOOL;
+    uiDisabledNestPartPopupNestId : UINT;
     stPermissives           : ST_MachinePermissives;
     stLastResult            : ST_ProcessResult;
     aNest                   : ARRAY[1..4] OF ST_Nest;

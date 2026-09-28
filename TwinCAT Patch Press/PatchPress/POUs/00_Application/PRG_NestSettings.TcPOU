@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_NestSettings" Id="{5fbde620-a345-4247-9451-c696b7485c33}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_NestSettings
+VAR
+    fbWritePersistentData : FB_WritePersistentData;
+    bInitialised : BOOL;
+    bWriteStart : BOOL;
+    bWritePending : BOOL;
+    bWriteBusySeen : BOOL;
+    bWriteBusy : BOOL;
+    bWriteError : BOOL;
+    udiWriteErrorId : UDINT;
+    i : INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT bInitialised THEN
+    GVL_HMI.stCommands.aNestEnabled := GVL_Persistent.aNestEnabled;
+    bInitialised := TRUE;
+END_IF
+
+bWriteStart := FALSE;
+
+// Detect HMI changes and update the persistent authority immediately.
+FOR i := 1 TO 4 DO
+    IF GVL_HMI.stCommands.aNestEnabled[i] <> GVL_Persistent.aNestEnabled[i] THEN
+        GVL_Persistent.aNestEnabled[i] := GVL_HMI.stCommands.aNestEnabled[i];
+        bWritePending := TRUE;
+    END_IF
+END_FOR
+
+// Runtime machine config always follows the persistent values.
+GVL_Config.stMachine.aNestEnabled := GVL_Persistent.aNestEnabled;
+
+// Every change queues a persistent save. A further change made while BUSY is
+// retained in bWritePending and saved as soon as the current write finishes.
+IF bWritePending AND NOT fbWritePersistentData.BUSY THEN
+    bWriteStart := TRUE;
+    bWritePending := FALSE;
+    bWriteBusySeen := FALSE;
+END_IF
+
+fbWritePersistentData(
+    NETID := '',
+    PORT := 851,
+    START := bWriteStart,
+    TMOUT := T#2S,
+    MODE := SPDM_VAR_BOOST
+);
+
+bWriteBusy := fbWritePersistentData.BUSY;
+bWriteError := fbWritePersistentData.ERR;
+
+IF fbWritePersistentData.BUSY THEN
+    bWriteBusySeen := TRUE;
+END_IF
+
+IF fbWritePersistentData.ERR THEN
+    udiWriteErrorId := fbWritePersistentData.ERRID;
+ELSIF bWriteBusySeen AND NOT fbWritePersistentData.BUSY THEN
+    bWriteBusySeen := FALSE;
+    udiWriteErrorId := 0;
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

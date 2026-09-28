@@ -11,9 +11,13 @@ STRUCT
     bManualIndexHome      : BOOL;
     bIndexerManualEnable  : BOOL;
     bManualMainDoorUnlock : BOOL;
-    bOperatorLight        : BOOL;
     bAcknowledge          : BOOL;
     bAcknowledgePuckRemovalFault : BOOL;
+
+    // Operator/nest light request from HMI.
+    bOperatorLight        : BOOL;
+
+    bAcknowledgeDisabledNestPartPopup : BOOL;
     uiResetStatisticsNestId : UINT;
 END_STRUCT
 END_TYPE]]></Declaration>

@@ -271,6 +271,9 @@
     <Content Include="Contents\Screens\Manual_Mode.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Contents\Screens\popups\Content_Popup_NestDisabled.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Contents\Screens\popups\Content_Popup_Logout.content">
       <SubType>Content</SubType>
     </Content>
@@ -283,6 +286,9 @@
     <Content Include="Contents\Screens\popups\Content_Popup_Degassing.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Contents\Screens\popups\Content_Popup_ApplyHeatParameters.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Contents\Screens\popups\Content_Popup_Puck.content">
       <SubType>Content</SubType>
     </Content>
@@ -292,7 +298,7 @@
     <Content Include="Contents\Screens\Settings\settings_Puck.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Screens\Settings\settings_IVEK.content">
+    <Content Include="Contents\Screens\Settings\settings_Others.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Screens\Settings\settings_Nest.content">
@@ -304,10 +310,10 @@
     <Content Include="Contents\Screens\Alarms.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Screens\Settings\settings_Reservoirs.content">
+    <Content Include="Contents\Screens\Settings\settings_PatchDispense.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Screens\Settings\settings_Silicone.content">
+    <Content Include="Contents\Screens\Settings\settings_HeatStake.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Screens\Statistics.content">

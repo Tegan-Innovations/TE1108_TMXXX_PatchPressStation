@@ -68,7 +68,8 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bLoadingStationEaglePresent%/s%",
     "actions": [
@@ -102,7 +103,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(35, 195, 35, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -119,7 +130,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(254, 90, 90, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(200, 4, 4, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(253, 61, 61, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -131,11 +152,12 @@
       }
     ]
   }
-]</script>
+]
+</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 </div>
@@ -448,7 +470,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(35, 195, 35, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -465,7 +497,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(254, 90, 90, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(200, 4, 4, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(253, 61, 61, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -482,11 +524,11 @@
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 </div>
-<div id="TcHmiTextbox_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="25" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="NEST 1" data-tchmi-top="-15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="27" data-tchmi-creator-visibility="Visible">
+<div id="TcHmiTextbox_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="25" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="NEST 1" data-tchmi-top="-15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="51" data-tchmi-creator-visibility="Visible">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -502,6 +544,8 @@
   "color": "rgba(18, 11, 11, 1)"
 }
 </script>
+
+
 </div>
 <div id="TcHmiTextblock_Part" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-text="Parts" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="75" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="30" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-size="180" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-style="Auto" data-tchmi-text-font-weight="Auto" data-tchmi-ignore-escape-sequences="False" data-tchmi-creator-visibility="Visible" data-tchmi-background-image-horizontal-alignment="Left">
 
@@ -1676,9 +1720,87 @@
 }
 </script>
 </div>
+<div id="TcHmiRectangle_Disabled_Nest1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="312" data-tchmi-height-unit="px" data-tchmi-left="2" data-tchmi-left-unit="px" data-tchmi-top="3" data-tchmi-top-unit="px" data-tchmi-width="203" data-tchmi-width-unit="px" data-tchmi-zindex="49" data-tchmi-visibility="Collapsed">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 0.5882352)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-stroke-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 0)"
+}
+</script>
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest1Blocked%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest1Blocked%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Visibility",
+                  "value": "Visible"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Visibility",
+                  "value": "Collapsed"
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
 </div>
 <div id="NEST_2" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="320" data-tchmi-height-unit="px" data-tchmi-left="675" data-tchmi-left-unit="px" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-zindex="17" data-tchmi-is-enabled="True" data-tchmi-creator-visibility="Visible">
-<div id="TcHmiTextbox_Title_46" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="25" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="NEST 2" data-tchmi-top="-15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="27" data-tchmi-creator-visibility="Visible">
+<div id="TcHmiTextbox_Title_46" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="25" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="NEST 2" data-tchmi-top="-15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="52" data-tchmi-creator-visibility="Visible">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -2772,7 +2894,8 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPartPresent%/s%",
     "actions": [
@@ -2806,7 +2929,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(35, 195, 35, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -2823,7 +2956,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(254, 90, 90, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(200, 4, 4, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(253, 61, 61, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -2835,11 +2978,12 @@
       }
     ]
   }
-]</script>
+]
+</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 </div>
@@ -2978,9 +3122,87 @@
 }
 </script>
 </div>
+<div id="TcHmiRectangle_Disabled_Nest2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="312" data-tchmi-height-unit="px" data-tchmi-left="2" data-tchmi-left-unit="px" data-tchmi-top="3" data-tchmi-top-unit="px" data-tchmi-width="203" data-tchmi-width-unit="px" data-tchmi-zindex="50" data-tchmi-visibility="Collapsed">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 0.5882352)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-stroke-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 0)"
+}
+</script>
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest2Blocked%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest2Blocked%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Visibility",
+                  "value": "Visible"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Visibility",
+                  "value": "Collapsed"
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
 </div>
 <div id="NEST_3" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="320" data-tchmi-height-unit="px" data-tchmi-left="895" data-tchmi-left-unit="px" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-zindex="17" data-tchmi-is-enabled="True" data-tchmi-creator-visibility="Visible">
-<div id="TcHmiTextbox_Title_47" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="25" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="NEST 3" data-tchmi-top="-15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="27" data-tchmi-creator-visibility="Visible">
+<div id="TcHmiTextbox_Title_47" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="25" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="NEST 3" data-tchmi-top="-15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="53" data-tchmi-creator-visibility="Visible">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -4074,7 +4296,8 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPartPresent%/s%",
     "actions": [
@@ -4108,7 +4331,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(35, 195, 35, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -4125,7 +4358,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(254, 90, 90, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(200, 4, 4, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(253, 61, 61, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -4137,11 +4380,12 @@
       }
     ]
   }
-]</script>
+]
+</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 </div>
@@ -4278,9 +4522,87 @@
 ]
 </script>
 </div>
+<div id="TcHmiRectangle_Disabled_Nest3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="312" data-tchmi-height-unit="px" data-tchmi-left="2" data-tchmi-left-unit="px" data-tchmi-top="3" data-tchmi-top-unit="px" data-tchmi-width="203" data-tchmi-width-unit="px" data-tchmi-zindex="49" data-tchmi-visibility="Collapsed">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 0.5882352)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-stroke-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 0)"
+}
+</script>
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest3Blocked%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest3Blocked%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Visibility",
+                  "value": "Visible"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Visibility",
+                  "value": "Collapsed"
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
 </div>
 <div id="NEST_4" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="320" data-tchmi-height-unit="px" data-tchmi-left="1115" data-tchmi-left-unit="px" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-zindex="17" data-tchmi-is-enabled="True" data-tchmi-creator-visibility="Visible">
-<div id="TcHmiTextbox_Title_48" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="25" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="NEST 4" data-tchmi-top="-15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="27" data-tchmi-creator-visibility="Visible">
+<div id="TcHmiTextbox_Title_48" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="25" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="NEST 4" data-tchmi-top="-15" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="54" data-tchmi-creator-visibility="Visible">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -5374,7 +5696,8 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPartPresent%/s%",
     "actions": [
@@ -5408,7 +5731,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(35, 195, 35, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -5425,7 +5758,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(254, 90, 90, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(200, 4, 4, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(253, 61, 61, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -5437,11 +5780,12 @@
       }
     ]
   }
-]</script>
+]
+</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 </div>
@@ -5578,6 +5922,84 @@
 ]
 </script>
 </div>
+<div id="TcHmiRectangle_Disabled_Nest4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="312" data-tchmi-height-unit="px" data-tchmi-left="2" data-tchmi-left-unit="px" data-tchmi-top="3" data-tchmi-top-unit="px" data-tchmi-width="203" data-tchmi-width-unit="px" data-tchmi-zindex="49" data-tchmi-visibility="Collapsed">
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 0.5882352)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-stroke-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 0)"
+}
+</script>
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest4Blocked%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest4Blocked%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Visibility",
+                  "value": "Visible"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Visibility",
+                  "value": "Collapsed"
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
 </div>
 <div id="NEST_5" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-left="455" data-tchmi-left-unit="px" data-tchmi-top="355" data-tchmi-top-unit="px" data-tchmi-width="870" data-tchmi-width-unit="px" data-tchmi-zindex="17" data-tchmi-is-enabled="True" data-tchmi-creator-visibility="Visible">
 <div id="TcHmiTextblock_1255" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-left="579" data-tchmi-left-unit="px" data-tchmi-text="Vision Check" data-tchmi-top="8" data-tchmi-top-unit="px" data-tchmi-width="286" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="35" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-size="200" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-style="Auto" data-tchmi-text-font-weight="Bold" data-tchmi-ignore-escape-sequences="False" data-tchmi-creator-visibility="Visible">
@@ -5638,7 +6060,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bReady%/s%",
     "actions": [
@@ -5672,7 +6095,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(35, 195, 35, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -5689,7 +6122,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -5701,10 +6134,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 
@@ -5797,7 +6231,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bBusy%/s%",
     "actions": [
@@ -5831,7 +6266,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(255, 190, 0, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(255, 132, 0, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(255, 183, 0, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -5848,7 +6293,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -5860,10 +6305,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 
@@ -5921,7 +6367,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bFault%/s%",
     "actions": [
@@ -5955,7 +6402,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(254, 90, 90, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(200, 4, 4, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(253, 61, 61, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -5972,7 +6429,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -5984,10 +6441,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 
@@ -6064,7 +6522,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bReady%/s%",
     "actions": [
@@ -6098,7 +6557,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(35, 195, 35, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -6115,7 +6584,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -6127,10 +6596,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 
@@ -6188,7 +6658,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bBusy%/s%",
     "actions": [
@@ -6222,7 +6693,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(255, 190, 0, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(255, 132, 0, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(255, 183, 0, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -6239,7 +6720,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -6251,10 +6732,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 
@@ -6312,7 +6794,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bFault%/s%",
     "actions": [
@@ -6346,7 +6829,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(254, 90, 90, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(200, 4, 4, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(253, 61, 61, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -6363,7 +6856,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -6375,10 +6868,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 
@@ -6442,7 +6936,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bReady%/s%",
     "actions": [
@@ -6476,7 +6971,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(35, 195, 35, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -6493,7 +6998,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -6505,10 +7010,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 
@@ -6566,7 +7072,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bBusy%/s%",
     "actions": [
@@ -6600,7 +7107,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(255, 190, 0, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(255, 132, 0, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(255, 183, 0, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -6617,7 +7134,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -6629,10 +7146,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 
@@ -6690,7 +7208,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bFault%/s%",
     "actions": [
@@ -6724,7 +7243,17 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(254, 90, 90, 1)"
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(200, 4, 4, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(253, 61, 61, 1)",
+                        "stop": "100%"
+                      }
+                    ]
                   }
                 },
                 "asyncWait": true
@@ -6741,7 +7270,7 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/Color",
                   "value": {
-                    "color": "rgba(70, 70, 70, 1)"
+                    "color": "rgba(137, 137, 137, 1)"
                   }
                 },
                 "asyncWait": true
@@ -6753,10 +7282,11 @@
       }
     ]
   }
-]</script>
+]
+</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
-  "color": "rgba(118, 118, 118, 1)"
+  "color": "rgba(74, 74, 74, 1)"
 }
 </script>
 

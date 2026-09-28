@@ -1491,7 +1491,7 @@
     "KEYPASSWORD": "",
     "MAXCONNECTIONSPERCLIENT": 32,
     "MAXHTTPHEADERSIZE": 32768,
-    "MAXREQUESTSIZE": 2097152,
+    "MAXREQUESTSIZE": 4194304,
     "MAXSESSIONS": 128,
     "PERMESSAGEDEFLATEENABLED": true,
     "PROJECTNAME": "PatchPress_HMI",
@@ -4710,6 +4710,81 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.0": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::aNestEnabled[0]",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.1": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::aNestEnabled[1]",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.2": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::aNestEnabled[2]",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.3": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::aNestEnabled[3]",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bAcknowledgeDisabledNestPartPopup": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bAcknowledgeDisabledNestPartPopup",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "Popup OK acknowledgement.",
+                        "propertyOrder": 14
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bApplyHeatStakeTemperatureSettings": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bApplyHeatStakeTemperatureSettings",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 12
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.bAssemblyStationManualEnable": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5124,6 +5199,263 @@
                     },
                     {
                         "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.bWarmupBoostEnabled": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::bWarmupBoostEnabled",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "Warm-up boost: full power while the process is well below setpoint.\r\n PID takes over once the PV reaches Setpoint - WarmupBoostDelta.",
+                        "propertyOrder": 13
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rHighLimitC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rHighLimitC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rKp": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rKp",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "comment": "Conservative initial tuning. FB_CTRL_PID is used with D disabled,\r\n therefore the initial behaviour is PI.",
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rLowLimitC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rLowLimitC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rMaxTcDifferenceC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rMaxTcDifferenceC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMaxPercent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rOutputMaxPercent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 12
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMinPercent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rOutputMinPercent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 11
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rSetpointC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rWarmupBoostDeltaC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 14
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::rWarmupBoostOutputPercent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 15
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tControllerCycle": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::tControllerCycle",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tLowTemperatureTimeout": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::tLowTemperatureTimeout",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTd": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::tTd",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 9
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTn": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::tTn",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTv": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::stHeatStakeTemperatureSettings::tTv",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 8
                     }
                 ]
             },
@@ -6846,6 +7178,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.bDisabledNestPartPopupRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bDisabledNestPartPopupRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 39
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.bEnableSettings": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -6858,6 +7207,74 @@
                     },
                     {
                         "propertyOrder": 34
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsApplyAccepted": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bHeatStakeSettingsApplyAccepted",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 38
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsApplyRejected": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bHeatStakeSettingsApplyRejected",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 39
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsWriteBusy": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bHeatStakeSettingsWriteBusy",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 40
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsWriteError": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bHeatStakeSettingsWriteError",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 41
                     }
                 ]
             },
@@ -7051,6 +7468,74 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.bNest1Blocked": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bNest1Blocked",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 34
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bNest2Blocked": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bNest2Blocked",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 35
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bNest3Blocked": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bNest3Blocked",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 36
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bNest4Blocked": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bNest4Blocked",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 37
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.bRejectPopup": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -7153,6 +7638,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.sDisabledNestPartPopupMessage": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::sDisabledNestPartPopupMessage",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
+                    },
+                    {
+                        "propertyOrder": 41
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bBusy": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -7230,6 +7732,756 @@
                 "allOf": [
                     {
                         "$ref": "tchmi:server#/definitions/ADS-PLC1.E_StationResultStatus"
+                    },
+                    {
+                        "propertyOrder": 8
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bAtTemperature": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bAtTemperature",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 13
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bControlEnabled": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bControlEnabled",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bFault": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bFault",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 22
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bHeating": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bHeating",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 11
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bHighTemperature": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bHighTemperature",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 16
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bIndexTemperatureReady": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bIndexTemperatureReady",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 14
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bLowTemperature": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bLowTemperature",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 15
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bLowTemperatureTimeout": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bLowTemperatureTimeout",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 19
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bOverTemperature": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bOverTemperature",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 18
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bPid1Fault": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bPid1Fault",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 20
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bPid2Fault": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bPid2Fault",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bTemperatureDiscrepancy": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bTemperatureDiscrepancy",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 17
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bWarmupBoostActive": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::bWarmupBoostActive",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 12
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rAverageTemperatureC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rAverageTemperatureC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHeater1OutputPercent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rHeater1OutputPercent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHeater1TemperatureC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rHeater1TemperatureC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHeater2OutputPercent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rHeater2OutputPercent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHeater2TemperatureC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rHeater2TemperatureC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHighLimitC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rHighLimitC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 25
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rLowLimitC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rLowLimitC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 24
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rMaxTcDifferenceC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rMaxTcDifferenceC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 26
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rOverTempTemperatureC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rOverTempTemperatureC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rSafeOverTempLimitC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rSafeOverTempLimitC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 27
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rSetpointC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rSetpointC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 23
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rTemperatureDifferenceC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::rTemperatureDifferenceC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.sDiagnostic": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::sDiagnostic",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
+                    },
+                    {
+                        "propertyOrder": 29
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.tLowTemperatureElapsed": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::tLowTemperatureElapsed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 28
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.uiHeater1PwmRaw": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::uiHeater1PwmRaw",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 8
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.uiHeater2PwmRaw": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperature::uiHeater2PwmRaw",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UINT"
+                    },
+                    {
+                        "propertyOrder": 9
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.bWarmupBoostEnabled": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::bWarmupBoostEnabled",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "Warm-up boost: full power while the process is well below setpoint.\r\n PID takes over once the PV reaches Setpoint - WarmupBoostDelta.",
+                        "propertyOrder": 13
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rHighLimitC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rHighLimitC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 3
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rKp": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rKp",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "comment": "Conservative initial tuning. FB_CTRL_PID is used with D disabled,\r\n therefore the initial behaviour is PI.",
+                        "propertyOrder": 6
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rLowLimitC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rLowLimitC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rMaxTcDifferenceC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rMaxTcDifferenceC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rOutputMaxPercent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rOutputMaxPercent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 12
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rOutputMinPercent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rOutputMinPercent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 11
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rSetpointC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rSetpointC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 1
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rWarmupBoostDeltaC",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 14
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::rWarmupBoostOutputPercent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    },
+                    {
+                        "propertyOrder": 15
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tControllerCycle": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::tControllerCycle",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tLowTemperatureTimeout": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::tLowTemperatureTimeout",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 5
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTd": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::tTd",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 9
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTn": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::tTn",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 7
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTv": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stHeatStakeTemperatureSettings::tTv",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
                     },
                     {
                         "propertyOrder": 8
@@ -11103,6 +12355,12 @@
                 "ADS.PLC1.GVL_HMI.sSystemName": 3,
                 "ADS.PLC1.GVL_HMI.sTwincat": 3,
                 "ADS.PLC1.GVL_HMI.sTwincatHMI": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.0": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.1": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.2": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.3": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bAcknowledgeDisabledNestPartPopup": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bApplyHeatStakeTemperatureSettings": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bAssemblyStationManualEnable": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bAssemblyStationStart": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bAssemblySupportExtend": 3,
@@ -11127,6 +12385,21 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bSiliconeStationStart": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bSiliconeSupportExtend": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bSiliconeSupportRetract": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.bWarmupBoostEnabled": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rHighLimitC": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rKp": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rLowLimitC": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rMaxTcDifferenceC": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMaxPercent": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMinPercent": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tControllerCycle": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tLowTemperatureTimeout": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTd": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTn": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTv": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.uiResetStatisticsNestId": 3,
                 "ADS.PLC1.GVL_HMI.stPuckLocker.nPucksAllowedToPass": 3,
                 "ADS.PLC1.GVL_HMI.stStatistics": 3,
@@ -11229,7 +12502,12 @@
                 "ADS.PLC1.GVL_HMI.stStatus.bAssemblyStationManualStartPermissive": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bAssemblyStationPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bAssemblyStationPartSiliconized": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bDisabledNestPartPopupRequest": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bEnableSettings": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsApplyAccepted": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsApplyRejected": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsWriteBusy": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsWriteError": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bIvekBusy": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bIvekCommunicationOk": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bIvekFaulted": 3,
@@ -11241,17 +12519,66 @@
                 "ADS.PLC1.GVL_HMI.stStatus.bIvekReferencePermissive": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bIvekReferenceRequired": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bLoadingStationEaglePresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bNest1Blocked": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bNest2Blocked": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bNest3Blocked": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bNest4Blocked": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bRejectPopup": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bReservoirDegassingPopup": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bSiliconeStationManualStartPermissive": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bSiliconeStationPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bSiliconeStationReady": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.iNestRotationAngle": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.sDisabledNestPartPopupMessage": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bBusy": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bFault": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bHome": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bReady": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stHeatStake.eResultStatus": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bAtTemperature": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bControlEnabled": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bFault": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bHeating": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bHighTemperature": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bIndexTemperatureReady": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bLowTemperature": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bLowTemperatureTimeout": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bOverTemperature": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bPid1Fault": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bPid2Fault": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bTemperatureDiscrepancy": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bWarmupBoostActive": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rAverageTemperatureC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHeater1OutputPercent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHeater1TemperatureC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHeater2OutputPercent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHeater2TemperatureC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rHighLimitC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rLowLimitC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rMaxTcDifferenceC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rOverTempTemperatureC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rSafeOverTempLimitC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rSetpointC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.rTemperatureDifferenceC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.sDiagnostic": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.tLowTemperatureElapsed": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.uiHeater1PwmRaw": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.uiHeater2PwmRaw": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.bWarmupBoostEnabled": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rHighLimitC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rKp": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rLowLimitC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rMaxTcDifferenceC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rOutputMaxPercent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rOutputMinPercent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rSetpointC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tControllerCycle": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tLowTemperatureTimeout": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTd": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTn": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTv": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bBusy": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bFault": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bHome": 3,

@@ -8,12 +8,14 @@ VAR
     tonUsSupplyLost : TON;
     ton48VSupplyLost : TON;
     tonIndexPositionInvalid : TON;
+
+    // Short-lived operator feedback for Heat Stake settings transactions.
+    tpHeatStakeSettingsSaved : TP;
+    tpHeatStakeSettingsRejected : TP;
+    tpHeatStakeSettingsSaveFailed : TP;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[GVL_MASTER.sSystemDate := '';
-GVL_MASTER.sSystemTime := '';
-
-GVL_MASTER.stStationEvents[0].aEvents[0].bFault := TRUE;
+      <ST><![CDATA[GVL_MASTER.stStationEvents[0].aEvents[0].bFault := TRUE;
 GVL_MASTER.stStationEvents[0].aEvents[0].bEventFlag :=
     (NOT GVL_MASTER.stInputs.bEmergencyStopChannel1 OR NOT GVL_MASTER.stInputs.bEmergencyStopChannel2)
     AND NOT GVL_MASTER.stInputs.stSafety.bSafetyOk;
@@ -150,6 +152,123 @@ GVL_MASTER.stStationEvents[3].aEvents[11].bEventText := 'Vision station fault';
 GVL_MASTER.stStationEvents[3].aEvents[11].sSolution :=
     'Check Vision station diagnostic, process equipment and simulation fault request';
 
+// -----------------------------------------------------------------------------
+// HEAT STAKE TEMPERATURE CONTROL
+// -----------------------------------------------------------------------------
+GVL_MASTER.stStationEvents[3].aEvents[12].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[12].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[12].bEventFlag :=
+    (GVL_MASTER.stStatus.eMachineState = E_MachineState.AutoCycle)
+    AND GVL_MASTER.stStatus.stHeatStakeTemperature.bLowTemperature
+    AND NOT GVL_MASTER.stStatus.stHeatStakeTemperature.bLowTemperatureTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[12].bEventText :=
+    'Heat Stake temperature below process minimum - index inhibited';
+GVL_MASTER.stStationEvents[3].aEvents[12].sSolution :=
+    'Wait for both heaters to reach the configured minimum temperature';
+
+GVL_MASTER.stStationEvents[3].aEvents[13].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[13].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStakeTemperature.bLowTemperatureTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[13].bEventText :=
+    'Heat Stake low temperature timeout';
+GVL_MASTER.stStationEvents[3].aEvents[13].sSolution :=
+    'Check heaters, SSRs, EL2502 outputs, thermocouples and temperature control';
+
+GVL_MASTER.stStationEvents[3].aEvents[14].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[14].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStakeTemperature.bHighTemperature;
+GVL_MASTER.stStationEvents[3].aEvents[14].bEventText :=
+    'Heat Stake process temperature above high limit';
+GVL_MASTER.stStationEvents[3].aEvents[14].sSolution :=
+    'Heater power is disabled; wait for temperature to fall below the configured high limit before Reset';
+
+GVL_MASTER.stStationEvents[3].aEvents[15].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[15].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStakeTemperature.bTemperatureDiscrepancy;
+GVL_MASTER.stStationEvents[3].aEvents[15].bEventText :=
+    'Heat Stake thermocouple temperature discrepancy';
+GVL_MASTER.stStationEvents[3].aEvents[15].sSolution :=
+    'Check both heater thermocouples, heater power and thermal contact';
+
+GVL_MASTER.stStationEvents[3].aEvents[16].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[16].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStakeTemperature.bOverTemperature;
+GVL_MASTER.stStationEvents[3].aEvents[16].bEventText :=
+    'Heat Stake independent overtemperature active';
+GVL_MASTER.stStationEvents[3].aEvents[16].sSolution :=
+    'Heater power is disabled; temperature must fall below 90 C before Safety Reset is accepted';
+
+GVL_MASTER.stStationEvents[3].aEvents[17].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[17].bEventFlag :=
+    GVL_MASTER.stStatus.stHeatStakeTemperature.bPid1Fault
+    OR GVL_MASTER.stStatus.stHeatStakeTemperature.bPid2Fault;
+GVL_MASTER.stStationEvents[3].aEvents[17].bEventText :=
+    'Heat Stake temperature controller fault';
+GVL_MASTER.stStationEvents[3].aEvents[17].sSolution :=
+    'Check TF4100 Controller Toolbox parameters and PID diagnostics';
+
+// -----------------------------------------------------------------------------
+// HEAT STAKE SETTINGS APPLY / PERSISTENCE RESULT
+// -----------------------------------------------------------------------------
+//
+// FB_EventsManager treats ordinary Messages as history-only.
+// bPersistentMessage makes a Message visible in astActiveEvents[1..50] while
+// bEventFlag is TRUE. Therefore these transaction results are converted into
+// short TP windows: they are visible to the operator for a few seconds and are
+// also written once into the event history.
+//
+// The source status bits may remain latched for diagnostics; the TP guarantees
+// that the active DataGrid indication clears automatically.
+
+// Generate short display windows on the rising edge of each transaction result.
+tpHeatStakeSettingsSaveFailed(
+    IN := GVL_HMI.stStatus.bHeatStakeSettingsSaveFailed,
+    PT := T#5S
+);
+
+tpHeatStakeSettingsSaved(
+    IN := GVL_HMI.stStatus.bHeatStakeSettingsSaveSuccessful,
+    PT := T#3S
+);
+
+tpHeatStakeSettingsRejected(
+    IN := GVL_HMI.stStatus.bHeatStakeSettingsApplyRejected,
+    PT := T#5S
+);
+
+// Final persistence failure.
+GVL_MASTER.stStationEvents[3].aEvents[18].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[18].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[18].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[18].bEventFlag :=
+    tpHeatStakeSettingsSaveFailed.Q;
+GVL_MASTER.stStationEvents[3].aEvents[18].bEventText :=
+    'Heat Stake settings save failed';
+GVL_MASTER.stStationEvents[3].aEvents[18].sSolution :=
+    'Check persistent-data access and Heat Stake settings write error ID';
+
+// Successful save.
+GVL_MASTER.stStationEvents[3].aEvents[19].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[19].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[19].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[19].bEventFlag :=
+    tpHeatStakeSettingsSaved.Q;
+GVL_MASTER.stStationEvents[3].aEvents[19].bEventText :=
+    'Heat Stake settings saved successfully';
+GVL_MASTER.stStationEvents[3].aEvents[19].sSolution :=
+    'No action required';
+
+// Apply request rejected.
+GVL_MASTER.stStationEvents[3].aEvents[20].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[20].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[20].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[20].bEventFlag :=
+    tpHeatStakeSettingsRejected.Q;
+GVL_MASTER.stStationEvents[3].aEvents[20].bEventText :=
+    GVL_HMI.stStatus.sHeatStakeSettingsApplyRejectReason;
+GVL_MASTER.stStationEvents[3].aEvents[20].sSolution :=
+    'Correct the condition reported in the message and apply the settings again';
+
 // Heat Stake support cylinder.
 GVL_MASTER.stStationEvents[3].aEvents[3].bFault := TRUE;
 GVL_MASTER.stStationEvents[3].aEvents[3].bEventFlag :=
@@ -277,8 +396,6 @@ GVL_MASTER.stStationEvents[1].aEvents[0].sSolution := 'Commission Patch Dispense
 
 
 fbEventsManager(	bPulse := TRUE, 
-					sSystemTime := GVL_MASTER.sSystemTime, 
-					sSystemDate := GVL_MASTER.sSystemDate, 
 					bDataWritedInCSV := FALSE, 
 					nArraySize := 4, 
 					bMachineMessage := GVL_MASTER.stStatus.sMachineMessage, 
@@ -288,10 +405,15 @@ fbEventsManager(	bPulse := TRUE,
 					bResetFaults := GVL_MASTER.stCommand.bReset, 
 					bMachineFault => GVL_MASTER.bMachineFault, 
 					bCycleStopRequest => GVL_MASTER.bCycleStopRequest, 
+					sSystemDate => GVL_MASTER.sSystemDate,
+					sSystemTime => GVL_MASTER.sSystemTime,
 					astActiveEvents => GVL_MASTER.astActiveEvents, 
 					astEventsHistory => GVL_Persistent.astEventsHistory
 				);
 
+// Expose Event Manager clock for HMI diagnostics/header use.
+GVL_HMI.sSystemDate := GVL_MASTER.sSystemDate;
+GVL_HMI.sSystemTime := GVL_MASTER.sSystemTime;
 
 GVL_HMI.astActiveEvents := GVL_MASTER.astActiveEvents;
 GVL_HMI.astEventsHistory := GVL_Persistent.astEventsHistory;

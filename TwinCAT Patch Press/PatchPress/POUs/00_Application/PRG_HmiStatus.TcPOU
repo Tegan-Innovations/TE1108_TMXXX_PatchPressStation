@@ -54,8 +54,47 @@ GVL_HMI.stStatus.bRightFlapSafe := GVL_MASTER.stInputs.stSafety.bRightFlapSafe;
 GVL_HMI.stStatus.bEnableSettings := GVL_MASTER.stStatus.bEnableSetting;
 GVL_HMI.stStatus.bAllStationsCommissioned := GVL_MASTER.stStatus.bAllStationsCommissioned;
 GVL_HMI.stStatus.bAutoCycleAllowed := GVL_MASTER.stStatus.bAutoCycleAllowed;
+
+GVL_HMI.stStatus.bNest1Blocked := NOT GVL_Persistent.aNestEnabled[1];
+GVL_HMI.stStatus.bNest2Blocked := NOT GVL_Persistent.aNestEnabled[2];
+GVL_HMI.stStatus.bNest3Blocked := NOT GVL_Persistent.aNestEnabled[3];
+GVL_HMI.stStatus.bNest4Blocked := NOT GVL_Persistent.aNestEnabled[4];
+
+GVL_HMI.stStatus.bDisabledNestPartIndexBlocked :=
+    GVL_MASTER.stStatus.bDisabledNestPartIndexBlocked;
+GVL_HMI.stStatus.bDisabledNestPartPopupRequest :=
+    GVL_MASTER.stStatus.bDisabledNestPartPopupRequest;
+GVL_HMI.stStatus.uiDisabledNestPartPopupNestId :=
+    GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId;
+
+IF (GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId >= 1)
+    AND (GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId <= 4)
+THEN
+    GVL_HMI.stStatus.sDisabledNestPartPopupMessage :=
+        CONCAT(
+            CONCAT(
+                'Nest ',
+                UINT_TO_STRING(GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId)
+            ),
+            ' is disabled. Remove the part from this nest before indexing.'
+        );
+ELSE
+    GVL_HMI.stStatus.sDisabledNestPartPopupMessage :=
+        'A disabled nest contains a part. Remove the part before indexing.';
+END_IF
+
 GVL_HMI.stStatus.stPatchDispense := GVL_MASTER.stStatus.stPatchDispense;
 GVL_HMI.stStatus.stHeatStake := GVL_MASTER.stStatus.stHeatStake;
+GVL_HMI.stStatus.stHeatStakeTemperature := GVL_MASTER.stStatus.stHeatStakeTemperature;
+GVL_HMI.stStatus.stHeatStakeTemperatureSettings := GVL_Persistent.stHeatStakeTemperatureSettings;
+GVL_HMI.stStatus.bHeatStakeSettingsApplyAccepted := PRG_HeatStakeTemperatureSettings.bApplyAccepted;
+GVL_HMI.stStatus.bHeatStakeSettingsApplyRejected := PRG_HeatStakeTemperatureSettings.bApplyRejected;
+GVL_HMI.stStatus.bHeatStakeSettingsWriteBusy := PRG_HeatStakeTemperatureSettings.bWriteBusy;
+GVL_HMI.stStatus.bHeatStakeSettingsWriteError := PRG_HeatStakeTemperatureSettings.bWriteError;
+GVL_HMI.stStatus.bHeatStakeSettingsSaveSuccessful := PRG_HeatStakeTemperatureSettings.bSaveSuccessful;
+GVL_HMI.stStatus.bHeatStakeSettingsSaveFailed := PRG_HeatStakeTemperatureSettings.bSaveFailed;
+GVL_HMI.stStatus.sHeatStakeSettingsApplyRejectReason := PRG_HeatStakeTemperatureSettings.sApplyRejectReason;
+GVL_HMI.stStatus.udiHeatStakeSettingsWriteErrorId := PRG_HeatStakeTemperatureSettings.udiWriteErrorId;
 GVL_HMI.stStatus.stVision := GVL_MASTER.stStatus.stVision;
 GVL_HMI.stStatus.eOperatorInstruction := GVL_MASTER.stStatus.eOperatorInstruction;
 GVL_HMI.stStatus.stOperatorStation := GVL_MASTER.stStatus.stOperatorStation;
