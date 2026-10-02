@@ -56,31 +56,7 @@ bSettingsValid :=
         GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMinPercent
         < GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMaxPercent
     )
-    AND (
-        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC
-        > 0.0
-    )
-    AND (
-        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent
-        >= 0.0
-    )
-    AND (
-        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent
-        <= 100.0
-    );
-
-// Reset clears transaction-result diagnostics once no persistent write is active.
-// This does not cancel an in-progress save.
-IF GVL_MASTER.stCommand.bReset AND NOT bSavePending AND NOT fbWritePersistentData.BUSY THEN
-    bApplyAccepted := FALSE;
-    bApplyRejected := FALSE;
-    bSaveSuccessful := FALSE;
-    bSaveFailed := FALSE;
-    bWriteBusySeen := FALSE;
-    bWriteError := FALSE;
-    udiWriteErrorId := 0;
-    sApplyRejectReason := '';
-END_IF
+;
 
 // HMI -> PLC command handshake.
 // The HMI only writes TRUE. The PLC consumes the request and immediately
@@ -155,12 +131,6 @@ IF GVL_HMI.stCommands.bApplyHeatStakeTemperatureSettings THEN
             THEN
                 sApplyRejectReason := 'Heat Stake settings rejected - invalid PID output limits';
 
-            ELSIF
-                (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC <= 0.0)
-                OR (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent < 0.0)
-                OR (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent > 100.0)
-            THEN
-                sApplyRejectReason := 'Heat Stake settings rejected - invalid Warm-up Boost settings';
 
             ELSE
                 sApplyRejectReason := 'Heat Stake settings rejected - invalid parameter combination';

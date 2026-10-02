@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_HeatStakeProcessSettings" Id="{8f319f91-99dc-4b09-bb1e-a207f6848c6b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_HeatStakeProcessSettings
+VAR
+    fbWritePersistentData : FB_WritePersistentData;
+    bInitialised : BOOL;
+    bWriteStart : BOOL;
+    bWritePending : BOOL;
+    bWriteBusySeen : BOOL;
+    bWriteBusy : BOOL;
+    bWriteError : BOOL;
+    udiWriteErrorId : UDINT;
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[IF NOT bInitialised THEN
+    GVL_HMI.stCommands.stHeatStakeProcessSettings :=
+        GVL_Persistent.stHeatStakeProcessSettings;
+    bInitialised := TRUE;
+END_IF
+
+bWriteStart := FALSE;
+
+GVL_HMI.stCommands.stHeatStakeProcessSettings.rDownPressureBar :=
+    LIMIT(0.03, GVL_HMI.stCommands.stHeatStakeProcessSettings.rDownPressureBar, 6.0);
+
+IF GVL_HMI.stCommands.stHeatStakeProcessSettings.tContactTime < T#100MS THEN
+    GVL_HMI.stCommands.stHeatStakeProcessSettings.tContactTime := T#100MS;
+END_IF
+
+IF
+    (GVL_HMI.stCommands.stHeatStakeProcessSettings.tContactTime
+        <> GVL_Persistent.stHeatStakeProcessSettings.tContactTime)
+    OR
+    (GVL_HMI.stCommands.stHeatStakeProcessSettings.rDownPressureBar
+        <> GVL_Persistent.stHeatStakeProcessSettings.rDownPressureBar)
+THEN
+    GVL_Persistent.stHeatStakeProcessSettings :=
+        GVL_HMI.stCommands.stHeatStakeProcessSettings;
+    bWritePending := TRUE;
+END_IF
+
+IF bWritePending AND NOT fbWritePersistentData.BUSY THEN
+    bWriteStart := TRUE;
+    bWritePending := FALSE;
+    bWriteBusySeen := FALSE;
+END_IF
+
+fbWritePersistentData(
+    NETID := '',
+    PORT := 851,
+    START := bWriteStart,
+    TMOUT := T#2S,
+    MODE := SPDM_VAR_BOOST
+);
+
+bWriteBusy := fbWritePersistentData.BUSY;
+bWriteError := fbWritePersistentData.ERR;
+
+IF fbWritePersistentData.BUSY THEN
+    bWriteBusySeen := TRUE;
+END_IF
+
+IF fbWritePersistentData.ERR THEN
+    udiWriteErrorId := fbWritePersistentData.ERRID;
+ELSIF bWriteBusySeen AND NOT fbWritePersistentData.BUSY THEN
+    bWriteBusySeen := FALSE;
+    udiWriteErrorId := 0;
+END_IF]]></ST></Implementation>
+  </POU>
+</TcPlcObject>

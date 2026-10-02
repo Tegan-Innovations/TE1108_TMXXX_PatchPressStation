@@ -10,6 +10,7 @@ VAR
     stPid2Params : ST_CTRL_PID_PARAMS;
 
     tonLowTemperatureFault : TON;
+    tonDiscrepancyEnableDelay : TON;
 
     rTc1C : LREAL;
     rTc2C : LREAL;
@@ -20,26 +21,54 @@ VAR
     rPidOut1 : LREAL;
     rPidOut2 : LREAL;
 
+    // Dynamic temperature strategy:
+    // HMI setpoint = required Heat Stake BODY temperature (TC3).
+    // Heater PID setpoint is derived automatically from that process target.
+    rBodySetpointC : LREAL;
+    rHeaterWarmupMaxSetpointC : LREAL;
+    rHeaterMaintenanceSetpointC : LREAL;
+    rRampDownStartC : LREAL;
+    rEffectiveHeaterSetpointC : LREAL;
+    rHeaterSetpointUpperClampC : LREAL;
+    bBodyTemperatureReady : BOOL;
+    bHeaterInternalOverTemperature : BOOL;
+
     bHighTemperatureInternal : BOOL;
     bOverTemperatureInternal : BOOL;
     bDiscrepancyInternal : BOOL;
     bLowTemperatureInternal : BOOL;
     bControlAllowed : BOOL;
-    bWarmupBoost1 : BOOL;
-    bWarmupBoost2 : BOOL;
 
-    ePidMode : E_CTRL_MODE;
+    ePidMode1 : E_CTRL_MODE;
+    ePidMode2 : E_CTRL_MODE;
 END_VAR
 
 VAR CONSTANT
-    // Fixed, validated TwinSAFE SC threshold. HMI cannot raise this limit.
-    cSafeOverTempLimitC : LREAL := 90.0;
+    // Fixed independent TC3 body overtemperature threshold.
+    // TwinSAFE must use the same validated threshold.
+    cSafeOverTempLimitC : LREAL := 120.0;
 
     // EL3314 screenshot / CoE Presentation = 1/10 °C.
     cTcScaleCPerDigit : LREAL := 0.1;
 
     // EL2502 signed/default presentation: 32767 = 100%.
     cPwmFullScale : LREAL := 32767.0;
+
+    // Startup inhibit for TC1/TC2 discrepancy supervision.
+    // Commissioning value: discrepancy cannot fault during the first 10 s
+    // of continuously enabled temperature control.
+    cDiscrepancyEnableDelay : TIME := T#10S;
+
+    // Dynamic heater setpoint strategy.
+    // These are internal commissioning constants - no additional HMI inputs.
+    cWarmupSetpointFactor : LREAL := 1.35;       // Body SP x 1.35
+    cMaintenanceSetpointFactor : LREAL := 1.20;  // Body SP x 1.20
+    cRampDownDeltaC : LREAL := 10.0;             // Start reducing heater SP at Body SP - 10 C
+
+    // Independent internal cartridge-heater protection.
+    // This is NOT the HMI High Limit. HMI Low/High Limits belong to TC3/head.
+    cHeaterInternalHighLimitC : LREAL := 150.0;
+    cHeaterSetpointMarginC : LREAL := 5.0;
 END_VAR]]></Declaration>
     <Implementation><ST><![CDATA[]]></ST></Implementation>
 
@@ -72,19 +101,119 @@ rTc3C := DINT_TO_LREAL(diTc3Raw) * cTcScaleCPerDigit;
 rAverageC := (rTc1C + rTc2C) * 0.5;
 rDifferenceC := ABS(rTc1C - rTc2C);
 
-// Process supervision.
+// ============================================================================
+// Dynamic Heat Stake temperature strategy
+// ============================================================================
+//
+// The single HMI setpoint now represents the required BODY temperature (TC3).
+// TC1 / TC2 remain the fast inner-loop feedbacks for the two cartridge heaters.
+//
+// Example for Body SP = 100 C:
+//   Warm-up heater SP      = 135 C
+//   Maintenance heater SP  = 120 C
+//   Ramp-down starts       = 90 C body temperature
+//   HMI process limits      = configured Low/High limits (for TC3/head)
+//
+// The derived heater SP is also clamped below the configured heater High Limit.
+rBodySetpointC := stSettings.rSetpointC;
+rRampDownStartC := rBodySetpointC - cRampDownDeltaC;
+
+// HMI Low/High Limits are process limits for the Heat Stake BODY (TC3).
+// They must not clamp the internal heater setpoint.
+rHeaterSetpointUpperClampC :=
+    cHeaterInternalHighLimitC - cHeaterSetpointMarginC;
+
+rHeaterWarmupMaxSetpointC :=
+    MIN(
+        rBodySetpointC * cWarmupSetpointFactor,
+        rHeaterSetpointUpperClampC
+    );
+
+rHeaterMaintenanceSetpointC :=
+    MIN(
+        rBodySetpointC * cMaintenanceSetpointFactor,
+        rHeaterSetpointUpperClampC
+    );
+
+// Ensure the warm-up target can never end up below the maintenance target
+// because of a tight configured High Limit.
+IF rHeaterWarmupMaxSetpointC < rHeaterMaintenanceSetpointC THEN
+    rHeaterWarmupMaxSetpointC := rHeaterMaintenanceSetpointC;
+END_IF
+
+// TC3 drives the outer warm-up profile.
+// Below BodySP-20C, run at the maximum derived heater setpoint.
+// Over the final 20C of body warm-up, linearly reduce toward maintenance SP.
+IF rTc3C < rRampDownStartC THEN
+
+    rEffectiveHeaterSetpointC := rHeaterWarmupMaxSetpointC;
+
+ELSIF rTc3C < rBodySetpointC THEN
+
+    rEffectiveHeaterSetpointC :=
+        rHeaterWarmupMaxSetpointC
+        -
+        (
+            (rTc3C - rRampDownStartC)
+            /
+            cRampDownDeltaC
+        )
+        *
+        (
+            rHeaterWarmupMaxSetpointC
+            -
+            rHeaterMaintenanceSetpointC
+        );
+
+ELSE
+
+    rEffectiveHeaterSetpointC := rHeaterMaintenanceSetpointC;
+
+END_IF
+
+// TC3 is the process-facing temperature because it is mounted in the Heat
+// Stake body which physically contacts the patch.
+//
+// HMI Low Limit / High Limit are therefore HEAD/BODY process limits.
+bBodyTemperatureReady :=
+    (rTc3C >= stSettings.rLowLimitC)
+    AND (rTc3C <= stSettings.rHighLimitC);
+
 bLowTemperatureInternal :=
-    (rTc1C < stSettings.rLowLimitC)
-    OR (rTc2C < stSettings.rLowLimitC);
+    rTc3C < stSettings.rLowLimitC;
 
 bHighTemperatureInternal :=
-    (rTc1C > stSettings.rHighLimitC)
-    OR (rTc2C > stSettings.rHighLimitC);
+    rTc3C > stSettings.rHighLimitC;
 
-// Avoid nuisance discrepancy during cold warm-up. Once either heater reaches
-// the minimum process temperature, the configured difference is enforced.
+// TC1 / TC2 have a separate fixed internal protection ceiling.
+// This does not redefine the HMI process High Limit.
+bHeaterInternalOverTemperature :=
+    (rTc1C >= cHeaterInternalHighLimitC)
+    OR (rTc2C >= cHeaterInternalHighLimitC);
+
+// Discrepancy supervision startup delay.
+//
+// The delay is based on the temperature-control request itself (Enable + Safety),
+// not on bControlAllowed. This is intentional: bControlAllowed contains the
+// discrepancy result, so using it here would reset/restart the timer when a
+// discrepancy fault occurred and could create cyclic/chattering behaviour.
+tonDiscrepancyEnableDelay(
+    IN := bEnable AND bSafetyOk,
+    PT := cDiscrepancyEnableDelay
+);
+
+// Avoid nuisance discrepancy during initial ramp-up.
+// Supervision becomes active only when:
+//   1) temperature control has been continuously enabled for at least 10 s;
+//   2) at least one heater has reached the configured Low Limit;
+//   3) TC1/TC2 difference exceeds the configured maximum.
+//
+// The existing Low Limit qualification is deliberately retained in addition
+// to the timer so very early cold-start thermal imbalance cannot generate a
+// nuisance machine fault.
 bDiscrepancyInternal :=
-    (
+    tonDiscrepancyEnableDelay.Q
+    AND (
         (rTc1C >= stSettings.rLowLimitC)
         OR (rTc2C >= stSettings.rLowLimitC)
     )
@@ -140,62 +269,46 @@ bControlAllowed :=
     AND NOT bDiscrepancyInternal
     AND NOT tonLowTemperatureFault.Q;
 
+// The legacy fixed-output Warm-up Boost has been removed.
+// Warm-up is now performed exclusively by the TC3/body-temperature-derived
+// heater setpoint profile above. Both PID controllers remain the only source
+// of heater output, avoiding overlapping warm-up strategies.
 IF bControlAllowed THEN
-    ePidMode := eCTRL_MODE_ACTIVE;
+    ePidMode1 := eCTRL_MODE_ACTIVE;
+    ePidMode2 := eCTRL_MODE_ACTIVE;
 ELSE
-    ePidMode := eCTRL_MODE_RESET;
+    ePidMode1 := eCTRL_MODE_RESET;
+    ePidMode2 := eCTRL_MODE_RESET;
 END_IF
 
 fbPid1(
-    fSetpointValue := stSettings.rSetpointC,
+    fSetpointValue := rEffectiveHeaterSetpointC,
     fActualValue := rTc1C,
     fManSyncValue := 0.0,
     bSync := FALSE,
-    eMode := ePidMode,
+    eMode := ePidMode1,
     bHold := FALSE,
     stParams := stPid1Params
 );
 
 fbPid2(
-    fSetpointValue := stSettings.rSetpointC,
+    fSetpointValue := rEffectiveHeaterSetpointC,
     fActualValue := rTc2C,
     fManSyncValue := 0.0,
     bSync := FALSE,
-    eMode := ePidMode,
+    eMode := ePidMode2,
     bHold := FALSE,
     stParams := stPid2Params
 );
 
-// Warm-up boost is applied independently to each heater.
-// While a heater is more than rWarmupBoostDeltaC below setpoint, drive it at
-// the configured boost output. Once it enters the near-setpoint zone, PID
-// takes over for stable regulation.
-bWarmupBoost1 :=
-    bControlAllowed
-    AND stSettings.bWarmupBoostEnabled
-    AND (rTc1C < (stSettings.rSetpointC - stSettings.rWarmupBoostDeltaC));
-
-bWarmupBoost2 :=
-    bControlAllowed
-    AND stSettings.bWarmupBoostEnabled
-    AND (rTc2C < (stSettings.rSetpointC - stSettings.rWarmupBoostDeltaC));
-
 IF bControlAllowed AND NOT fbPid1.bError THEN
-    IF bWarmupBoost1 THEN
-        rPidOut1 := stSettings.rWarmupBoostOutputPercent;
-    ELSE
-        rPidOut1 := fbPid1.fOut;
-    END_IF
+    rPidOut1 := fbPid1.fOut;
 ELSE
     rPidOut1 := 0.0;
 END_IF
 
 IF bControlAllowed AND NOT fbPid2.bError THEN
-    IF bWarmupBoost2 THEN
-        rPidOut2 := stSettings.rWarmupBoostOutputPercent;
-    ELSE
-        rPidOut2 := fbPid2.fOut;
-    END_IF
+    rPidOut2 := fbPid2.fOut;
 ELSE
     rPidOut2 := 0.0;
 END_IF
@@ -220,7 +333,6 @@ stStatus.uiHeater2PwmRaw := uiPwm2Raw;
 
 stStatus.bControlEnabled := bControlAllowed;
 stStatus.bHeating := (rOut1Limited > 0.1) OR (rOut2Limited > 0.1);
-stStatus.bWarmupBoostActive := bWarmupBoost1 OR bWarmupBoost2;
 
 stStatus.bLowTemperature := bLowTemperatureInternal;
 stStatus.bHighTemperature := bHighTemperatureInternal;
@@ -239,8 +351,9 @@ stStatus.bFault :=
     OR fbPid2.bError;
 
 stStatus.bAtTemperature :=
-    NOT bLowTemperatureInternal
+    bBodyTemperatureReady
     AND NOT bHighTemperatureInternal
+    AND NOT bHeaterInternalOverTemperature
     AND NOT bDiscrepancyInternal
     AND NOT bOverTemperatureInternal
     AND NOT fbPid1.bError
@@ -265,12 +378,14 @@ ELSIF tonLowTemperatureFault.Q THEN
     stStatus.sDiagnostic := 'Heat Stake low temperature timeout';
 ELSIF fbPid1.bError OR fbPid2.bError THEN
     stStatus.sDiagnostic := 'Heat Stake PID controller fault';
-ELSIF bWarmupBoost1 OR bWarmupBoost2 THEN
-    stStatus.sDiagnostic := 'Heat Stake warm-up boost active';
-ELSIF bLowTemperatureInternal THEN
-    stStatus.sDiagnostic := 'Heat Stake warming up - temperature below low limit';
+ELSIF bHeaterInternalOverTemperature THEN
+    stStatus.sDiagnostic := 'Heat Stake internal heater overtemperature';
+ELSIF rTc3C < stSettings.rLowLimitC THEN
+    stStatus.sDiagnostic := 'Heat Stake body warming up - below Low Limit';
+ELSIF rTc3C > stSettings.rHighLimitC THEN
+    stStatus.sDiagnostic := 'Heat Stake body above High Limit';
 ELSIF stStatus.bAtTemperature THEN
-    stStatus.sDiagnostic := 'Heat Stake temperature ready';
+    stStatus.sDiagnostic := 'Heat Stake body temperature ready';
 ELSE
     stStatus.sDiagnostic := 'Heat Stake temperature control idle';
 END_IF

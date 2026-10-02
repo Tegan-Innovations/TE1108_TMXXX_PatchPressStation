@@ -11,7 +11,8 @@
 </div>
 <div id="TcHmiButton_ManualModeYes_126" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="60" data-tchmi-height-unit="px" data-tchmi-left="70" data-tchmi-left-unit="px" data-tchmi-text="Yes" data-tchmi-top="220" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="25" data-tchmi-zindex="1" data-tchmi-creator-locked="True">
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "TcHmiButton_ManualModeYes_126.onPressed",
     "actions": []
@@ -67,7 +68,7 @@
               {
                 "objectType": "WriteToSymbol",
                 "active": true,
-                "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stCommands.bManualModeRequest%/s%",
+                "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stCommands.bManualRequest%/s%",
                 "value": {
                   "objectType": "StaticValue",
                   "valueType": "tchmi:general#/definitions/BOOL",
@@ -122,7 +123,8 @@
       }
     ]
   }
-]</script>
+]
+</script>
 </div>
 <div id="TcHmiButton_ManualModeNo_126" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="60" data-tchmi-height-unit="px" data-tchmi-text="No" data-tchmi-top="220" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="25" data-tchmi-zindex="1" data-tchmi-right="70" data-tchmi-creator-locked="True">
 

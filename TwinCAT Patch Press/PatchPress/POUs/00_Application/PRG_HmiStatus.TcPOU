@@ -67,6 +67,24 @@ GVL_HMI.stStatus.bDisabledNestPartPopupRequest :=
 GVL_HMI.stStatus.uiDisabledNestPartPopupNestId :=
     GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId;
 
+GVL_HMI.stStatus.bRejectChuteFullLatched :=
+    GVL_MASTER.stStatus.bRejectChuteFullLatched;
+GVL_HMI.stStatus.bRejectChutePopupRequest :=
+    GVL_MASTER.stStatus.bRejectChutePopupRequest;
+GVL_HMI.stStatus.bRejectChuteStopRequest :=
+    GVL_MASTER.stStatus.bRejectChuteStopRequest;
+GVL_HMI.stStatus.bRejectChuteResetBlocked :=
+    GVL_MASTER.stStatus.bRejectChuteResetBlocked;
+
+GVL_HMI.stStatus.sRejectChutePopupMessage :=
+    'Reject chute is full. Empty the reject chute and press Acknowledge.';
+
+GVL_HMI.stStatus.bHeatStakeHeadUp := GVL_MASTER.stStatus.bHeatStakeHeadUp;
+GVL_HMI.stStatus.bHeatStakeHeadDown := GVL_MASTER.stStatus.bHeatStakeHeadDown;
+GVL_HMI.stStatus.bHeatStakeHeadDownTimeoutFault := GVL_MASTER.stStatus.bHeatStakeHeadDownTimeoutFault;
+GVL_HMI.stStatus.bHeatStakeHeadUpTimeoutFault := GVL_MASTER.stStatus.bHeatStakeHeadUpTimeoutFault;
+GVL_HMI.stStatus.bHeatStakeHeadSensorConflictFault := GVL_MASTER.stStatus.bHeatStakeHeadSensorConflictFault;
+
 IF (GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId >= 1)
     AND (GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId <= 4)
 THEN
@@ -86,6 +104,11 @@ END_IF
 GVL_HMI.stStatus.stPatchDispense := GVL_MASTER.stStatus.stPatchDispense;
 GVL_HMI.stStatus.stHeatStake := GVL_MASTER.stStatus.stHeatStake;
 GVL_HMI.stStatus.stHeatStakeTemperature := GVL_MASTER.stStatus.stHeatStakeTemperature;
+GVL_HMI.stStatus.stHeatStakeProcess := GVL_MASTER.stStatus.stHeatStakeProcess;
+GVL_HMI.stStatus.stHeatStakeProcessSettings := GVL_Persistent.stHeatStakeProcessSettings;
+GVL_HMI.stStatus.bHeatStakeProcessSettingsWriteBusy := PRG_HeatStakeProcessSettings.bWriteBusy;
+GVL_HMI.stStatus.bHeatStakeProcessSettingsWriteError := PRG_HeatStakeProcessSettings.bWriteError;
+GVL_HMI.stStatus.udiHeatStakeProcessSettingsWriteErrorId := PRG_HeatStakeProcessSettings.udiWriteErrorId;
 GVL_HMI.stStatus.stHeatStakeTemperatureSettings := GVL_Persistent.stHeatStakeTemperatureSettings;
 GVL_HMI.stStatus.bHeatStakeSettingsApplyAccepted := PRG_HeatStakeTemperatureSettings.bApplyAccepted;
 GVL_HMI.stStatus.bHeatStakeSettingsApplyRejected := PRG_HeatStakeTemperatureSettings.bApplyRejected;
@@ -95,6 +118,22 @@ GVL_HMI.stStatus.bHeatStakeSettingsSaveSuccessful := PRG_HeatStakeTemperatureSet
 GVL_HMI.stStatus.bHeatStakeSettingsSaveFailed := PRG_HeatStakeTemperatureSettings.bSaveFailed;
 GVL_HMI.stStatus.sHeatStakeSettingsApplyRejectReason := PRG_HeatStakeTemperatureSettings.sApplyRejectReason;
 GVL_HMI.stStatus.udiHeatStakeSettingsWriteErrorId := PRG_HeatStakeTemperatureSettings.udiWriteErrorId;
+
+// Manual-mode indexer station/nest display.
+GVL_HMI.stStatus.uiPatchDispenseNestId := GVL_MASTER.stStatus.uiPatchDispenseNestId;
+GVL_HMI.stStatus.uiHeatStakeNestId := GVL_MASTER.stStatus.uiHeatStakeNestId;
+GVL_HMI.stStatus.uiVisionNestId := GVL_MASTER.stStatus.uiVisionNestId;
+
+GVL_HMI.stStatus.bHeatStakeManualEnableAllowed := GVL_MASTER.stStatus.bHeatStakeManualEnableAllowed;
+GVL_HMI.stStatus.bHeatStakeManualStakeAllowed := GVL_MASTER.stStatus.bHeatStakeManualStakeAllowed;
+GVL_HMI.stStatus.bHeatStakeManualUnlockAllowed := GVL_MASTER.stStatus.bHeatStakeManualUnlockAllowed;
+GVL_HMI.stStatus.bHeatStakeManualLockAllowed := GVL_MASTER.stStatus.bHeatStakeManualLockAllowed;
+GVL_HMI.stStatus.bHeatStakeManualHeadDownAllowed := GVL_MASTER.stStatus.bHeatStakeManualHeadDownAllowed;
+GVL_HMI.stStatus.bHeatStakeManualHeadUpAllowed := GVL_MASTER.stStatus.bHeatStakeManualHeadUpAllowed;
+GVL_HMI.stStatus.bHeatStakeManualSupportAllowed := GVL_MASTER.stStatus.bHeatStakeManualSupportAllowed;
+GVL_HMI.stStatus.bHeatStakeManualActionBusy := GVL_MASTER.stStatus.bHeatStakeManualActionBusy;
+GVL_HMI.stStatus.bHeatStakeManualHeadUnlocked := GVL_MASTER.stStatus.bHeatStakeManualHeadUnlocked;
+
 GVL_HMI.stStatus.stVision := GVL_MASTER.stStatus.stVision;
 GVL_HMI.stStatus.eOperatorInstruction := GVL_MASTER.stStatus.eOperatorInstruction;
 GVL_HMI.stStatus.stOperatorStation := GVL_MASTER.stStatus.stOperatorStation;

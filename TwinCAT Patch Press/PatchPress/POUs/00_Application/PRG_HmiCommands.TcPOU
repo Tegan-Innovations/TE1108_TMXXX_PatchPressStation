@@ -6,6 +6,13 @@ VAR
     rtStart : R_TRIG;
     rtReset : R_TRIG;
     rtAck : R_TRIG;
+
+    // Manual Mode request handshake.
+    rtManualRequest : R_TRIG;
+    bManualRequestLatched : BOOL;
+
+    // Reject chute acknowledgement -> one-scan pulse.
+    rtRejectChuteAcknowledge : R_TRIG;
 END_VAR]]></Declaration>
     <Implementation><ST><![CDATA[rtStart(CLK := GVL_MASTER.stInputs.bStartButton OR GVL_HMI.stCommands.bStart);
 rtReset(CLK := GVL_MASTER.stInputs.bResetButton OR GVL_HMI.stCommands.bReset);
@@ -14,17 +21,95 @@ GVL_MASTER.stCommand.bStart := rtStart.Q;
 GVL_MASTER.stCommand.bStop := GVL_MASTER.stInputs.bStopButton OR GVL_HMI.stCommands.bStop;
 GVL_MASTER.stCommand.bReset := rtReset.Q;
 GVL_MASTER.stCommand.bAcknowledge := rtAck.Q;
-GVL_MASTER.stCommand.bManualRequest := GVL_HMI.stCommands.bManualRequest;
-GVL_MASTER.stCommand.bIndexerManualEnable := GVL_HMI.stCommands.bIndexerManualEnable;
-GVL_MASTER.stCommand.bManualIndexForward := GVL_HMI.stCommands.bManualIndexForward;
-GVL_MASTER.stCommand.bManualIndexHome := GVL_HMI.stCommands.bManualIndexHome;
-GVL_MASTER.stCommand.bManualMainDoorUnlock := GVL_HMI.stCommands.bManualMainDoorUnlock;
+// ---------------------------------------------------------
+// MANUAL MODE REQUEST HANDSHAKE
+// ---------------------------------------------------------
+// Manual is a request, not a maintained mode command.
+//
+// A request may be made during Initialising and remain latched until
+// ReadyToStart accepts it. Once the machine actually enters Manual,
+// the request is consumed and cleared. Leaving Manual because of Stop
+// or Fault therefore requires a NEW request before Manual can be entered again.
+rtManualRequest(CLK := GVL_HMI.stCommands.bManualRequest);
+
+IF rtManualRequest.Q THEN
+    GVL_HMI.stCommands.bManualRequest := FALSE;
+    bManualRequestLatched := TRUE;
+END_IF
+
+IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
+    bManualRequestLatched := FALSE;
+END_IF
+
+GVL_MASTER.stCommand.bManualRequest := bManualRequestLatched;
 
 // Main-screen LIGHT toggle -> operator/nest light command.
 GVL_MASTER.stCommand.bOperatorLight := GVL_HMI.stCommands.bOperatorLight;
 
+// All Manual-Mode enables/actions must be non-retentive outside Manual.
+// This guarantees that station-enable checkboxes and manual action requests
+// drop back to FALSE as soon as the machine leaves Manual Mode.
+IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
+    // Index manual controls
+    GVL_MASTER.stCommand.bIndexerManualEnable := GVL_HMI.stCommands.bIndexerManualEnable;
+    GVL_MASTER.stCommand.bManualIndexForward := GVL_HMI.stCommands.bManualIndexForward;
+    GVL_MASTER.stCommand.bManualIndexHome := GVL_HMI.stCommands.bManualIndexHome;
+    GVL_MASTER.stCommand.bManualMainDoorUnlock := GVL_HMI.stCommands.bManualMainDoorUnlock;
+
+    // Heat Stake manual controls
+    GVL_MASTER.stCommand.bHeatStakeManualEnable := GVL_HMI.stCommands.bHeatStakeManualEnable;
+    GVL_MASTER.stCommand.bHeatStakeManualStakePatch := GVL_HMI.stCommands.bHeatStakeManualStakePatch;
+    GVL_MASTER.stCommand.bHeatStakeManualUnlock := GVL_HMI.stCommands.bHeatStakeManualUnlock;
+    GVL_MASTER.stCommand.bHeatStakeManualLock := GVL_HMI.stCommands.bHeatStakeManualLock;
+    GVL_MASTER.stCommand.bHeatStakeManualHeadDown := GVL_HMI.stCommands.bHeatStakeManualHeadDown;
+    GVL_MASTER.stCommand.bHeatStakeManualHeadUp := GVL_HMI.stCommands.bHeatStakeManualHeadUp;
+    GVL_MASTER.stCommand.bHeatStakeManualSupportUp := GVL_HMI.stCommands.bHeatStakeManualSupportUp;
+ELSE
+    // Reset HMI command buffer so checkboxes/buttons visually release.
+    GVL_HMI.stCommands.bIndexerManualEnable := FALSE;
+    GVL_HMI.stCommands.bManualIndexForward := FALSE;
+    GVL_HMI.stCommands.bManualIndexHome := FALSE;
+    GVL_HMI.stCommands.bManualMainDoorUnlock := FALSE;
+
+    GVL_HMI.stCommands.bHeatStakeManualEnable := FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualStakePatch := FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualUnlock := FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualLock := FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualHeadDown := FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualHeadUp := FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualSupportUp := FALSE;
+
+    // Reset PLC command image too.
+    GVL_MASTER.stCommand.bIndexerManualEnable := FALSE;
+    GVL_MASTER.stCommand.bManualIndexForward := FALSE;
+    GVL_MASTER.stCommand.bManualIndexHome := FALSE;
+    GVL_MASTER.stCommand.bManualMainDoorUnlock := FALSE;
+
+    GVL_MASTER.stCommand.bHeatStakeManualEnable := FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualStakePatch := FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualUnlock := FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualLock := FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualHeadDown := FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualHeadUp := FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualSupportUp := FALSE;
+END_IF
+
 GVL_MASTER.stCommand.bAcknowledgeDisabledNestPartPopup :=
     GVL_HMI.stCommands.bAcknowledgeDisabledNestPartPopup;
+
+// Reject chute acknowledge is edge-consumed.
+// This prevents a maintained TRUE from satisfying a future full-chute event.
+rtRejectChuteAcknowledge(
+    CLK := GVL_HMI.stCommands.bAcknowledgeRejectChuteFull
+);
+
+GVL_MASTER.stCommand.bAcknowledgeRejectChuteFull :=
+    rtRejectChuteAcknowledge.Q;
+
+IF rtRejectChuteAcknowledge.Q THEN
+    GVL_HMI.stCommands.bAcknowledgeRejectChuteFull := FALSE;
+END_IF
+
 GVL_MASTER.stCommand.uiResetStatisticsNestId := GVL_HMI.stCommands.uiResetStatisticsNestId;]]></ST></Implementation>
   </POU>
 </TcPlcObject>

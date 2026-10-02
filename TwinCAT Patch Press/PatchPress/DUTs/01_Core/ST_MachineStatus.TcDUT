@@ -16,6 +16,25 @@ STRUCT
     stPatchDispense         : ST_PatchStageStatus;
     stHeatStake             : ST_PatchStageStatus;
     stHeatStakeTemperature  : ST_HeatStakeTemperatureStatus;
+    stHeatStakeProcess      : ST_HeatStakeProcessStatus;
+
+    // Current physical nest located at each process station.
+    // 0 = position unknown / nest mapping unavailable.
+    uiPatchDispenseNestId    : UINT;
+    uiHeatStakeNestId        : UINT;
+    uiVisionNestId           : UINT;
+
+    // Heat Stake Manual Mode permissives / diagnostics
+    bHeatStakeManualEnableAllowed   : BOOL;
+    bHeatStakeManualStakeAllowed    : BOOL;
+    bHeatStakeManualUnlockAllowed   : BOOL;
+    bHeatStakeManualLockAllowed     : BOOL;
+    bHeatStakeManualHeadDownAllowed : BOOL;
+    bHeatStakeManualHeadUpAllowed   : BOOL;
+    bHeatStakeManualSupportAllowed  : BOOL;
+    bHeatStakeManualActionBusy      : BOOL;
+    bHeatStakeManualHeadUnlocked    : BOOL;
+
     stVision                : ST_PatchStageStatus;
     bReady                  : BOOL;
     bBusy                   : BOOL;
@@ -34,6 +53,17 @@ STRUCT
     bDisabledNestPartIndexBlocked : BOOL;
     bDisabledNestPartPopupRequest : BOOL;
     uiDisabledNestPartPopupNestId : UINT;
+    // Reject chute full controlled-stop interlock.
+    bRejectChuteFullLatched : BOOL;
+    bRejectChutePopupRequest : BOOL;
+    bRejectChuteStopRequest : BOOL;
+    bRejectChuteResetBlocked : BOOL;
+    // Heat Stake head cylinder diagnostics.
+    bHeatStakeHeadUp : BOOL;
+    bHeatStakeHeadDown : BOOL;
+    bHeatStakeHeadDownTimeoutFault : BOOL;
+    bHeatStakeHeadUpTimeoutFault : BOOL;
+    bHeatStakeHeadSensorConflictFault : BOOL;
     stPermissives           : ST_MachinePermissives;
     stLastResult            : ST_ProcessResult;
     aNest                   : ARRAY[1..4] OF ST_Nest;

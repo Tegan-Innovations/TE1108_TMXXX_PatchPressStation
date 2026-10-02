@@ -352,7 +352,7 @@
 <div id="Lbl_Live_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
  data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px"
  data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="TC3 Overtemp" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
+ data-tchmi-text="TC3 Head Temp" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
  data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
  data-tchmi-zindex="24"></div>
 <div id="Unit_Live_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
@@ -571,89 +571,8 @@
  data-tchmi-text="Heating" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
  data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
  data-tchmi-zindex="24"></div>
-<div id="Led_Pos_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="105" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
-<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
-{"color":"rgba(95,95,95,1)"}
-</script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
-  {
-    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bWarmupBoostActive%/s%",
-    "actions": [
-      {
-        "objectType": "Condition",
-        "active": true,
-        "parts": [
-          {
-            "if": [
-              {
-                "compare1": {
-                  "objectType": "Symbol",
-                  "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bWarmupBoostActive%/s%"
-                },
-                "compare2": {
-                  "objectType": "StaticValue",
-                  "valueType": "tchmi:general#/definitions/BOOL",
-                  "value": true
-                },
-                "compareOperator": "==",
-                "logic": null
-              }
-            ],
-            "then": [
-              {
-                "objectType": "WriteToSymbol",
-                "active": true,
-                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
-                "value": {
-                  "objectType": "StaticValue",
-                  "valueType": "tchmi:framework#/definitions/Color",
-                  "value": {
-                    "color": "rgba(0,155,0,1)"
-                  }
-                },
-                "asyncWait": true
-              }
-            ]
-          },
-          {
-            "else": [
-              {
-                "objectType": "WriteToSymbol",
-                "active": true,
-                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
-                "value": {
-                  "objectType": "StaticValue",
-                  "valueType": "tchmi:framework#/definitions/Color",
-                  "value": {
-                    "color": "rgba(95,95,95,1)"
-                  }
-                },
-                "asyncWait": true
-              }
-            ]
-          }
-        ],
-        "asyncWait": true
-      }
-    ]
-  }
-]
-</script>
-</div>
-<div id="Lbl_Pos_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px"
- data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Warm-up Boost" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
 <div id="Led_Pos_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="133" data-tchmi-top-unit="px"
+ data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="105" data-tchmi-top-unit="px"
  data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
  data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
  data-tchmi-zindex="32">
@@ -728,13 +647,13 @@
 </script>
 </div>
 <div id="Lbl_Pos_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px"
+ data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px"
  data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
  data-tchmi-text="At Temperature" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
  data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
  data-tchmi-zindex="24"></div>
 <div id="Led_Pos_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="161" data-tchmi-top-unit="px"
+ data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="133" data-tchmi-top-unit="px"
  data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
  data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
  data-tchmi-zindex="32">
@@ -809,7 +728,7 @@
 </script>
 </div>
 <div id="Lbl_Pos_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="157" data-tchmi-top-unit="px"
+ data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px"
  data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
  data-tchmi-text="Index Temp Ready" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
  data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
@@ -2043,9 +1962,9 @@
 
 
 </div>
-<div id="Lbl_BoostEnable" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="15" data-tchmi-left-unit="px" data-tchmi-top="226" data-tchmi-top-unit="px" data-tchmi-width="145" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="Warm-up Boost" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
+<div id="Lbl_BoostDelta" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="15" data-tchmi-left-unit="px" data-tchmi-top="268" data-tchmi-top-unit="px" data-tchmi-width="145" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Cylinder Down Pressure" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
 </div>
-<div id="Toggle_Boost" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiToggleSwitch" data-tchmi-left="171" data-tchmi-left-unit="px" data-tchmi-top="226" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-text="ENABLE" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.bWarmupBoostEnabled|BindingMode=TwoWay%/s%" data-tchmi-zindex="29" data-tchmi-text-font-size="15">
+<div id="Num_BoostDelta" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="171" data-tchmi-left-unit="px" data-tchmi-top="268" data-tchmi-top-unit="px" data-tchmi-width="85" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-decimal-digits="1" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-horizontal-alignment="Center" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeProcessSettings.rDownPressureBar|BindingMode=TwoWay%/s%" data-tchmi-zindex="29" data-tchmi-min-value="0" data-tchmi-max-value="10" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
   {"accessright":"operate","group":"Administrator","permission":"Allow"},
@@ -2059,41 +1978,9 @@
 
 
 </div>
-<div id="Lbl_BoostDelta" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="15" data-tchmi-left-unit="px" data-tchmi-top="268" data-tchmi-top-unit="px" data-tchmi-width="145" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Boost Delta" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
+<div id="Unit_BoostDelta" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="261" data-tchmi-left-unit="px" data-tchmi-top="268" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Bar" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
 </div>
-<div id="Num_BoostDelta" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="171" data-tchmi-left-unit="px" data-tchmi-top="268" data-tchmi-top-unit="px" data-tchmi-width="85" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-decimal-digits="1" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-horizontal-alignment="Center" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostDeltaC|BindingMode=TwoWay%/s%" data-tchmi-zindex="29" data-tchmi-min-value="1" data-tchmi-max-value="50" data-tchmi-value-font-size="16">
-<script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
-[
-  {"accessright":"operate","group":"Administrator","permission":"Allow"},
-  {"accessright":"operate","group":"Engineer","permission":"Allow"},
-  {"accessright":"operate","group":"Operator","permission":"Deny"},
-  {"accessright":"observe","group":"Administrator","permission":"Allow"},
-  {"accessright":"observe","group":"Engineer","permission":"Allow"},
-  {"accessright":"observe","group":"Operator","permission":"Allow"}
-]
-</script>
-
-
-</div>
-<div id="Unit_BoostDelta" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="261" data-tchmi-left-unit="px" data-tchmi-top="268" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="°C" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
-</div>
-<div id="Lbl_BoostOutput" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="15" data-tchmi-left-unit="px" data-tchmi-top="302" data-tchmi-top-unit="px" data-tchmi-width="145" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Boost Output" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
-</div>
-<div id="Num_BoostOutput" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="171" data-tchmi-left-unit="px" data-tchmi-top="302" data-tchmi-top-unit="px" data-tchmi-width="85" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-decimal-digits="1" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-horizontal-alignment="Center" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rWarmupBoostOutputPercent|BindingMode=TwoWay%/s%" data-tchmi-zindex="29" data-tchmi-min-value="0" data-tchmi-max-value="100" data-tchmi-value-font-size="16">
-<script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
-[
-  {"accessright":"operate","group":"Administrator","permission":"Allow"},
-  {"accessright":"operate","group":"Engineer","permission":"Allow"},
-  {"accessright":"operate","group":"Operator","permission":"Deny"},
-  {"accessright":"observe","group":"Administrator","permission":"Allow"},
-  {"accessright":"observe","group":"Engineer","permission":"Allow"},
-  {"accessright":"observe","group":"Operator","permission":"Allow"}
-]
-</script>
-
-
-</div>
-<div id="Unit_BoostOutput" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="261" data-tchmi-left-unit="px" data-tchmi-top="302" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="%" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
+<div id="Lbl_BoostOutput" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="15" data-tchmi-left-unit="px" data-tchmi-top="302" data-tchmi-top-unit="px" data-tchmi-width="145" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Contact time" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
 </div>
 <div id="Lbl_ApplyAccepted" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="15" data-tchmi-left-unit="px" data-tchmi-top="348" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Apply Accepted" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24">
 </div>
@@ -2396,6 +2283,20 @@
 
 </div>
 <div id="Num_Process_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="170" data-tchmi-left-unit="px" data-tchmi-top="49" data-tchmi-top-unit="px" data-tchmi-width="85" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-decimal-digits="1" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-horizontal-alignment="Center" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC|BindingMode=TwoWay%/s%" data-tchmi-zindex="37" data-tchmi-min-value="0" data-tchmi-max-value="350" data-tchmi-is-enabled="True" data-tchmi-value-font-size="16">
+<script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
+[
+  {"accessright":"operate","group":"Administrator","permission":"Allow"},
+  {"accessright":"operate","group":"Engineer","permission":"Allow"},
+  {"accessright":"operate","group":"Operator","permission":"Deny"},
+  {"accessright":"observe","group":"Administrator","permission":"Allow"},
+  {"accessright":"observe","group":"Engineer","permission":"Allow"},
+  {"accessright":"observe","group":"Operator","permission":"Allow"}
+]
+</script>
+
+
+</div>
+<div id="Time_LowTimeout_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput" data-tchmi-left="170" data-tchmi-left-unit="px" data-tchmi-top="302" data-tchmi-top-unit="px" data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeProcessSettings.tContactTime|BindingMode=TwoWay%/s%" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-zindex="29" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
   {"accessright":"operate","group":"Administrator","permission":"Allow"},

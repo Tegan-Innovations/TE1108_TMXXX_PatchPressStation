@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_VeabPressureRegulator" Id="{6adc8fa5-183b-4dda-a99f-fe0fc03f800c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VeabPressureRegulator
+VAR
+    rCommandBarInternal : LREAL;
+END_VAR]]></Declaration>
+    <Implementation><ST><![CDATA[]]></ST></Implementation>
+    <Method Name="Cyclic" Id="{4a48ff47-4410-404f-abe2-1e3d241e21e3}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bEnable      : BOOL;
+    rSetpointBar : LREAL;
+END_VAR
+VAR_OUTPUT
+    rCommandBar : LREAL;
+    iOutputRaw  : INT;
+END_VAR
+VAR
+    rScaled : LREAL;
+END_VAR]]></Declaration>
+      <Implementation><ST><![CDATA[// Festo VEAB-L-26-D9-Q4-A4-1R1: 4..20 mA = 0.03..6.00 bar.
+// Beckhoff EL4028: raw 0 = 4 mA, raw 32767 = 20 mA.
+IF bEnable THEN
+    rCommandBarInternal := LIMIT(0.03, rSetpointBar, 6.0);
+ELSE
+    rCommandBarInternal := 0.03;
+END_IF
+
+rScaled :=
+    ((rCommandBarInternal - 0.03) / (6.0 - 0.03))
+    * 32767.0;
+
+rScaled := LIMIT(0.0, rScaled, 32767.0);
+
+iOutputRaw := LREAL_TO_INT(rScaled);
+rCommandBar := rCommandBarInternal;]]></ST></Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

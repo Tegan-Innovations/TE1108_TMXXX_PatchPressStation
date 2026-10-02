@@ -1,5 +1,5 @@
-<div id="Content_Popup_ManualMode_5" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="480" data-tchmi-height="350" data-tchmi-zindex="2">
-<div id="TcHmiTextblock_1380" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="NEST DISABLED INFO" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="480" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="200" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="2" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-weight="Bold">
+<div id="Content_Popup_ManualMode_6" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="480" data-tchmi-height="350" data-tchmi-zindex="2">
+<div id="TcHmiTextblock_1433" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="70" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-text="REJECT CHUTE INFO" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="480" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="200" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="2" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-weight="Bold">
 
 
 
@@ -15,7 +15,7 @@
 
 
 </div>
-<div id="TcHmiButton_ManualModeYes_131" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="60" data-tchmi-height-unit="px" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-text="Acknowledge" data-tchmi-top="259" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="25" data-tchmi-zindex="2" data-tchmi-text-font-weight="Bold" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.bAcknowledgeDisabledNestPartPopup%/s%">
+<div id="TcHmiButton_ManualModeYes_132" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="60" data-tchmi-height-unit="px" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-text="Acknowledge" data-tchmi-top="259" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="25" data-tchmi-zindex="2" data-tchmi-text-font-weight="Bold" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.bAcknowledgeRejectChuteFull%/s%">
 
 
 
@@ -58,7 +58,7 @@
 ]
 </script>
 </div>
-<div id="TcHmiRectangle_popUpBackground_302" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="480" data-tchmi-width-unit="px" data-tchmi-zindex="0" data-tchmi-tooltip="%s%ADS.PLC1.GVL_HMI.stCommands.bAcknowledgeRejectChuteFull|BindingMode=TwoWay%/s%">
+<div id="TcHmiRectangle_popUpBackground_303" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="350" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="480" data-tchmi-width-unit="px" data-tchmi-zindex="0">
 
 
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
@@ -119,7 +119,8 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_1434" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="128" data-tchmi-height-unit="px" data-tchmi-left="40" data-tchmi-left-unit="px" data-tchmi-text="%s%ADS.PLC1.GVL_HMI.stStatus.sDisabledNestPartPopupMessage%/s%" data-tchmi-top="97" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="200" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="2" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-weight="Bold">
+<div id="TcHmiTextblock_1381" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="128" data-tchmi-height-unit="px" data-tchmi-left="40" data-tchmi-left-unit="px" data-tchmi-top="97" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="200" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="2" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-weight="Bold" data-tchmi-text="Reject chute is full. Empty the reject
+chute and press Acknowledge.">
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
 {
   "color": "rgba(0, 0, 0, 1)"

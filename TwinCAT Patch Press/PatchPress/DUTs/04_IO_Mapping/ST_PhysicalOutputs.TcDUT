@@ -19,6 +19,12 @@ STRUCT
     bStation3SupportExtend             : BOOL;
     bStation3SupportRetract            : BOOL;
 
+    bHeatStakeHeadLock                 : BOOL;
+    bHeatStakeHeadUnlock               : BOOL;
+    bHeatStakeHeadDown                 : BOOL;
+    bHeatStakeHeadUp                   : BOOL;
+    iHeatStakePressureRaw              : INT;
+
     bLedStart                          : BOOL;
     bLedReset                          : BOOL;
     bStatusIndicatorRed                : BOOL;

@@ -16,7 +16,6 @@ STRUCT
 
     bControlEnabled          : BOOL;
     bHeating                 : BOOL;
-    bWarmupBoostActive       : BOOL;
     bAtTemperature           : BOOL;
     bIndexTemperatureReady   : BOOL;
 

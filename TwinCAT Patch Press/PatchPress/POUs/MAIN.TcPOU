@@ -8,6 +8,7 @@ END_VAR]]></Declaration>
 PRG_ReadInputs();
 PRG_HmiCommands();
 PRG_NestSettings();
+PRG_HeatStakeProcessSettings();
 PRG_Main();
 PRG_HeatStakeTemperatureSettings();
 PRG_Events();

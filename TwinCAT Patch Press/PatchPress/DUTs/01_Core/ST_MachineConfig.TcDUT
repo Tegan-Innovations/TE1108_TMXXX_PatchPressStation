@@ -10,6 +10,8 @@ STRUCT
     tIndexStopDelay          : TIME := T#1S;
     tIndexSupportTimeout     : TIME := T#5S;
     tStationSupportTimeout   : TIME := T#5S;
+    // Heat Stake head UP/DOWN feedback timeout.
+    tHeatStakeHeadMoveTimeout : TIME := T#3S;
     tTwoHandHold             : TIME := T#500MS;
     tTwoHandRecoveryTimeout  : TIME := T#10S;
     tDoorLockTimeout         : TIME := T#10S;

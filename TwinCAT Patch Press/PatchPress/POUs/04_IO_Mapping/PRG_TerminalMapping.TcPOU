@@ -114,6 +114,8 @@ GVL_IO.stInputs.bRotaryGripperPlace180 			:= GVL_EtherCAT.stTerm8_EL1809.iEL1809
  Terminal 19 | EL1809
 ======================================================================================================================
 *)
+GVL_IO.stInputs.bHeatStakeHeadUp   			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7;
+GVL_IO.stInputs.bHeatStakeHeadDown 			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8;
 GVL_IO.stInputs.bMembraneTransferRetracted 	:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9;
 GVL_IO.stInputs.bMembraneTransferExtended 	:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10;
 GVL_IO.stInputs.bMiddleRockerDown 			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11;
@@ -174,8 +176,15 @@ GVL_Safety.bMainDoorLockRequest 				:= GVL_IO.stOutputs.bMainDoorLockRequest;
 *)
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1 := GVL_IO.stOutputs.bLedStart;
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2 := GVL_IO.stOutputs.bLedReset;
+
+// Validated physical status-light mapping:
+// Ch3 = RED status indicator (driven from machine FAIL)
+// Ch4 = GREEN status indicator (driven from machine PASS)
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3 := GVL_IO.stOutputs.bStatusIndicatorRed;
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4 := GVL_IO.stOutputs.bStatusIndicatorGreen;
+
+// Ch5 = internal cabinet/machine light
+// Ch6 = operator/nest light
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5 := GVL_IO.stOutputs.bInternalLight;
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6 := GVL_IO.stOutputs.bNestLight;
 
@@ -184,6 +193,12 @@ GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6 := GVL_IO.stOutputs.bNestLight;
  Terminal 13 | EL2502 | Heat Stake PWM Outputs
 ======================================================================================================================
 *)
+// IMPORTANT - VALIDATED PHYSICAL MAPPING.
+// The heater channels are intentionally crossed relative to logical Heater 1 / Heater 2.
+// Do NOT "correct" this unless the physical wiring is changed.
+//
+// EL2502 Ch1 physically drives logical Heater 2.
+// EL2502 Ch2 physically drives logical Heater 1.
 GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1 := GVL_IO.stOutputs.uiHeatStakePwm2Raw;
 GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2 := GVL_IO.stOutputs.uiHeatStakePwm1Raw;
 
@@ -215,7 +230,25 @@ GVL_EtherCAT.stFestoModule2_VABX.bCoil4 := GVL_IO.stOutputs.bStation2SupportExte
 GVL_EtherCAT.stFestoModule2_VABX.bCoil5 := GVL_IO.stOutputs.bStation2SupportRetract;
 
 GVL_EtherCAT.stFestoModule2_VABX.bCoil6 := GVL_IO.stOutputs.bStation3SupportExtend;
-GVL_EtherCAT.stFestoModule2_VABX.bCoil7 := GVL_IO.stOutputs.bStation3SupportRetract;]]></ST>
+GVL_EtherCAT.stFestoModule2_VABX.bCoil7 := GVL_IO.stOutputs.bStation3SupportRetract;
+
+(*
+======================================================================================================================
+ BOX 1 | Festo VABX EtherCAT manifold - Module 4 | Heat Stake Head
+======================================================================================================================
+*)
+// Validated Heat Stake head pneumatic mapping.
+GVL_EtherCAT.stFestoModule4_VABX.bCoil2 := GVL_IO.stOutputs.bHeatStakeHeadLock;
+GVL_EtherCAT.stFestoModule4_VABX.bCoil3 := GVL_IO.stOutputs.bHeatStakeHeadUnlock;
+GVL_EtherCAT.stFestoModule4_VABX.bCoil4 := GVL_IO.stOutputs.bHeatStakeHeadDown;
+GVL_EtherCAT.stFestoModule4_VABX.bCoil5 := GVL_IO.stOutputs.bHeatStakeHeadUp;
+
+(*
+======================================================================================================================
+ Terminal 21 | EL4028 | VEAB Heat Stake Down Pressure
+======================================================================================================================
+*)
+GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1 := GVL_IO.stOutputs.iHeatStakePressureRaw;]]></ST>
       </Implementation>
     </Method>
   </POU>

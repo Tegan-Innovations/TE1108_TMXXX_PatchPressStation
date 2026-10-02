@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
@@ -105,22 +105,13 @@
     <Compile Include="DUTs\01_Core\ST_TestHistory.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\02_Components\Motion\ST_Axis.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DUTs\02_Components\Temperature\ST_HeatStakeTemperatureSettings.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\02_Components\Temperature\ST_HeatStakeTemperatureStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\03_Stations\Common\E_NestStageStatus.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\03_Stations\Common\E_StationResultStatus.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\03_Stations\Common\E_SupportCylinderFault.TcDUT">
+    <Compile Include="DUTs\02_Components\Motion\ST_Axis.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\ST_PhysicalOutputs.TcDUT">
@@ -141,6 +132,12 @@
     <Compile Include="DUTs\07_HMI\E_PLC_Power.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\03_Stations\HeatStake\ST_HeatStakeProcessSettings.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\03_Stations\HeatStake\ST_HeatStakeProcessStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\07_HMI\ST_HmiCommands.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -157,6 +154,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\03_Stations\Common\E_PatchStationState.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\03_Stations\Common\E_SupportCylinderFault.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\03_Stations\Common\E_StationResultStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\03_Stations\Common\E_NestStageStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\03_Stations\Common\ST_PatchStageStatus.TcDUT">
@@ -187,6 +193,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL3064.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL4028.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL6070.TcDUT">
@@ -279,10 +288,13 @@
     <Compile Include="POUs\00_Application\PRG_HmiStatus.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\00_Application\PRG_Main.TcPOU">
+    <Compile Include="POUs\00_Application\PRG_NestSettings.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\00_Application\PRG_NestSettings.TcPOU">
+    <Compile Include="POUs\00_Application\PRG_HeatStakeProcessSettings.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\00_Application\PRG_Main.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\00_Application\PRG_ReadInputs.TcPOU">
@@ -322,6 +334,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\02_Components\Pneumatics\FB_Support.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\02_Components\Pressure\FB_VeabPressureRegulator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\02_Components\Temperature\FB_HeatStakeTemperatureControl.TcPOU">
@@ -366,7 +381,6 @@
     <Folder Include="DUTs\01_Core\Process" />
     <Folder Include="DUTs\01_Core\Operator" />
     <Folder Include="DUTs\02_Components\Motion" />
-    <Folder Include="DUTs\02_Components\Temperature" />
     <Folder Include="DUTs\07_HMI" />
     <Folder Include="DUTs\03_Stations" />
     <Folder Include="DUTs\03_Stations\Common" />
@@ -377,15 +391,17 @@
     <Folder Include="DUTs\04_IO_Mapping\Terminals" />
     <Folder Include="DUTs\05_AlarmsAndEvents" />
     <Folder Include="DUTs\02_Components" />
+    <Folder Include="DUTs\02_Components\Temperature" />
     <Folder Include="GVLs" />
     <Folder Include="POUs\00_Application" />
     <Folder Include="POUs\01_Core" />
     <Folder Include="POUs\01_Core\Machine" />
     <Folder Include="POUs\01_Core\Process" />
     <Folder Include="POUs\02_Components" />
+    <Folder Include="POUs\02_Components\Pressure" />
+    <Folder Include="POUs\02_Components\Temperature" />
     <Folder Include="POUs\02_Components\Door" />
     <Folder Include="POUs\02_Components\Index" />
-    <Folder Include="POUs\02_Components\Temperature" />
     <Folder Include="POUs\02_Components\Pneumatics" />
     <Folder Include="POUs\03_Stations" />
     <Folder Include="POUs\03_Stations\HeatStake" />
@@ -403,6 +419,10 @@
       <DefaultResolution>Tc2_ControllerToolbox, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_ControllerToolbox</Namespace>
     </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_Utilities">
+      <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Utilities</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Standard">
       <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Standard</Namespace>
@@ -410,10 +430,6 @@
     <PlaceholderReference Include="Tc2_System">
       <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_System</Namespace>
-    </PlaceholderReference>
-    <PlaceholderReference Include="Tc2_Utilities">
-      <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
-      <Namespace>Tc2_Utilities</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

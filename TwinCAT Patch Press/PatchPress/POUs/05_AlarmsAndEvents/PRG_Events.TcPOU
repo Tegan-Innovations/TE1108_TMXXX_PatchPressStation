@@ -270,6 +270,22 @@ GVL_MASTER.stStationEvents[3].aEvents[20].sSolution :=
     'Correct the condition reported in the message and apply the settings again';
 
 // Heat Stake support cylinder.
+// Heat Stake head cylinder position feedback alarms
+GVL_MASTER.stStationEvents[3].aEvents[21].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[21].bEventFlag := GVL_MASTER.stStatus.bHeatStakeHeadDownTimeoutFault;
+GVL_MASTER.stStationEvents[3].aEvents[21].bEventText := 'Heat Stake head failed to reach DOWN position';
+GVL_MASTER.stStationEvents[3].aEvents[21].sSolution := 'Check part presence, nest support UP position, DOWN sensor, pneumatic pressure, valve and cylinder mechanics';
+
+GVL_MASTER.stStationEvents[3].aEvents[22].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[22].bEventFlag := GVL_MASTER.stStatus.bHeatStakeHeadUpTimeoutFault;
+GVL_MASTER.stStationEvents[3].aEvents[22].bEventText := 'Heat Stake head failed to reach UP position';
+GVL_MASTER.stStationEvents[3].aEvents[22].sSolution := 'Check UP sensor, pneumatic pressure, valve, tubing and cylinder mechanics';
+
+GVL_MASTER.stStationEvents[3].aEvents[23].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[23].bEventFlag := GVL_MASTER.stStatus.bHeatStakeHeadSensorConflictFault;
+GVL_MASTER.stStationEvents[3].aEvents[23].bEventText := 'Heat Stake head position sensor conflict';
+GVL_MASTER.stStationEvents[3].aEvents[23].sSolution := 'Check Head UP/DOWN sensor wiring, magnetic sensor adjustment and mechanical position';
+
 GVL_MASTER.stStationEvents[3].aEvents[3].bFault := TRUE;
 GVL_MASTER.stStationEvents[3].aEvents[3].bEventFlag :=
     GVL_MASTER.stStatus.stHeatStake.eSupportFault = E_SupportCylinderFault.ExtendTimeout;

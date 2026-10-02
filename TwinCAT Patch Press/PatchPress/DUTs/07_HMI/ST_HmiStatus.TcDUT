@@ -47,9 +47,28 @@ STRUCT
     uiDisabledNestPartPopupNestId : UINT;
     sDisabledNestPartPopupMessage : STRING(255);
 
+    // Reject chute full / controlled-stop status.
+    bRejectChuteFullLatched : BOOL;
+    bRejectChutePopupRequest : BOOL;
+    bRejectChuteStopRequest : BOOL;
+    bRejectChuteResetBlocked : BOOL;
+    sRejectChutePopupMessage : STRING(255);
+
+    // Heat Stake head cylinder diagnostics.
+    bHeatStakeHeadUp : BOOL;
+    bHeatStakeHeadDown : BOOL;
+    bHeatStakeHeadDownTimeoutFault : BOOL;
+    bHeatStakeHeadUpTimeoutFault : BOOL;
+    bHeatStakeHeadSensorConflictFault : BOOL;
+
     stPatchDispense           : ST_PatchStageStatus;
     stHeatStake               : ST_PatchStageStatus;
     stHeatStakeTemperature    : ST_HeatStakeTemperatureStatus;
+    stHeatStakeProcess        : ST_HeatStakeProcessStatus;
+    stHeatStakeProcessSettings : ST_HeatStakeProcessSettings;
+    bHeatStakeProcessSettingsWriteBusy : BOOL;
+    bHeatStakeProcessSettingsWriteError : BOOL;
+    udiHeatStakeProcessSettingsWriteErrorId : UDINT;
     stHeatStakeTemperatureSettings : ST_HeatStakeTemperatureSettings;
     bHeatStakeSettingsApplyAccepted : BOOL;
     bHeatStakeSettingsApplyRejected : BOOL;
@@ -59,6 +78,22 @@ STRUCT
     bHeatStakeSettingsSaveFailed : BOOL;
     sHeatStakeSettingsApplyRejectReason : STRING(255);
     udiHeatStakeSettingsWriteErrorId : UDINT;
+
+    // Current physical nest at each process station.
+    uiPatchDispenseNestId : UINT;
+    uiHeatStakeNestId     : UINT;
+    uiVisionNestId        : UINT;
+
+    bHeatStakeManualEnableAllowed     : BOOL;
+    bHeatStakeManualStakeAllowed      : BOOL;
+    bHeatStakeManualUnlockAllowed     : BOOL;
+    bHeatStakeManualLockAllowed       : BOOL;
+    bHeatStakeManualHeadDownAllowed   : BOOL;
+    bHeatStakeManualHeadUpAllowed     : BOOL;
+    bHeatStakeManualSupportAllowed    : BOOL;
+    bHeatStakeManualActionBusy        : BOOL;
+    bHeatStakeManualHeadUnlocked      : BOOL;
+
     stVision                  : ST_PatchStageStatus;
     eOperatorInstruction      : E_OperatorInstruction;
     stOperatorStation         : ST_OperatorStationStatus;

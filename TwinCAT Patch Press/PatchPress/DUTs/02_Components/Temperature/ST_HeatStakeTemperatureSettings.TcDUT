@@ -3,9 +3,9 @@
   <DUT Name="ST_HeatStakeTemperatureSettings" Id="{2907f69b-5179-4b5c-980d-9151f1af054e}">
     <Declaration><![CDATA[TYPE ST_HeatStakeTemperatureSettings :
 STRUCT
-    rSetpointC              : LREAL := 80.0;
-    rLowLimitC              : LREAL := 70.0;
-    rHighLimitC             : LREAL := 90.0;
+    rSetpointC              : LREAL := 100.0;
+    rLowLimitC              : LREAL := 90.0;
+    rHighLimitC             : LREAL := 110.0;
     rMaxTcDifferenceC       : LREAL := 10.0;
 
     tLowTemperatureTimeout  : TIME := T#5M;
@@ -21,11 +21,6 @@ STRUCT
     rOutputMinPercent       : LREAL := 0.0;
     rOutputMaxPercent       : LREAL := 100.0;
 
-    // Warm-up boost: full power while the process is well below setpoint.
-    // PID takes over once the PV reaches Setpoint - WarmupBoostDelta.
-    bWarmupBoostEnabled      : BOOL := TRUE;
-    rWarmupBoostDeltaC       : LREAL := 10.0;
-    rWarmupBoostOutputPercent : LREAL := 100.0;
 END_STRUCT
 END_TYPE
 ]]></Declaration>

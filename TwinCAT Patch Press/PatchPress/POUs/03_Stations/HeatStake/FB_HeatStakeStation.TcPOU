@@ -16,8 +16,11 @@ VAR
     bCommissionedInternal     : BOOL;
     bSafetyOkInternal         : BOOL;
     bSupervisionEnableInternal : BOOL;
+    bManualModeInternal        : BOOL;
     bSupportRetractedInternal : BOOL;
     bSupportExtendedInternal  : BOOL;
+    bHeadUpSensorInternal     : BOOL;
+    bHeadDownSensorInternal   : BOOL;
 
     eStateInternal      : E_PatchStationState := E_PatchStationState.Disabled;
     usiStepInternal     : USINT := 0;
@@ -38,8 +41,29 @@ VAR
     tonSupportRetractTimeout : TON;
     tSupportMoveTimeout      : TIME := T#5S;
 
-    tonProcessSimulation : TON;
-    tProcessSimulation   : TIME := T#3S;
+    tonHeadSequence    : TON;
+    tonContactDwell    : TON;
+    tonHeadDownTimeout : TON;
+    tonHeadUpTimeout   : TON;
+
+    // Lock / unlock remain pulse-driven; head movement is sensor-driven.
+    tUnlockDelay     : TIME := T#1S;
+    tLockDelay       : TIME := T#1S;
+    tHeadMoveTimeoutInternal : TIME := T#3S;
+
+    // Latched until RequestReset().
+    bHeadDownTimeoutFaultInternal : BOOL;
+    bHeadUpTimeoutFaultInternal : BOOL;
+    bHeadSensorConflictFaultInternal : BOOL;
+
+    stProcessSettingsInternal : ST_HeatStakeProcessSettings;
+
+    bHeadLockRequestInternal : BOOL;
+    bHeadUnlockRequestInternal : BOOL;
+    bHeadDownRequestInternal : BOOL;
+    bHeadUpRequestInternal : BOOL;
+    rPressureCommandBarInternal : LREAL := 0.03;
+    bContactDwellActiveInternal : BOOL;
 
     stResultInternal : ST_ProcessResult;
 END_VAR]]></Declaration>
@@ -51,22 +75,21 @@ END_VAR]]></Declaration>
 VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// Temporary commissioning sequence:
-// Ready/retracted -> extend -> 3 s simulated process -> retract -> Complete.
+        <ST><![CDATA[// Real Heat Stake process: support UP -> unlock -> DOWN -> dwell -> UP -> lock -> support DOWN.
 
 bSupportExtendRequestInternal := FALSE;
 bSupportRetractRequestInternal := FALSE;
+bHeadLockRequestInternal := FALSE;
+bHeadUnlockRequestInternal := FALSE;
+bHeadDownRequestInternal := FALSE;
+bHeadUpRequestInternal := FALSE;
+rPressureCommandBarInternal := 0.03;
+bContactDwellActiveInternal := FALSE;
 bFaultInternal := FALSE;
 
-// Explicit station-fault simulation for alarm/fault-flow testing.
-// This is intentionally different from bSimulatedFail:
-//   bSimulatedFail  -> bad PRODUCT, machine keeps running.
-//   bSimulatedFault -> station MACHINE fault, machine goes to Fault.
-IF bEnableInternal
-    AND bSimulatedFault
-THEN
-    tonProcessSimulation(IN := FALSE);
+IF bEnableInternal AND bSimulatedFault THEN
+    tonHeadSequence(IN := FALSE);
+    tonContactDwell(IN := FALSE);
     eStateInternal := E_PatchStationState.Fault;
     usiStepInternal := 0;
     bFaultInternal := TRUE;
@@ -80,16 +103,12 @@ THEN
     sDiagnosticInternal := 'Heat stake: simulated station fault';
 END_IF
 
-// Sensor plausibility check.
-// Both end-position sensors TRUE at the same time is not a valid pneumatic
-// state and must block the cycle/index.
 IF NOT bFaultInternal
     AND bSupervisionEnableInternal
     AND bSafetyOkInternal
     AND bSupportRetractedInternal
     AND bSupportExtendedInternal
 THEN
-    tonProcessSimulation(IN := FALSE);
     eStateInternal := E_PatchStationState.Fault;
     usiStepInternal := 0;
     bFaultInternal := TRUE;
@@ -102,122 +121,234 @@ THEN
     sDiagnosticInternal := 'Heat stake: contradictory support sensors';
 END_IF
 
+// Head sensors are mutually exclusive.
+IF NOT bFaultInternal
+    AND bEnableInternal
+    AND bSafetyOkInternal
+    AND bHeadUpSensorInternal
+    AND bHeadDownSensorInternal
+THEN
+    eStateInternal := E_PatchStationState.Fault;
+    usiStepInternal := 0;
+    bFaultInternal := TRUE;
+    bHeadSensorConflictFaultInternal := TRUE;
+    stResultInternal.bValid := TRUE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.Fail;
+    stResultInternal.udiFaultCode := 6;
+    stResultInternal.udiAlertCode := 0;
+    stResultInternal.sDetail := 'Heat stake: head position sensor conflict';
+    sDiagnosticInternal := 'Heat stake: head UP/DOWN sensors both active';
+END_IF
+
 IF bFaultInternal THEN
-    // Keep outputs de-energised. Recovery requires Reset after the sensor
-    // condition has been corrected.
+    bHeadUnlockRequestInternal := TRUE;
+    bHeadUpRequestInternal := TRUE;
+    bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
 
 ELSIF bStopRequestInternal THEN
-    tonProcessSimulation(IN := FALSE);
-    eStateInternal := E_PatchStationState.Homing;
-    usiStepInternal := 30;
-    bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-    sDiagnosticInternal := 'Heat stake: stop requested - retracting support';
+    CASE usiStepInternal OF
+        80:
+            bHeadUnlockRequestInternal := TRUE;
+            tonHeadSequence(IN := TRUE, PT := tUnlockDelay);
+            sDiagnosticInternal := 'Heat stake: stop - unlocking head';
+            IF tonHeadSequence.Q THEN
+                tonHeadSequence(IN := FALSE);
+                usiStepInternal := 81;
+            END_IF
 
-    IF bSupportRetractedInternal THEN
-        bStopRequestInternal := FALSE;
-        usiStepInternal := 0;
-        IF bEnableInternal AND bCommissionedInternal AND bSafetyOkInternal THEN
-            eStateInternal := E_PatchStationState.Ready;
+        81:
+            bHeadUnlockRequestInternal := TRUE;
+            bHeadUpRequestInternal := NOT bHeadUpSensorInternal;
+            sDiagnosticInternal := 'Heat stake: stop - raising head';
+            IF bHeadUpSensorInternal THEN
+                usiStepInternal := 82;
+            END_IF
+
+        82:
+            bHeadLockRequestInternal := TRUE;
+            tonHeadSequence(IN := TRUE, PT := tLockDelay);
+            sDiagnosticInternal := 'Heat stake: stop - locking head';
+            IF tonHeadSequence.Q THEN
+                tonHeadSequence(IN := FALSE);
+                usiStepInternal := 83;
+            END_IF
+
+        83:
+            bHeadLockRequestInternal := TRUE;
+            bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+            sDiagnosticInternal := 'Heat stake: stop - retracting support';
+            IF bSupportRetractedInternal THEN
+                bStopRequestInternal := FALSE;
+                usiStepInternal := 0;
+                IF bEnableInternal AND bCommissionedInternal AND bSafetyOkInternal THEN
+                    eStateInternal := E_PatchStationState.Ready;
+                ELSE
+                    eStateInternal := E_PatchStationState.Disabled;
+                END_IF
+            END_IF
+
         ELSE
-            eStateInternal := E_PatchStationState.Disabled;
-        END_IF
-    END_IF
+            usiStepInternal := 80;
+    END_CASE
 
 ELSIF NOT bCommissionedInternal THEN
-    tonProcessSimulation(IN := FALSE);
     eStateInternal := E_PatchStationState.Disabled;
     usiStepInternal := 0;
-    sDiagnosticInternal := 'Heat stake: station disabled';
+    sDiagnosticInternal := 'Heat stake: station disabled - no actuator commands';
 
 ELSIF NOT bSafetyOkInternal THEN
-    tonProcessSimulation(IN := FALSE);
     eStateInternal := E_PatchStationState.Disabled;
     usiStepInternal := 0;
     sDiagnosticInternal := 'Heat stake: disabled by Safety';
 
 ELSIF NOT bEnableInternal THEN
-    tonProcessSimulation(IN := FALSE);
+    // Machine is outside an active Heat Stake state (for example Stopped).
+    //
+    // IMPORTANT:
+    // Do not run an automatic head-homing sequence here. RequestStop already
+    // performs the controlled unlock -> UP -> lock -> support retract sequence
+    // while the machine is transitioning through Stopping.
+    //
+    // Previously this branch restarted its homing steps every time it reached
+    // Disabled/step 0, producing a continuous LOCK -> UNLOCK -> UP -> LOCK loop
+    // while the machine remained Stopped.
+    //
+    // All head outputs were cleared at the start of Cyclic(), so keeping them
+    // untouched here leaves Coil 2/3/4/5 de-energised in Stopped.
+    tonHeadSequence(IN := FALSE);
+    tonContactDwell(IN := FALSE);
+    tonHeadDownTimeout(IN := FALSE);
+    tonHeadUpTimeout(IN := FALSE);
+    tonSupportExtendTimeout(IN := FALSE);
+    tonSupportRetractTimeout(IN := FALSE);
 
-    IF bSupportRetractedInternal THEN
-        eStateInternal := E_PatchStationState.Disabled;
-        usiStepInternal := 0;
-        sDiagnosticInternal := 'Heat stake: disabled - support retracted';
-    ELSE
-        eStateInternal := E_PatchStationState.Homing;
-        usiStepInternal := 30;
-        bSupportRetractRequestInternal := TRUE;
-        sDiagnosticInternal := 'Heat stake: disabled - retracting support';
-    END_IF
+    bSupportExtendRequestInternal := FALSE;
+    bSupportRetractRequestInternal := FALSE;
+
+    eStateInternal := E_PatchStationState.Disabled;
+    usiStepInternal := 0;
+
+    bHomeInternal := FALSE;
+    bReadyInternal := FALSE;
+    bBusyInternal := FALSE;
+    bCompleteInternal := FALSE;
+
+    sDiagnosticInternal := 'Heat stake: disabled - no actuator commands';
 
 ELSE
     CASE eStateInternal OF
-
         E_PatchStationState.Disabled,
         E_PatchStationState.Homing:
-            tonProcessSimulation(IN := FALSE);
-
-            IF bSupportRetractedInternal THEN
-                eStateInternal := E_PatchStationState.Ready;
-                usiStepInternal := 0;
-                sDiagnosticInternal := 'Heat stake: ready';
-            ELSE
-                eStateInternal := E_PatchStationState.Homing;
-                usiStepInternal := 30;
-                bSupportRetractRequestInternal := TRUE;
-                sDiagnosticInternal := 'Heat stake: retracting support to home';
-            END_IF
+            // No automatic mechanical homing in ReadyToStart.
+            // Without dedicated Heat Head position feedback, commanding
+            // unlock/up/lock here causes unwanted motion every time the
+            // station is enabled. The mechanical sequence starts only from
+            // RequestStart(), which is only issued when Heat Stake processing
+            // is actually required for the part at this station.
+            tonHeadSequence(IN := FALSE);
+            tonContactDwell(IN := FALSE);
+            usiStepInternal := 0;
+            eStateInternal := E_PatchStationState.Ready;
+            sDiagnosticInternal := 'Heat stake: ready - no actuator commands';
 
         E_PatchStationState.Ready:
-            tonProcessSimulation(IN := FALSE);
-            sDiagnosticInternal := 'Heat stake: ready - waiting for cycle start';
+            tonHeadSequence(IN := FALSE);
+            tonContactDwell(IN := FALSE);
+            sDiagnosticInternal := 'Heat stake: ready - waiting for process';
 
-            IF NOT bSupportRetractedInternal THEN
+            // In automatic/ready operation the station expects the support
+            // cylinder retracted while idle. In Manual Mode the engineer is
+            // intentionally allowed to extend the support, so do NOT bounce
+            // Ready -> Homing -> Ready just because the support is extended.
+            //
+            // That old transition made IsBusy() alternate because Homing is
+            // classified as Busy, which caused the Busy LED and HMI button
+            // permissives to flicker.
+            IF NOT bSupportRetractedInternal
+                AND NOT bManualModeInternal
+            THEN
                 eStateInternal := E_PatchStationState.Homing;
-                usiStepInternal := 30;
+                usiStepInternal := 4;
             END_IF
 
         E_PatchStationState.Processing:
             CASE usiStepInternal OF
-
                 10:
-                    tonProcessSimulation(IN := FALSE);
+                    bHeadLockRequestInternal := TRUE;
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
-                    sDiagnosticInternal := 'Heat stake: extending support';
-
+                    sDiagnosticInternal := 'Heat stake: support up';
                     IF bSupportExtendedInternal THEN
                         usiStepInternal := 20;
                     END_IF
 
                 20:
-                    bSupportExtendRequestInternal := TRUE;
-                    tonProcessSimulation(IN := TRUE, PT := tProcessSimulation);
-                    sDiagnosticInternal := 'Heat stake: simulated process - 3 s';
-
-                    IF tonProcessSimulation.Q THEN
-                        tonProcessSimulation(IN := FALSE);
+                    rPressureCommandBarInternal := stProcessSettingsInternal.rDownPressureBar;
+                    bHeadUnlockRequestInternal := TRUE;
+                    tonHeadSequence(IN := TRUE, PT := tUnlockDelay);
+                    sDiagnosticInternal := 'Heat stake: unlock head';
+                    IF tonHeadSequence.Q THEN
+                        tonHeadSequence(IN := FALSE);
                         usiStepInternal := 30;
                     END_IF
 
                 30:
-                    tonProcessSimulation(IN := FALSE);
+                    rPressureCommandBarInternal := stProcessSettingsInternal.rDownPressureBar;
+                    bHeadUnlockRequestInternal := TRUE;
+                    bHeadDownRequestInternal := NOT bHeadDownSensorInternal;
+                    sDiagnosticInternal := 'Heat stake: head down - waiting for DOWN feedback';
+                    IF bHeadDownSensorInternal THEN
+                        usiStepInternal := 40;
+                    END_IF
+
+                40:
+                    rPressureCommandBarInternal := stProcessSettingsInternal.rDownPressureBar;
+                    bHeadUnlockRequestInternal := TRUE;
+                    bHeadDownRequestInternal := TRUE;
+                    bContactDwellActiveInternal := TRUE;
+                    tonContactDwell(IN := TRUE, PT := stProcessSettingsInternal.tContactTime);
+                    sDiagnosticInternal := 'Heat stake: contact dwell';
+                    IF tonContactDwell.Q THEN
+                        tonContactDwell(IN := FALSE);
+                        usiStepInternal := 50;
+                    END_IF
+
+                50:
+                    bHeadUnlockRequestInternal := TRUE;
+                    bHeadUpRequestInternal := NOT bHeadUpSensorInternal;
+                    sDiagnosticInternal := 'Heat stake: head up - waiting for UP feedback';
+                    IF bHeadUpSensorInternal THEN
+                        usiStepInternal := 60;
+                    END_IF
+
+                60:
+                    bHeadLockRequestInternal := TRUE;
+                    tonHeadSequence(IN := TRUE, PT := tLockDelay);
+                    sDiagnosticInternal := 'Heat stake: lock head';
+                    IF tonHeadSequence.Q THEN
+                        tonHeadSequence(IN := FALSE);
+                        usiStepInternal := 70;
+                    END_IF
+
+                70:
+                    // Lock pulse was completed in step 60. Do not hold the
+                    // lock solenoid energised while retracting the support.
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-                    sDiagnosticInternal := 'Heat stake: retracting support';
+                    sDiagnosticInternal := 'Heat stake: support down';
 
                     IF bSupportRetractedInternal THEN
                         stResultInternal.bValid := TRUE;
                         stResultInternal.udiFaultCode := 0;
                         stResultInternal.udiAlertCode := 0;
 
-                        // Simulated process result. This is a PROCESS result,
-                        // not a machine/component fault.
                         IF bSimulatedFail THEN
                             stResultInternal.bPassed := FALSE;
                             stResultInternal.eCode := E_ProcessResultCode.Fail;
-                            stResultInternal.sDetail := 'Heat stake simulated process failed';
+                            stResultInternal.sDetail := 'Heat stake result forced FAIL';
                         ELSE
                             stResultInternal.bPassed := TRUE;
                             stResultInternal.eCode := E_ProcessResultCode.Pass;
-                            stResultInternal.sDetail := 'Heat stake simulated process passed';
+                            stResultInternal.sDetail := 'Heat stake process completed';
                         END_IF
 
                         eStateInternal := E_PatchStationState.Complete;
@@ -225,38 +356,69 @@ ELSE
                     END_IF
 
                 ELSE
-                    usiStepInternal := 30;
+                    usiStepInternal := 50;
             END_CASE
 
         E_PatchStationState.Complete:
-            tonProcessSimulation(IN := FALSE);
-            sDiagnosticInternal := 'Heat stake: complete - support retracted';
+            sDiagnosticInternal := 'Heat stake: complete - no actuator commands';
 
         E_PatchStationState.Fault:
-            tonProcessSimulation(IN := FALSE);
+            bHeadUnlockRequestInternal := TRUE;
+            bHeadUpRequestInternal := TRUE;
             bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
             sDiagnosticInternal := 'Heat stake: fault';
 
         ELSE
             eStateInternal := E_PatchStationState.Fault;
-
     END_CASE
 END_IF
 
-// ---------------------------------------------------------
-// Support-cylinder feedback supervision
-// ---------------------------------------------------------
-// A commanded movement must reach the corresponding end-position sensor
-// within tSupportMoveTimeout, but ONLY while cylinder supervision is enabled.
-//
-// Supervision is intentionally active only in:
-//   ReadyToStart
-//   AutoCycle
-//   Manual
-//
-// It is disabled during Fault / Stopping / Stopped / Initialising so the
-// machine can restore air and recover a cylinder that stopped between sensors
-// without immediately re-triggering the same feedback alarm.
+// Head movement supervision.
+tonHeadDownTimeout(
+    IN := bEnableInternal
+        AND bSafetyOkInternal
+        AND bHeadDownRequestInternal
+        AND NOT bHeadDownSensorInternal
+        AND (eStateInternal <> E_PatchStationState.Fault),
+    PT := tHeadMoveTimeoutInternal
+);
+
+tonHeadUpTimeout(
+    IN := bEnableInternal
+        AND bSafetyOkInternal
+        AND bHeadUpRequestInternal
+        AND NOT bHeadUpSensorInternal
+        AND (eStateInternal <> E_PatchStationState.Fault),
+    PT := tHeadMoveTimeoutInternal
+);
+
+IF tonHeadDownTimeout.Q THEN
+    bHeadDownRequestInternal := FALSE;
+    bHeadUpRequestInternal := FALSE;
+    bHeadDownTimeoutFaultInternal := TRUE;
+    eStateInternal := E_PatchStationState.Fault;
+    usiStepInternal := 0;
+    stResultInternal.bValid := TRUE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.Fail;
+    stResultInternal.udiFaultCode := 4;
+    stResultInternal.udiAlertCode := 0;
+    stResultInternal.sDetail := 'Heat stake: head DOWN feedback timeout';
+    sDiagnosticInternal := 'Heat stake: head DOWN feedback timeout';
+ELSIF tonHeadUpTimeout.Q THEN
+    bHeadDownRequestInternal := FALSE;
+    bHeadUpRequestInternal := FALSE;
+    bHeadUpTimeoutFaultInternal := TRUE;
+    eStateInternal := E_PatchStationState.Fault;
+    usiStepInternal := 0;
+    stResultInternal.bValid := TRUE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.Fail;
+    stResultInternal.udiFaultCode := 5;
+    stResultInternal.udiAlertCode := 0;
+    stResultInternal.sDetail := 'Heat stake: head UP feedback timeout';
+    sDiagnosticInternal := 'Heat stake: head UP feedback timeout';
+END_IF
 
 tonSupportExtendTimeout(
     IN := bSupervisionEnableInternal
@@ -289,7 +451,6 @@ IF tonSupportExtendTimeout.Q THEN
     stResultInternal.udiFaultCode := 1;
     stResultInternal.udiAlertCode := 0;
     stResultInternal.sDetail := 'Heat stake: support UP feedback timeout';
-
     sDiagnosticInternal := 'Heat stake: support UP feedback timeout';
 
 ELSIF tonSupportRetractTimeout.Q THEN
@@ -305,14 +466,25 @@ ELSIF tonSupportRetractTimeout.Q THEN
     stResultInternal.udiFaultCode := 2;
     stResultInternal.udiAlertCode := 0;
     stResultInternal.sDetail := 'Heat stake: support DOWN feedback timeout';
-
     sDiagnosticInternal := 'Heat stake: support DOWN feedback timeout';
 END_IF
 
-bHomeInternal := bSupportRetractedInternal;
-bReadyInternal := (eStateInternal = E_PatchStationState.Ready) AND bSupportRetractedInternal;
+bHomeInternal := bSupportRetractedInternal
+    AND bHeadUpSensorInternal
+    AND NOT bHeadDownSensorInternal
+    AND ((eStateInternal = E_PatchStationState.Ready)
+        OR (eStateInternal = E_PatchStationState.Disabled)
+        OR (eStateInternal = E_PatchStationState.Complete));
+
+bReadyInternal := (eStateInternal = E_PatchStationState.Ready)
+    AND bSupportRetractedInternal
+    AND bHeadUpSensorInternal
+    AND NOT bHeadDownSensorInternal;
+
 bBusyInternal := (eStateInternal = E_PatchStationState.Processing)
-    OR ((eStateInternal = E_PatchStationState.Homing) AND NOT bSupportRetractedInternal);
+    OR (eStateInternal = E_PatchStationState.Homing)
+    OR bStopRequestInternal;
+
 bCompleteInternal := (eStateInternal = E_PatchStationState.Complete);
 bFaultInternal := (eStateInternal = E_PatchStationState.Fault);
 ]]></ST>
@@ -330,7 +502,8 @@ END_VAR]]></Declaration>
       <Declaration><![CDATA[METHOD PUBLIC Initialise]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-tonProcessSimulation(IN := FALSE);
+tonHeadSequence(IN := FALSE);
+tonContactDwell(IN := FALSE);
 tonSupportExtendTimeout(IN := FALSE);
 tonSupportRetractTimeout(IN := FALSE);
 eSupportFaultInternal := E_SupportCylinderFault.None;
@@ -343,6 +516,12 @@ bCompleteInternal := FALSE;
 bFaultInternal := FALSE;
 bSupportExtendRequestInternal := FALSE;
 bSupportRetractRequestInternal := FALSE;
+bHeadLockRequestInternal := FALSE;
+bHeadUnlockRequestInternal := FALSE;
+bHeadDownRequestInternal := FALSE;
+bHeadUpRequestInternal := FALSE;
+rPressureCommandBarInternal := 0.03;
+bContactDwellActiveInternal := FALSE;
 bStopRequestInternal := FALSE;
 sDiagnosticInternal := '';
 
@@ -393,10 +572,16 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-tonProcessSimulation(IN := FALSE);
+tonHeadSequence(IN := FALSE);
+tonContactDwell(IN := FALSE);
+tonHeadDownTimeout(IN := FALSE);
+tonHeadUpTimeout(IN := FALSE);
 tonSupportExtendTimeout(IN := FALSE);
 tonSupportRetractTimeout(IN := FALSE);
 eSupportFaultInternal := E_SupportCylinderFault.None;
+bHeadDownTimeoutFaultInternal := FALSE;
+bHeadUpTimeoutFaultInternal := FALSE;
+bHeadSensorConflictFaultInternal := FALSE;
 bStopRequestInternal := FALSE;
 
 stResultInternal.bValid := FALSE;
@@ -406,18 +591,14 @@ stResultInternal.udiFaultCode := 0;
 stResultInternal.udiAlertCode := 0;
 stResultInternal.sDetail := '';
 
+// Reset only clears station state. It must not move the Heat Stake head.
 IF bEnableInternal AND bCommissionedInternal AND bSafetyOkInternal THEN
-    IF bSupportRetractedInternal THEN
-        eStateInternal := E_PatchStationState.Ready;
-        usiStepInternal := 0;
-    ELSE
-        eStateInternal := E_PatchStationState.Homing;
-        usiStepInternal := 30;
-    END_IF
+    eStateInternal := E_PatchStationState.Ready;
 ELSE
     eStateInternal := E_PatchStationState.Disabled;
-    usiStepInternal := 0;
 END_IF
+
+usiStepInternal := 0;
 ]]></ST>
       </Implementation>
     </Method>
@@ -434,6 +615,8 @@ IF bEnableInternal
     AND bSafetyOkInternal
     AND bReadyInternal
     AND bSupportRetractedInternal
+    AND bHeadUpSensorInternal
+    AND NOT bHeadDownSensorInternal
 THEN
     stResultInternal.bValid := FALSE;
     stResultInternal.bPassed := FALSE;
@@ -452,7 +635,20 @@ END_IF
 VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[bStopRequestInternal := TRUE;]]></ST>
+        <ST><![CDATA[IF
+    (eStateInternal = E_PatchStationState.Processing)
+    OR bHeadUnlockRequestInternal
+    OR bHeadDownRequestInternal
+    OR bHeadUpRequestInternal
+THEN
+    // Interrupted active Heat Stake process: recover head UP and lock once.
+    bStopRequestInternal := TRUE;
+    usiStepInternal := 80;
+ELSE
+    // No active Heat Stake process -> Stopping/Stopped must not actuate the head.
+    bStopRequestInternal := FALSE;
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="Update" Id="{f1cd8897-c7c8-4dec-8bf2-642ea84c5630}">
@@ -462,15 +658,30 @@ VAR_INPUT
     bCommissioned     : BOOL;
     bSafetyOk         : BOOL;
     bSupervisionEnable : BOOL;
+    bManualMode       : BOOL;
     bReset            : BOOL;
     bSupportRetracted : BOOL;
     bSupportExtended  : BOOL;
+    bHeadUpSensor     : BOOL;
+    bHeadDownSensor   : BOOL;
     tSupportTimeout   : TIME;
+    tHeadMoveTimeout  : TIME;
+    stProcessSettings : ST_HeatStakeProcessSettings;
 END_VAR
 VAR_OUTPUT
     stStatus               : ST_PatchStageStatus;
     bSupportExtendRequest  : BOOL;
     bSupportRetractRequest : BOOL;
+    bHeadLockRequest       : BOOL;
+    bHeadUnlockRequest     : BOOL;
+    bHeadDownRequest       : BOOL;
+    bHeadUpRequest         : BOOL;
+    rPressureCommandBar    : LREAL;
+    bContactDwellActive    : BOOL;
+    usiSequenceStep        : USINT;
+    bHeadDownTimeoutFault  : BOOL;
+    bHeadUpTimeoutFault    : BOOL;
+    bHeadSensorConflictFault : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
@@ -478,9 +689,14 @@ bEnableInternal := bEnable;
 bCommissionedInternal := bCommissioned;
 bSafetyOkInternal := bSafetyOk;
 bSupervisionEnableInternal := bSupervisionEnable;
+bManualModeInternal := bManualMode;
 bSupportRetractedInternal := bSupportRetracted;
 bSupportExtendedInternal := bSupportExtended;
+bHeadUpSensorInternal := bHeadUpSensor;
+bHeadDownSensorInternal := bHeadDownSensor;
 tSupportMoveTimeout := tSupportTimeout;
+tHeadMoveTimeoutInternal := tHeadMoveTimeout;
+stProcessSettingsInternal := stProcessSettings;
 
 IF bReset THEN
     RequestReset();
@@ -500,6 +716,16 @@ stStatus.sDiagnostic := sDiagnosticInternal;
 
 bSupportExtendRequest := bSupportExtendRequestInternal;
 bSupportRetractRequest := bSupportRetractRequestInternal;
+bHeadLockRequest := bHeadLockRequestInternal;
+bHeadUnlockRequest := bHeadUnlockRequestInternal;
+bHeadDownRequest := bHeadDownRequestInternal;
+bHeadUpRequest := bHeadUpRequestInternal;
+rPressureCommandBar := rPressureCommandBarInternal;
+bContactDwellActive := bContactDwellActiveInternal;
+usiSequenceStep := usiStepInternal;
+bHeadDownTimeoutFault := bHeadDownTimeoutFaultInternal;
+bHeadUpTimeoutFault := bHeadUpTimeoutFaultInternal;
+bHeadSensorConflictFault := bHeadSensorConflictFaultInternal;
 ]]></ST>
       </Implementation>
     </Method>

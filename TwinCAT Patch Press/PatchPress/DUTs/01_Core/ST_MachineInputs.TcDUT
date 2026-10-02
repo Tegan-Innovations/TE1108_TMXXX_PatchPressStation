@@ -38,6 +38,9 @@ STRUCT
     bRejectChutePartPresent       : BOOL;
     bHeatStakeEaglePresent        : BOOL;
     bHeatStakePatchPresent        : BOOL;
+    // Heat Stake head cylinder magnetic position sensors.
+    bHeatStakeHeadUp              : BOOL;
+    bHeatStakeHeadDown            : BOOL;
     bPbupMagnetPresent            : BOOL;
     bStation1SupportRetracted     : BOOL;
     bStation1SupportExtended      : BOOL;

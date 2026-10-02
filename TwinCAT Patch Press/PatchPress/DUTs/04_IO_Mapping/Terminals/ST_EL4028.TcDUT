@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_EL4028" Id="{cd462dcf-437a-4112-93c4-130e51a76d64}">
+    <Declaration><![CDATA[TYPE ST_EL4028 :
+STRUCT
+    sTerminalName : STRING(80) := 'EL4028 | 8-Channel Analog Output 4..20mA';
+    iEL4028_Ch1 AT %Q* : INT;
+    iEL4028_Ch2 AT %Q* : INT;
+    iEL4028_Ch3 AT %Q* : INT;
+    iEL4028_Ch4 AT %Q* : INT;
+    iEL4028_Ch5 AT %Q* : INT;
+    iEL4028_Ch6 AT %Q* : INT;
+    iEL4028_Ch7 AT %Q* : INT;
+    iEL4028_Ch8 AT %Q* : INT;
+    stTerminalInfo : ST_Terminal_Info;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

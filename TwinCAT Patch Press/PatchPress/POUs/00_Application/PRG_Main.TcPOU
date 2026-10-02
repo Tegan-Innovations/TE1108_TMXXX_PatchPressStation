@@ -10,6 +10,7 @@ END_VAR]]></Declaration>
     stCommand := GVL_MASTER.stCommand,
     stConfig := GVL_Config.stMachine,
     stHeatStakeTemperatureSettings := GVL_Persistent.stHeatStakeTemperatureSettings,
+    stHeatStakeProcessSettings := GVL_Persistent.stHeatStakeProcessSettings,
     bPatchDispenseCommissioned := GVL_PatchPress_Interface.bPatchDispenseCommissioned,
     bHeatStakeCommissioned := GVL_PatchPress_Interface.bHeatStakeCommissioned,
     bVisionCommissioned := GVL_PatchPress_Interface.bVisionCommissioned,

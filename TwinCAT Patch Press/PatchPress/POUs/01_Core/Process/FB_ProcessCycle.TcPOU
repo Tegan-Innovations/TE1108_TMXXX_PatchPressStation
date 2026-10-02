@@ -50,6 +50,7 @@ VAR_OUTPUT
     bFault                    : BOOL;
     bSequenceTimeoutFault     : BOOL;
     bStopPendingStatus        : BOOL;
+    bAutomaticStopRequest     : BOOL;
     bDisabledNestIndexAttempt : BOOL;
 
     eState                    : E_CycleState;
@@ -83,6 +84,7 @@ bStartStations := FALSE;
 bStopStations := FALSE;
 bRequestIndex := FALSE;
 bCompletePulse := FALSE;
+bAutomaticStopRequest := FALSE;
 bDisabledNestIndexAttempt := FALSE;
 
 rtCycleTrigger(CLK := bTwoHandsSafe);
@@ -135,20 +137,40 @@ THEN
     eStateInternal := E_CycleState.Fault;
 END_IF
 
-// Do not supervise the idle/waiting states.
+// Automatic process-cycle timeout.
+//
+// This timeout represents OPERATOR INACTIVITY only. It must not run while the
+// machine is heating, initialising, indexing, processing, stopping or faulted.
+//
+// It starts only when the machine is fully ready for the next cycle:
+//   - AutoCycle/process coordinator enabled;
+//   - waiting for a fresh two-hand operator trigger;
+//   - Heat Stake temperature permissive is TRUE;
+//   - all process stations are Ready;
+//   - index is ready/locked and stationary;
+//   - station/index permissives are valid.
+//
+// Therefore the Heat Stake warm-up time is never included in this timeout.
 tonSequenceTimeout(
     IN := bEnable
-        AND (eStateInternal <> E_CycleState.Disabled)
-        AND (eStateInternal <> E_CycleState.WaitingForProcessCycleTrigger)
-        AND (eStateInternal <> E_CycleState.CycleComplete)
-        AND (eStateInternal <> E_CycleState.ControlledStop)
-        AND (eStateInternal <> E_CycleState.Fault),
+        AND (eStateInternal = E_CycleState.WaitingForProcessCycleTrigger)
+        AND bTemperatureIndexPermissive
+        AND bAllStationsReady
+        AND bSafetyOk
+        AND bIndexReady
+        AND bIndexLocked
+        AND NOT bIndexBusy
+        AND bStationsIndexPermissive
+        AND bOperatorIndexPermissive,
     PT := tSequenceTimeout
 );
 
 IF tonSequenceTimeout.Q THEN
-    bSequenceTimeoutFaultInternal := TRUE;
-    eStateInternal := E_CycleState.Fault;
+    // Two minutes of a fully-ready machine waiting for operator activity is
+    // NOT a machine fault. Convert it into the same controlled Stop Request
+    // philosophy used by the physical Stop button.
+    bStopPending := TRUE;
+    bAutomaticStopRequest := TRUE;
 END_IF
 
 // ---------------------------------------------------------
@@ -260,25 +282,28 @@ CASE eStateInternal OF
         END_IF
 
     E_CycleState.StartingProcesses:
-        bStartStations := TRUE;
-        bStartIssued := TRUE;
-        eStateInternal := E_CycleState.WaitingForProcessesRunning;
+        // If Stop was requested before any station actually started, do not
+        // launch a new process. Go directly to the controlled-stop path.
+        IF bStopPending THEN
+            eStateInternal := E_CycleState.ControlledStop;
+        ELSE
+            bStartStations := TRUE;
+            bStartIssued := TRUE;
+            eStateInternal := E_CycleState.WaitingForProcessesRunning;
+        END_IF
 
     E_CycleState.WaitingForProcessesRunning:
 
-        IF bStopPending THEN
-            bStopStations := TRUE;
-            eStateInternal := E_CycleState.ControlledStop;
-
+        // A Stop Request is intentionally only LATCHED while a station is
+        // running. Never interrupt an active station process. The process is
+        // allowed to reach its normal Complete state and retract its tooling.
+        //
         // IMPORTANT:
         // If no physical nest at any process station contains a part, all
         // stations are intentionally skipped. In that case
         // bAllStationsReady remains TRUE forever, while
         // bAllStationsComplete is already TRUE.
-        //
-        // Without this branch the ProcessCycle waits here until the global
-        // sequence timeout and sends the machine to Immediate Fault.
-        ELSIF bAllStationsComplete THEN
+        IF bAllStationsComplete THEN
             eStateInternal := E_CycleState.WaitingForProcessesComplete;
 
         // Normal case: at least one required station has left Ready and
@@ -289,15 +314,12 @@ CASE eStateInternal OF
 
     E_CycleState.WaitingForProcessesComplete:
 
-        IF bStopPending THEN
-            bStopStations := TRUE;
-            eStateInternal := E_CycleState.ControlledStop;
-
-        ELSIF bAllStationsComplete
+        // Even with Stop pending, allow every active station to finish its
+        // normal sequence. Only after all stations are Complete and all
+        // supports are physically retracted may the stop proceed.
+        IF bAllStationsComplete
             AND bStationsIndexPermissive
         THEN
-            // Complete is accepted only after all three supports have
-            // physically returned to their safe/retracted sensors.
             bStartIssued := FALSE;
             eStateInternal := E_CycleState.CycleComplete;
         END_IF

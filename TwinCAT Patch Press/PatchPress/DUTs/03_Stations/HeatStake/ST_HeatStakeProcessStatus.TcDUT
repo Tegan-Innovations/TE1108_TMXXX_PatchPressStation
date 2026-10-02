@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_HeatStakeProcessStatus" Id="{6610f330-0bac-4a3c-aaf6-535eead97f64}">
+    <Declaration><![CDATA[TYPE ST_HeatStakeProcessStatus :
+STRUCT
+    tContactTimeSet         : TIME;
+    rContactTimeSetSeconds : LREAL;
+    rPressureSetpointBar  : LREAL;
+    rPressureCommandBar   : LREAL;
+    iPressureOutputRaw    : INT;
+    bHeadLockCommand      : BOOL;
+    bHeadUnlockCommand    : BOOL;
+    bHeadDownCommand      : BOOL;
+    bHeadUpCommand        : BOOL;
+    bContactDwellActive   : BOOL;
+    usiSequenceStep       : USINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

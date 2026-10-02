@@ -133,6 +133,7 @@
     <Folder Include="Contents\IOs" />
     <Folder Include="Contents\Hardware" />
     <Folder Include="Contents\Screens" />
+    <Folder Include="Contents\Screens\ManualTabs" />
     <Folder Include="Contents\Screens\Settings" />
     <Folder Include="Contents\Screens\popups" />
     <Folder Include="Contents\UserControl" />
@@ -268,7 +269,19 @@
     <Content Include="Contents\Screens\Data_History.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Contents\Screens\ManualTabs\HeatStakeTab.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\Screens\ManualTabs\PatchTab.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\Screens\ManualTabs\VisionTab.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Contents\Screens\Manual_Mode.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\Screens\popups\Content_Popup_RejectChuteFull.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Screens\popups\Content_Popup_NestDisabled.content">
@@ -774,13 +787,10 @@
     <Content Include="Images\Project\Cylinders\SiliconeCylinderRetracted_V2.png">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Images\Project\IVEK_DigiSpence4000BT.png">
+    <Content Include="Images\Project\HeatStakeStation.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\Project\ManualModeBaseIndex.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\ManualModePump.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\Project\Nest\nest1.svg">
@@ -810,19 +820,10 @@
     <Content Include="Images\Project\nest_pos_4.PNG">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Images\Project\SiliconeIndexTable.png">
+    <Content Include="Images\Project\PatchIndexTable.png">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Images\Project\SiliconeIndexTableV2.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\SiliconeIndexTableV3.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\SiliconeIndexTableV4.png">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\Project\SS_PneumaticsPopUp.png">
+    <Content Include="Images\Project\PatchIndexTableV2.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\TeganInfo.png">

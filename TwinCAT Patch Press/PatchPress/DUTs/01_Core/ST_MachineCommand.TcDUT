@@ -17,7 +17,17 @@ STRUCT
     // Operator/nest light request from HMI.
     bOperatorLight        : BOOL;
 
+    // Heat Stake Manual Mode
+    bHeatStakeManualEnable        : BOOL;
+    bHeatStakeManualStakePatch    : BOOL;
+    bHeatStakeManualUnlock        : BOOL;
+    bHeatStakeManualLock          : BOOL;
+    bHeatStakeManualHeadDown      : BOOL;
+    bHeatStakeManualHeadUp        : BOOL;
+    bHeatStakeManualSupportUp     : BOOL;
+
     bAcknowledgeDisabledNestPartPopup : BOOL;
+    bAcknowledgeRejectChuteFull : BOOL;
     uiResetStatisticsNestId : UINT;
 END_STRUCT
 END_TYPE]]></Declaration>

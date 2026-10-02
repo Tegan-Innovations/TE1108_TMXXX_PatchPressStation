@@ -244,9 +244,14 @@ CASE eState OF
 
             eState := E_IndexState.RotatingPortA;
 		
-		ELSIF eCurrentPosition = E_TablePosition.Unknown THEN
-			
-			eState := E_IndexState.WrongPositionRecovery;
+		// Wrong-position recovery is available only after the machine has
+		// completed System Initialising and is actually in a movement mode.
+		// During Initialising / ReadyToStart an unknown position is only
+		// diagnostic information: the index remains idle and does not move.
+		ELSIF (eCurrentPosition = E_TablePosition.Unknown)
+		    AND (bAutomaticMode OR bManualMode)
+		THEN
+		    eState := E_IndexState.WrongPositionRecovery;
 
         END_IF
 

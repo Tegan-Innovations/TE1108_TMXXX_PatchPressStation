@@ -19,6 +19,12 @@ GVL_IO.stOutputs.bStation2SupportRetract := GVL_MASTER.stOutputs.bStation2Suppor
 GVL_IO.stOutputs.bStation3SupportExtend := GVL_MASTER.stOutputs.bStation3SupportExtend;
 GVL_IO.stOutputs.bStation3SupportRetract := GVL_MASTER.stOutputs.bStation3SupportRetract;
 
+GVL_IO.stOutputs.bHeatStakeHeadLock := GVL_MASTER.stOutputs.bHeatStakeHeadLock;
+GVL_IO.stOutputs.bHeatStakeHeadUnlock := GVL_MASTER.stOutputs.bHeatStakeHeadUnlock;
+GVL_IO.stOutputs.bHeatStakeHeadDown := GVL_MASTER.stOutputs.bHeatStakeHeadDown;
+GVL_IO.stOutputs.bHeatStakeHeadUp := GVL_MASTER.stOutputs.bHeatStakeHeadUp;
+GVL_IO.stOutputs.iHeatStakePressureRaw := GVL_MASTER.stOutputs.iHeatStakePressureRaw;
+
 GVL_IO.stOutputs.bLedStart := GVL_MASTER.stOutputs.bLedStart;
 GVL_IO.stOutputs.bLedReset := GVL_MASTER.stOutputs.bLedReset;
 

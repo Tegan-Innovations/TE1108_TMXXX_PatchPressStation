@@ -1463,7 +1463,7 @@ External Setpoint Generation:
 			</Properties>
 		</DataType>
 		<DataType>
-			<Name GUID="{2D3116E6-5F0C-7710-E2C8-1CFAA26C7E17}" AutoDeleteType="true">ST_PhysicalInputs</Name>
+			<Name GUID="{F16733BE-081D-0B6E-132B-5CA901D24D6A}" AutoDeleteType="true">ST_PhysicalInputs</Name>
 			<BitSize>672</BitSize>
 			<SubItem>
 				<Name>bEmergencyStopChannel1</Name>
@@ -1646,166 +1646,179 @@ External Setpoint Generation:
 				<BitOffs>248</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bPbupMagnetPresent</Name>
+				<Name>bHeatStakeHeadUp</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[ Heat Stake head cylinder position feedback.]]></Comment>
 				<BitSize>8</BitSize>
 				<BitOffs>256</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bStation1SupportRetracted</Name>
+				<Name>bHeatStakeHeadDown</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>264</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bStation1SupportExtended</Name>
+				<Name>bPbupMagnetPresent</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>272</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bStation2SupportRetracted</Name>
+				<Name>bStation1SupportRetracted</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>280</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bStation2SupportExtended</Name>
+				<Name>bStation1SupportExtended</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>288</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bStation3SupportRetracted</Name>
+				<Name>bStation2SupportRetracted</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>296</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bStation3SupportExtended</Name>
+				<Name>bStation2SupportExtended</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>304</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bHorizontalMiniSlideRetracted</Name>
+				<Name>bStation3SupportRetracted</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>312</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bHorizontalMiniSlideExtended</Name>
+				<Name>bStation3SupportExtended</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>320</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bVerticalMiniSlideRetracted</Name>
+				<Name>bHorizontalMiniSlideRetracted</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>328</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bVerticalMiniSlideExtended</Name>
+				<Name>bHorizontalMiniSlideExtended</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>336</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bIntermediateModuleRetracted</Name>
+				<Name>bVerticalMiniSlideRetracted</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>344</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bIntermediateModuleExtended</Name>
+				<Name>bVerticalMiniSlideExtended</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>352</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bRotaryGripperOpened</Name>
+				<Name>bIntermediateModuleRetracted</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>360</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bRotaryGripperClosed</Name>
+				<Name>bIntermediateModuleExtended</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>368</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bRotaryGripperPick0</Name>
+				<Name>bRotaryGripperOpened</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>376</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bRotaryGripperPlace180</Name>
+				<Name>bRotaryGripperClosed</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>384</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bMembraneTransferRetracted</Name>
+				<Name>bRotaryGripperPick0</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>392</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bMembraneTransferExtended</Name>
+				<Name>bRotaryGripperPlace180</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>400</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bMiddleRockerDown</Name>
+				<Name>bMembraneTransferRetracted</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>408</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bMiddleRockerUp</Name>
+				<Name>bMembraneTransferExtended</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>416</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bBottomRockerDown</Name>
+				<Name>bMiddleRockerDown</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>424</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bBottomRockerUp</Name>
+				<Name>bMiddleRockerUp</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>432</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bTopRockerDown</Name>
+				<Name>bBottomRockerDown</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>440</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bTopRockerUp</Name>
+				<Name>bBottomRockerUp</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>448</BitOffs>
 			</SubItem>
 			<SubItem>
+				<Name>bTopRockerDown</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>456</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bTopRockerUp</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>464</BitOffs>
+			</SubItem>
+			<SubItem>
 				<Name>uiMainAirPressureRaw</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>464</BitOffs>
+				<BitOffs>480</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>uiPressureRegulatorActualRaw</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>480</BitOffs>
+				<BitOffs>496</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>diHeatStakeTc1Raw</Name>
@@ -1863,8 +1876,8 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{07656288-0D19-9843-3D0E-3C7ABC0AFD59}" AutoDeleteType="true">ST_PhysicalOutputs</Name>
-			<BitSize>192</BitSize>
+			<Name GUID="{18458D0B-0EE8-6F54-307A-ECC569FB93C1}" AutoDeleteType="true">ST_PhysicalOutputs</Name>
+			<BitSize>240</BitSize>
 			<SubItem>
 				<Name>bSafetyRunRequest</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
@@ -1945,52 +1958,82 @@ External Setpoint Generation:
 				<BitOffs>96</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bLedStart</Name>
+				<Name>bHeatStakeHeadLock</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>104</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bLedReset</Name>
+				<Name>bHeatStakeHeadUnlock</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>112</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bStatusIndicatorRed</Name>
+				<Name>bHeatStakeHeadDown</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>120</BitOffs>
 			</SubItem>
 			<SubItem>
-				<Name>bStatusIndicatorGreen</Name>
+				<Name>bHeatStakeHeadUp</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
 				<BitOffs>128</BitOffs>
 			</SubItem>
 			<SubItem>
+				<Name>iHeatStakePressureRaw</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>144</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bLedStart</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>160</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bLedReset</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>168</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bStatusIndicatorRed</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>176</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bStatusIndicatorGreen</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>184</BitOffs>
+			</SubItem>
+			<SubItem>
 				<Name>bInternalLight</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>136</BitOffs>
+				<BitOffs>192</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>bNestLight</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>144</BitOffs>
+				<BitOffs>200</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>uiHeatStakePwm1Raw</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>160</BitOffs>
+				<BitOffs>208</BitOffs>
 			</SubItem>
 			<SubItem>
 				<Name>uiHeatStakePwm2Raw</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>176</BitOffs>
+				<BitOffs>224</BitOffs>
 			</SubItem>
 		</DataType>
 		<DataType>
@@ -2053,15 +2096,15 @@ External Setpoint Generation:
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{20D43E19-F458-3A50-9DE7-B5AF9EE94CAC}" AutoDeleteType="true">ST_HeatStakeTemperatureSettings</Name>
-			<BitSize>832</BitSize>
+			<Name GUID="{3865B92D-E0AA-4CC0-BC36-652BC0C48B5C}" AutoDeleteType="true">ST_HeatStakeTemperatureSettings</Name>
+			<BitSize>640</BitSize>
 			<SubItem>
 				<Name>rSetpointC</Name>
 				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
 				<BitSize>64</BitSize>
 				<BitOffs>0</BitOffs>
 				<Default>
-					<Value>80</Value>
+					<Value>100</Value>
 				</Default>
 			</SubItem>
 			<SubItem>
@@ -2079,7 +2122,7 @@ External Setpoint Generation:
 				<BitSize>64</BitSize>
 				<BitOffs>128</BitOffs>
 				<Default>
-					<Value>90</Value>
+					<Value>120</Value>
 				</Default>
 			</SubItem>
 			<SubItem>
@@ -2165,39 +2208,32 @@ External Setpoint Generation:
 					<Value>100</Value>
 				</Default>
 			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{140B09FC-1E31-6B4A-5929-9C5D94DE2671}" AutoDeleteType="true">ST_HeatStakeProcessSettings</Name>
+			<BitSize>128</BitSize>
 			<SubItem>
-				<Name>bWarmupBoostEnabled</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<Comment><![CDATA[ Warm-up boost: full power while the process is well below setpoint.
- PID takes over once the PV reaches Setpoint - WarmupBoostDelta.]]></Comment>
-				<BitSize>8</BitSize>
-				<BitOffs>640</BitOffs>
+				<Name>tContactTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
 				<Default>
-					<Bool>true</Bool>
+					<DateTime>T#3S</DateTime>
 				</Default>
 			</SubItem>
 			<SubItem>
-				<Name>rWarmupBoostDeltaC</Name>
+				<Name>rDownPressureBar</Name>
 				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
 				<BitSize>64</BitSize>
-				<BitOffs>704</BitOffs>
+				<BitOffs>64</BitOffs>
 				<Default>
-					<Value>10</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>rWarmupBoostOutputPercent</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<BitSize>64</BitSize>
-				<BitOffs>768</BitOffs>
-				<Default>
-					<Value>100</Value>
+					<Value>0.5</Value>
 				</Default>
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{68065BE5-A146-2E7E-F2BA-79DBBE7AA8F5}" AutoDeleteType="true">ST_MachineConfig</Name>
-			<BitSize>544</BitSize>
+			<Name GUID="{6A1349E5-5DBA-5F01-9FCA-F3A3779D4934}" AutoDeleteType="true">ST_MachineConfig</Name>
+			<BitSize>576</BitSize>
 			<SubItem>
 				<Name>tInitialiseTimeout</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
@@ -2262,10 +2298,20 @@ External Setpoint Generation:
 				</Default>
 			</SubItem>
 			<SubItem>
+				<Name>tHeatStakeHeadMoveTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<Comment><![CDATA[ Heat Stake head UP/DOWN feedback timeout.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+				<Default>
+					<DateTime>T#3S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
 				<Name>tTwoHandHold</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
 				<BitSize>32</BitSize>
-				<BitOffs>224</BitOffs>
+				<BitOffs>256</BitOffs>
 				<Default>
 					<DateTime>T#500MS</DateTime>
 				</Default>
@@ -2274,7 +2320,7 @@ External Setpoint Generation:
 				<Name>tTwoHandRecoveryTimeout</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
 				<BitSize>32</BitSize>
-				<BitOffs>256</BitOffs>
+				<BitOffs>288</BitOffs>
 				<Default>
 					<DateTime>T#10S</DateTime>
 				</Default>
@@ -2283,7 +2329,7 @@ External Setpoint Generation:
 				<Name>tDoorLockTimeout</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
 				<BitSize>32</BitSize>
-				<BitOffs>288</BitOffs>
+				<BitOffs>320</BitOffs>
 				<Default>
 					<DateTime>T#10S</DateTime>
 				</Default>
@@ -2292,7 +2338,7 @@ External Setpoint Generation:
 				<Name>tDoorUnlockTimeout</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
 				<BitSize>32</BitSize>
-				<BitOffs>320</BitOffs>
+				<BitOffs>352</BitOffs>
 				<Default>
 					<DateTime>T#10S</DateTime>
 				</Default>
@@ -2301,7 +2347,7 @@ External Setpoint Generation:
 				<Name>tOperatorIdleTimeout</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
 				<BitSize>32</BitSize>
-				<BitOffs>352</BitOffs>
+				<BitOffs>384</BitOffs>
 				<Default>
 					<DateTime>T#30S</DateTime>
 				</Default>
@@ -2310,7 +2356,7 @@ External Setpoint Generation:
 				<Name>eOperatorPosition</Name>
 				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>384</BitOffs>
+				<BitOffs>416</BitOffs>
 				<Default>
 					<EnumText>E_TablePosition.Position1</EnumText>
 				</Default>
@@ -2319,7 +2365,7 @@ External Setpoint Generation:
 				<Name>ePatchDispensePosition</Name>
 				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>400</BitOffs>
+				<BitOffs>432</BitOffs>
 				<Default>
 					<EnumText>E_TablePosition.Position2</EnumText>
 				</Default>
@@ -2328,7 +2374,7 @@ External Setpoint Generation:
 				<Name>eHeatStakePosition</Name>
 				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>416</BitOffs>
+				<BitOffs>448</BitOffs>
 				<Default>
 					<EnumText>E_TablePosition.Position3</EnumText>
 				</Default>
@@ -2337,7 +2383,7 @@ External Setpoint Generation:
 				<Name>eVisionPosition</Name>
 				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>432</BitOffs>
+				<BitOffs>464</BitOffs>
 				<Default>
 					<EnumText>E_TablePosition.Position4</EnumText>
 				</Default>
@@ -2346,7 +2392,7 @@ External Setpoint Generation:
 				<Name>eRejectPosition</Name>
 				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
 				<BitSize>16</BitSize>
-				<BitOffs>448</BitOffs>
+				<BitOffs>480</BitOffs>
 				<Default>
 					<EnumText>E_TablePosition.Position1</EnumText>
 				</Default>
@@ -2355,7 +2401,7 @@ External Setpoint Generation:
 				<Name>bRequireTwoHandsForIndex</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>464</BitOffs>
+				<BitOffs>496</BitOffs>
 				<Default>
 					<Bool>true</Bool>
 				</Default>
@@ -2364,7 +2410,7 @@ External Setpoint Generation:
 				<Name>bAllowEmptyNestIndex</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>472</BitOffs>
+				<BitOffs>504</BitOffs>
 				<Default>
 					<Bool>true</Bool>
 				</Default>
@@ -2373,7 +2419,7 @@ External Setpoint Generation:
 				<Name>bRequireRejectConfirm</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
 				<BitSize>8</BitSize>
-				<BitOffs>480</BitOffs>
+				<BitOffs>512</BitOffs>
 				<Default>
 					<Bool>true</Bool>
 				</Default>
@@ -2386,7 +2432,7 @@ External Setpoint Generation:
 					<Elements>4</Elements>
 				</ArrayInfo>
 				<BitSize>32</BitSize>
-				<BitOffs>488</BitOffs>
+				<BitOffs>520</BitOffs>
 				<Default>
 					<SubItem>
 						<Name>[1]</Name>
@@ -3094,7 +3140,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{63ADCC74-F95E-55E5-C7B9-68B778913943}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{1E93E63F-6958-C2B4-837B-CBAA0FC5270D}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
@@ -3112,12 +3158,17 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>GVL_Persistent.stHeatStakeTemperatureSettings</Name>
-							<Type GUID="{20D43E19-F458-3A50-9DE7-B5AF9EE94CAC}">ST_HeatStakeTemperatureSettings</Type>
+							<Type GUID="{3865B92D-E0AA-4CC0-BC36-652BC0C48B5C}">ST_HeatStakeTemperatureSettings</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.stHeatStakeProcessSettings</Name>
+							<Type GUID="{140B09FC-1E31-6B4A-5929-9C5D94DE2671}">ST_HeatStakeProcessSettings</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
 							<Name>GVL_Config.stMachine</Name>
-							<Type GUID="{68065BE5-A146-2E7E-F2BA-79DBBE7AA8F5}">ST_MachineConfig</Type>
+							<Type GUID="{6A1349E5-5DBA-5F01-9FCA-F3A3779D4934}">ST_MachineConfig</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
@@ -3130,7 +3181,7 @@ External Setpoint Generation:
 						<Name>PlcTask Outputs</Name>
 						<Var>
 							<Name>GVL_IO.stOutputs</Name>
-							<Type GUID="{07656288-0D19-9843-3D0E-3C7ABC0AFD59}">ST_PhysicalOutputs</Type>
+							<Type GUID="{18458D0B-0EE8-6F54-307A-ECC569FB93C1}">ST_PhysicalOutputs</Type>
 						</Var>
 						<Var>
 							<Name>GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1</Name>
@@ -3269,6 +3320,38 @@ External Setpoint Generation:
 							<Type>UINT</Type>
 						</Var>
 						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8</Name>
+							<Type>INT</Type>
+						</Var>
+						<Var>
 							<Name>GVL_EtherCAT.stFestoModule2_VABX.bCoil0</Name>
 							<Type>BOOL</Type>
 						</Var>
@@ -3298,6 +3381,38 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>GVL_EtherCAT.stFestoModule2_VABX.bCoil7</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil0</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil1</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil2</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil3</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil4</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil5</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil6</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil7</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -3337,14 +3452,14 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>GVL_Safety.bMainDoorUnSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>GVL_IO.stInputs</Name>
 							<Comment><![CDATA[ Logical physical I/O. Link these members to the same EtherCAT/TwinSAFE channels used by Kistler.
  Keeping terminal-specific names outside the core makes future hardware changes local to this GVL/mapper.]]></Comment>
-							<Type GUID="{2D3116E6-5F0C-7710-E2C8-1CFAA26C7E17}">ST_PhysicalInputs</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bMainDoorUnSafe</Name>
-							<Type>BOOL</Type>
+							<Type GUID="{F16733BE-081D-0B6E-132B-5CA901D24D6A}">ST_PhysicalInputs</Type>
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bLeftFlapSafe</Name>
@@ -3352,10 +3467,6 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bRightFlapSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bFlapsSafe</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -3829,9 +3940,18 @@ External Setpoint Generation:
 							<Type>UINT</Type>
 						</Var>
 						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
 							<Name>GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State</Name>
 							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
 							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bFlapsSafe</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bTwoHandSafe</Name>
@@ -10003,6 +10123,14 @@ Bit 8 - 15 : reserved]]></Comment>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil5" VarB="Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 5"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil6" VarB="Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 6"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil7" VarB="Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 7"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil0" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 0"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil1" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 1"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil2" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 2"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil3" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 3"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil4" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 4"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil5" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 5"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil6" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 6"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil7" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 7"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)">
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
@@ -10062,6 +10190,16 @@ Bit 8 - 15 : reserved]]></Comment>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2" VarB="TC Inputs Channel 2^Value"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3" VarB="TC Inputs Channel 3^Value"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4" VarB="TC Inputs Channel 4^Value"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)">
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1" VarB="AO Outputs Channel 1^Analog output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2" VarB="AO Outputs Channel 2^Analog output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3" VarB="AO Outputs Channel 3^Analog output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4" VarB="AO Outputs Channel 4^Analog output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5" VarB="AO Outputs Channel 5^Analog output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6" VarB="AO Outputs Channel 6^Analog output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7" VarB="AO Outputs Channel 7^Analog output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8" VarB="AO Outputs Channel 8^Analog output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)">
 				<Link VarA="PlcTask Inputs^GVL_Safety.bAirSupplySafe" VarB="StandardInputs^Standard Out Var 13"/>

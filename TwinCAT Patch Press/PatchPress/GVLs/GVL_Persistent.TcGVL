@@ -5,6 +5,7 @@
 VAR_GLOBAL PERSISTENT RETAIN
     astEventsHistory : ARRAY[0..200] OF ST_EventsHistory;
     stHeatStakeTemperatureSettings : ST_HeatStakeTemperatureSettings;
+    stHeatStakeProcessSettings : ST_HeatStakeProcessSettings;
 
     // Persistent authority for the four index-table nest enable states.
     aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];

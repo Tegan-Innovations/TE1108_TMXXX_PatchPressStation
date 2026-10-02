@@ -10,6 +10,7 @@ VAR
     fbPatchDispense : FB_PatchDispenseStation;
     fbHeatStake : FB_HeatStakeStation;
     fbHeatStakeTemperature : FB_HeatStakeTemperatureControl;
+    fbHeatStakePressureRegulator : FB_VeabPressureRegulator;
     fbVision : FB_VisionStation;
     fbProcessCycle : FB_ProcessCycle;
     fbCommissioningGuard : FB_PatchPressCommissioningGuard;
@@ -23,6 +24,7 @@ VAR
     stPatchDispenseStatus : ST_PatchStageStatus;
     stHeatStakeStatus : ST_PatchStageStatus;
     stHeatStakeTemperatureStatus : ST_HeatStakeTemperatureStatus;
+    stHeatStakeProcessStatus : ST_HeatStakeProcessStatus;
     stVisionStatus : ST_PatchStageStatus;
     stOperatorNest : ST_Nest;
     stPatchDispenseNest : ST_Nest;
@@ -69,6 +71,8 @@ VAR
     bProcessCycleFault          : BOOL;
     bProcessCycleTimeoutFault   : BOOL;
     bProcessStopPending         : BOOL;
+    bProcessAutomaticStopRequest : BOOL;
+    bAutoCycleStopRequestLatched : BOOL;
     eProcessCycleState          : E_CycleState;
     bDisabledNestIndexAttempt   : BOOL;
 
@@ -79,10 +83,67 @@ VAR
     uiDisabledNestPartPopupNestId : UINT;
     iNestCheck                  : INT;
 
+    // Reject chute full supervision / controlled stop.
+    tonRejectChuteFull              : TON;
+    tonRejectChutePopupReopen       : TON;
+    rtRejectChuteAcknowledge        : R_TRIG;
+    rtRejectChuteStopRequest        : R_TRIG;
+    bRejectChuteFullLatched         : BOOL;
+    bRejectChutePopupRequest        : BOOL;
+    bRejectChuteStopRequestLatched  : BOOL;
+    bRejectChutePopupReopenPending  : BOOL;
+
+    // Manual controlled-stop tracking.
+    bManualSupportTargetUpAtRejectStop : BOOL;
+    bManualRejectStopReady             : BOOL;
+
     bStation1SupportExtendRequest  : BOOL;
     bStation1SupportRetractRequest : BOOL;
     bStation2SupportExtendRequest  : BOOL;
     bStation2SupportRetractRequest : BOOL;
+
+    bHeatStakeHeadLockRequest : BOOL;
+    bHeatStakeHeadUnlockRequest : BOOL;
+    bHeatStakeHeadDownRequest : BOOL;
+    bHeatStakeHeadUpRequest : BOOL;
+    rHeatStakePressureCommandBar : LREAL;
+    iHeatStakePressureRaw : INT;
+    rHeatStakePressureScaledBar : LREAL;
+    bHeatStakeContactDwellActive : BOOL;
+    usiHeatStakeSequenceStep : USINT;
+
+    // Heat Stake Manual Mode
+    rtHeatStakeManualStakePatch : R_TRIG;
+    rtHeatStakeManualUnlock     : R_TRIG;
+    rtHeatStakeManualLock       : R_TRIG;
+    rtHeatStakeManualHeadDown   : R_TRIG;
+    rtHeatStakeManualHeadUp     : R_TRIG;
+    rtHeatStakeInitialising     : R_TRIG;
+
+    tonHeatStakeManualAction     : TON;
+    usiHeatStakeManualActionStep : USINT := 0;
+    bHeatStakeManualHeadUnlocked : BOOL := FALSE;
+    bHeatStakeManualStakeCycleActive : BOOL := FALSE;
+
+    bHeatStakeStationHeadDownTimeoutFault : BOOL;
+    bHeatStakeStationHeadUpTimeoutFault : BOOL;
+    bHeatStakeStationHeadSensorConflictFault : BOOL;
+    bHeatStakeManualHeadDownTimeoutFault : BOOL;
+    bHeatStakeManualHeadUpTimeoutFault : BOOL;
+
+    bHeatStakeManualEnableAllowed   : BOOL;
+    bHeatStakeManualStakeAllowed    : BOOL;
+    bHeatStakeManualUnlockAllowed   : BOOL;
+    bHeatStakeManualLockAllowed     : BOOL;
+    bHeatStakeManualHeadDownAllowed : BOOL;
+    bHeatStakeManualHeadUpAllowed   : BOOL;
+    bHeatStakeManualSupportAllowed  : BOOL;
+    bHeatStakeManualActionBusy      : BOOL;
+
+    // Manual Heat Stake tooling-position tracking uses physical sensors.
+    bHeatStakeManualHomePosition     : BOOL;
+    bHeatStakeManualOutOfHome        : BOOL;
+
     bStation3SupportExtendRequest  : BOOL;
     bStation3SupportRetractRequest : BOOL;
     // Fault reset is latched because PRG_Events executes after PRG_Main.
@@ -90,6 +151,11 @@ VAR
     // therefore the machine must remember the request until the following scan.
     bFaultResetRequested : BOOL;
     bAirAndDoorEnable : BOOL;
+
+    // Air can only be latched ON by System Initialising.
+    // Once ON, it may remain ON through Stopping/Stopped while the main door
+    // stays closed. Opening the door, or entering Fault, clears this latch.
+    bAirSupplyLatched : BOOL;
 
     // PLC-originated machine faults pulse the TwinSAFE Run/Stop request low.
     // RunRequest is otherwise TRUE so TwinSAFE can execute and return Safety_OK.
@@ -110,6 +176,7 @@ VAR_INPUT
     stCommand : ST_MachineCommand;
     stConfig : ST_MachineConfig;
     stHeatStakeTemperatureSettings : ST_HeatStakeTemperatureSettings;
+    stHeatStakeProcessSettings : ST_HeatStakeProcessSettings;
     bPatchDispenseCommissioned : BOOL;
     bHeatStakeCommissioned : BOOL;
     bVisionCommissioned : BOOL;
@@ -123,9 +190,86 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[ResetCyclicOutputs();
 
+// Air-memory rule:
+// - only Initialising may set bAirSupplyLatched TRUE;
+// - an open main door always clears it immediately;
+// - therefore air can never remain ON with the door open;
+// - closing the door again does NOT restore air unless a new Initialising
+//   sequence is entered.
+IF NOT stInputs.bMainDoorClosed THEN
+    bAirSupplyLatched := FALSE;
+END_IF
+
 // One-scan internal request. A PLC machine fault sets this TRUE below;
 // TP converts it into a deterministic TwinSAFE Run/Stop drop pulse.
 bSafetyDropRequest := FALSE;
+
+// =========================================================
+// REJECT CHUTE FULL SUPERVISION
+// =========================================================
+// The reject chute sensor can pulse briefly during a normal reject.
+// Only a continuous TRUE for 2 seconds means CHUTE FULL.
+tonRejectChuteFull(
+    IN := stInputs.bRejectChutePartPresent,
+    PT := T#2S
+);
+
+rtRejectChuteAcknowledge(
+    CLK := stCommand.bAcknowledgeRejectChuteFull
+);
+
+// First confirmed full condition:
+// - latch operator intervention;
+// - request popup;
+// - latch a controlled Stop Request.
+IF tonRejectChuteFull.Q
+    AND NOT bRejectChuteFullLatched
+THEN
+    bRejectChuteFullLatched := TRUE;
+    bRejectChutePopupRequest := TRUE;
+    bRejectChuteStopRequestLatched := TRUE;
+END_IF
+
+// Acknowledge is only valid for clearing the interlock when the physical
+// sensor is already FALSE.
+IF rtRejectChuteAcknowledge.Q
+    AND bRejectChuteFullLatched
+THEN
+    IF NOT stInputs.bRejectChutePartPresent THEN
+        bRejectChuteFullLatched := FALSE;
+        bRejectChutePopupRequest := FALSE;
+        bRejectChutePopupReopenPending := FALSE;
+    ELSE
+        // Operator acknowledged while still full: close briefly, then reopen.
+        bRejectChutePopupRequest := FALSE;
+        bRejectChutePopupReopenPending := TRUE;
+    END_IF
+END_IF
+
+tonRejectChutePopupReopen(
+    IN := bRejectChutePopupReopenPending,
+    PT := T#500MS
+);
+
+IF tonRejectChutePopupReopen.Q THEN
+    bRejectChutePopupReopenPending := FALSE;
+    IF bRejectChuteFullLatched THEN
+        bRejectChutePopupRequest := TRUE;
+    END_IF
+END_IF
+
+// Capture Manual support target at the instant the controlled stop is first
+// requested. If it is already travelling, allow that existing stroke to finish.
+rtRejectChuteStopRequest(
+    CLK := bRejectChuteStopRequestLatched
+);
+
+IF rtRejectChuteStopRequest.Q
+    AND (eMachineState = E_MachineState.Manual)
+THEN
+    bManualSupportTargetUpAtRejectStop :=
+        stCommand.bHeatStakeManualSupportUp;
+END_IF
 
 // Same strategy as the validated Silicone Station.
 // Door locking is requested independently from door feedback while the
@@ -147,7 +291,14 @@ END_IF
 fbHeatStakeTemperature.Cyclic(
     bEnable :=
         (eMachineState = E_MachineState.ReadyToStart)
-        OR (eMachineState = E_MachineState.AutoCycle),
+        OR (eMachineState = E_MachineState.AutoCycle)
+        OR (
+            (eMachineState = E_MachineState.Manual)
+            AND (
+                stCommand.bHeatStakeManualEnable
+                OR bHeatStakeManualStakeCycleActive
+            )
+        ),
     bAutoCycleActive := (eMachineState = E_MachineState.AutoCycle),
     bSafetyOk := stInputs.stSafety.bSafetyOk,
     diTc1Raw := stInputs.diHeatStakeTc1Raw,
@@ -164,6 +315,16 @@ stOperatorNest := fbNestManager.GetNestAtPosition(stConfig.eOperatorPosition);
 stPatchDispenseNest := fbNestManager.GetNestAtPosition(stConfig.ePatchDispensePosition);
 stHeatStakeNest := fbNestManager.GetNestAtPosition(stConfig.eHeatStakePosition);
 stVisionNest := fbNestManager.GetNestAtPosition(stConfig.eVisionPosition);
+
+// Publish the actual nest currently occupying each process station.
+//
+// The station nest structures above are already resolved by the
+// FB_NestTableManager and are confirmed online to contain the correct nId.
+// Use those resolved values directly instead of performing a second
+// GetNestIdAtPosition() lookup.
+stStatus.uiPatchDispenseNestId := stPatchDispenseNest.nId;
+stStatus.uiHeatStakeNestId := stHeatStakeNest.nId;
+stStatus.uiVisionNestId := stVisionNest.nId;
 
 aNestSnapshot := fbNestManager.GetAllNests();
 
@@ -268,21 +429,323 @@ fbPatchDispense.Update(
 
 fbHeatStake.Update(
     bEnable :=
-        (eMachineState = E_MachineState.ReadyToStart)
-        OR (eMachineState = E_MachineState.AutoCycle),
+        (eMachineState = E_MachineState.Initialising)
+        OR (eMachineState = E_MachineState.ReadyToStart)
+        OR (eMachineState = E_MachineState.AutoCycle)
+        OR (eMachineState = E_MachineState.Manual),
     bCommissioned := bHeatStakeCommissioned,
     bSafetyOk := stInputs.stSafety.bSafetyOk,
     bSupervisionEnable := (eMachineState = E_MachineState.ReadyToStart)
         OR (eMachineState = E_MachineState.AutoCycle)
         OR (eMachineState = E_MachineState.Manual),
+    bManualMode := (eMachineState = E_MachineState.Manual),
     bReset := stCommand.bReset,
     bSupportRetracted := stInputs.bStation2SupportRetracted,
     bSupportExtended := stInputs.bStation2SupportExtended,
+    bHeadUpSensor := stInputs.bHeatStakeHeadUp,
+    bHeadDownSensor := stInputs.bHeatStakeHeadDown,
     tSupportTimeout := stConfig.tStationSupportTimeout,
+    tHeadMoveTimeout := stConfig.tHeatStakeHeadMoveTimeout,
+    stProcessSettings := stHeatStakeProcessSettings,
     stStatus => stHeatStakeStatus,
     bSupportExtendRequest => bStation2SupportExtendRequest,
-    bSupportRetractRequest => bStation2SupportRetractRequest
+    bSupportRetractRequest => bStation2SupportRetractRequest,
+    bHeadLockRequest => bHeatStakeHeadLockRequest,
+    bHeadUnlockRequest => bHeatStakeHeadUnlockRequest,
+    bHeadDownRequest => bHeatStakeHeadDownRequest,
+    bHeadUpRequest => bHeatStakeHeadUpRequest,
+    rPressureCommandBar => rHeatStakePressureCommandBar,
+    bContactDwellActive => bHeatStakeContactDwellActive,
+    usiSequenceStep => usiHeatStakeSequenceStep,
+    bHeadDownTimeoutFault => bHeatStakeStationHeadDownTimeoutFault,
+    bHeadUpTimeoutFault => bHeatStakeStationHeadUpTimeoutFault,
+    bHeadSensorConflictFault => bHeatStakeStationHeadSensorConflictFault
 );
+
+// -------------------------------------------------------------------------
+// Heat Stake Manual Mode
+// -------------------------------------------------------------------------
+rtHeatStakeManualStakePatch(CLK := stCommand.bHeatStakeManualStakePatch);
+rtHeatStakeManualUnlock(CLK := stCommand.bHeatStakeManualUnlock);
+rtHeatStakeManualLock(CLK := stCommand.bHeatStakeManualLock);
+rtHeatStakeManualHeadDown(CLK := stCommand.bHeatStakeManualHeadDown);
+rtHeatStakeManualHeadUp(CLK := stCommand.bHeatStakeManualHeadUp);
+rtHeatStakeInitialising(CLK := (eMachineState = E_MachineState.Initialising));
+
+IF stCommand.bReset THEN
+    bHeatStakeManualHeadDownTimeoutFault := FALSE;
+    bHeatStakeManualHeadUpTimeoutFault := FALSE;
+END_IF
+
+// System Initialising establishes the known Heat Stake home condition once:
+// Unlock -> Head UP -> Lock -> Support DOWN.
+IF rtHeatStakeInitialising.Q THEN
+    usiHeatStakeManualActionStep := 100;
+    tonHeatStakeManualAction(IN := FALSE);
+END_IF
+
+bHeatStakeManualActionBusy := (usiHeatStakeManualActionStep <> 0);
+
+// Manual tooling HOME is based on real feedback.
+bHeatStakeManualHomePosition :=
+    stInputs.bStation2SupportRetracted
+    AND stInputs.bHeatStakeHeadUp
+    AND NOT stInputs.bHeatStakeHeadDown
+    AND NOT bHeatStakeManualHeadUnlocked
+    AND NOT bHeatStakeManualActionBusy;
+
+bHeatStakeManualOutOfHome :=
+    (eMachineState = E_MachineState.Manual)
+    AND NOT bHeatStakeManualHomePosition;
+
+bHeatStakeManualEnableAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND NOT bRejectChuteStopRequestLatched
+    AND stInputs.stSafety.bSafetyOk
+    AND NOT fbHeatStake.IsBusy()
+    AND NOT bHeatStakeManualActionBusy;
+
+bHeatStakeManualUnlockAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND NOT bRejectChuteStopRequestLatched
+    AND stInputs.stSafety.bSafetyOk
+    AND NOT fbHeatStake.IsBusy()
+    AND NOT bHeatStakeManualActionBusy
+    AND NOT bHeatStakeManualHeadUnlocked;
+
+bHeatStakeManualLockAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND NOT bRejectChuteStopRequestLatched
+    AND stInputs.stSafety.bSafetyOk
+    AND NOT fbHeatStake.IsBusy()
+    AND NOT bHeatStakeManualActionBusy
+    AND bHeatStakeManualHeadUnlocked;
+
+bHeatStakeManualHeadDownAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND NOT bRejectChuteStopRequestLatched
+    AND stInputs.stSafety.bSafetyOk
+    AND NOT fbHeatStake.IsBusy()
+    AND NOT bHeatStakeManualActionBusy
+    AND bHeatStakeManualHeadUnlocked
+    AND stInputs.bStation2SupportExtended
+    AND NOT stInputs.bStation2SupportRetracted
+    AND stInputs.bHeatStakeEaglePresent
+    AND stInputs.bHeatStakeHeadUp
+    AND NOT stInputs.bHeatStakeHeadDown;
+
+bHeatStakeManualHeadUpAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND NOT bRejectChuteStopRequestLatched
+    AND stInputs.stSafety.bSafetyOk
+    AND NOT fbHeatStake.IsBusy()
+    AND NOT bHeatStakeManualActionBusy
+    AND bHeatStakeManualHeadUnlocked
+    AND NOT stInputs.bHeatStakeHeadUp;
+
+bHeatStakeManualSupportAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND stInputs.stSafety.bSafetyOk
+    AND NOT fbHeatStake.IsBusy()
+    AND NOT bHeatStakeManualActionBusy;
+
+bHeatStakeManualStakeAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND NOT bRejectChuteStopRequestLatched
+    AND stCommand.bHeatStakeManualEnable
+    AND stInputs.stSafety.bSafetyOk
+    AND stHeatStakeTemperatureStatus.bIndexTemperatureReady
+    AND fbHeatStake.IsReady()
+    AND NOT fbHeatStake.IsBusy()
+    AND bHeatStakeManualHomePosition
+    AND stInputs.bHeatStakeEaglePresent
+    AND stInputs.bHeatStakePatchPresent
+    AND NOT stIndexStatus.bBusy;
+
+// Stake Patch reuses the validated automatic station sequence.
+IF rtHeatStakeManualStakePatch.Q AND bHeatStakeManualStakeAllowed THEN
+    IF fbHeatStake.RequestStart() THEN
+        bHeatStakeManualStakeCycleActive := TRUE;
+    END_IF
+END_IF
+
+// Return Complete -> Ready automatically after a manual validated cycle.
+IF (eMachineState = E_MachineState.Manual)
+    AND bHeatStakeManualStakeCycleActive
+    AND fbHeatStake.IsDone()
+THEN
+    fbHeatStake.RequestReset();
+    bHeatStakeManualStakeCycleActive := FALSE;
+END_IF
+
+// Accept full-course manual actions.
+IF rtHeatStakeManualUnlock.Q AND bHeatStakeManualUnlockAllowed THEN
+    usiHeatStakeManualActionStep := 10;
+    tonHeatStakeManualAction(IN := FALSE);
+
+ELSIF rtHeatStakeManualLock.Q AND bHeatStakeManualLockAllowed THEN
+    usiHeatStakeManualActionStep := 20;
+    tonHeatStakeManualAction(IN := FALSE);
+
+ELSIF rtHeatStakeManualHeadDown.Q AND bHeatStakeManualHeadDownAllowed THEN
+    usiHeatStakeManualActionStep := 30;
+    tonHeatStakeManualAction(IN := FALSE);
+
+ELSIF rtHeatStakeManualHeadUp.Q AND bHeatStakeManualHeadUpAllowed THEN
+    usiHeatStakeManualActionStep := 40;
+    tonHeatStakeManualAction(IN := FALSE);
+END_IF
+
+CASE usiHeatStakeManualActionStep OF
+    10: // Unlock
+        bHeatStakeHeadUnlockRequest := TRUE;
+        tonHeatStakeManualAction(IN := TRUE, PT := T#1S);
+        IF tonHeatStakeManualAction.Q THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            bHeatStakeManualHeadUnlocked := TRUE;
+            usiHeatStakeManualActionStep := 0;
+        END_IF
+
+    20: // Lock
+        bHeatStakeHeadLockRequest := TRUE;
+        tonHeatStakeManualAction(IN := TRUE, PT := T#1S);
+        IF tonHeatStakeManualAction.Q THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            bHeatStakeManualHeadUnlocked := FALSE;
+            usiHeatStakeManualActionStep := 0;
+        END_IF
+
+    30: // Head DOWN - real sensor feedback
+        bHeatStakeHeadDownRequest := NOT stInputs.bHeatStakeHeadDown;
+        rHeatStakePressureCommandBar := stHeatStakeProcessSettings.rDownPressureBar;
+        tonHeatStakeManualAction(IN := NOT stInputs.bHeatStakeHeadDown, PT := stConfig.tHeatStakeHeadMoveTimeout);
+        IF stInputs.bHeatStakeHeadDown THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            usiHeatStakeManualActionStep := 0;
+        ELSIF tonHeatStakeManualAction.Q THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            bHeatStakeManualHeadDownTimeoutFault := TRUE;
+            usiHeatStakeManualActionStep := 0;
+        END_IF
+
+    40: // Head UP - real sensor feedback
+        bHeatStakeHeadUpRequest := NOT stInputs.bHeatStakeHeadUp;
+        tonHeatStakeManualAction(IN := NOT stInputs.bHeatStakeHeadUp, PT := stConfig.tHeatStakeHeadMoveTimeout);
+        IF stInputs.bHeatStakeHeadUp THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            usiHeatStakeManualActionStep := 0;
+        ELSIF tonHeatStakeManualAction.Q THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            bHeatStakeManualHeadUpTimeoutFault := TRUE;
+            usiHeatStakeManualActionStep := 0;
+        END_IF
+
+    100: // Initialising: Unlock
+        bHeatStakeHeadUnlockRequest := TRUE;
+        tonHeatStakeManualAction(IN := TRUE, PT := T#1S);
+        IF tonHeatStakeManualAction.Q THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            bHeatStakeManualHeadUnlocked := TRUE;
+            usiHeatStakeManualActionStep := 110;
+        END_IF
+
+    110: // Initialising: Head UP - physical feedback required
+        bHeatStakeHeadUnlockRequest := TRUE;
+        bHeatStakeHeadUpRequest := NOT stInputs.bHeatStakeHeadUp;
+        tonHeatStakeManualAction(IN := NOT stInputs.bHeatStakeHeadUp, PT := stConfig.tHeatStakeHeadMoveTimeout);
+        IF stInputs.bHeatStakeHeadUp THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            usiHeatStakeManualActionStep := 120;
+        ELSIF tonHeatStakeManualAction.Q THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            bHeatStakeManualHeadUpTimeoutFault := TRUE;
+            usiHeatStakeManualActionStep := 0;
+        END_IF
+
+    120: // Initialising: Lock
+        bHeatStakeHeadLockRequest := TRUE;
+        tonHeatStakeManualAction(IN := TRUE, PT := T#1S);
+        IF tonHeatStakeManualAction.Q THEN
+            tonHeatStakeManualAction(IN := FALSE);
+            bHeatStakeManualHeadUnlocked := FALSE;
+            usiHeatStakeManualActionStep := 130;
+        END_IF
+
+    130: // Initialising: Support DOWN
+        bStation2SupportRetractRequest := NOT stInputs.bStation2SupportRetracted;
+        IF stInputs.bStation2SupportRetracted THEN
+            usiHeatStakeManualActionStep := 0;
+        END_IF
+END_CASE
+
+// Support toggle: ON = UP/Extend, OFF = DOWN/Retract.
+// Independent from Heat Stake temperature Enable.
+//
+// Reject-chute controlled stop:
+// if the support was already travelling when the stop request arrived,
+// complete that captured target stroke. Do not accept a new target.
+IF (eMachineState = E_MachineState.Manual)
+    AND bRejectChuteStopRequestLatched
+THEN
+    IF bManualSupportTargetUpAtRejectStop THEN
+        bStation2SupportExtendRequest := NOT stInputs.bStation2SupportExtended;
+        bStation2SupportRetractRequest := FALSE;
+    ELSE
+        bStation2SupportRetractRequest := NOT stInputs.bStation2SupportRetracted;
+        bStation2SupportExtendRequest := FALSE;
+    END_IF
+
+ELSIF bHeatStakeManualSupportAllowed THEN
+    IF stCommand.bHeatStakeManualSupportUp THEN
+        bStation2SupportExtendRequest := NOT stInputs.bStation2SupportExtended;
+        bStation2SupportRetractRequest := FALSE;
+    ELSE
+        bStation2SupportRetractRequest := NOT stInputs.bStation2SupportRetracted;
+        bStation2SupportExtendRequest := FALSE;
+    END_IF
+END_IF
+
+// Leaving Manual cancels manual action execution.
+// Initialising retains only its dedicated home sequence.
+IF (eMachineState <> E_MachineState.Manual)
+    AND (eMachineState <> E_MachineState.Initialising)
+THEN
+    IF usiHeatStakeManualActionStep < 100 THEN
+        usiHeatStakeManualActionStep := 0;
+        tonHeatStakeManualAction(IN := FALSE);
+    END_IF
+    bHeatStakeManualStakeCycleActive := FALSE;
+END_IF
+
+fbHeatStakePressureRegulator.Cyclic(
+    bEnable :=
+        (eMachineState = E_MachineState.ReadyToStart)
+        OR (eMachineState = E_MachineState.AutoCycle)
+        OR (
+            (eMachineState = E_MachineState.Manual)
+            AND (
+                bHeatStakeManualActionBusy
+                OR bHeatStakeManualStakeCycleActive
+                OR fbHeatStake.IsBusy()
+            )
+        ),
+    rSetpointBar := rHeatStakePressureCommandBar,
+    rCommandBar => rHeatStakePressureScaledBar,
+    iOutputRaw => iHeatStakePressureRaw
+);
+
+stHeatStakeProcessStatus.tContactTimeSet := stHeatStakeProcessSettings.tContactTime;
+stHeatStakeProcessStatus.rContactTimeSetSeconds :=
+    TIME_TO_LREAL(stHeatStakeProcessSettings.tContactTime) / 1000.0;
+stHeatStakeProcessStatus.rPressureSetpointBar := stHeatStakeProcessSettings.rDownPressureBar;
+stHeatStakeProcessStatus.rPressureCommandBar := rHeatStakePressureScaledBar;
+stHeatStakeProcessStatus.iPressureOutputRaw := iHeatStakePressureRaw;
+stHeatStakeProcessStatus.bHeadLockCommand := bHeatStakeHeadLockRequest;
+stHeatStakeProcessStatus.bHeadUnlockCommand := bHeatStakeHeadUnlockRequest;
+stHeatStakeProcessStatus.bHeadDownCommand := bHeatStakeHeadDownRequest;
+stHeatStakeProcessStatus.bHeadUpCommand := bHeatStakeHeadUpRequest;
+stHeatStakeProcessStatus.bContactDwellActive := bHeatStakeContactDwellActive;
+stHeatStakeProcessStatus.usiSequenceStep := usiHeatStakeSequenceStep;
 
 fbVision.Update(
     bEnable :=
@@ -306,6 +769,24 @@ fbVision.Update(
 stPatchDispenseStatus.bPartPresent := bPatchDispenseRequired;
 stHeatStakeStatus.bPartPresent := bHeatStakeRequired;
 stVisionStatus.bPartPresent := bVisionRequired;
+
+// "Ready" on the Heat Stake HMI is an operational indication, not an
+// Initialising indication.
+//
+// FB_HeatStakeStation is intentionally enabled during System Initialising so
+// it can establish/check its safe initial position. Its internal IsReady()
+// state is still allowed to become TRUE there, because machine Initialising
+// may depend on it. Only the published HMI Ready indication is gated.
+//
+// Show Ready only in states where an engineer/operator can actually use the
+// station.
+stHeatStakeStatus.bReady :=
+    stHeatStakeStatus.bReady
+    AND (
+        (eMachineState = E_MachineState.ReadyToStart)
+        OR (eMachineState = E_MachineState.AutoCycle)
+        OR (eMachineState = E_MachineState.Manual)
+    );
 
 IF NOT bPatchDispenseRequired THEN
     stPatchDispenseStatus.eResultStatus := E_StationResultStatus.NotTested;
@@ -405,6 +886,11 @@ stOutputsInternal.bStation2SupportExtend := bStation2SupportExtendRequest;
 stOutputsInternal.bStation2SupportRetract := bStation2SupportRetractRequest;
 stOutputsInternal.bStation3SupportExtend := bStation3SupportExtendRequest;
 stOutputsInternal.bStation3SupportRetract := bStation3SupportRetractRequest;
+stOutputsInternal.bHeatStakeHeadLock := bHeatStakeHeadLockRequest;
+stOutputsInternal.bHeatStakeHeadUnlock := bHeatStakeHeadUnlockRequest;
+stOutputsInternal.bHeatStakeHeadDown := bHeatStakeHeadDownRequest;
+stOutputsInternal.bHeatStakeHeadUp := bHeatStakeHeadUpRequest;
+stOutputsInternal.iHeatStakePressureRaw := iHeatStakePressureRaw;
 stPermissives.bAirSupplyReady := GVL_Safety.bAirSupplySafe;
 // Same criterion used by the validated Silicone Station:
 // the machine waits until the door supervisor confirms automatic readiness.
@@ -449,7 +935,10 @@ stPermissives.bAutoCycleAllowed := bAutoCycleAllowed;
 fbProcessCycle.Cyclic(
     bEnable := (eMachineState = E_MachineState.AutoCycle),
     bResetRequest := stCommand.bReset,
-    bStopRequest := stCommand.bStop OR stInputs.bEventCycleStopRequest,
+    bStopRequest :=
+        stCommand.bStop
+        OR stInputs.bEventCycleStopRequest
+        OR bRejectChuteStopRequestLatched,
     bTwoHandsSafe := stInputs.bTwoHandsSafe,
     bSafetyOk := stInputs.stSafety.bSafetyOk,
     bIndexReady := stInputs.bIndexReady,
@@ -466,7 +955,7 @@ fbProcessCycle.Cyclic(
         fbPatchDispense.IsFaulted()
         OR fbHeatStake.IsFaulted()
         OR fbVision.IsFaulted(),
-    tSequenceTimeout := T#30S,
+    tSequenceTimeout := T#2M,
     bStartStations => bProcessStartStations,
     bStopStations => bProcessStopStations,
     bRequestIndex => bProcessRequestIndex,
@@ -475,9 +964,31 @@ fbProcessCycle.Cyclic(
     bFault => bProcessCycleFault,
     bSequenceTimeoutFault => bProcessCycleTimeoutFault,
     bStopPendingStatus => bProcessStopPending,
+    bAutomaticStopRequest => bProcessAutomaticStopRequest,
     bDisabledNestIndexAttempt => bDisabledNestIndexAttempt,
     eState => eProcessCycleState
 );
+
+// Stop Request is latched immediately so the operator request is never lost,
+// even when an automatic station process is still running.
+//
+// Sources:
+// - physical/HMI Stop command;
+// - existing Events-cycle Stop Request;
+// - 2-minute automatic inactivity request from FB_ProcessCycle.
+//
+// The existing Events/DataGrid logic is intentionally untouched, so the
+// operator Stop Request indication continues to appear immediately as before.
+IF (eMachineState = E_MachineState.AutoCycle)
+    AND (
+        stCommand.bStop
+        OR stInputs.bEventCycleStopRequest
+        OR bProcessAutomaticStopRequest
+        OR bRejectChuteStopRequestLatched
+    )
+THEN
+    bAutoCycleStopRequestLatched := TRUE;
+END_IF
 
 IF bDisabledNestIndexAttempt AND bDisabledNestPartPresent THEN
     bDisabledNestPartPopupRequest := TRUE;
@@ -514,6 +1025,8 @@ THEN
 END_IF
 CASE eMachineState OF
 E_MachineState.PowerUp:
+    bAutoCycleStopRequestLatched := FALSE;
+
     // Same lifecycle used by the validated Silicone Station core:
     // always enter a controlled stop before waiting for Reset.
     tonInitialising(IN := FALSE);
@@ -521,10 +1034,17 @@ E_MachineState.PowerUp:
     eMachineState := E_MachineState.Stopping;
 
 E_MachineState.Stopping:
-    // Controlled stop releases the main-door lock but keeps the pneumatic
-    // supply enabled while the physical door remains closed.
-    // Opening the door removes the standard ASU enable request.
-    stOutputsInternal.bAirSupplyEnable := stInputs.bMainDoorClosed;
+    // Preserve an already-established pneumatic supply while stopping, but
+    // never create a new air request here.
+    //
+    // Typical Stop path:
+    // Ready/Auto/Manual (air latched) -> Stopping -> Stopped
+    // Air remains ON while the door stays closed.
+    //
+    // Fault recovery / PowerUp path:
+    // latch is FALSE -> Stopping remains depressurised.
+    stOutputsInternal.bAirSupplyEnable :=
+        bAirSupplyLatched AND stInputs.bMainDoorClosed;
 
     tonInitialising(IN := FALSE);
     tonStopping(IN := stIndexStatus.bBusy, PT := stConfig.tStoppingTimeout);
@@ -537,13 +1057,29 @@ E_MachineState.Stopping:
     END_IF
 
 E_MachineState.Stopped:
-    // In Stopped the door is unlocked, but the ASU remains pressurised until
-    // the operator physically opens the main door.
-    stOutputsInternal.bAirSupplyEnable := stInputs.bMainDoorClosed;
+    bAutoCycleStopRequestLatched := FALSE;
+
+    // Stopped never turns the air ON by itself.
+    // It only preserves air that was previously latched by Initialising.
+    // As soon as the main door opens, the global door-open rule clears the
+    // latch and the ASU drops. Closing the door again does not restore it.
+    stOutputsInternal.bAirSupplyEnable :=
+        bAirSupplyLatched AND stInputs.bMainDoorClosed;
 
     tonInitialising(IN := FALSE);
     tonStopping(IN := FALSE);
-    IF stCommand.bReset AND stInputs.stSafety.bSafetyOk THEN
+
+    // The controlled Stop Request remains latched until Stopped is reached.
+    // It is released only after the reject chute interlock was correctly
+    // cleared by EMPTY + fresh Acknowledge.
+    IF NOT bRejectChuteFullLatched THEN
+        bRejectChuteStopRequestLatched := FALSE;
+    END_IF
+
+    IF stCommand.bReset
+        AND stInputs.stSafety.bSafetyOk
+        AND NOT bRejectChuteFullLatched
+    THEN
         // Same recovery used by the Silicone Station: clear any stale
         // door-supervisor fault/state before automatic locking starts.
         fbMainDoorLock.Initialise();
@@ -551,22 +1087,43 @@ E_MachineState.Stopped:
     END_IF
 
 E_MachineState.Initialising:
-    stOutputsInternal.bAirSupplyEnable := TRUE;
+    // System Initialising is the ONLY machine state allowed to establish a
+    // new pneumatic-supply latch.
+    IF stInputs.bMainDoorClosed THEN
+        bAirSupplyLatched := TRUE;
+    END_IF
+
+    stOutputsInternal.bAirSupplyEnable :=
+        bAirSupplyLatched AND stInputs.bMainDoorClosed;
+
     tonStopping(IN := FALSE);
     tonInitialising(IN := NOT stPermissives.bInitialisationAllowed, PT := stConfig.tInitialiseTimeout);
     bInitialisationTimeoutFault := tonInitialising.Q;
     IF bInitialisationTimeoutFault THEN
         bSafetyDropRequest := TRUE;
         eMachineState := E_MachineState.Fault;
-    ELSIF stPermissives.bInitialisationAllowed THEN
+    ELSIF stPermissives.bInitialisationAllowed
+        AND (usiHeatStakeManualActionStep = 0)
+        AND stInputs.bHeatStakeHeadUp
+        AND NOT stInputs.bHeatStakeHeadDown
+        AND NOT bHeatStakeManualHeadUpTimeoutFault
+        AND NOT bHeatStakeManualHeadDownTimeoutFault
+        AND NOT bHeatStakeStationHeadSensorConflictFault
+    THEN
         tonInitialising(IN := FALSE);
         eMachineState := E_MachineState.ReadyToStart;
     END_IF
 
 E_MachineState.ReadyToStart:
-    stOutputsInternal.bAirSupplyEnable := TRUE;
-    IF stCommand.bStop THEN
+    stOutputsInternal.bAirSupplyEnable :=
+        bAirSupplyLatched AND stInputs.bMainDoorClosed;
+
+    IF bRejectChuteStopRequestLatched THEN
         eMachineState := E_MachineState.Stopping;
+
+    ELSIF stCommand.bStop THEN
+        eMachineState := E_MachineState.Stopping;
+
     ELSIF stCommand.bManualRequest
         AND stInputs.stSafety.bSafetyOk
         AND NOT stIndexStatus.bBusy
@@ -578,18 +1135,72 @@ E_MachineState.ReadyToStart:
     END_IF
 
 E_MachineState.AutoCycle:
-    stOutputsInternal.bAirSupplyEnable := TRUE;
-    IF stCommand.bStop OR stInputs.bEventCycleStopRequest THEN
+    stOutputsInternal.bAirSupplyEnable :=
+        bAirSupplyLatched AND stInputs.bMainDoorClosed;
+
+    // Stop Request is controlled, but ONLY an active process at one of the
+    // three process stations is allowed to delay leaving AutoCycle.
+    //
+    // Heat Stake warm-up / temperature control is NOT a process and must not
+    // hold the machine in AutoCycle after Stop Request.
+    //
+    // Likewise, the ProcessCycle coordinator state and index busy state do not
+    // block the AutoCycle -> Stopping transition:
+    // - ProcessCycle is disabled as soon as AutoCycle is left;
+    // - if the index is already moving, the normal Stopping state waits for
+    //   stIndexStatus.bBusy to clear before entering Stopped.
+    //
+    // Therefore the only controlled-stop hold condition here is:
+    //     fbPatchDispense.IsBusy()
+    //     OR fbHeatStake.IsBusy()
+    //     OR fbVision.IsBusy()
+    IF bAutoCycleStopRequestLatched
+        AND NOT bAnyStationInProcess
+    THEN
+        bAutoCycleStopRequestLatched := FALSE;
         eMachineState := E_MachineState.Stopping;
     END_IF
 
 E_MachineState.Manual:
-    stOutputsInternal.bAirSupplyEnable := TRUE;
-    IF stCommand.bStop OR NOT stCommand.bManualRequest THEN
+    stOutputsInternal.bAirSupplyEnable :=
+        bAirSupplyLatched AND stInputs.bMainDoorClosed;
+
+    // Reject chute full = controlled stop in Manual Mode.
+    // No new manual actions are accepted. Existing actions complete first.
+    bManualRejectStopReady :=
+        NOT bHeatStakeManualActionBusy
+        AND NOT bHeatStakeManualStakeCycleActive
+        AND NOT fbPatchDispense.IsBusy()
+        AND NOT fbHeatStake.IsBusy()
+        AND NOT fbVision.IsBusy()
+        AND NOT stIndexStatus.bBusy
+        AND (
+            (bManualSupportTargetUpAtRejectStop
+                AND stInputs.bStation2SupportExtended)
+            OR
+            ((NOT bManualSupportTargetUpAtRejectStop)
+                AND stInputs.bStation2SupportRetracted)
+        );
+
+    IF bRejectChuteStopRequestLatched THEN
+        IF bManualRejectStopReady THEN
+            eMachineState := E_MachineState.Stopping;
+        END_IF
+
+    // Existing operator Stop behaviour remains unchanged.
+    ELSIF stCommand.bStop OR stInputs.bEventCycleStopRequest THEN
         eMachineState := E_MachineState.Stopping;
     END_IF
 
 E_MachineState.Fault:
+    bAutoCycleStopRequestLatched := FALSE;
+
+    // Immediate Fault always removes the pneumatic-supply memory.
+    // Therefore Fault -> Reset -> Stopping -> Stopped remains depressurised
+    // until a NEW System Initialising sequence explicitly turns air back on.
+    bAirSupplyLatched := FALSE;
+    stOutputsInternal.bAirSupplyEnable := FALSE;
+
     tonInitialising(IN := FALSE);
     tonStopping(IN := FALSE);
 
@@ -619,6 +1230,7 @@ END_CASE
 // enable the Indexer on the HMI, then a fresh two-hand actuation requests one move.
 rtManualIndexMove(CLK :=
     (eMachineState = E_MachineState.Manual)
+    AND NOT bRejectChuteStopRequestLatched
     AND stCommand.bIndexerManualEnable
     AND stInputs.bTwoHandsSafe);
 
@@ -773,20 +1385,27 @@ stOutputsInternal.bLedReset :=
     )
     AND bLedBlinkState;
 
-// Red/green result indicators refer ONLY to the processed part currently
-// located at the operator nest, matching the Silicone machine.
+// -------------------------------------------------------------------------
+// Operator PASS / FAIL result lights
+// -------------------------------------------------------------------------
+// Customer-agreed behaviour:
+// - both lights are OFF by default;
+// - machine Fault must NEVER use the FAIL/result light;
+// - lights are used only in AutoCycle;
+// - a valid PASS/FAIL result must exist at the operator nest;
+// - the physical part must still be present at the loading/operator nest;
+// - immediately after the operator removes the part, both lights turn OFF.
 //
-// Machine Fault always has priority and illuminates RED.
-IF eMachineState = E_MachineState.Fault THEN
-    stOutputsInternal.bLedPass := FALSE;
-    stOutputsInternal.bLedFail := TRUE;
-
-ELSIF (eMachineState = E_MachineState.AutoCycle)
+// Result-record clearing can occur later as part of the normal operator/reject
+// workflow. The physical presence condition intentionally makes the lamp go
+// dark immediately on part removal, independent of when the nest result is
+// finally cleared.
+IF (eMachineState = E_MachineState.AutoCycle)
     AND stOperatorNest.stResult.bValid
+    AND stInputs.bLoadingStationEaglePresent
 THEN
     stOutputsInternal.bLedPass := stOperatorNest.stResult.bPassed;
     stOutputsInternal.bLedFail := NOT stOperatorNest.stResult.bPassed;
-
 ELSE
     stOutputsInternal.bLedPass := FALSE;
     stOutputsInternal.bLedFail := FALSE;
@@ -798,6 +1417,32 @@ END_IF
 // - Operator/nest light is controlled by the Main-screen LIGHT toggle.
 stOutputsInternal.bInternalLight := TRUE;
 stOutputsInternal.bNestLight := stCommand.bOperatorLight;
+// -------------------------------------------------------------------------
+// Heat Stake HMI status - Manual Mode tooling position
+// -------------------------------------------------------------------------
+// Keep the station FB free of Manual Mode oscillation, but present BUSY to the
+// engineer whenever the tooling is not in its complete home position.
+//
+// This deliberately does NOT feed back into the individual recovery-button
+// permissives. Otherwise, for example, extending the support would make Busy
+// TRUE and disable the same toggle needed to retract it again.
+IF eMachineState = E_MachineState.Manual THEN
+    stHeatStakeStatus.bBusy :=
+        fbHeatStake.IsBusy()
+        OR (usiHeatStakeManualActionStep <> 0)
+        OR NOT (
+            stInputs.bStation2SupportRetracted
+            AND stInputs.bHeatStakeHeadUp
+            AND NOT stInputs.bHeatStakeHeadDown
+            AND NOT bHeatStakeManualHeadUnlocked
+        );
+
+    // A station that is manually out of HOME is not operationally Ready.
+    stHeatStakeStatus.bReady :=
+        stHeatStakeStatus.bReady
+        AND NOT stHeatStakeStatus.bBusy;
+END_IF
+
 stOutputs := stOutputsInternal;
 stStatus.eMachineState := eMachineState;
 stStatus.eProcessCycleState := eProcessCycleState;
@@ -812,6 +1457,16 @@ stStatus.stOperatorStation := stOperatorStatus;
 stStatus.stPatchDispense := stPatchDispenseStatus;
 stStatus.stHeatStake := stHeatStakeStatus;
 stStatus.stHeatStakeTemperature := stHeatStakeTemperatureStatus;
+stStatus.stHeatStakeProcess := stHeatStakeProcessStatus;
+stStatus.bHeatStakeManualEnableAllowed := bHeatStakeManualEnableAllowed;
+stStatus.bHeatStakeManualStakeAllowed := bHeatStakeManualStakeAllowed;
+stStatus.bHeatStakeManualUnlockAllowed := bHeatStakeManualUnlockAllowed;
+stStatus.bHeatStakeManualLockAllowed := bHeatStakeManualLockAllowed;
+stStatus.bHeatStakeManualHeadDownAllowed := bHeatStakeManualHeadDownAllowed;
+stStatus.bHeatStakeManualHeadUpAllowed := bHeatStakeManualHeadUpAllowed;
+stStatus.bHeatStakeManualSupportAllowed := bHeatStakeManualSupportAllowed;
+stStatus.bHeatStakeManualActionBusy := bHeatStakeManualActionBusy;
+stStatus.bHeatStakeManualHeadUnlocked := bHeatStakeManualHeadUnlocked;
 stStatus.stVision := stVisionStatus;
 stStatus.bReady := (eMachineState = E_MachineState.ReadyToStart);
 stStatus.bBusy := (eMachineState = E_MachineState.AutoCycle) OR stIndexStatus.bBusy;
@@ -830,6 +1485,15 @@ stStatus.bAutoCycleAllowed := bAutoCycleAllowed;
 stStatus.bDisabledNestPartIndexBlocked := bDisabledNestPartPresent;
 stStatus.bDisabledNestPartPopupRequest := bDisabledNestPartPopupRequest;
 stStatus.uiDisabledNestPartPopupNestId := uiDisabledNestPartPopupNestId;
+stStatus.bRejectChuteFullLatched := bRejectChuteFullLatched;
+stStatus.bRejectChutePopupRequest := bRejectChutePopupRequest;
+stStatus.bRejectChuteStopRequest := bRejectChuteStopRequestLatched;
+stStatus.bRejectChuteResetBlocked := bRejectChuteFullLatched;
+stStatus.bHeatStakeHeadUp := stInputs.bHeatStakeHeadUp;
+stStatus.bHeatStakeHeadDown := stInputs.bHeatStakeHeadDown;
+stStatus.bHeatStakeHeadDownTimeoutFault := bHeatStakeStationHeadDownTimeoutFault OR bHeatStakeManualHeadDownTimeoutFault;
+stStatus.bHeatStakeHeadUpTimeoutFault := bHeatStakeStationHeadUpTimeoutFault OR bHeatStakeManualHeadUpTimeoutFault;
+stStatus.bHeatStakeHeadSensorConflictFault := bHeatStakeStationHeadSensorConflictFault OR (stInputs.bHeatStakeHeadUp AND stInputs.bHeatStakeHeadDown);
 stStatus.stPermissives := stPermissives;
 stStatus.aNest := aNestSnapshot;
 stStatus.aNestStatistics := fbNestManager.GetAllNestStatistics();
@@ -900,6 +1564,13 @@ CASE eMachineState OF
         stStatus.sMachineMessage := 'Immediate fault';
 END_CASE
 
+IF bRejectChuteFullLatched
+    AND (eMachineState <> E_MachineState.Fault)
+THEN
+    stStatus.sMachineMessage :=
+        'Reject chute full - empty chute and press Acknowledge';
+END_IF
+
 // Must be the final machine-state assignment in Cyclic.
 // Used on the next scan to detect one-shot transitions into Fault.
 ePreviousMachineState := eMachineState;
@@ -924,6 +1595,11 @@ stOutputsInternal.bStation2SupportExtend := FALSE;
 stOutputsInternal.bStation2SupportRetract := FALSE;
 stOutputsInternal.bStation3SupportExtend := FALSE;
 stOutputsInternal.bStation3SupportRetract := FALSE;
+stOutputsInternal.bHeatStakeHeadLock := FALSE;
+stOutputsInternal.bHeatStakeHeadUnlock := FALSE;
+stOutputsInternal.bHeatStakeHeadDown := FALSE;
+stOutputsInternal.bHeatStakeHeadUp := FALSE;
+stOutputsInternal.iHeatStakePressureRaw := 0;
 stOutputsInternal.bLedStart := FALSE;
 stOutputsInternal.bLedReset := FALSE;
 stOutputsInternal.bLedPass := FALSE;

@@ -19,12 +19,25 @@ STRUCT
 
     stHeatStakeTemperatureSettings : ST_HeatStakeTemperatureSettings;
     bApplyHeatStakeTemperatureSettings : BOOL;
+    stHeatStakeProcessSettings : ST_HeatStakeProcessSettings;
+
+    // Heat Stake Manual Mode
+    bHeatStakeManualEnable        : BOOL;
+    bHeatStakeManualStakePatch    : BOOL;
+    bHeatStakeManualUnlock        : BOOL;
+    bHeatStakeManualLock          : BOOL;
+    bHeatStakeManualHeadDown      : BOOL;
+    bHeatStakeManualHeadUp        : BOOL;
+    bHeatStakeManualSupportUp     : BOOL;
 
     // Nest settings command buffer. Every change is persisted automatically.
     aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
 
     // Popup OK acknowledgement.
     bAcknowledgeDisabledNestPartPopup : BOOL;
+
+    // Reject chute full popup acknowledgement.
+    bAcknowledgeRejectChuteFull : BOOL;
 
     uiResetStatisticsNestId: UINT;
 END_STRUCT
