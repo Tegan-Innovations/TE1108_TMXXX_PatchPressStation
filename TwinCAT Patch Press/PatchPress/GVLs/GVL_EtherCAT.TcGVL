@@ -26,6 +26,7 @@ VAR_GLOBAL
 
     // Festo VABX EtherCAT manifold - Module 2 valve outputs.
     stFestoModule2_VABX : ST_VABX_A_S_BV_V4A;
+	stFestoModule3_VABX : ST_VABX_A_S_BV_V4A;
     stFestoModule4_VABX : ST_VABX_A_S_BV_V4A;
 END_VAR]]></Declaration>
   </GVL>

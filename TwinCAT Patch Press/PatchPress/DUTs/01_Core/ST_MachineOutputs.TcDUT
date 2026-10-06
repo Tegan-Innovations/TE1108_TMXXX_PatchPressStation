@@ -20,6 +20,19 @@ STRUCT
     bStation3SupportExtend             : BOOL;
     bStation3SupportRetract            : BOOL;
 
+
+    // Vision Station / Flipping tooling
+    bVisionHorizontalBack              : BOOL;
+    bVisionHorizontalFront             : BOOL;
+    bVisionVerticalUp                  : BOOL;
+    bVisionVerticalDown                : BOOL;
+    bVisionLimitOff                    : BOOL;
+    bVisionLimitOn                     : BOOL;
+    bVisionGripClose                   : BOOL;
+    bVisionGripOpen                    : BOOL;
+    bVisionRotate0                     : BOOL;
+    bVisionRotate180                   : BOOL;
+
     bHeatStakeHeadLock                 : BOOL;
     bHeatStakeHeadUnlock               : BOOL;
     bHeatStakeHeadDown                 : BOOL;

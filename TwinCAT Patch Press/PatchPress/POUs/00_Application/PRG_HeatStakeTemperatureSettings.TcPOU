@@ -24,6 +24,13 @@ VAR
     udiWriteErrorId : UDINT;
 
     sApplyRejectReason : STRING(255);
+
+    // Process temperature limits.
+    // TC3/head setpoint is operator-configurable up to 280 C.
+    // The normal process High Limit must remain below the independent
+    // 320 C head overtemperature protection threshold.
+    cMaxProcessSetpointC : LREAL := 280.0;
+    cHeadOverTempLimitC : LREAL := 320.0;
 END_VAR]]></Declaration>
     <Implementation><ST><![CDATA[IF NOT bCommandBufferInitialised THEN
     GVL_HMI.stCommands.stHeatStakeTemperatureSettings :=
@@ -46,6 +53,14 @@ bSettingsValid :=
     AND (
         GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC
         < GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rHighLimitC
+    )
+    AND (
+        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC
+        <= cMaxProcessSetpointC
+    )
+    AND (
+        GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rHighLimitC
+        < cHeadOverTempLimitC
     )
     AND (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rMaxTcDifferenceC > 0.0)
     AND (GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rKp > 0.0)
@@ -108,6 +123,18 @@ IF GVL_HMI.stCommands.bApplyHeatStakeTemperatureSettings THEN
                 < GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rHighLimitC
             ) THEN
                 sApplyRejectReason := 'Heat Stake settings rejected - Setpoint must be below High Limit';
+
+            ELSIF (
+                GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rSetpointC
+                > cMaxProcessSetpointC
+            ) THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - Setpoint cannot exceed 280 C';
+
+            ELSIF (
+                GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rHighLimitC
+                >= cHeadOverTempLimitC
+            ) THEN
+                sApplyRejectReason := 'Heat Stake settings rejected - High Limit must remain below 320 C';
 
             ELSIF GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rLowLimitC < 0.0 THEN
                 sApplyRejectReason := 'Heat Stake settings rejected - Low Limit cannot be negative';

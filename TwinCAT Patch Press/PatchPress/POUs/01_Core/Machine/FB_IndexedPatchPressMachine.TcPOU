@@ -146,6 +146,16 @@ VAR
 
     bStation3SupportExtendRequest  : BOOL;
     bStation3SupportRetractRequest : BOOL;
+    bVisionHorizontalBackRequest  : BOOL;
+    bVisionHorizontalFrontRequest : BOOL;
+    bVisionVerticalUpRequest      : BOOL;
+    bVisionVerticalDownRequest    : BOOL;
+    bVisionLimitOffRequest        : BOOL;
+    bVisionLimitOnRequest         : BOOL;
+    bVisionGripCloseRequest       : BOOL;
+    bVisionGripOpenRequest        : BOOL;
+    bVisionRotate0Request         : BOOL;
+    bVisionRotate180Request       : BOOL;
     // Fault reset is latched because PRG_Events executes after PRG_Main.
     // The event manager may clear its fault latch on the same Reset scan,
     // therefore the machine must remember the request until the following scan.
@@ -748,8 +758,13 @@ stHeatStakeProcessStatus.bContactDwellActive := bHeatStakeContactDwellActive;
 stHeatStakeProcessStatus.usiSequenceStep := usiHeatStakeSequenceStep;
 
 fbVision.Update(
+    // During System Initialising, do not start the Vision homing sequence until
+    // TwinSAFE confirms that pneumatic pressure is available. This prevents the
+    // station's 5 s tooling-movement timer from expiring while the MS6 / air
+    // supply is still being established.
     bEnable :=
-        (eMachineState = E_MachineState.ReadyToStart)
+        ((eMachineState = E_MachineState.Initialising) AND GVL_Safety.bAirSupplySafe)
+        OR (eMachineState = E_MachineState.ReadyToStart)
         OR (eMachineState = E_MachineState.AutoCycle),
     bCommissioned := bVisionCommissioned,
     bSafetyOk := stInputs.stSafety.bSafetyOk,
@@ -759,16 +774,49 @@ fbVision.Update(
     bReset := stCommand.bReset,
     bSupportRetracted := stInputs.bStation3SupportRetracted,
     bSupportExtended := stInputs.bStation3SupportExtended,
+
+    // Mechanical orientation is reversed relative to cylinder naming:
+    // EXTENDED = slide BACK (home), RETRACTED = slide FRONT.
+    bHorizontalBack := stInputs.bHorizontalMiniSlideExtended,
+    bHorizontalFront := stInputs.bHorizontalMiniSlideRetracted,
+    bVerticalUp := stInputs.bVerticalMiniSlideRetracted,
+    bVerticalDown := stInputs.bVerticalMiniSlideExtended,
+    bLimitOff := stInputs.bIntermediateModuleRetracted,
+    bLimitOn := stInputs.bIntermediateModuleExtended,
+    bGripOpened := stInputs.bRotaryGripperOpened,
+    bGripClosed := stInputs.bRotaryGripperClosed,
+    bRotate0 := stInputs.bRotaryGripperPick0,
+    bRotate180 := stInputs.bRotaryGripperPlace180,
+
     tSupportTimeout := stConfig.tStationSupportTimeout,
+
     stStatus => stVisionStatus,
     bSupportExtendRequest => bStation3SupportExtendRequest,
-    bSupportRetractRequest => bStation3SupportRetractRequest
+    bSupportRetractRequest => bStation3SupportRetractRequest,
+    bHorizontalBackRequest => bVisionHorizontalBackRequest,
+    bHorizontalFrontRequest => bVisionHorizontalFrontRequest,
+    bVerticalUpRequest => bVisionVerticalUpRequest,
+    bVerticalDownRequest => bVisionVerticalDownRequest,
+    bLimitOffRequest => bVisionLimitOffRequest,
+    bLimitOnRequest => bVisionLimitOnRequest,
+    bGripCloseRequest => bVisionGripCloseRequest,
+    bGripOpenRequest => bVisionGripOpenRequest,
+    bRotate0Request => bVisionRotate0Request,
+    bRotate180Request => bVisionRotate180Request
 );
 
 // Current station/nest status for HMI.
 stPatchDispenseStatus.bPartPresent := bPatchDispenseRequired;
 stHeatStakeStatus.bPartPresent := bHeatStakeRequired;
 stVisionStatus.bPartPresent := bVisionRequired;
+
+// Homing is an internal machine-initialisation activity, not an automatic
+// process cycle. Keep FB_VisionStation.IsBusy() unchanged for controlled-stop
+// logic, but do not publish Vision as Busy to the operator while the machine is
+// in System Initialising.
+IF eMachineState = E_MachineState.Initialising THEN
+    stVisionStatus.bBusy := FALSE;
+END_IF
 
 // "Ready" on the Heat Stake HMI is an operational indication, not an
 // Initialising indication.
@@ -886,6 +934,16 @@ stOutputsInternal.bStation2SupportExtend := bStation2SupportExtendRequest;
 stOutputsInternal.bStation2SupportRetract := bStation2SupportRetractRequest;
 stOutputsInternal.bStation3SupportExtend := bStation3SupportExtendRequest;
 stOutputsInternal.bStation3SupportRetract := bStation3SupportRetractRequest;
+stOutputsInternal.bVisionHorizontalBack := bVisionHorizontalBackRequest;
+stOutputsInternal.bVisionHorizontalFront := bVisionHorizontalFrontRequest;
+stOutputsInternal.bVisionVerticalUp := bVisionVerticalUpRequest;
+stOutputsInternal.bVisionVerticalDown := bVisionVerticalDownRequest;
+stOutputsInternal.bVisionLimitOff := bVisionLimitOffRequest;
+stOutputsInternal.bVisionLimitOn := bVisionLimitOnRequest;
+stOutputsInternal.bVisionGripClose := bVisionGripCloseRequest;
+stOutputsInternal.bVisionGripOpen := bVisionGripOpenRequest;
+stOutputsInternal.bVisionRotate0 := bVisionRotate0Request;
+stOutputsInternal.bVisionRotate180 := bVisionRotate180Request;
 stOutputsInternal.bHeatStakeHeadLock := bHeatStakeHeadLockRequest;
 stOutputsInternal.bHeatStakeHeadUnlock := bHeatStakeHeadUnlockRequest;
 stOutputsInternal.bHeatStakeHeadDown := bHeatStakeHeadDownRequest;
@@ -1097,7 +1155,25 @@ E_MachineState.Initialising:
         bAirSupplyLatched AND stInputs.bMainDoorClosed;
 
     tonStopping(IN := FALSE);
-    tonInitialising(IN := NOT stPermissives.bInitialisationAllowed, PT := stConfig.tInitialiseTimeout);
+
+    // Initialising is complete only when the common machine permissives are
+    // valid AND every commissioned station that owns pneumatic home tooling has
+    // actually confirmed its home position. In particular, Vision must finish
+    // its deterministic homing sequence before ReadyToStart is entered.
+    tonInitialising(
+        IN := NOT (
+            stPermissives.bInitialisationAllowed
+            AND (usiHeatStakeManualActionStep = 0)
+            AND stInputs.bHeatStakeHeadUp
+            AND NOT stInputs.bHeatStakeHeadDown
+            AND NOT bHeatStakeManualHeadUpTimeoutFault
+            AND NOT bHeatStakeManualHeadDownTimeoutFault
+            AND NOT bHeatStakeStationHeadSensorConflictFault
+            AND ((NOT bVisionCommissioned) OR fbVision.IsReady())
+        ),
+        PT := stConfig.tInitialiseTimeout
+    );
+
     bInitialisationTimeoutFault := tonInitialising.Q;
     IF bInitialisationTimeoutFault THEN
         bSafetyDropRequest := TRUE;
@@ -1109,6 +1185,7 @@ E_MachineState.Initialising:
         AND NOT bHeatStakeManualHeadUpTimeoutFault
         AND NOT bHeatStakeManualHeadDownTimeoutFault
         AND NOT bHeatStakeStationHeadSensorConflictFault
+        AND ((NOT bVisionCommissioned) OR fbVision.IsReady())
     THEN
         tonInitialising(IN := FALSE);
         eMachineState := E_MachineState.ReadyToStart;
@@ -1595,6 +1672,16 @@ stOutputsInternal.bStation2SupportExtend := FALSE;
 stOutputsInternal.bStation2SupportRetract := FALSE;
 stOutputsInternal.bStation3SupportExtend := FALSE;
 stOutputsInternal.bStation3SupportRetract := FALSE;
+stOutputsInternal.bVisionHorizontalBack := FALSE;
+stOutputsInternal.bVisionHorizontalFront := FALSE;
+stOutputsInternal.bVisionVerticalUp := FALSE;
+stOutputsInternal.bVisionVerticalDown := FALSE;
+stOutputsInternal.bVisionLimitOff := FALSE;
+stOutputsInternal.bVisionLimitOn := FALSE;
+stOutputsInternal.bVisionGripClose := FALSE;
+stOutputsInternal.bVisionGripOpen := FALSE;
+stOutputsInternal.bVisionRotate0 := FALSE;
+stOutputsInternal.bVisionRotate180 := FALSE;
 stOutputsInternal.bHeatStakeHeadLock := FALSE;
 stOutputsInternal.bHeatStakeHeadUnlock := FALSE;
 stOutputsInternal.bHeatStakeHeadDown := FALSE;

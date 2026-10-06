@@ -19,6 +19,17 @@ GVL_IO.stOutputs.bStation2SupportRetract := GVL_MASTER.stOutputs.bStation2Suppor
 GVL_IO.stOutputs.bStation3SupportExtend := GVL_MASTER.stOutputs.bStation3SupportExtend;
 GVL_IO.stOutputs.bStation3SupportRetract := GVL_MASTER.stOutputs.bStation3SupportRetract;
 
+GVL_IO.stOutputs.bVisionHorizontalBack := GVL_MASTER.stOutputs.bVisionHorizontalBack;
+GVL_IO.stOutputs.bVisionHorizontalFront := GVL_MASTER.stOutputs.bVisionHorizontalFront;
+GVL_IO.stOutputs.bVisionVerticalUp := GVL_MASTER.stOutputs.bVisionVerticalUp;
+GVL_IO.stOutputs.bVisionVerticalDown := GVL_MASTER.stOutputs.bVisionVerticalDown;
+GVL_IO.stOutputs.bVisionLimitOff := GVL_MASTER.stOutputs.bVisionLimitOff;
+GVL_IO.stOutputs.bVisionLimitOn := GVL_MASTER.stOutputs.bVisionLimitOn;
+GVL_IO.stOutputs.bVisionGripClose := GVL_MASTER.stOutputs.bVisionGripClose;
+GVL_IO.stOutputs.bVisionGripOpen := GVL_MASTER.stOutputs.bVisionGripOpen;
+GVL_IO.stOutputs.bVisionRotate0 := GVL_MASTER.stOutputs.bVisionRotate0;
+GVL_IO.stOutputs.bVisionRotate180 := GVL_MASTER.stOutputs.bVisionRotate180;
+
 GVL_IO.stOutputs.bHeatStakeHeadLock := GVL_MASTER.stOutputs.bHeatStakeHeadLock;
 GVL_IO.stOutputs.bHeatStakeHeadUnlock := GVL_MASTER.stOutputs.bHeatStakeHeadUnlock;
 GVL_IO.stOutputs.bHeatStakeHeadDown := GVL_MASTER.stOutputs.bHeatStakeHeadDown;
