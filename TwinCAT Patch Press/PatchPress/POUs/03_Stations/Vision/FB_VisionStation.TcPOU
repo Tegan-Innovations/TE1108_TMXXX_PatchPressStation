@@ -63,12 +63,14 @@ VAR
     tonSupportExtendTimeout     : TON;
     tonSupportRetractTimeout    : TON;
     tonToolingSensorConflict    : TON;
+	tonIntermediatePosition 	: TON;
 
     tStepDelay                  : TIME := T#500MS;
     tRotate180Hold              : TIME := T#1S;
     tMoveTimeout                : TIME := T#5S;
     tSupportMoveTimeout         : TIME := T#5S;
     tToolingSensorConflict      : TIME := T#300MS;
+	tIntermediatePosition 		: TIME := T#500MS;
 
     bStepTargetReached          : BOOL;
     bToolingSensorConflict      : BOOL;
@@ -83,34 +85,36 @@ END_VAR]]></Declaration>
 VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// ============================================================================
+        <ST><![CDATA[// ============================================================================
 // Vision Station / Flipping sequence
 // ============================================================================
 // Home:
 //   Nest DOWN, grip 0 deg, grip OPEN, vertical UP,
 //   vertical limit ON, horizontal slide BACK.
 //
-// Commissioning process:
+// Process:
 //   10  Nest UP
-//   20  Vertical DOWN
+//   20  Vertical FULL DOWN - pick
 //   30  Grip CLOSE
 //   40  Vertical UP
-//   50  Limit ON
-//   60  Horizontal FRONT
-//   70  Vertical DOWN
-//   80  Vertical UP
-//   90  Nest DOWN
-//   100 Rotate 180 and hold 1 s
-//   110 Rotate 0
-//   120 Nest UP
-//   130 Vertical DOWN
-//   140 Grip OPEN
-//   150 Vertical UP
-//   160 Return complete tooling to HOME, then Complete
+//   50  Horizontal FRONT
+//   60  Vertical INTERMEDIATE
+//   70  Vertical UP
+//   80  Nest DOWN
+//   90  Rotate 180 and hold 1 s
+//   100 Rotate 0
+//   110 Nest UP
+//   120 Vertical INTERMEDIATE - replace part
+//   130 Grip OPEN
+//   140 Vertical UP
+//   150 Return complete tooling to HOME, then Complete
 //
-// Every ordinary transition has a 500 ms commissioning settle delay.
-// The delay can be reduced later after pneumatic commissioning.
+// Every ordinary transition has a 500 ms settle delay.
+
+
+// ============================================================================
+// DEFAULT REQUESTS
+// ============================================================================
 
 // Default all requests OFF. Each active state below explicitly builds the
 // desired command state and never energises opposing coils simultaneously.
@@ -130,7 +134,11 @@ bRotate180RequestInternal := FALSE;
 bStepTargetReached := FALSE;
 bFaultInternal := FALSE;
 
-// Full home feedback.
+
+// ============================================================================
+// HOME FEEDBACK
+// ============================================================================
+
 bHomeInternal :=
     bSupportRetractedInternal
     AND NOT bSupportExtendedInternal
@@ -145,7 +153,11 @@ bHomeInternal :=
     AND bRotate0Internal
     AND NOT bRotate180Internal;
 
-// Tooling sensor plausibility.
+
+// ============================================================================
+// TOOLING SENSOR PLAUSIBILITY
+// ============================================================================
+
 bToolingSensorConflict :=
     (bSupportRetractedInternal AND bSupportExtendedInternal)
     OR (bHorizontalBackInternal AND bHorizontalFrontInternal)
@@ -163,141 +175,237 @@ tonToolingSensorConflict(
     PT := tToolingSensorConflict
 );
 
+
+// ============================================================================
+// MAIN STATE CONTROL
+// ============================================================================
+
 IF bEnableInternal AND bSimulatedFault THEN
+
     eStateInternal := E_PatchStationState.Fault;
     usiStepInternal := 0;
     sDiagnosticInternal := 'Vision: simulated station fault';
 
+
 ELSIF tonToolingSensorConflict.Q THEN
+
     eStateInternal := E_PatchStationState.Fault;
     usiStepInternal := 0;
     sDiagnosticInternal := 'Vision: contradictory tooling sensors';
 
+
 ELSIF bFaultInternal THEN
+
     // Fault state handled below.
 
+
 ELSIF bStopRequestInternal THEN
+
     // Controlled station stop: start one deterministic return-to-home sequence.
     // Clear the request here so the homing step counter is not reset every scan.
     eStateInternal := E_PatchStationState.Homing;
     usiStepInternal := 0;
     bStopRequestInternal := FALSE;
 
+
 ELSIF NOT bCommissionedInternal THEN
+
     eStateInternal := E_PatchStationState.Disabled;
     usiStepInternal := 0;
     sDiagnosticInternal := 'Vision: station disabled';
 
+
 ELSIF NOT bSafetyOkInternal THEN
+
     eStateInternal := E_PatchStationState.Disabled;
     usiStepInternal := 0;
     sDiagnosticInternal := 'Vision: disabled by Safety';
 
+
 ELSIF NOT bEnableInternal THEN
+
     IF bHomeInternal THEN
+
         eStateInternal := E_PatchStationState.Disabled;
         usiStepInternal := 0;
         sDiagnosticInternal := 'Vision: disabled - tooling home';
+
     ELSE
+
         eStateInternal := E_PatchStationState.Homing;
         usiStepInternal := 0;
         sDiagnosticInternal := 'Vision: disabled - returning tooling home';
+
     END_IF
 
+
 ELSE
+
     CASE eStateInternal OF
+
+
+        // ====================================================================
+        // DISABLED / HOMING
+        // ====================================================================
 
         E_PatchStationState.Disabled,
         E_PatchStationState.Homing:
+
             // Deterministic / collision-conscious home sequence used by
             // System Initialising and controlled station recovery.
             //
             // Defined HOME:
             //   Nest DOWN, vertical UP, rotation 0 deg, grip OPEN,
-            //   intermediate limit ON, horizontal slide BACK.
-            //
-            // Do not command every cylinder at once. From an unknown position,
-            // first lift the vertical tooling, then lower the nest before any
-            // rotation. Each confirmed movement receives the commissioning
-            // 500 ms settle delay before the next movement starts.
+            //   vertical limit ON, horizontal slide BACK.
+
             IF usiStepInternal = 0 THEN
+
                 IF bHomeInternal THEN
                     usiStepInternal := 70;
                 ELSE
                     usiStepInternal := 10;
                 END_IF
+
             END_IF
 
+
             CASE usiStepInternal OF
+
                 10: // Vertical UP
+
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
-                    bStepTargetReached := bVerticalUpInternal AND NOT bVerticalDownInternal;
+
+                    bStepTargetReached :=
+                        bVerticalUpInternal
+                        AND NOT bVerticalDownInternal;
+
                     sDiagnosticInternal := 'Vision homing: vertical UP';
 
+
                 20: // Nest DOWN / support retracted
+
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-                    bStepTargetReached := bSupportRetractedInternal AND NOT bSupportExtendedInternal;
+
+                    bStepTargetReached :=
+                        bSupportRetractedInternal
+                        AND NOT bSupportExtendedInternal;
+
                     sDiagnosticInternal := 'Vision homing: nest support DOWN';
 
+
                 30: // Rotate gripper to 0 deg
+
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
-                    bStepTargetReached := bRotate0Internal AND NOT bRotate180Internal;
+
+                    bStepTargetReached :=
+                        bRotate0Internal
+                        AND NOT bRotate180Internal;
+
                     sDiagnosticInternal := 'Vision homing: rotate grip to 0 deg';
 
+
                 40: // Grip OPEN
+
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
-                    bStepTargetReached := bGripOpenedInternal AND NOT bGripClosedInternal;
+
+                    bStepTargetReached :=
+                        bGripOpenedInternal
+                        AND NOT bGripClosedInternal;
+
                     sDiagnosticInternal := 'Vision homing: grip OPEN';
 
-                50: // Intermediate / vertical limit ON
+
+                50: // Vertical limit ON
+
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
+
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
-                    bStepTargetReached := bLimitOnInternal AND NOT bLimitOffInternal;
+
+                    bStepTargetReached :=
+                        bLimitOnInternal
+                        AND NOT bLimitOffInternal;
+
                     sDiagnosticInternal := 'Vision homing: vertical limit ON';
 
+
                 60: // Horizontal slide BACK
+
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
+
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
-                    bStepTargetReached := bHorizontalBackInternal AND NOT bHorizontalFrontInternal;
+
+                    bStepTargetReached :=
+                        bHorizontalBackInternal
+                        AND NOT bHorizontalFrontInternal;
+
                     sDiagnosticInternal := 'Vision homing: horizontal slide BACK';
 
+
                 70: // Verify complete HOME before declaring Ready
+
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
+
                     bStepTargetReached := bHomeInternal;
+
                     sDiagnosticInternal := 'Vision homing: verifying HOME';
 
+
                 ELSE
+
                     usiStepInternal := 10;
                     bStepTargetReached := FALSE;
+
             END_CASE
 
-            tonStepDelay(IN := bStepTargetReached, PT := tStepDelay);
-            tonMoveTimeout(IN := NOT bStepTargetReached, PT := tMoveTimeout);
+
+            tonStepDelay(
+                IN := bStepTargetReached,
+                PT := tStepDelay
+            );
+
+            tonMoveTimeout(
+                IN := NOT bStepTargetReached,
+                PT := tMoveTimeout
+            );
+
+
+            // ================================================================
+            // HOMING TIMEOUT SUPERVISION
+            // ================================================================
 
             IF tonMoveTimeout.Q THEN
+
                 tonMoveTimeout(IN := FALSE);
                 tonStepDelay(IN := FALSE);
+
                 eStateInternal := E_PatchStationState.Fault;
-                sDiagnosticInternal := 'Vision: homing movement timeout';
                 usiStepInternal := 0;
+
+                sDiagnosticInternal := 'Vision: homing movement timeout';
 
                 stResultInternal.bValid := TRUE;
                 stResultInternal.bPassed := FALSE;
@@ -306,146 +414,294 @@ ELSE
                 stResultInternal.udiAlertCode := 0;
                 stResultInternal.sDetail := 'Vision homing movement timeout';
 
+
             ELSIF tonStepDelay.Q THEN
+
                 tonMoveTimeout(IN := FALSE);
                 tonStepDelay(IN := FALSE);
 
                 IF usiStepInternal < 70 THEN
+
                     usiStepInternal := usiStepInternal + 10;
+
                 ELSE
+
                     eStateInternal := E_PatchStationState.Ready;
                     usiStepInternal := 0;
                     sDiagnosticInternal := 'Vision: ready - tooling home';
+
                 END_IF
+
             END_IF
 
+
+        // ====================================================================
+        // READY
+        // ====================================================================
+
         E_PatchStationState.Ready:
+
             tonStepDelay(IN := FALSE);
             tonRotate180Hold(IN := FALSE);
             tonMoveTimeout(IN := FALSE);
 
-            // Hold/restore the defined initial position.
+            // Hold/restore the defined HOME position.
             bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
             bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
             bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+            bLimitOffRequestInternal := FALSE;
             bLimitOnRequestInternal := NOT bLimitOnInternal;
+
             bGripOpenRequestInternal := NOT bGripOpenedInternal;
             bRotate0RequestInternal := NOT bRotate0Internal;
 
             IF NOT bHomeInternal THEN
+
                 eStateInternal := E_PatchStationState.Homing;
                 sDiagnosticInternal := 'Vision: lost home - recovering';
+
             ELSE
+
                 sDiagnosticInternal := 'Vision: ready - waiting for cycle start';
+
             END_IF
 
+
+        // ====================================================================
+        // PROCESSING
+        // ====================================================================
+
         E_PatchStationState.Processing:
+
             CASE usiStepInternal OF
 
-                10: // Nest UP
+
+                // ------------------------------------------------------------
+                // STEP 10 - NEST UP
+                // ------------------------------------------------------------
+
+                10:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    // Keep intermediate stop ON before the pick movement.
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
                     bStepTargetReached := bSupportExtendedInternal;
+
                     sDiagnosticInternal := 'Vision: nest support UP';
 
-                20: // Vertical DOWN
+
+                // ------------------------------------------------------------
+                // STEP 20 - FULL VERTICAL DOWN FOR PICK
+                // ------------------------------------------------------------
+
+                20:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
+
+                    // Retract the intermediate stop to allow FULL DOWN.
+                    // Coil4 = Limit OFF.
+                    // Coil5 = OFF.
+                    bLimitOffRequestInternal := TRUE;
+                    bLimitOnRequestInternal := FALSE;
+
                     bVerticalDownRequestInternal := NOT bVerticalDownInternal;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bVerticalDownInternal;
-                    sDiagnosticInternal := 'Vision: vertical DOWN - pick';
+                    bStepTargetReached :=
+                        bVerticalDownInternal
+                        AND NOT bVerticalUpInternal
+                        AND bLimitOffInternal
+                        AND NOT bLimitOnInternal;
 
-                30: // Grip CLOSE
+                    sDiagnosticInternal := 'Vision: vertical FULL DOWN - pick';
+
+
+                // ------------------------------------------------------------
+                // STEP 30 - GRIP CLOSE AT FULL DOWN
+                // ------------------------------------------------------------
+
+                30:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
+
+                    // Keep stop retracted while gripping at FULL DOWN.
+                    bLimitOffRequestInternal := TRUE;
+                    bLimitOnRequestInternal := FALSE;
+
                     bVerticalDownRequestInternal := NOT bVerticalDownInternal;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bGripClosedInternal;
-                    sDiagnosticInternal := 'Vision: grip CLOSE';
+                    bStepTargetReached :=
+                        bGripClosedInternal
+                        AND NOT bGripOpenedInternal;
 
-                40: // Vertical UP
+                    sDiagnosticInternal := 'Vision: grip CLOSE at full DOWN';
+
+
+                // ------------------------------------------------------------
+                // STEP 40 - VERTICAL UP
+                // ------------------------------------------------------------
+
+                40:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
+
+                    // Keep stop retracted until vertical is safely UP.
+                    bLimitOffRequestInternal := TRUE;
+                    bLimitOnRequestInternal := FALSE;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bVerticalUpInternal;
+                    bStepTargetReached :=
+                        bVerticalUpInternal
+                        AND NOT bVerticalDownInternal;
+
                     sDiagnosticInternal := 'Vision: vertical UP with part';
 
-                50: // Limit ON
-                    bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
-                    bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
-                    bVerticalUpRequestInternal := NOT bVerticalUpInternal;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
-                    bGripCloseRequestInternal := NOT bGripClosedInternal;
-                    bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bLimitOnInternal;
-                    sDiagnosticInternal := 'Vision: vertical limit ON';
+                // ------------------------------------------------------------
+                // STEP 50 - HORIZONTAL FRONT
+                // ------------------------------------------------------------
 
-                60: // Horizontal FRONT
+                50:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    // Vertical is safely UP. Extend the intermediate stop
+                    // before commanding the next DOWN movement.
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bHorizontalFrontInternal;
-                    sDiagnosticInternal := 'Vision: horizontal slide FRONT';
+                    bStepTargetReached :=
+                        bHorizontalFrontInternal
+                        AND NOT bHorizontalBackInternal
+                        AND bLimitOnInternal
+                        AND NOT bLimitOffInternal;
 
-                70: // Vertical DOWN at front
+                    sDiagnosticInternal := 'Vision: horizontal FRONT - limit ON';
+
+
+                // ------------------------------------------------------------
+                // STEP 60 - VERTICAL INTERMEDIATE
+                // ------------------------------------------------------------
+
+                60:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
-                    bVerticalDownRequestInternal := NOT bVerticalDownInternal;
+
+                    // Limit ON creates the mechanical stop for INTERMEDIATE.
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
+                    // Keep DOWN command active while resting against the stop.
+                    bVerticalDownRequestInternal := TRUE;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bVerticalDownInternal;
-                    sDiagnosticInternal := 'Vision: vertical DOWN at front';
+                    // There is no dedicated vertical INTERMEDIATE sensor.
+                    // Intermediate is confirmed by:
+                    //   Limit ON
+                    //   Vertical UP = FALSE
+                    //   Vertical DOWN = FALSE
+                    // held stable for tIntermediatePosition.
+                    tonIntermediatePosition(
+                        IN := bLimitOnInternal
+                            AND NOT bVerticalUpInternal
+                            AND NOT bVerticalDownInternal,
+                        PT := tIntermediatePosition
+                    );
 
-                80: // Vertical UP
+                    bStepTargetReached := tonIntermediatePosition.Q;
+
+                    sDiagnosticInternal := 'Vision: vertical INTERMEDIATE at front';
+
+
+                // ------------------------------------------------------------
+                // STEP 70 - VERTICAL UP
+                // ------------------------------------------------------------
+
+                70:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
+
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    // Keep intermediate stop ON.
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bVerticalUpInternal;
+                    bStepTargetReached :=
+                        bVerticalUpInternal
+                        AND NOT bVerticalDownInternal;
+
                     sDiagnosticInternal := 'Vision: vertical UP before flip';
 
-                90: // Nest DOWN
+
+                // ------------------------------------------------------------
+                // STEP 80 - NEST DOWN
+                // ------------------------------------------------------------
+
+                80:
+
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bSupportRetractedInternal;
-                    sDiagnosticInternal := 'Vision: nest support DOWN';
+                    bStepTargetReached :=
+                        bSupportRetractedInternal
+                        AND NOT bSupportExtendedInternal;
 
-                100: // Rotate 180 and hold 1 s
+                    sDiagnosticInternal := 'Vision: nest support DOWN before flip';
+
+
+                // ------------------------------------------------------------
+                // STEP 90 - ROTATE 180 AND HOLD
+                // ------------------------------------------------------------
+
+                90:
+
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate180RequestInternal := NOT bRotate180Internal;
 
@@ -455,103 +711,208 @@ ELSE
                     );
 
                     bStepTargetReached := tonRotate180Hold.Q;
+
                     sDiagnosticInternal := 'Vision: rotate 180 - holding 1 s';
 
-                110: // Rotate back to 0
+
+                // ------------------------------------------------------------
+                // STEP 100 - ROTATE BACK TO 0
+                // ------------------------------------------------------------
+
+                100:
+
                     tonRotate180Hold(IN := FALSE);
+
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bRotate0Internal;
+                    bStepTargetReached :=
+                        bRotate0Internal
+                        AND NOT bRotate180Internal;
+
                     sDiagnosticInternal := 'Vision: rotate back to 0';
 
-                120: // Nest UP
+
+                // ------------------------------------------------------------
+                // STEP 110 - NEST UP
+                // ------------------------------------------------------------
+
+                110:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    // Intermediate stop must remain ON for the replace movement.
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bSupportExtendedInternal;
+                    bStepTargetReached :=
+                        bSupportExtendedInternal
+                        AND NOT bSupportRetractedInternal;
+
                     sDiagnosticInternal := 'Vision: nest support UP - replace part';
 
-                130: // Vertical DOWN
+
+                // ------------------------------------------------------------
+                // STEP 120 - VERTICAL INTERMEDIATE FOR REPLACE
+                // ------------------------------------------------------------
+
+                120:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
-                    bVerticalDownRequestInternal := NOT bVerticalDownInternal;
+
+                    // Limit ON creates the mechanical INTERMEDIATE position.
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
+                    // Hold DOWN against the intermediate mechanical stop.
+                    bVerticalDownRequestInternal := TRUE;
+
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bVerticalDownInternal;
-                    sDiagnosticInternal := 'Vision: vertical DOWN - replace part';
+                    tonIntermediatePosition(
+                        IN := bLimitOnInternal
+                            AND NOT bVerticalUpInternal
+                            AND NOT bVerticalDownInternal,
+                        PT := tIntermediatePosition
+                    );
 
-                140: // Grip OPEN
+                    bStepTargetReached := tonIntermediatePosition.Q;
+
+                    sDiagnosticInternal := 'Vision: vertical INTERMEDIATE - replace part';
+
+
+                // ------------------------------------------------------------
+                // STEP 130 - GRIP OPEN AT INTERMEDIATE
+                // ------------------------------------------------------------
+
+                130:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
-                    bVerticalDownRequestInternal := NOT bVerticalDownInternal;
+
+                    // Hold vertical against the intermediate stop.
+                    bVerticalDownRequestInternal := TRUE;
+
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bGripOpenedInternal;
+                    bStepTargetReached :=
+                        bGripOpenedInternal
+                        AND NOT bGripClosedInternal;
+
                     sDiagnosticInternal := 'Vision: grip OPEN - release part';
 
-                150: // Vertical UP
+
+                // ------------------------------------------------------------
+                // STEP 140 - VERTICAL UP
+                // ------------------------------------------------------------
+
+                140:
+
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
+
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bVerticalUpInternal;
+                    bStepTargetReached :=
+                        bVerticalUpInternal
+                        AND NOT bVerticalDownInternal;
+
                     sDiagnosticInternal := 'Vision: vertical UP after release';
 
-                160: // Return everything to initial position
+
+                // ------------------------------------------------------------
+                // STEP 150 - RETURN HOME
+                // ------------------------------------------------------------
+
+                150:
+
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+                    // HOME requires Limit ON.
+                    bLimitOffRequestInternal := FALSE;
                     bLimitOnRequestInternal := NOT bLimitOnInternal;
+
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
                     bStepTargetReached := bHomeInternal;
+
                     sDiagnosticInternal := 'Vision: returning tooling to home';
 
+
                 ELSE
+
                     eStateInternal := E_PatchStationState.Fault;
                     usiStepInternal := 0;
                     sDiagnosticInternal := 'Vision: invalid sequence step';
+
             END_CASE
 
-            // Generic transition delay / movement timeout.
-            IF usiStepInternal = 100 THEN
+
+            // ================================================================
+            // PROCESSING TRANSITIONS
+            // ================================================================
+
+            IF usiStepInternal = 90 THEN
+
                 tonStepDelay(IN := FALSE);
+
             ELSE
+
                 tonStepDelay(
                     IN := bStepTargetReached,
                     PT := tStepDelay
                 );
+
             END_IF
+
 
             tonMoveTimeout(
                 IN := NOT bStepTargetReached,
                 PT := tMoveTimeout
             );
 
+
+            // ================================================================
+            // PROCESSING MOVEMENT TIMEOUT SUPERVISION
+            // ================================================================
+
             IF tonMoveTimeout.Q THEN
+
                 tonMoveTimeout(IN := FALSE);
                 tonStepDelay(IN := FALSE);
                 tonRotate180Hold(IN := FALSE);
+
                 eStateInternal := E_PatchStationState.Fault;
-                sDiagnosticInternal := 'Vision: tooling movement timeout';
                 usiStepInternal := 0;
+
+                sDiagnosticInternal := 'Vision: tooling movement timeout';
 
                 stResultInternal.bValid := TRUE;
                 stResultInternal.bPassed := FALSE;
@@ -560,18 +921,25 @@ ELSE
                 stResultInternal.udiAlertCode := 0;
                 stResultInternal.sDetail := 'Vision tooling movement timeout';
 
-            ELSIF (usiStepInternal = 100) AND bStepTargetReached THEN
+
+            ELSIF (usiStepInternal = 90) AND bStepTargetReached THEN
+
                 tonMoveTimeout(IN := FALSE);
                 tonRotate180Hold(IN := FALSE);
-                usiStepInternal := 110;
+                usiStepInternal := 100;
 
-            ELSIF (usiStepInternal <> 100) AND tonStepDelay.Q THEN
+
+            ELSIF (usiStepInternal <> 90) AND tonStepDelay.Q THEN
+
                 tonMoveTimeout(IN := FALSE);
                 tonStepDelay(IN := FALSE);
 
-                IF usiStepInternal < 160 THEN
+                IF usiStepInternal < 150 THEN
+
                     usiStepInternal := usiStepInternal + 10;
+
                 ELSE
+
                     // No camera interface yet: use the existing commissioning
                     // simulated PASS/FAIL selector as the process result.
                     stResultInternal.bValid := TRUE;
@@ -579,49 +947,235 @@ ELSE
                     stResultInternal.udiAlertCode := 0;
 
                     IF bSimulatedFail THEN
+
                         stResultInternal.bPassed := FALSE;
                         stResultInternal.eCode := E_ProcessResultCode.Fail;
-                        stResultInternal.sDetail := 'Vision flipping complete - simulated FAIL';
+                        stResultInternal.sDetail :=
+                            'Vision flipping complete - simulated FAIL';
+
                     ELSE
+
                         stResultInternal.bPassed := TRUE;
                         stResultInternal.eCode := E_ProcessResultCode.Pass;
-                        stResultInternal.sDetail := 'Vision flipping complete - simulated PASS';
+                        stResultInternal.sDetail :=
+                            'Vision flipping complete - simulated PASS';
+
                     END_IF
 
                     eStateInternal := E_PatchStationState.Complete;
                     usiStepInternal := 0;
+
                 END_IF
+
             END_IF
 
+
+        // ====================================================================
+        // COMPLETE
+        // ====================================================================
+
         E_PatchStationState.Complete:
+
             tonStepDelay(IN := FALSE);
             tonRotate180Hold(IN := FALSE);
             tonMoveTimeout(IN := FALSE);
 
-            // Keep/restore home after process completion.
+            // Keep/restore HOME after process completion.
             bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
             bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
             bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+
+            bLimitOffRequestInternal := FALSE;
             bLimitOnRequestInternal := NOT bLimitOnInternal;
+
             bGripOpenRequestInternal := NOT bGripOpenedInternal;
             bRotate0RequestInternal := NOT bRotate0Internal;
 
             sDiagnosticInternal := 'Vision: flipping complete';
 
+
+        // ====================================================================
+        // FAULT
+        // ====================================================================
+
         E_PatchStationState.Fault:
+
             tonStepDelay(IN := FALSE);
             tonRotate180Hold(IN := FALSE);
             tonMoveTimeout(IN := FALSE);
+
             sDiagnosticInternal := 'Vision: fault';
 
+
         ELSE
+
             eStateInternal := E_PatchStationState.Fault;
             usiStepInternal := 0;
             sDiagnosticInternal := 'Vision: invalid station state';
+
     END_CASE
+
 END_IF
 
-// Existing support-cylinder timeout supervision retained.
+
+// ============================================================================
+// FINAL MECHANICAL MOVEMENT INTERLOCKS
+// ============================================================================
+//
+// Independent mechanical permissives applied AFTER the state machine.
+// These prevent unsafe movement requests from reaching the physical outputs
+// even if a future sequence modification generates an invalid combination.
+
+
+// ============================================================================
+// HORIZONTAL MOVEMENT PERMISSIVE
+// ============================================================================
+//
+// Horizontal movement is only permitted when the vertical tooling is
+// positively confirmed UP.
+
+IF NOT (
+    bVerticalUpInternal
+    AND NOT bVerticalDownInternal
+) THEN
+
+    bHorizontalBackRequestInternal := FALSE;
+    bHorizontalFrontRequestInternal := FALSE;
+
+END_IF
+
+
+// ============================================================================
+// ROTATION MOVEMENT PERMISSIVE
+// ============================================================================
+//
+// Rotation is only permitted when:
+//   Vertical = UP
+//   Support / Nest = DOWN
+
+IF NOT (
+    bVerticalUpInternal
+    AND NOT bVerticalDownInternal
+    AND bSupportRetractedInternal
+    AND NOT bSupportExtendedInternal
+) THEN
+
+    bRotate0RequestInternal := FALSE;
+    bRotate180RequestInternal := FALSE;
+
+END_IF
+
+
+// ============================================================================
+// FULL DOWN / INTERMEDIATE STOP PERMISSIVE
+// ============================================================================
+//
+// Steps 20 and 30 correspond to the FULL DOWN pick position.
+//
+// FULL DOWN is only allowed after the intermediate mechanical stop has been
+// positively confirmed retracted:
+//
+//   Limit OFF = TRUE
+//   Limit ON  = FALSE
+//
+// This does NOT apply to Steps 60 / 120 / 130 because those steps
+// intentionally command DOWN against the intermediate stop.
+
+IF (eStateInternal = E_PatchStationState.Processing)
+    AND (
+        (usiStepInternal = 20)
+        OR (usiStepInternal = 30)
+    )
+    AND NOT (
+        bLimitOffInternal
+        AND NOT bLimitOnInternal
+    )
+THEN
+
+    bVerticalDownRequestInternal := FALSE;
+
+END_IF
+
+
+// ============================================================================
+// OPPOSING OUTPUT HARD INTERLOCKS
+// ============================================================================
+//
+// Never allow opposing pneumatic requests simultaneously.
+// If both commands are requested, remove BOTH requests.
+// Existing timeout supervision will detect failure to reach the target.
+
+
+// Support Extend / Retract
+IF bSupportExtendRequestInternal
+    AND bSupportRetractRequestInternal
+THEN
+
+    bSupportExtendRequestInternal := FALSE;
+    bSupportRetractRequestInternal := FALSE;
+
+END_IF
+
+
+// Horizontal Back / Front
+IF bHorizontalBackRequestInternal
+    AND bHorizontalFrontRequestInternal
+THEN
+
+    bHorizontalBackRequestInternal := FALSE;
+    bHorizontalFrontRequestInternal := FALSE;
+
+END_IF
+
+
+// Vertical Up / Down
+IF bVerticalUpRequestInternal
+    AND bVerticalDownRequestInternal
+THEN
+
+    bVerticalUpRequestInternal := FALSE;
+    bVerticalDownRequestInternal := FALSE;
+
+END_IF
+
+
+// Intermediate Stop OFF / ON
+IF bLimitOffRequestInternal
+    AND bLimitOnRequestInternal
+THEN
+
+    bLimitOffRequestInternal := FALSE;
+    bLimitOnRequestInternal := FALSE;
+
+END_IF
+
+
+// Grip Close / Open
+IF bGripCloseRequestInternal
+    AND bGripOpenRequestInternal
+THEN
+
+    bGripCloseRequestInternal := FALSE;
+    bGripOpenRequestInternal := FALSE;
+
+END_IF
+
+
+// Rotation 0 / 180
+IF bRotate0RequestInternal
+    AND bRotate180RequestInternal
+THEN
+
+    bRotate0RequestInternal := FALSE;
+    bRotate180RequestInternal := FALSE;
+
+END_IF
+
+
+// ============================================================================
+// SUPPORT CYLINDER SUPERVISION
+// ============================================================================
+
 tonSupportExtendTimeout(
     IN := bSupervisionEnableInternal
         AND bSafetyOkInternal
@@ -640,38 +1194,64 @@ tonSupportRetractTimeout(
     PT := tSupportMoveTimeout
 );
 
+
+// ============================================================================
+// SUPPORT CYLINDER FAULT SUPERVISION
+// ============================================================================
+
 IF tonSupportExtendTimeout.Q THEN
+
     eSupportFaultInternal := E_SupportCylinderFault.ExtendTimeout;
+
     eStateInternal := E_PatchStationState.Fault;
     usiStepInternal := 0;
+
     stResultInternal.bValid := TRUE;
     stResultInternal.bPassed := FALSE;
     stResultInternal.eCode := E_ProcessResultCode.Fail;
     stResultInternal.udiFaultCode := 1;
     stResultInternal.udiAlertCode := 0;
     stResultInternal.sDetail := 'Vision: support UP feedback timeout';
+
     sDiagnosticInternal := 'Vision: support UP feedback timeout';
 
+
 ELSIF tonSupportRetractTimeout.Q THEN
+
     eSupportFaultInternal := E_SupportCylinderFault.RetractTimeout;
+
     eStateInternal := E_PatchStationState.Fault;
     usiStepInternal := 0;
+
     stResultInternal.bValid := TRUE;
     stResultInternal.bPassed := FALSE;
     stResultInternal.eCode := E_ProcessResultCode.Fail;
     stResultInternal.udiFaultCode := 2;
     stResultInternal.udiAlertCode := 0;
     stResultInternal.sDetail := 'Vision: support DOWN feedback timeout';
+
     sDiagnosticInternal := 'Vision: support DOWN feedback timeout';
+
 END_IF
 
-bReadyInternal := (eStateInternal = E_PatchStationState.Ready) AND bHomeInternal;
+
+// ============================================================================
+// STATUS
+// ============================================================================
+
+bReadyInternal :=
+    (eStateInternal = E_PatchStationState.Ready)
+    AND bHomeInternal;
+
 bBusyInternal :=
     (eStateInternal = E_PatchStationState.Processing)
     OR ((eStateInternal = E_PatchStationState.Homing) AND NOT bHomeInternal);
-bCompleteInternal := (eStateInternal = E_PatchStationState.Complete);
-bFaultInternal := (eStateInternal = E_PatchStationState.Fault);
-]]></ST>
+
+bCompleteInternal :=
+    (eStateInternal = E_PatchStationState.Complete);
+
+bFaultInternal :=
+    (eStateInternal = E_PatchStationState.Fault);]]></ST>
       </Implementation>
     </Method>
     <Method Name="GetResult" Id="{7bfc6964-8b28-4f8c-8568-3f1997d1b2ca}">

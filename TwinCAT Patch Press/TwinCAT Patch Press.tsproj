@@ -2098,6 +2098,15 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
+			<Name GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..4] OF BOOL</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>1</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
 			<Name GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}" AutoDeleteType="true">ST_EventsHistory</Name>
 			<BitSize>8256</BitSize>
 			<SubItem>
@@ -2282,15 +2291,6 @@ External Setpoint Generation:
 					<Value>0.5</Value>
 				</Default>
 			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..4] OF BOOL</Name>
-			<BitSize>32</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>1</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
 		</DataType>
 		<DataType>
 			<Name GUID="{6A1349E5-5DBA-5F01-9FCA-F3A3779D4934}" AutoDeleteType="true">ST_MachineConfig</Name>
@@ -2749,7 +2749,7 @@ External Setpoint Generation:
 		<ImageData Id="1012">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000d70d0000d70d00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ffebe8e5ebe8e5ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc6beb6ebe8e5c6beb6ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5ebe8e5ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffdc9100ebe8e5dc9100ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5ebe8e5ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00fff5f3f2f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00fff5f3f2f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00fff5f3f2f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00fff5f3f2f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00fff5f3f2f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00fff5f3f2f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00fff5f3f2f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00fff5f3f2f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5f5f3f2f5f3f2ff00ffff00ffff00ffff00ffff00ffff00ffff00ff</ImageData>
 		<ImageData Id="1013">424dd6020000000000003600000028000000100000000e0000000100180000000000a00200002a0200002a0200000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ffdcd7d3dfdad4dcd8d4ded9d3dcd7d3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5dfdad6ebe8e5e2ddd9ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5dfdad6ebe8e5e2ddd9ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5dfdad6ebe8e5e2ddd9ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5dfdad6ebe8e5e2ddd9ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5dfdad6ebe8e5e2ddd9ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5dfdad6ebe8e5e2ddd9ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5dfdad6ebe8e5e2ddd9ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffebe8e5dfdad6ebe8e5e2ddd9ebe8e5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffe2ded9dfdad6e2ded9dfd9d6e2ded9ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffcfc8c1c7c0b8d0c9c3cbc4bcd0c9c3ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc6beb6c6beb6c6beb6c6beb6c6beb6ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffd1c9c3c7c0b8d2cbc5cbc4bdd2cbc5ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffd0c8c2cfc8c2cfc9c2cfc7c0cfc8c2ff00ffff00ffff00ffff00ffff00ff</ImageData>
 	</ImageDatas>
-	<Project ProjectGUID="{E29DC8A2-CCB9-98A8-F98A-06857A0FEFBD}" TargetNetId="172.18.239.27.1.1" Target64Bit="true" ShowHideConfigurations="#x6">
+	<Project ProjectGUID="{E29DC8A2-CCB9-98A8-F98A-06857A0FEFBD}" TargetNetId="172.18.239.27.1.1" ShowHideConfigurations="#x6">
 		<System>
 			<Licenses>
 				<Target>
@@ -3201,11 +3201,17 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{44BB7FDC-710E-6506-E7D7-46CE4FA30A70}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{DF7CAAAC-0511-98BB-6249-762B9023DEE3}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
 						<Name>PlcTask Retains</Name>
+						<Var>
+							<Name>GVL_Persistent.aNestEnabled</Name>
+							<Comment><![CDATA[ Persistent authority for the four index-table nest enable states.]]></Comment>
+							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
+							<InOut>7</InOut>
+						</Var>
 						<Var>
 							<Name>GVL_Persistent.astEventsHistory</Name>
 							<Type GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}">ARRAY [0..200] OF ST_EventsHistory</Type>
@@ -3219,12 +3225,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>GVL_Persistent.stHeatStakeProcessSettings</Name>
 							<Type GUID="{140B09FC-1E31-6B4A-5929-9C5D94DE2671}">ST_HeatStakeProcessSettings</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Persistent.aNestEnabled</Name>
-							<Comment><![CDATA[ Persistent authority for the four index-table nest enable states.]]></Comment>
-							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
