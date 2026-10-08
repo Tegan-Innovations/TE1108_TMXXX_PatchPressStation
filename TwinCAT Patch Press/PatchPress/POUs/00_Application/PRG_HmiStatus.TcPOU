@@ -143,6 +143,9 @@ GVL_HMI.stStatus.bHeatStakeManualHeadUnlocked := GVL_MASTER.stStatus.bHeatStakeM
 // General manual enable permissive
 GVL_HMI.stStatus.bVisionManualEnableAllowed :=GVL_MASTER.stStatus.bVisionManualEnableAllowed;
 GVL_HMI.stStatus.bVisionManualRunSequenceAllowed :=GVL_MASTER.stStatus.bVisionManualRunSequenceAllowed;
+// Vision Manual Mode - Home
+GVL_HMI.stStatus.bVisionManualHomeAllowed :=GVL_MASTER.stStatus.bVisionManualHomeAllowed;
+GVL_HMI.stStatus.bVisionHome :=GVL_MASTER.stStatus.bVisionHome;
 
 // -----------------------------------------------------
 // Horizontal

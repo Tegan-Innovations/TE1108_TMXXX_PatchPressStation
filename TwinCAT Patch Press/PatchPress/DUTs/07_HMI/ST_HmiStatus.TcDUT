@@ -132,7 +132,9 @@ STRUCT
     bHeatStakeManualSupportAllowed    : BOOL;
     bHeatStakeManualActionBusy        : BOOL;
     bHeatStakeManualHeadUnlocked      : BOOL;
-	bVisionManualRunSequenceAllowed : BOOL;
+	bVisionManualRunSequenceAllowed   : BOOL;
+	bVisionManualHomeAllowed 		  : BOOL;
+	bVisionHome              		  : BOOL;
 
     stVision                  : ST_PatchStageStatus;
     eOperatorInstruction      : E_OperatorInstruction;

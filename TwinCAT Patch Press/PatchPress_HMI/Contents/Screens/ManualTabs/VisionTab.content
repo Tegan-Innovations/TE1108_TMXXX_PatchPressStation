@@ -2303,13 +2303,48 @@
 
         <div id="TcHmiButton_VisionRunSequence"
              data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton"
-             data-tchmi-left="25"
+             data-tchmi-left="15"
              data-tchmi-top="30"
-             data-tchmi-width="190"
+             data-tchmi-width="120"
              data-tchmi-height="50"
-             data-tchmi-text="Run Sequence"
-             data-tchmi-text-font-size="18" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.stStatus.bVisionManualRunSequenceAllowed%/s%">
+             data-tchmi-text="Home Position"
+             data-tchmi-text-font-size="18" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.stStatus.bVisionManualHomeAllowed%/s%">
         
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stCommands.bVisionManualHomeRequest%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+
+        <div id="TcHmiTextblock_VisionRunSequenceInfo"
+             data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
+             data-tchmi-left="285"
+             data-tchmi-top="25"
+             data-tchmi-width="125"
+             data-tchmi-height="60"
+             data-tchmi-text="Runs complete flipping"
+             data-tchmi-text-font-size="150"
+             data-tchmi-text-horizontal-alignment="Center"
+             data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-size-unit="%" data-tchmi-word-wrap="True">
+        </div>
+
+    <div id="TcHmiButton_VisionRunSequence_129" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="155" data-tchmi-top="30" data-tchmi-width="120" data-tchmi-height="50" data-tchmi-text="Run Sequence" data-tchmi-text-font-size="18" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.stStatus.bVisionManualRunSequenceAllowed%/s%">
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
 [
   {
@@ -2330,21 +2365,10 @@
   }
 ]
 </script>
+
+
 </div>
-
-        <div id="TcHmiTextblock_VisionRunSequenceInfo"
-             data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
-             data-tchmi-left="225"
-             data-tchmi-top="25"
-             data-tchmi-width="175"
-             data-tchmi-height="60"
-             data-tchmi-text="Runs complete flipping&#10;and camera sequence"
-             data-tchmi-text-font-size="14"
-             data-tchmi-text-horizontal-alignment="Center"
-             data-tchmi-text-vertical-alignment="Center">
-        </div>
-
-    </div>
+</div>
 
 
     <!-- ============================================================ -->
@@ -2404,7 +2428,7 @@
              data-tchmi-type="TcHmi.Controls.System.TcHmiHtmlHost"
              data-tchmi-height="25"
              data-tchmi-height-unit="px"
-             data-tchmi-left="40"
+             data-tchmi-left="20"
              data-tchmi-left-unit="px"
              data-tchmi-top="28"
              data-tchmi-top-unit="px"
@@ -2423,11 +2447,88 @@
             <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
                 { "color":"rgba(74, 74, 74, 1)" }
             </script>
-        </div>
+        
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus::stVision::bReady%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bReady%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(137, 137, 137, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
 
         <div id="TcHmiTextblock_VisionReady"
              data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
-             data-tchmi-left="25"
+             data-tchmi-left="5"
              data-tchmi-top="66"
              data-tchmi-width="65"
              data-tchmi-height="25"
@@ -2444,7 +2545,7 @@
              data-tchmi-type="TcHmi.Controls.System.TcHmiHtmlHost"
              data-tchmi-height="25"
              data-tchmi-height-unit="px"
-             data-tchmi-left="118"
+             data-tchmi-left="88"
              data-tchmi-left-unit="px"
              data-tchmi-top="28"
              data-tchmi-top-unit="px"
@@ -2463,11 +2564,88 @@
             <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
                 { "color":"rgba(74, 74, 74, 1)" }
             </script>
-        </div>
+        
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bBusy%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bBusy%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(255, 132, 0, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(255, 183, 0, 1)",
+                        "stop": "100%"
+                      }
+                    ]
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(137, 137, 137, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
 
         <div id="TcHmiTextblock_VisionBusy"
              data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
-             data-tchmi-left="103"
+             data-tchmi-left="73"
              data-tchmi-top="66"
              data-tchmi-width="65"
              data-tchmi-height="25"
@@ -2484,7 +2662,7 @@
              data-tchmi-type="TcHmi.Controls.System.TcHmiHtmlHost"
              data-tchmi-height="25"
              data-tchmi-height-unit="px"
-             data-tchmi-left="196"
+             data-tchmi-left="156"
              data-tchmi-left-unit="px"
              data-tchmi-top="28"
              data-tchmi-top-unit="px"
@@ -2503,11 +2681,88 @@
             <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
                 { "color":"rgba(74, 74, 74, 1)" }
             </script>
-        </div>
+        
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bFault%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bFault%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(113, 19, 22, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(255, 0, 8, 1)",
+                        "stop": "100%"
+                      }
+                    ]
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(137, 137, 137, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
 
         <div id="TcHmiTextblock_VisionFault"
              data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
-             data-tchmi-left="181"
+             data-tchmi-left="141"
              data-tchmi-top="66"
              data-tchmi-width="65"
              data-tchmi-height="25"
@@ -2517,6 +2772,102 @@
              data-tchmi-text-horizontal-alignment="Center">
         </div>
 
-    </div>
+    <div id="TcHmiHtmlHost_VisionFault_1" data-tchmi-type="TcHmi.Controls.System.TcHmiHtmlHost" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-left="226" data-tchmi-left-unit="px" data-tchmi-top="28" data-tchmi-top-unit="px" data-tchmi-width="25" data-tchmi-width-unit="px">
+<script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
+                { "left":"Solid","right":"Solid","top":"Solid","bottom":"Solid" }
+            </script>
+            <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
+                { "left":5,"right":5,"top":5,"bottom":5,"leftUnit":"px","rightUnit":"px","topUnit":"px","bottomUnit":"px" }
+            </script>
+            <script data-tchmi-target-attribute="data-tchmi-border-radius" type="application/json">
+                { "topLeft":50.0,"topRight":50.0,"bottomLeft":50.0,"bottomRight":50.0,"topLeftUnit":"px","topRightUnit":"px","bottomLeftUnit":"px","bottomRightUnit":"px" }
+            </script>
+
+            <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
+                { "color":"rgba(74, 74, 74, 1)" }
+            </script>
+        
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bVisionHome%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bVisionHome%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "angle": 45.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(19, 113, 19, 1)",
+                        "stop": "0%"
+                      },
+                      {
+                        "color": "rgba(35, 195, 35, 1)",
+                        "stop": "100%"
+                      }
+                    ]
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::BackgroundColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "color": "rgba(137, 137, 137, 1)"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiTextblock_VisionFault_1435" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="207" data-tchmi-top="66" data-tchmi-width="65" data-tchmi-height="25" data-tchmi-text="Home" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Center">
+</div>
+</div>
 
 </div>

@@ -38,7 +38,8 @@ STRUCT
 	
 	bVisionSupportExtendRequest        : BOOL;
 	bVisionManualRunSequence 		   : BOOL;
-
+	bVisionManualHomeRequest 		   : BOOL;
+	
     // Heat Stake Manual Mode
     bHeatStakeManualEnable        : BOOL;
     bHeatStakeManualStakePatch    : BOOL;

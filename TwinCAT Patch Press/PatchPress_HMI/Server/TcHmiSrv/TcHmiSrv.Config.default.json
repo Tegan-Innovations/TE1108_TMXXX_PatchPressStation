@@ -8757,6 +8757,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionManualHomeRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionManualHomeRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 33
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.bVisionManualRunSequence": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -12085,6 +12102,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionHome": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionHome",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 104
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.bVisionHorizontalBack": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -12115,6 +12149,23 @@
                     },
                     {
                         "propertyOrder": 64
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionManualHomeAllowed": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionManualHomeAllowed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 103
                     }
                 ]
             },
@@ -17417,6 +17468,7 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionHorizontalBackRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionHorizontalFrontRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionManualEnable": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionManualHomeRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionManualRunSequence": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionRotate0Request": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionRotate180Request": 3,
@@ -17614,8 +17666,10 @@
                 "ADS.PLC1.GVL_HMI.stStatus.bUs24VPowerSupplyOk": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bVisionGripClosed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bVisionGripOpen": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionHome": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bVisionHorizontalBack": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bVisionHorizontalFront": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionManualHomeAllowed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bVisionManualRunSequenceAllowed": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bVisionRotate0": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bVisionRotate180": 3,

@@ -51,7 +51,10 @@ STRUCT
 	
 	bVisionSupportExtendRequest        : BOOL;
 	bVisionManualRunSequence 			: BOOL;
+	
+	bVisionManualHomeRequest 			: BOOL;
 
+	
     // Nest settings command buffer. Every change is persisted automatically.
     aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
 

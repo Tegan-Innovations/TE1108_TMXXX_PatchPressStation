@@ -127,6 +127,13 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
 	
 	// Consume momentary request
 	GVL_HMI.stCommands.bVisionManualRunSequence := FALSE;
+	
+	// Vision - Home Position
+	GVL_MASTER.stCommand.bVisionManualHomeRequest :=
+		GVL_HMI.stCommands.bVisionManualHomeRequest;
+	
+	// Consume HMI command as a one-scan pulse.
+	GVL_HMI.stCommands.bVisionManualHomeRequest := FALSE;
 
     // Horizontal
     GVL_MASTER.stCommand.bVisionHorizontalBackRequest :=
@@ -224,6 +231,8 @@ ELSE
     GVL_HMI.stCommands.bVisionRotate180Request := FALSE;
 
     GVL_HMI.stCommands.bVisionSupportExtendRequest := FALSE;
+	GVL_HMI.stCommands.bVisionManualHomeRequest := FALSE;
+	GVL_MASTER.stCommand.bVisionManualHomeRequest := FALSE;
 
 
     // =====================================================

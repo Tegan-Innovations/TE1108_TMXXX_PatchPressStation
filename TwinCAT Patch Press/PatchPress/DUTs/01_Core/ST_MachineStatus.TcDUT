@@ -43,6 +43,10 @@ STRUCT
 	bVisionRotate180Allowed            : BOOL;
 	bVisionSupportAllowed              : BOOL;
 	bVisionManualRunSequenceAllowed 	: BOOL;
+	bVisionManualHomeAllowed 			: BOOL;
+	bVisionHome              			: BOOL;
+	
+	
 	// Position feedback
 	bVisionHorizontalBack  				: BOOL;
 	bVisionHorizontalFront 				: BOOL;

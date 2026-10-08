@@ -144,11 +144,12 @@ VAR
 	tpVisionManualHorizontalBack  	: TP;
 	tpVisionManualHorizontalFront 	: TP;
 	
-	bVisionManualSequenceActive 	: BOOL;
+
 
 	
 	rtVisionManualHorizontalBack  	: R_TRIG;
 	rtVisionManualHorizontalFront 	: R_TRIG;
+	rtVisionManualHome 				: R_TRIG;
 	
 	// Vision Manual - Vertical Intermediate
 	tonVisionManualIntermediateLimitDelay : TON;
@@ -197,6 +198,9 @@ VAR
 	bVisionRotate180Allowed             : BOOL;
 	
 	bVisionManualRunSequenceAllowed 	: BOOL;
+	bVisionManualSequenceActive 		: BOOL;
+	bVisionManualHomeAllowed 			: BOOL;
+	bVisionManualHomeActive  			: BOOL;
 
 // Already existed:
 // bVisionSupportAllowed : BOOL;
@@ -691,6 +695,16 @@ bVisionManualRunSequenceAllowed :=
 	
 	
 	// =====================================================
+	// VISION MANUAL MODE - HOME PERMISSIVE
+	// =====================================================
+	
+	bVisionManualHomeAllowed :=
+		bVisionManualEnableAllowed
+		AND stCommand.bVisionManualEnable
+		AND NOT bVisionManualSequenceActive
+		AND NOT bVisionManualHomeActive;	
+
+	// =====================================================
 	// VISION MANUAL MODE - RUN SEQUENCE REQUEST
 	// =====================================================
 	
@@ -711,6 +725,25 @@ bVisionManualRunSequenceAllowed :=
 		bVisionManualSequenceActive := FALSE;
 	END_IF;
 	
+	// =====================================================
+	// VISION MANUAL MODE - HOME REQUEST
+	// =====================================================
+	
+	// Capture the one-scan HMI Home Position request.
+	IF stCommand.bVisionManualHomeRequest
+		AND bVisionManualHomeAllowed
+		AND NOT bVisionManualHomeActive
+	THEN
+		bVisionManualHomeActive := TRUE;
+	END_IF;
+	
+	// Cancel Home ownership if Manual Mode is left
+	// or Vision Manual Enable is removed.
+	IF (eMachineState <> E_MachineState.Manual)
+		OR NOT stCommand.bVisionManualEnable
+	THEN
+		bVisionManualHomeActive := FALSE;
+	END_IF;
 
 bHeatStakeManualStakeAllowed :=
     (eMachineState = E_MachineState.Manual)
@@ -916,6 +949,21 @@ stHeatStakeProcessStatus.bContactDwellActive := bHeatStakeContactDwellActive;
 stHeatStakeProcessStatus.usiSequenceStep := usiHeatStakeSequenceStep;
 
 // =====================================================
+// VISION MANUAL MODE - EXECUTE HOME
+// =====================================================
+
+// Generate a single pulse when Home ownership becomes active.
+rtVisionManualHome(
+    CLK := bVisionManualHomeActive
+);
+
+// Request the existing FB_VisionStation controlled homing sequence once.
+IF (eMachineState = E_MachineState.Manual)
+    AND rtVisionManualHome.Q
+THEN
+    fbVision.RequestStop();
+END_IF;
+// =====================================================
 // VISION MANUAL MODE - EXECUTE RUN SEQUENCE
 // =====================================================
 
@@ -935,14 +983,18 @@ fbVision.Update(
     // TwinSAFE confirms that pneumatic pressure is available. This prevents the
     // station's 5 s tooling-movement timer from expiring while the MS6 / air
     // supply is still being established.
-bEnable :=
-    ((eMachineState = E_MachineState.Initialising) AND GVL_Safety.bAirSupplySafe)
-    OR (eMachineState = E_MachineState.ReadyToStart)
-    OR (eMachineState = E_MachineState.AutoCycle)
-    OR (
-        (eMachineState = E_MachineState.Manual)
-        AND bVisionManualSequenceActive
-    ),
+	bEnable :=
+		((eMachineState = E_MachineState.Initialising) AND GVL_Safety.bAirSupplySafe)
+		OR (eMachineState = E_MachineState.ReadyToStart)
+		OR (eMachineState = E_MachineState.AutoCycle)
+		OR (
+			(eMachineState = E_MachineState.Manual)
+			AND (
+				bVisionManualSequenceActive
+				OR bVisionManualHomeActive
+			)
+		),
+		
     bCommissioned := bVisionCommissioned,
     bSafetyOk := stInputs.stSafety.bSafetyOk,
     bSupervisionEnable := (eMachineState = E_MachineState.ReadyToStart)
@@ -982,6 +1034,26 @@ bEnable :=
     bRotate180Request => bVisionRotate180Request
 );
 
+// =====================================================
+// VISION MANUAL MODE - HOME COMPLETION
+// =====================================================
+
+// Release Home ownership once FB_VisionStation has
+// completed the controlled homing sequence and is Ready.
+IF (eMachineState = E_MachineState.Manual)
+    AND bVisionManualHomeActive
+    AND fbVision.IsReady()
+THEN
+    bVisionManualHomeActive := FALSE;
+END_IF;
+
+// Release Home ownership if Vision enters Fault.
+IF (eMachineState = E_MachineState.Manual)
+    AND bVisionManualHomeActive
+    AND fbVision.IsFaulted()
+THEN
+    bVisionManualHomeActive := FALSE;
+END_IF;
 
 // =====================================================
 // VISION MANUAL MODE - RUN SEQUENCE COMPLETION
@@ -1022,6 +1094,7 @@ END_IF;
 // Vision motion request to survive into the physical output image.
 IF (eMachineState = E_MachineState.Manual)
     AND NOT bVisionManualSequenceActive
+    AND NOT bVisionManualHomeActive
 THEN
 
     // Start from a safe manual command image every scan.
@@ -1433,6 +1506,19 @@ stVisionStatus.bPartPresent := bVisionRequired;
 // in System Initialising.
 IF eMachineState = E_MachineState.Initialising THEN
     stVisionStatus.bBusy := FALSE;
+END_IF
+
+// Vision Ready indication for Manual Mode.
+// Ready means the station is enabled and available for operation.
+IF eMachineState = E_MachineState.Manual THEN
+
+    stVisionStatus.bReady :=
+        bVisionManualEnableAllowed
+        AND stCommand.bVisionManualEnable
+        AND NOT bVisionManualSequenceActive
+        AND NOT bVisionManualHomeActive
+        AND NOT fbVision.IsFaulted();
+
 END_IF
 
 // "Ready" on the Heat Stake HMI is an operational indication, not an
@@ -2198,6 +2284,32 @@ stStatus.sOperatorMessage := stOperatorStatus.sMessage;
 // =====================================================
 stStatus.bVisionManualEnableAllowed := bVisionManualEnableAllowed;
 stStatus.bVisionManualRunSequenceAllowed :=bVisionManualRunSequenceAllowed;
+
+stStatus.bVisionManualHomeAllowed := bVisionManualHomeAllowed;
+
+// Vision physical HOME position.
+// HOME = Support DOWN + Horizontal BACK + Vertical UP +
+//        Intermediate Limit OFF + Grip OPEN + Rotation 0°.
+stStatus.bVisionHome :=
+    stInputs.bStation3SupportRetracted
+    AND NOT stInputs.bStation3SupportExtended
+    AND stInputs.bHorizontalMiniSlideExtended
+    AND NOT stInputs.bHorizontalMiniSlideRetracted
+    AND stInputs.bVerticalMiniSlideRetracted
+    AND NOT stInputs.bVerticalMiniSlideExtended
+    AND stInputs.bIntermediateModuleRetracted
+    AND NOT stInputs.bIntermediateModuleExtended
+    AND stInputs.bRotaryGripperOpened
+    AND NOT stInputs.bRotaryGripperClosed
+    AND stInputs.bRotaryGripperPick0
+    AND NOT stInputs.bRotaryGripperPlace180;
+	
+stVisionStatus.bReady :=
+    bVisionManualEnableAllowed
+    AND stCommand.bVisionManualEnable
+    AND NOT fbVision.IsFaulted()
+    AND NOT bVisionManualSequenceActive
+    AND NOT bVisionManualHomeActive;
 
 stStatus.bVisionHorizontalBackAllowed := bVisionHorizontalBackAllowed;
 stStatus.bVisionHorizontalFrontAllowed := bVisionHorizontalFrontAllowed;
