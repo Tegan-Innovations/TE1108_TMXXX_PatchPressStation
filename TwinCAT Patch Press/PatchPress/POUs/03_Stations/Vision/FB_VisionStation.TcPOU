@@ -90,7 +90,7 @@ END_VAR]]></Declaration>
 // ============================================================================
 // Home:
 //   Nest DOWN, grip 0 deg, grip OPEN, vertical UP,
-//   vertical limit ON, horizontal slide BACK.
+//   vertical limit OFF, horizontal slide BACK.
 //
 // Process:
 //   10  Nest UP
@@ -146,8 +146,8 @@ bHomeInternal :=
     AND NOT bHorizontalFrontInternal
     AND bVerticalUpInternal
     AND NOT bVerticalDownInternal
-    AND bLimitOnInternal
-    AND NOT bLimitOffInternal
+    AND NOT bLimitOnInternal
+    AND bLimitOffInternal
     AND bGripOpenedInternal
     AND NOT bGripClosedInternal
     AND bRotate0Internal
@@ -254,9 +254,9 @@ ELSE
             // Deterministic / collision-conscious home sequence used by
             // System Initialising and controlled station recovery.
             //
-            // Defined HOME:
-            //   Nest DOWN, vertical UP, rotation 0 deg, grip OPEN,
-            //   vertical limit ON, horizontal slide BACK.
+			// Defined HOME:
+			//   Nest DOWN, vertical UP, rotation 0 deg, grip OPEN,
+			//   vertical limit OFF, horizontal slide BACK.
 
             IF usiStepInternal = 0 THEN
 
@@ -321,21 +321,21 @@ ELSE
                     sDiagnosticInternal := 'Vision homing: grip OPEN';
 
 
-                50: // Vertical limit ON
-
-                    bVerticalUpRequestInternal := NOT bVerticalUpInternal;
-                    bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-                    bRotate0RequestInternal := NOT bRotate0Internal;
-                    bGripOpenRequestInternal := NOT bGripOpenedInternal;
-
-                    bLimitOffRequestInternal := FALSE;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
-
-                    bStepTargetReached :=
-                        bLimitOnInternal
-                        AND NOT bLimitOffInternal;
-
-                    sDiagnosticInternal := 'Vision homing: vertical limit ON';
+			50: // Vertical limit OFF
+			
+				bVerticalUpRequestInternal := NOT bVerticalUpInternal;
+				bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+				bRotate0RequestInternal := NOT bRotate0Internal;
+				bGripOpenRequestInternal := NOT bGripOpenedInternal;
+			
+				bLimitOnRequestInternal := FALSE;
+				bLimitOffRequestInternal := NOT bLimitOffInternal;
+			
+				bStepTargetReached :=
+					bLimitOffInternal
+					AND NOT bLimitOnInternal;
+			
+				sDiagnosticInternal := 'Vision homing: vertical limit OFF';
 
 
                 60: // Horizontal slide BACK
@@ -345,8 +345,8 @@ ELSE
                     bRotate0RequestInternal := NOT bRotate0Internal;
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
 
-                    bLimitOffRequestInternal := FALSE;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
+                    bLimitOnRequestInternal := FALSE;
+					bLimitOffRequestInternal := NOT bLimitOffInternal;
 
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
 
@@ -363,8 +363,8 @@ ELSE
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
 
-                    bLimitOffRequestInternal := FALSE;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
+					bLimitOnRequestInternal := FALSE;
+					bLimitOffRequestInternal := NOT bLimitOffInternal;
 
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
@@ -450,8 +450,8 @@ ELSE
             bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
             bVerticalUpRequestInternal := NOT bVerticalUpInternal;
 
-            bLimitOffRequestInternal := FALSE;
-            bLimitOnRequestInternal := NOT bLimitOnInternal;
+			bLimitOnRequestInternal := FALSE;
+			bLimitOffRequestInternal := NOT bLimitOffInternal;
 
             bGripOpenRequestInternal := NOT bGripOpenedInternal;
             bRotate0RequestInternal := NOT bRotate0Internal;
@@ -854,9 +854,9 @@ ELSE
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
 
-                    // HOME requires Limit ON.
-                    bLimitOffRequestInternal := FALSE;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
+                    // HOME requires the intermediate stop removed.
+					bLimitOnRequestInternal := FALSE;
+					bLimitOffRequestInternal := NOT bLimitOffInternal;
 
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
@@ -985,8 +985,8 @@ ELSE
             bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
             bVerticalUpRequestInternal := NOT bVerticalUpInternal;
 
-            bLimitOffRequestInternal := FALSE;
-            bLimitOnRequestInternal := NOT bLimitOnInternal;
+			bLimitOnRequestInternal := FALSE;
+			bLimitOffRequestInternal := NOT bLimitOffInternal;
 
             bGripOpenRequestInternal := NOT bGripOpenedInternal;
             bRotate0RequestInternal := NOT bRotate0Internal;

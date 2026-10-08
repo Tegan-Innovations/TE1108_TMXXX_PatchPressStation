@@ -60,6 +60,45 @@ STRUCT
     bHeatStakeHeadDownTimeoutFault : BOOL;
     bHeatStakeHeadUpTimeoutFault : BOOL;
     bHeatStakeHeadSensorConflictFault : BOOL;
+	
+	// =====================================================
+	// Vision Manual Mode
+	// =====================================================
+	
+	// General manual control
+	bVisionManualEnableAllowed : BOOL;
+	
+	// Individual motion permissives
+	bVisionHorizontalBackAllowed       : BOOL;
+	bVisionHorizontalFrontAllowed      : BOOL;
+	
+	bVisionVerticalUpAllowed           : BOOL;
+	bVisionVerticalIntermediateAllowed : BOOL;
+	bVisionVerticalFullDownAllowed     : BOOL;
+	
+	bVisionGripOpenAllowed             : BOOL;
+	bVisionGripCloseAllowed            : BOOL;
+	
+	bVisionRotate0Allowed              : BOOL;
+	bVisionRotate180Allowed            : BOOL;
+	
+	bVisionSupportAllowed              : BOOL;
+	
+	// Position feedback
+	bVisionHorizontalBack  				: BOOL;
+	bVisionHorizontalFront 				: BOOL;
+	
+	bVisionVerticalUp      				: BOOL;
+	bVisionVerticalDown    				: BOOL;
+	
+	bVisionGripOpen        				: BOOL;
+	bVisionGripClosed      				: BOOL;
+	
+	bVisionRotate0         				: BOOL;
+	bVisionRotate180       				: BOOL;
+	
+	bVisionSupportExtended  			: BOOL;
+	bVisionSupportRetracted 			: BOOL;
 
     stPatchDispense           : ST_PatchStageStatus;
     stHeatStake               : ST_PatchStageStatus;
@@ -93,6 +132,7 @@ STRUCT
     bHeatStakeManualSupportAllowed    : BOOL;
     bHeatStakeManualActionBusy        : BOOL;
     bHeatStakeManualHeadUnlocked      : BOOL;
+	bVisionManualRunSequenceAllowed : BOOL;
 
     stVision                  : ST_PatchStageStatus;
     eOperatorInstruction      : E_OperatorInstruction;

@@ -7,7 +7,8 @@ VAR
     bBlinkTimerQOld : BOOL;
     bFlash          : BOOL;
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[// Same 500 ms toggle used by the validated Silicone Station banner.
+    <Implementation>
+      <ST><![CDATA[// Same 500 ms toggle used by the validated Silicone Station banner.
 fbBlinkTimer(IN := NOT fbBlinkTimer.Q, PT := T#500MS);
 
 IF fbBlinkTimer.Q AND NOT bBlinkTimerQOld THEN
@@ -134,7 +135,93 @@ GVL_HMI.stStatus.bHeatStakeManualSupportAllowed := GVL_MASTER.stStatus.bHeatStak
 GVL_HMI.stStatus.bHeatStakeManualActionBusy := GVL_MASTER.stStatus.bHeatStakeManualActionBusy;
 GVL_HMI.stStatus.bHeatStakeManualHeadUnlocked := GVL_MASTER.stStatus.bHeatStakeManualHeadUnlocked;
 
-GVL_HMI.stStatus.stVision := GVL_MASTER.stStatus.stVision;
+
+// =====================================================
+// VISION MANUAL MODE
+// =====================================================
+
+// General manual enable permissive
+GVL_HMI.stStatus.bVisionManualEnableAllowed :=GVL_MASTER.stStatus.bVisionManualEnableAllowed;
+GVL_HMI.stStatus.bVisionManualRunSequenceAllowed :=GVL_MASTER.stStatus.bVisionManualRunSequenceAllowed;
+
+// -----------------------------------------------------
+// Horizontal
+// -----------------------------------------------------
+
+GVL_HMI.stStatus.bVisionHorizontalBackAllowed :=
+    GVL_MASTER.stStatus.bVisionHorizontalBackAllowed;
+
+GVL_HMI.stStatus.bVisionHorizontalFrontAllowed :=
+    GVL_MASTER.stStatus.bVisionHorizontalFrontAllowed;
+
+GVL_HMI.stStatus.bVisionHorizontalBack :=
+    GVL_MASTER.stStatus.bVisionHorizontalBack;
+
+GVL_HMI.stStatus.bVisionHorizontalFront :=
+    GVL_MASTER.stStatus.bVisionHorizontalFront;
+
+
+// -----------------------------------------------------
+// Vertical
+// -----------------------------------------------------
+
+GVL_HMI.stStatus.bVisionVerticalUpAllowed :=
+    GVL_MASTER.stStatus.bVisionVerticalUpAllowed;
+
+GVL_HMI.stStatus.bVisionVerticalIntermediateAllowed :=
+    GVL_MASTER.stStatus.bVisionVerticalIntermediateAllowed;
+
+GVL_HMI.stStatus.bVisionVerticalFullDownAllowed :=
+    GVL_MASTER.stStatus.bVisionVerticalFullDownAllowed;
+
+GVL_HMI.stStatus.bVisionVerticalUp :=
+    GVL_MASTER.stStatus.bVisionVerticalUp;
+
+GVL_HMI.stStatus.bVisionVerticalDown :=
+    GVL_MASTER.stStatus.bVisionVerticalDown;
+
+
+// -----------------------------------------------------
+// Gripper
+// -----------------------------------------------------
+
+GVL_HMI.stStatus.bVisionGripOpenAllowed :=
+    GVL_MASTER.stStatus.bVisionGripOpenAllowed;
+
+GVL_HMI.stStatus.bVisionGripCloseAllowed :=
+    GVL_MASTER.stStatus.bVisionGripCloseAllowed;
+
+GVL_HMI.stStatus.bVisionGripOpen :=
+    GVL_MASTER.stStatus.bVisionGripOpen;
+
+GVL_HMI.stStatus.bVisionGripClosed :=
+    GVL_MASTER.stStatus.bVisionGripClosed;
+
+
+// -----------------------------------------------------
+// Rotation
+// -----------------------------------------------------
+
+GVL_HMI.stStatus.bVisionRotate0Allowed :=GVL_MASTER.stStatus.bVisionRotate0Allowed;
+GVL_HMI.stStatus.bVisionRotate180Allowed := GVL_MASTER.stStatus.bVisionRotate180Allowed;
+GVL_HMI.stStatus.bVisionRotate0 :=GVL_MASTER.stStatus.bVisionRotate0;
+GVL_HMI.stStatus.bVisionRotate180 :=GVL_MASTER.stStatus.bVisionRotate180;
+
+
+// -----------------------------------------------------
+// Support
+// -----------------------------------------------------
+
+GVL_HMI.stStatus.bVisionSupportAllowed :=GVL_MASTER.stStatus.bVisionSupportAllowed;
+GVL_HMI.stStatus.bVisionSupportExtended :=GVL_MASTER.stStatus.bVisionSupportExtended;
+GVL_HMI.stStatus.bVisionSupportRetracted :=GVL_MASTER.stStatus.bVisionSupportRetracted;
+
+
+// -----------------------------------------------------
+// Vision station status
+// -----------------------------------------------------
+
+GVL_HMI.stStatus.stVision :=GVL_MASTER.stStatus.stVision;
 GVL_HMI.stStatus.eOperatorInstruction := GVL_MASTER.stStatus.eOperatorInstruction;
 GVL_HMI.stStatus.stOperatorStation := GVL_MASTER.stStatus.stOperatorStation;
 GVL_HMI.stStatus.aNest := GVL_MASTER.stStatus.aNest;
@@ -187,6 +274,7 @@ CASE GVL_MASTER.stStatus.eMachineState OF
             GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sREDFail;
         END_IF
     E_MachineState.Manual: GVL_HMI.StatusHMI.sMachineStatusText := 'MANUAL MODE'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sBLUEInProgress; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
-END_CASE]]></ST></Implementation>
+END_CASE]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

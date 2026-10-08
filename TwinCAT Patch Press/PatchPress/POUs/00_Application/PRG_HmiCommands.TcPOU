@@ -14,13 +14,17 @@ VAR
     // Reject chute acknowledgement -> one-scan pulse.
     rtRejectChuteAcknowledge : R_TRIG;
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[rtStart(CLK := GVL_MASTER.stInputs.bStartButton OR GVL_HMI.stCommands.bStart);
+    <Implementation>
+      <ST><![CDATA[rtStart(CLK := GVL_MASTER.stInputs.bStartButton OR GVL_HMI.stCommands.bStart);
 rtReset(CLK := GVL_MASTER.stInputs.bResetButton OR GVL_HMI.stCommands.bReset);
 rtAck(CLK := GVL_HMI.stCommands.bAcknowledge);
+
 GVL_MASTER.stCommand.bStart := rtStart.Q;
 GVL_MASTER.stCommand.bStop := GVL_MASTER.stInputs.bStopButton OR GVL_HMI.stCommands.bStop;
 GVL_MASTER.stCommand.bReset := rtReset.Q;
 GVL_MASTER.stCommand.bAcknowledge := rtAck.Q;
+
+
 // ---------------------------------------------------------
 // MANUAL MODE REQUEST HANDSHAKE
 // ---------------------------------------------------------
@@ -30,6 +34,7 @@ GVL_MASTER.stCommand.bAcknowledge := rtAck.Q;
 // ReadyToStart accepts it. Once the machine actually enters Manual,
 // the request is consumed and cleared. Leaving Manual because of Stop
 // or Fault therefore requires a NEW request before Manual can be entered again.
+
 rtManualRequest(CLK := GVL_HMI.stCommands.bManualRequest);
 
 IF rtManualRequest.Q THEN
@@ -43,34 +48,153 @@ END_IF
 
 GVL_MASTER.stCommand.bManualRequest := bManualRequestLatched;
 
+
+// ---------------------------------------------------------
+// GENERAL HMI COMMANDS
+// ---------------------------------------------------------
+
 // Main-screen LIGHT toggle -> operator/nest light command.
 GVL_MASTER.stCommand.bOperatorLight := GVL_HMI.stCommands.bOperatorLight;
 
-// All Manual-Mode enables/actions must be non-retentive outside Manual.
-// This guarantees that station-enable checkboxes and manual action requests
-// drop back to FALSE as soon as the machine leaves Manual Mode.
-IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
-    // Index manual controls
-    GVL_MASTER.stCommand.bIndexerManualEnable := GVL_HMI.stCommands.bIndexerManualEnable;
-    GVL_MASTER.stCommand.bManualIndexForward := GVL_HMI.stCommands.bManualIndexForward;
-    GVL_MASTER.stCommand.bManualIndexHome := GVL_HMI.stCommands.bManualIndexHome;
-    GVL_MASTER.stCommand.bManualMainDoorUnlock := GVL_HMI.stCommands.bManualMainDoorUnlock;
 
-    // Heat Stake manual controls
-    GVL_MASTER.stCommand.bHeatStakeManualEnable := GVL_HMI.stCommands.bHeatStakeManualEnable;
-    GVL_MASTER.stCommand.bHeatStakeManualStakePatch := GVL_HMI.stCommands.bHeatStakeManualStakePatch;
-    GVL_MASTER.stCommand.bHeatStakeManualUnlock := GVL_HMI.stCommands.bHeatStakeManualUnlock;
-    GVL_MASTER.stCommand.bHeatStakeManualLock := GVL_HMI.stCommands.bHeatStakeManualLock;
-    GVL_MASTER.stCommand.bHeatStakeManualHeadDown := GVL_HMI.stCommands.bHeatStakeManualHeadDown;
-    GVL_MASTER.stCommand.bHeatStakeManualHeadUp := GVL_HMI.stCommands.bHeatStakeManualHeadUp;
-    GVL_MASTER.stCommand.bHeatStakeManualSupportUp := GVL_HMI.stCommands.bHeatStakeManualSupportUp;
+// ---------------------------------------------------------
+// MANUAL MODE COMMANDS
+// ---------------------------------------------------------
+// All Manual-Mode enables/actions are non-retentive outside Manual.
+//
+// HMI requests are only copied into the machine command image while
+// the machine is actually in Manual Mode.
+//
+// Motion permissives and Vision Manual Enable supervision are handled
+// inside FB_IndexedPatchPressMachine. Therefore the HMI is never the
+// final authority for actuator movement.
+
+IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
+
+    // =====================================================
+    // INDEX MANUAL CONTROLS
+    // =====================================================
+
+    GVL_MASTER.stCommand.bIndexerManualEnable :=
+        GVL_HMI.stCommands.bIndexerManualEnable;
+
+    GVL_MASTER.stCommand.bManualIndexForward :=
+        GVL_HMI.stCommands.bManualIndexForward;
+
+    GVL_MASTER.stCommand.bManualIndexHome :=
+        GVL_HMI.stCommands.bManualIndexHome;
+
+    GVL_MASTER.stCommand.bManualMainDoorUnlock :=
+        GVL_HMI.stCommands.bManualMainDoorUnlock;
+
+
+    // =====================================================
+    // HEAT STAKE MANUAL CONTROLS
+    // =====================================================
+
+    GVL_MASTER.stCommand.bHeatStakeManualEnable :=
+        GVL_HMI.stCommands.bHeatStakeManualEnable;
+
+    GVL_MASTER.stCommand.bHeatStakeManualStakePatch :=
+        GVL_HMI.stCommands.bHeatStakeManualStakePatch;
+
+    GVL_MASTER.stCommand.bHeatStakeManualUnlock :=
+        GVL_HMI.stCommands.bHeatStakeManualUnlock;
+
+    GVL_MASTER.stCommand.bHeatStakeManualLock :=
+        GVL_HMI.stCommands.bHeatStakeManualLock;
+
+    GVL_MASTER.stCommand.bHeatStakeManualHeadDown :=
+        GVL_HMI.stCommands.bHeatStakeManualHeadDown;
+
+    GVL_MASTER.stCommand.bHeatStakeManualHeadUp :=
+        GVL_HMI.stCommands.bHeatStakeManualHeadUp;
+
+    GVL_MASTER.stCommand.bHeatStakeManualSupportUp :=
+        GVL_HMI.stCommands.bHeatStakeManualSupportUp;
+
+
+    // =====================================================
+    // VISION MANUAL CONTROLS
+    // =====================================================
+
+    // General Vision manual enable
+    GVL_MASTER.stCommand.bVisionManualEnable :=
+        GVL_HMI.stCommands.bVisionManualEnable;
+	// Run complete Vision sequence
+	GVL_MASTER.stCommand.bVisionManualRunSequence :=
+		GVL_HMI.stCommands.bVisionManualRunSequence;
+	
+	// Consume momentary request
+	GVL_HMI.stCommands.bVisionManualRunSequence := FALSE;
+
+    // Horizontal
+    GVL_MASTER.stCommand.bVisionHorizontalBackRequest :=
+        GVL_HMI.stCommands.bVisionHorizontalBackRequest;
+
+    GVL_MASTER.stCommand.bVisionHorizontalFrontRequest :=
+        GVL_HMI.stCommands.bVisionHorizontalFrontRequest;
+
+    // Vertical
+    GVL_MASTER.stCommand.bVisionVerticalUpRequest :=
+        GVL_HMI.stCommands.bVisionVerticalUpRequest;
+
+    GVL_MASTER.stCommand.bVisionVerticalIntermediateRequest :=
+        GVL_HMI.stCommands.bVisionVerticalIntermediateRequest;
+
+    GVL_MASTER.stCommand.bVisionVerticalFullDownRequest :=
+        GVL_HMI.stCommands.bVisionVerticalFullDownRequest;
+		
+		// Consume momentary HMI requests.
+	GVL_HMI.stCommands.bVisionVerticalUpRequest := FALSE;
+	GVL_HMI.stCommands.bVisionVerticalIntermediateRequest := FALSE;
+	GVL_HMI.stCommands.bVisionVerticalFullDownRequest := FALSE;
+
+    // Gripper
+    GVL_MASTER.stCommand.bVisionGripOpenRequest :=
+        GVL_HMI.stCommands.bVisionGripOpenRequest;
+
+    GVL_MASTER.stCommand.bVisionGripCloseRequest :=
+        GVL_HMI.stCommands.bVisionGripCloseRequest;
+		
+	// VISION MANUAL - CONSUME GRIP COMMANDS
+	
+	GVL_HMI.stCommands.bVisionGripOpenRequest := FALSE;
+	GVL_HMI.stCommands.bVisionGripCloseRequest := FALSE;
+
+    // Rotation
+    GVL_MASTER.stCommand.bVisionRotate0Request :=
+        GVL_HMI.stCommands.bVisionRotate0Request;
+
+    GVL_MASTER.stCommand.bVisionRotate180Request :=
+        GVL_HMI.stCommands.bVisionRotate180Request;
+		
+	// Consume momentary rotation commands after transferring them.
+	// GVL_MASTER sees TRUE for this PLC scan only.
+	
+	GVL_HMI.stCommands.bVisionRotate0Request := FALSE;
+	GVL_HMI.stCommands.bVisionRotate180Request := FALSE;
+
+    // Support
+    GVL_MASTER.stCommand.bVisionSupportExtendRequest :=
+        GVL_HMI.stCommands.bVisionSupportExtendRequest;
+
+
 ELSE
-    // Reset HMI command buffer so checkboxes/buttons visually release.
+
+    // =====================================================
+    // RESET HMI MANUAL COMMAND BUFFER
+    // =====================================================
+    // This also guarantees that checkboxes/buttons visually release
+    // immediately when Manual Mode is exited.
+
+    // Index
     GVL_HMI.stCommands.bIndexerManualEnable := FALSE;
     GVL_HMI.stCommands.bManualIndexForward := FALSE;
     GVL_HMI.stCommands.bManualIndexHome := FALSE;
     GVL_HMI.stCommands.bManualMainDoorUnlock := FALSE;
 
+    // Heat Stake
     GVL_HMI.stCommands.bHeatStakeManualEnable := FALSE;
     GVL_HMI.stCommands.bHeatStakeManualStakePatch := FALSE;
     GVL_HMI.stCommands.bHeatStakeManualUnlock := FALSE;
@@ -79,12 +203,40 @@ ELSE
     GVL_HMI.stCommands.bHeatStakeManualHeadUp := FALSE;
     GVL_HMI.stCommands.bHeatStakeManualSupportUp := FALSE;
 
-    // Reset PLC command image too.
+    // Vision
+	GVL_HMI.stCommands.bVisionManualEnable := FALSE;
+	GVL_HMI.stCommands.bVisionManualRunSequence := FALSE;
+	
+	GVL_HMI.stCommands.bVisionHorizontalBackRequest := FALSE;
+	GVL_HMI.stCommands.bVisionHorizontalFrontRequest := FALSE;;
+
+    GVL_HMI.stCommands.bVisionHorizontalBackRequest := FALSE;
+    GVL_HMI.stCommands.bVisionHorizontalFrontRequest := FALSE;
+
+    GVL_HMI.stCommands.bVisionVerticalUpRequest := FALSE;
+    GVL_HMI.stCommands.bVisionVerticalIntermediateRequest := FALSE;
+    GVL_HMI.stCommands.bVisionVerticalFullDownRequest := FALSE;
+
+    GVL_HMI.stCommands.bVisionGripOpenRequest := FALSE;
+    GVL_HMI.stCommands.bVisionGripCloseRequest := FALSE;
+
+    GVL_HMI.stCommands.bVisionRotate0Request := FALSE;
+    GVL_HMI.stCommands.bVisionRotate180Request := FALSE;
+
+    GVL_HMI.stCommands.bVisionSupportExtendRequest := FALSE;
+
+
+    // =====================================================
+    // RESET PLC MANUAL COMMAND IMAGE
+    // =====================================================
+
+    // Index
     GVL_MASTER.stCommand.bIndexerManualEnable := FALSE;
     GVL_MASTER.stCommand.bManualIndexForward := FALSE;
     GVL_MASTER.stCommand.bManualIndexHome := FALSE;
     GVL_MASTER.stCommand.bManualMainDoorUnlock := FALSE;
 
+    // Heat Stake
     GVL_MASTER.stCommand.bHeatStakeManualEnable := FALSE;
     GVL_MASTER.stCommand.bHeatStakeManualStakePatch := FALSE;
     GVL_MASTER.stCommand.bHeatStakeManualUnlock := FALSE;
@@ -92,13 +244,42 @@ ELSE
     GVL_MASTER.stCommand.bHeatStakeManualHeadDown := FALSE;
     GVL_MASTER.stCommand.bHeatStakeManualHeadUp := FALSE;
     GVL_MASTER.stCommand.bHeatStakeManualSupportUp := FALSE;
+
+    // Vision
+    GVL_MASTER.stCommand.bVisionManualEnable := FALSE;
+
+    GVL_MASTER.stCommand.bVisionHorizontalBackRequest := FALSE;
+    GVL_MASTER.stCommand.bVisionHorizontalFrontRequest := FALSE;
+
+    GVL_MASTER.stCommand.bVisionVerticalUpRequest := FALSE;
+    GVL_MASTER.stCommand.bVisionVerticalIntermediateRequest := FALSE;
+    GVL_MASTER.stCommand.bVisionVerticalFullDownRequest := FALSE;
+
+    GVL_MASTER.stCommand.bVisionGripOpenRequest := FALSE;
+    GVL_MASTER.stCommand.bVisionGripCloseRequest := FALSE;
+
+    GVL_MASTER.stCommand.bVisionRotate0Request := FALSE;
+    GVL_MASTER.stCommand.bVisionRotate180Request := FALSE;
+
+    GVL_MASTER.stCommand.bVisionSupportExtendRequest := FALSE;
+
 END_IF
+
+
+// ---------------------------------------------------------
+// DISABLED NEST PART POPUP
+// ---------------------------------------------------------
 
 GVL_MASTER.stCommand.bAcknowledgeDisabledNestPartPopup :=
     GVL_HMI.stCommands.bAcknowledgeDisabledNestPartPopup;
 
+
+// ---------------------------------------------------------
+// REJECT CHUTE ACKNOWLEDGE
+// ---------------------------------------------------------
 // Reject chute acknowledge is edge-consumed.
 // This prevents a maintained TRUE from satisfying a future full-chute event.
+
 rtRejectChuteAcknowledge(
     CLK := GVL_HMI.stCommands.bAcknowledgeRejectChuteFull
 );
@@ -110,6 +291,13 @@ IF rtRejectChuteAcknowledge.Q THEN
     GVL_HMI.stCommands.bAcknowledgeRejectChuteFull := FALSE;
 END_IF
 
-GVL_MASTER.stCommand.uiResetStatisticsNestId := GVL_HMI.stCommands.uiResetStatisticsNestId;]]></ST></Implementation>
+
+// ---------------------------------------------------------
+// STATISTICS
+// ---------------------------------------------------------
+
+GVL_MASTER.stCommand.uiResetStatisticsNestId :=
+    GVL_HMI.stCommands.uiResetStatisticsNestId;]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

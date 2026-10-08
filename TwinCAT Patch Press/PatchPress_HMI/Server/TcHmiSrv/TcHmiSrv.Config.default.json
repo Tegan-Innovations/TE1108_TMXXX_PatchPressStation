@@ -64,6 +64,24 @@
                 "startOffset": 1,
                 "type": "array"
             },
+            "ADS-PLC1.ARRAY_1..4_OF-BOOL": {
+                "items": {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                "maxItems": 4,
+                "minItems": 4,
+                "startOffset": 1,
+                "type": "array"
+            },
+            "ADS-PLC1.ARRAY_1..4_OF-ST_Nest": {
+                "items": {
+                    "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_Nest"
+                },
+                "maxItems": 4,
+                "minItems": 4,
+                "startOffset": 1,
+                "type": "array"
+            },
             "ADS-PLC1.ARRAY_1..4_OF-ST_NestStatistics": {
                 "items": {
                     "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_NestStatistics"
@@ -351,6 +369,74 @@
                 ],
                 "type": "integer"
             },
+            "ADS-PLC1.E_OperatorExchangeState": {
+                "attributes": {
+                    "generate_implicit_init_function": "",
+                    "qualified_only": "",
+                    "strict": "",
+                    "to_string": ""
+                },
+                "enum": [
+                    0,
+                    10,
+                    20,
+                    30,
+                    40,
+                    50,
+                    60,
+                    70,
+                    80,
+                    90,
+                    999
+                ],
+                "options": [
+                    {
+                        "label": "Idle",
+                        "value": 0
+                    },
+                    {
+                        "label": "EvaluateNest",
+                        "value": 10
+                    },
+                    {
+                        "label": "WaitingForPartRemoval",
+                        "value": 20
+                    },
+                    {
+                        "label": "WaitingForRejectConfirmation",
+                        "value": 30
+                    },
+                    {
+                        "label": "WaitingForPuckRemoval",
+                        "value": 40
+                    },
+                    {
+                        "label": "WaitingForNewPuck",
+                        "value": 50
+                    },
+                    {
+                        "label": "WaitingForPuckLocked",
+                        "value": 60
+                    },
+                    {
+                        "label": "WaitingForPartLoading",
+                        "value": 70
+                    },
+                    {
+                        "label": "ExchangeComplete",
+                        "value": 80
+                    },
+                    {
+                        "label": "WaitingForTableIndexComplete",
+                        "value": 90
+                    },
+                    {
+                        "label": "Fault",
+                        "value": 999
+                    }
+                ],
+                "type": "integer"
+            },
             "ADS-PLC1.E_OperatorInstruction": {
                 "attributes": {
                     "generate_implicit_init_function": "",
@@ -495,6 +581,49 @@
                 ],
                 "type": "integer"
             },
+            "ADS-PLC1.E_PatchStationState": {
+                "attributes": {
+                    "generate_implicit_init_function": "",
+                    "qualified_only": "",
+                    "strict": "",
+                    "to_string": ""
+                },
+                "enum": [
+                    0,
+                    10,
+                    20,
+                    30,
+                    40,
+                    100
+                ],
+                "options": [
+                    {
+                        "label": "Disabled",
+                        "value": 0
+                    },
+                    {
+                        "label": "Homing",
+                        "value": 10
+                    },
+                    {
+                        "label": "Ready",
+                        "value": 20
+                    },
+                    {
+                        "label": "Processing",
+                        "value": 30
+                    },
+                    {
+                        "label": "Complete",
+                        "value": 40
+                    },
+                    {
+                        "label": "Fault",
+                        "value": 100
+                    }
+                ],
+                "type": "integer"
+            },
             "ADS-PLC1.E_ProcessResultCode": {
                 "attributes": {
                     "generate_implicit_init_function": "",
@@ -630,6 +759,36 @@
                     {
                         "label": "Fail",
                         "value": 20
+                    }
+                ],
+                "type": "integer"
+            },
+            "ADS-PLC1.E_SupportCylinderFault": {
+                "attributes": {
+                    "generate_implicit_init_function": ""
+                },
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3
+                ],
+                "options": [
+                    {
+                        "label": "None",
+                        "value": 0
+                    },
+                    {
+                        "label": "ExtendTimeout",
+                        "value": 1
+                    },
+                    {
+                        "label": "RetractTimeout",
+                        "value": 2
+                    },
+                    {
+                        "label": "ContradictorySensors",
+                        "value": 3
                     }
                 ],
                 "type": "integer"
@@ -902,6 +1061,1021 @@
                 ],
                 "type": "object"
             },
+            "ADS-PLC1.ST_HeatStakeProcessSettings": {
+                "additionalProperties": false,
+                "properties": {
+                    "rDownPressureBar": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "tContactTime": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/TIME"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "tContactTime",
+                    "rDownPressureBar"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC1.ST_HeatStakeProcessStatus": {
+                "additionalProperties": false,
+                "properties": {
+                    "bContactDwellActive": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "bHeadDownCommand": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "bHeadLockCommand": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "bHeadUnlockCommand": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "bHeadUpCommand": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    },
+                    "iPressureOutputRaw": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/INT"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "rContactTimeSetSeconds": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "rPressureCommandBar": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "rPressureSetpointBar": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "tContactTimeSet": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/TIME"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "usiSequenceStep": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/USINT"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "tContactTimeSet",
+                    "rContactTimeSetSeconds",
+                    "rPressureSetpointBar",
+                    "rPressureCommandBar",
+                    "iPressureOutputRaw",
+                    "bHeadLockCommand",
+                    "bHeadUnlockCommand",
+                    "bHeadDownCommand",
+                    "bHeadUpCommand",
+                    "bContactDwellActive",
+                    "usiSequenceStep"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC1.ST_HeatStakeTemperatureSettings": {
+                "additionalProperties": false,
+                "properties": {
+                    "rHighLimitC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "rKp": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "comment": "Conservative initial tuning. FB_CTRL_PID is used with D disabled,\r\n therefore the initial behaviour is PI.",
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "rLowLimitC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "rMaxTcDifferenceC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "rOutputMaxPercent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 12
+                            }
+                        ]
+                    },
+                    "rOutputMinPercent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "rSetpointC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "tControllerCycle": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/TIME"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "tLowTemperatureTimeout": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/TIME"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "tTd": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/TIME"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    },
+                    "tTn": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/TIME"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "tTv": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/TIME"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "rSetpointC",
+                    "rLowLimitC",
+                    "rHighLimitC",
+                    "rMaxTcDifferenceC",
+                    "tLowTemperatureTimeout",
+                    "rKp",
+                    "tTn",
+                    "tTv",
+                    "tTd",
+                    "tControllerCycle",
+                    "rOutputMinPercent",
+                    "rOutputMaxPercent"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC1.ST_HeatStakeTemperatureStatus": {
+                "additionalProperties": false,
+                "properties": {
+                    "bAtTemperature": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 12
+                            }
+                        ]
+                    },
+                    "bControlEnabled": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "bFault": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 21
+                            }
+                        ]
+                    },
+                    "bHeating": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "bHighTemperature": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 15
+                            }
+                        ]
+                    },
+                    "bIndexTemperatureReady": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 13
+                            }
+                        ]
+                    },
+                    "bLowTemperature": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 14
+                            }
+                        ]
+                    },
+                    "bLowTemperatureTimeout": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 18
+                            }
+                        ]
+                    },
+                    "bOverTemperature": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 17
+                            }
+                        ]
+                    },
+                    "bPid1Fault": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 19
+                            }
+                        ]
+                    },
+                    "bPid2Fault": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 20
+                            }
+                        ]
+                    },
+                    "bTemperatureDiscrepancy": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 16
+                            }
+                        ]
+                    },
+                    "rAverageTemperatureC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "rHeater1OutputPercent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "rHeater1TemperatureC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "rHeater2OutputPercent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "rHeater2TemperatureC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "rHighLimitC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 24
+                            }
+                        ]
+                    },
+                    "rLowLimitC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 23
+                            }
+                        ]
+                    },
+                    "rMaxTcDifferenceC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 25
+                            }
+                        ]
+                    },
+                    "rOverTempTemperatureC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "rSafeOverTempLimitC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 26
+                            }
+                        ]
+                    },
+                    "rSetpointC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 22
+                            }
+                        ]
+                    },
+                    "rTemperatureDifferenceC": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "sDiagnostic": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
+                            },
+                            {
+                                "propertyOrder": 28
+                            }
+                        ]
+                    },
+                    "tLowTemperatureElapsed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/TIME"
+                            },
+                            {
+                                "propertyOrder": 27
+                            }
+                        ]
+                    },
+                    "uiHeater1PwmRaw": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UINT"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "uiHeater2PwmRaw": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UINT"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "rHeater1TemperatureC",
+                    "rHeater2TemperatureC",
+                    "rOverTempTemperatureC",
+                    "rAverageTemperatureC",
+                    "rTemperatureDifferenceC",
+                    "rHeater1OutputPercent",
+                    "rHeater2OutputPercent",
+                    "uiHeater1PwmRaw",
+                    "uiHeater2PwmRaw",
+                    "bControlEnabled",
+                    "bHeating",
+                    "bAtTemperature",
+                    "bIndexTemperatureReady",
+                    "bLowTemperature",
+                    "bHighTemperature",
+                    "bTemperatureDiscrepancy",
+                    "bOverTemperature",
+                    "bLowTemperatureTimeout",
+                    "bPid1Fault",
+                    "bPid2Fault",
+                    "bFault",
+                    "rSetpointC",
+                    "rLowLimitC",
+                    "rHighLimitC",
+                    "rMaxTcDifferenceC",
+                    "rSafeOverTempLimitC",
+                    "tLowTemperatureElapsed",
+                    "sDiagnostic"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC1.ST_HmiCommands": {
+                "additionalProperties": false,
+                "properties": {
+                    "aNestEnabled": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ARRAY_1..4_OF-BOOL"
+                            },
+                            {
+                                "comment": "Nest settings command buffer. Every change is persisted automatically.",
+                                "propertyOrder": 32
+                            }
+                        ]
+                    },
+                    "bAcknowledge": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "bAcknowledgeDisabledNestPartPopup": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "Popup OK acknowledgement.",
+                                "propertyOrder": 33
+                            }
+                        ]
+                    },
+                    "bAcknowledgeRejectChuteFull": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "Reject chute full popup acknowledgement.",
+                                "propertyOrder": 34
+                            }
+                        ]
+                    },
+                    "bApplyHeatStakeTemperatureSettings": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 12
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualEnable": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "Heat Stake Manual Mode",
+                                "propertyOrder": 14
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualHeadDown": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 18
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualHeadUp": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 19
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualLock": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 17
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualStakePatch": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 15
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualSupportUp": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 20
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualUnlock": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 16
+                            }
+                        ]
+                    },
+                    "bIndexerManualEnable": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "bManualIndexForward": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "bManualIndexHome": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "bManualMainDoorUnlock": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    },
+                    "bManualRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "bOperatorLight": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "Main-screen operator/nest light toggle.\r\n Physical output: Term 9 EL2809 Ch6 (bNestLight).",
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "bReset": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "bStart": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "bStop": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "bVisionGripCloseRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 28
+                            }
+                        ]
+                    },
+                    "bVisionGripOpenRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 27
+                            }
+                        ]
+                    },
+                    "bVisionHorizontalBackRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 22
+                            }
+                        ]
+                    },
+                    "bVisionHorizontalFrontRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 23
+                            }
+                        ]
+                    },
+                    "bVisionManualEnable": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "=====================================================\r\n Vision Manual Mode\r\n =====================================================",
+                                "propertyOrder": 21
+                            }
+                        ]
+                    },
+                    "bVisionRotate0Request": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 29
+                            }
+                        ]
+                    },
+                    "bVisionRotate180Request": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 30
+                            }
+                        ]
+                    },
+                    "bVisionSupportExtendRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 31
+                            }
+                        ]
+                    },
+                    "bVisionVerticalFullDownRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 26
+                            }
+                        ]
+                    },
+                    "bVisionVerticalIntermediateRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 25
+                            }
+                        ]
+                    },
+                    "bVisionVerticalUpRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 24
+                            }
+                        ]
+                    },
+                    "stHeatStakeProcessSettings": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HeatStakeProcessSettings"
+                            },
+                            {
+                                "propertyOrder": 13
+                            }
+                        ]
+                    },
+                    "stHeatStakeTemperatureSettings": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HeatStakeTemperatureSettings"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "uiResetStatisticsNestId": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UINT"
+                            },
+                            {
+                                "propertyOrder": 35
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "bStart",
+                    "bStop",
+                    "bReset",
+                    "bAcknowledge",
+                    "bManualRequest",
+                    "bIndexerManualEnable",
+                    "bManualIndexForward",
+                    "bManualIndexHome",
+                    "bManualMainDoorUnlock",
+                    "bOperatorLight",
+                    "stHeatStakeTemperatureSettings",
+                    "bApplyHeatStakeTemperatureSettings",
+                    "stHeatStakeProcessSettings",
+                    "bHeatStakeManualEnable",
+                    "bHeatStakeManualStakePatch",
+                    "bHeatStakeManualUnlock",
+                    "bHeatStakeManualLock",
+                    "bHeatStakeManualHeadDown",
+                    "bHeatStakeManualHeadUp",
+                    "bHeatStakeManualSupportUp",
+                    "bVisionManualEnable",
+                    "bVisionHorizontalBackRequest",
+                    "bVisionHorizontalFrontRequest",
+                    "bVisionVerticalUpRequest",
+                    "bVisionVerticalIntermediateRequest",
+                    "bVisionVerticalFullDownRequest",
+                    "bVisionGripOpenRequest",
+                    "bVisionGripCloseRequest",
+                    "bVisionRotate0Request",
+                    "bVisionRotate180Request",
+                    "bVisionSupportExtendRequest",
+                    "aNestEnabled",
+                    "bAcknowledgeDisabledNestPartPopup",
+                    "bAcknowledgeRejectChuteFull",
+                    "uiResetStatisticsNestId"
+                ],
+                "type": "object"
+            },
             "ADS-PLC1.ST_HmiStatistics": {
                 "additionalProperties": false,
                 "properties": {
@@ -1012,6 +2186,1436 @@
                 ],
                 "type": "object"
             },
+            "ADS-PLC1.ST_HmiStatus": {
+                "additionalProperties": false,
+                "properties": {
+                    "aNest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ARRAY_1..4_OF-ST_Nest"
+                            },
+                            {
+                                "propertyOrder": 105
+                            }
+                        ]
+                    },
+                    "b48VPowerSupplyOk": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 25
+                            }
+                        ]
+                    },
+                    "bAirExhausted": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 28
+                            }
+                        ]
+                    },
+                    "bAllStationsCommissioned": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 32
+                            }
+                        ]
+                    },
+                    "bAutoCycleAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 33
+                            }
+                        ]
+                    },
+                    "bBusy": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "bDisabledNestPartIndexBlocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 38
+                            }
+                        ]
+                    },
+                    "bDisabledNestPartPopupRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 39
+                            }
+                        ]
+                    },
+                    "bEnableSettings": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 31
+                            }
+                        ]
+                    },
+                    "bFaulted": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "bHeatStakeEaglePresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "bHeatStakeHeadDown": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 48
+                            }
+                        ]
+                    },
+                    "bHeatStakeHeadDownTimeoutFault": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 49
+                            }
+                        ]
+                    },
+                    "bHeatStakeHeadSensorConflictFault": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 51
+                            }
+                        ]
+                    },
+                    "bHeatStakeHeadUp": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "Heat Stake head cylinder diagnostics.",
+                                "propertyOrder": 47
+                            }
+                        ]
+                    },
+                    "bHeatStakeHeadUpTimeoutFault": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 50
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualActionBusy": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 100
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualEnableAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 93
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualHeadDownAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 97
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualHeadUnlocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 101
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualHeadUpAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 98
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualLockAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 96
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualStakeAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 94
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualSupportAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 99
+                            }
+                        ]
+                    },
+                    "bHeatStakeManualUnlockAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 95
+                            }
+                        ]
+                    },
+                    "bHeatStakePatchPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 12
+                            }
+                        ]
+                    },
+                    "bHeatStakeProcessSettingsWriteBusy": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 78
+                            }
+                        ]
+                    },
+                    "bHeatStakeProcessSettingsWriteError": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 79
+                            }
+                        ]
+                    },
+                    "bHeatStakeSettingsApplyAccepted": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 82
+                            }
+                        ]
+                    },
+                    "bHeatStakeSettingsApplyRejected": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 83
+                            }
+                        ]
+                    },
+                    "bHeatStakeSettingsSaveFailed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 87
+                            }
+                        ]
+                    },
+                    "bHeatStakeSettingsSaveSuccessful": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 86
+                            }
+                        ]
+                    },
+                    "bHeatStakeSettingsWriteBusy": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 84
+                            }
+                        ]
+                    },
+                    "bHeatStakeSettingsWriteError": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 85
+                            }
+                        ]
+                    },
+                    "bIndexCompletedSensor": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 16
+                            }
+                        ]
+                    },
+                    "bIndexLocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 15
+                            }
+                        ]
+                    },
+                    "bIndexReady": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 14
+                            }
+                        ]
+                    },
+                    "bLeftFlapSafe": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 29
+                            }
+                        ]
+                    },
+                    "bLoadingStationEaglePresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    },
+                    "bMainDoorClosed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 17
+                            }
+                        ]
+                    },
+                    "bMainDoorDiagnosticOk": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 26
+                            }
+                        ]
+                    },
+                    "bMainDoorLocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 18
+                            }
+                        ]
+                    },
+                    "bMs6FeedbackOk": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 27
+                            }
+                        ]
+                    },
+                    "bNest1Blocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 34
+                            }
+                        ]
+                    },
+                    "bNest2Blocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 35
+                            }
+                        ]
+                    },
+                    "bNest3Blocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 36
+                            }
+                        ]
+                    },
+                    "bNest4Blocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 37
+                            }
+                        ]
+                    },
+                    "bPbupMagnetPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 13
+                            }
+                        ]
+                    },
+                    "bReady": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "bRejectChuteFullLatched": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "Reject chute full / controlled-stop status.",
+                                "propertyOrder": 42
+                            }
+                        ]
+                    },
+                    "bRejectChutePartPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "bRejectChutePopupRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 43
+                            }
+                        ]
+                    },
+                    "bRejectChuteResetBlocked": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 45
+                            }
+                        ]
+                    },
+                    "bRejectChuteStopRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 44
+                            }
+                        ]
+                    },
+                    "bResetButtonActive": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 21
+                            }
+                        ]
+                    },
+                    "bRightFlapSafe": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 30
+                            }
+                        ]
+                    },
+                    "bStartButtonActive": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 19
+                            }
+                        ]
+                    },
+                    "bStartButtonLamp": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 22
+                            }
+                        ]
+                    },
+                    "bStopButtonActive": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 20
+                            }
+                        ]
+                    },
+                    "bTwoHandsSafe": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "bUp24VPowerSupplyOk": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 23
+                            }
+                        ]
+                    },
+                    "bUs24VPowerSupplyOk": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 24
+                            }
+                        ]
+                    },
+                    "bVisionGripCloseAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 59
+                            }
+                        ]
+                    },
+                    "bVisionGripClosed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 68
+                            }
+                        ]
+                    },
+                    "bVisionGripOpen": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 67
+                            }
+                        ]
+                    },
+                    "bVisionGripOpenAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 58
+                            }
+                        ]
+                    },
+                    "bVisionHorizontalBack": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "Position feedback",
+                                "propertyOrder": 63
+                            }
+                        ]
+                    },
+                    "bVisionHorizontalBackAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "Individual motion permissives",
+                                "propertyOrder": 53
+                            }
+                        ]
+                    },
+                    "bVisionHorizontalFront": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 64
+                            }
+                        ]
+                    },
+                    "bVisionHorizontalFrontAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 54
+                            }
+                        ]
+                    },
+                    "bVisionManualEnableAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "=====================================================\r\n Vision Manual Mode\r\n =====================================================\r\n General manual control",
+                                "propertyOrder": 52
+                            }
+                        ]
+                    },
+                    "bVisionRotate0": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 69
+                            }
+                        ]
+                    },
+                    "bVisionRotate0Allowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 60
+                            }
+                        ]
+                    },
+                    "bVisionRotate180": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 70
+                            }
+                        ]
+                    },
+                    "bVisionRotate180Allowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 61
+                            }
+                        ]
+                    },
+                    "bVisionSupportAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 62
+                            }
+                        ]
+                    },
+                    "bVisionSupportExtended": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 71
+                            }
+                        ]
+                    },
+                    "bVisionSupportRetracted": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 72
+                            }
+                        ]
+                    },
+                    "bVisionVerticalDown": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 66
+                            }
+                        ]
+                    },
+                    "bVisionVerticalFullDownAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 57
+                            }
+                        ]
+                    },
+                    "bVisionVerticalIntermediateAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 56
+                            }
+                        ]
+                    },
+                    "bVisionVerticalUp": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 65
+                            }
+                        ]
+                    },
+                    "bVisionVerticalUpAllowed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 55
+                            }
+                        ]
+                    },
+                    "eIndexPosition": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_TablePosition"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "eIndexState": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_IndexState"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "eMachineState": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_MachineState"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "eOperatorInstruction": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_OperatorInstruction"
+                            },
+                            {
+                                "propertyOrder": 103
+                            }
+                        ]
+                    },
+                    "iNestRotationAngle": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/INT"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "sAutoCycleBlockReason": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-160"
+                            },
+                            {
+                                "propertyOrder": 108
+                            }
+                        ]
+                    },
+                    "sDisabledNestPartPopupMessage": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
+                            },
+                            {
+                                "propertyOrder": 41
+                            }
+                        ]
+                    },
+                    "sHeatStakeSettingsApplyRejectReason": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
+                            },
+                            {
+                                "propertyOrder": 88
+                            }
+                        ]
+                    },
+                    "sMachineMessage": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-160"
+                            },
+                            {
+                                "propertyOrder": 106
+                            }
+                        ]
+                    },
+                    "sOperatorMessage": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
+                            },
+                            {
+                                "propertyOrder": 107
+                            }
+                        ]
+                    },
+                    "sRejectChutePopupMessage": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
+                            },
+                            {
+                                "propertyOrder": 46
+                            }
+                        ]
+                    },
+                    "stHeatStake": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_PatchStageStatus"
+                            },
+                            {
+                                "propertyOrder": 74
+                            }
+                        ]
+                    },
+                    "stHeatStakeProcess": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HeatStakeProcessStatus"
+                            },
+                            {
+                                "propertyOrder": 76
+                            }
+                        ]
+                    },
+                    "stHeatStakeProcessSettings": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HeatStakeProcessSettings"
+                            },
+                            {
+                                "propertyOrder": 77
+                            }
+                        ]
+                    },
+                    "stHeatStakeTemperature": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HeatStakeTemperatureStatus"
+                            },
+                            {
+                                "propertyOrder": 75
+                            }
+                        ]
+                    },
+                    "stHeatStakeTemperatureSettings": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HeatStakeTemperatureSettings"
+                            },
+                            {
+                                "propertyOrder": 81
+                            }
+                        ]
+                    },
+                    "stOperatorStation": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_OperatorStationStatus"
+                            },
+                            {
+                                "propertyOrder": 104
+                            }
+                        ]
+                    },
+                    "stPatchDispense": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_PatchStageStatus"
+                            },
+                            {
+                                "propertyOrder": 73
+                            }
+                        ]
+                    },
+                    "stVision": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_PatchStageStatus"
+                            },
+                            {
+                                "propertyOrder": 102
+                            }
+                        ]
+                    },
+                    "udiHeatStakeProcessSettingsWriteErrorId": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UDINT"
+                            },
+                            {
+                                "propertyOrder": 80
+                            }
+                        ]
+                    },
+                    "udiHeatStakeSettingsWriteErrorId": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UDINT"
+                            },
+                            {
+                                "propertyOrder": 89
+                            }
+                        ]
+                    },
+                    "uiDisabledNestPartPopupNestId": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UINT"
+                            },
+                            {
+                                "propertyOrder": 40
+                            }
+                        ]
+                    },
+                    "uiHeatStakeNestId": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UINT"
+                            },
+                            {
+                                "propertyOrder": 91
+                            }
+                        ]
+                    },
+                    "uiPatchDispenseNestId": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UINT"
+                            },
+                            {
+                                "comment": "Current physical nest at each process station.",
+                                "propertyOrder": 90
+                            }
+                        ]
+                    },
+                    "uiVisionNestId": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UINT"
+                            },
+                            {
+                                "propertyOrder": 92
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "eMachineState",
+                    "eIndexState",
+                    "eIndexPosition",
+                    "iNestRotationAngle",
+                    "bReady",
+                    "bBusy",
+                    "bFaulted",
+                    "bTwoHandsSafe",
+                    "bLoadingStationEaglePresent",
+                    "bRejectChutePartPresent",
+                    "bHeatStakeEaglePresent",
+                    "bHeatStakePatchPresent",
+                    "bPbupMagnetPresent",
+                    "bIndexReady",
+                    "bIndexLocked",
+                    "bIndexCompletedSensor",
+                    "bMainDoorClosed",
+                    "bMainDoorLocked",
+                    "bStartButtonActive",
+                    "bStopButtonActive",
+                    "bResetButtonActive",
+                    "bStartButtonLamp",
+                    "bUp24VPowerSupplyOk",
+                    "bUs24VPowerSupplyOk",
+                    "b48VPowerSupplyOk",
+                    "bMainDoorDiagnosticOk",
+                    "bMs6FeedbackOk",
+                    "bAirExhausted",
+                    "bLeftFlapSafe",
+                    "bRightFlapSafe",
+                    "bEnableSettings",
+                    "bAllStationsCommissioned",
+                    "bAutoCycleAllowed",
+                    "bNest1Blocked",
+                    "bNest2Blocked",
+                    "bNest3Blocked",
+                    "bNest4Blocked",
+                    "bDisabledNestPartIndexBlocked",
+                    "bDisabledNestPartPopupRequest",
+                    "uiDisabledNestPartPopupNestId",
+                    "sDisabledNestPartPopupMessage",
+                    "bRejectChuteFullLatched",
+                    "bRejectChutePopupRequest",
+                    "bRejectChuteStopRequest",
+                    "bRejectChuteResetBlocked",
+                    "sRejectChutePopupMessage",
+                    "bHeatStakeHeadUp",
+                    "bHeatStakeHeadDown",
+                    "bHeatStakeHeadDownTimeoutFault",
+                    "bHeatStakeHeadUpTimeoutFault",
+                    "bHeatStakeHeadSensorConflictFault",
+                    "bVisionManualEnableAllowed",
+                    "bVisionHorizontalBackAllowed",
+                    "bVisionHorizontalFrontAllowed",
+                    "bVisionVerticalUpAllowed",
+                    "bVisionVerticalIntermediateAllowed",
+                    "bVisionVerticalFullDownAllowed",
+                    "bVisionGripOpenAllowed",
+                    "bVisionGripCloseAllowed",
+                    "bVisionRotate0Allowed",
+                    "bVisionRotate180Allowed",
+                    "bVisionSupportAllowed",
+                    "bVisionHorizontalBack",
+                    "bVisionHorizontalFront",
+                    "bVisionVerticalUp",
+                    "bVisionVerticalDown",
+                    "bVisionGripOpen",
+                    "bVisionGripClosed",
+                    "bVisionRotate0",
+                    "bVisionRotate180",
+                    "bVisionSupportExtended",
+                    "bVisionSupportRetracted",
+                    "stPatchDispense",
+                    "stHeatStake",
+                    "stHeatStakeTemperature",
+                    "stHeatStakeProcess",
+                    "stHeatStakeProcessSettings",
+                    "bHeatStakeProcessSettingsWriteBusy",
+                    "bHeatStakeProcessSettingsWriteError",
+                    "udiHeatStakeProcessSettingsWriteErrorId",
+                    "stHeatStakeTemperatureSettings",
+                    "bHeatStakeSettingsApplyAccepted",
+                    "bHeatStakeSettingsApplyRejected",
+                    "bHeatStakeSettingsWriteBusy",
+                    "bHeatStakeSettingsWriteError",
+                    "bHeatStakeSettingsSaveSuccessful",
+                    "bHeatStakeSettingsSaveFailed",
+                    "sHeatStakeSettingsApplyRejectReason",
+                    "udiHeatStakeSettingsWriteErrorId",
+                    "uiPatchDispenseNestId",
+                    "uiHeatStakeNestId",
+                    "uiVisionNestId",
+                    "bHeatStakeManualEnableAllowed",
+                    "bHeatStakeManualStakeAllowed",
+                    "bHeatStakeManualUnlockAllowed",
+                    "bHeatStakeManualLockAllowed",
+                    "bHeatStakeManualHeadDownAllowed",
+                    "bHeatStakeManualHeadUpAllowed",
+                    "bHeatStakeManualSupportAllowed",
+                    "bHeatStakeManualActionBusy",
+                    "bHeatStakeManualHeadUnlocked",
+                    "stVision",
+                    "eOperatorInstruction",
+                    "stOperatorStation",
+                    "aNest",
+                    "sMachineMessage",
+                    "sOperatorMessage",
+                    "sAutoCycleBlockReason"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC1.ST_Nest": {
+                "additionalProperties": false,
+                "properties": {
+                    "bDispositionSent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "bEnabled": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "bOperatorExchangeComplete": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 12
+                            }
+                        ]
+                    },
+                    "bPartLoadedPulse": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "bPartPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "bPartRemovedPulse": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "bPreviousPartPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "bProcessComplete": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    },
+                    "bProcessRequired": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "bStatisticsCounted": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 20
+                            }
+                        ]
+                    },
+                    "eDisposition": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_PartDisposition"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "eHeatStakeStage": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                            },
+                            {
+                                "propertyOrder": 17
+                            }
+                        ]
+                    },
+                    "ePatchDispenseStage": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                            },
+                            {
+                                "propertyOrder": 16
+                            }
+                        ]
+                    },
+                    "ePosition": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_TablePosition"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "eVisionStage": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_NestStageStatus"
+                            },
+                            {
+                                "propertyOrder": 18
+                            }
+                        ]
+                    },
+                    "nId": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UINT"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "stHeatStakeResult": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_ProcessResult"
+                            },
+                            {
+                                "propertyOrder": 14
+                            }
+                        ]
+                    },
+                    "stPatchDispenseResult": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_ProcessResult"
+                            },
+                            {
+                                "propertyOrder": 13
+                            }
+                        ]
+                    },
+                    "stResult": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_ProcessResult"
+                            },
+                            {
+                                "propertyOrder": 19
+                            }
+                        ]
+                    },
+                    "stVisionResult": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_ProcessResult"
+                            },
+                            {
+                                "propertyOrder": 15
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "nId",
+                    "ePosition",
+                    "bEnabled",
+                    "bPartPresent",
+                    "bPreviousPartPresent",
+                    "bPartLoadedPulse",
+                    "bPartRemovedPulse",
+                    "bProcessRequired",
+                    "bProcessComplete",
+                    "eDisposition",
+                    "bDispositionSent",
+                    "bOperatorExchangeComplete",
+                    "stPatchDispenseResult",
+                    "stHeatStakeResult",
+                    "stVisionResult",
+                    "ePatchDispenseStage",
+                    "eHeatStakeStage",
+                    "eVisionStage",
+                    "stResult",
+                    "bStatisticsCounted"
+                ],
+                "type": "object"
+            },
             "ADS-PLC1.ST_NestStatistics": {
                 "additionalProperties": false,
                 "properties": {
@@ -1072,6 +3676,404 @@
                     "udiGoodParts",
                     "udiBadParts",
                     "lrEfficiency"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC1.ST_OperatorStationStatus": {
+                "additionalProperties": false,
+                "properties": {
+                    "bExchangeComplete": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "bIndexPermissive": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "bPartPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "bPartRemovedConfirmed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "bRejectArmed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "bRejectChutePartPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 12
+                            }
+                        ]
+                    },
+                    "bRejectConfirmed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "bRejectEdgeAccepted": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "bRejectPopupRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "bRejectWaitingForClear": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    },
+                    "bResultPassed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 14
+                            }
+                        ]
+                    },
+                    "bResultValid": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 13
+                            }
+                        ]
+                    },
+                    "eInstruction": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_OperatorInstruction"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "eState": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_OperatorExchangeState"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "sMessage": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-255"
+                            },
+                            {
+                                "propertyOrder": 15
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "eState",
+                    "eInstruction",
+                    "bExchangeComplete",
+                    "bIndexPermissive",
+                    "bPartRemovedConfirmed",
+                    "bRejectConfirmed",
+                    "bRejectArmed",
+                    "bRejectEdgeAccepted",
+                    "bRejectWaitingForClear",
+                    "bRejectPopupRequest",
+                    "bPartPresent",
+                    "bRejectChutePartPresent",
+                    "bResultValid",
+                    "bResultPassed",
+                    "sMessage"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC1.ST_PatchStageStatus": {
+                "additionalProperties": false,
+                "properties": {
+                    "bBusy": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "bCommissioned": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "bComplete": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    },
+                    "bFault": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "bHome": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "bPartPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 10
+                            }
+                        ]
+                    },
+                    "bReady": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "eResultStatus": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_StationResultStatus"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "eState": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_PatchStationState"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "eSupportFault": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_SupportCylinderFault"
+                            },
+                            {
+                                "propertyOrder": 9
+                            }
+                        ]
+                    },
+                    "sDiagnostic": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-120"
+                            },
+                            {
+                                "propertyOrder": 11
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "eState",
+                    "bCommissioned",
+                    "bHome",
+                    "bReady",
+                    "bBusy",
+                    "bComplete",
+                    "bFault",
+                    "eResultStatus",
+                    "eSupportFault",
+                    "bPartPresent",
+                    "sDiagnostic"
+                ],
+                "type": "object"
+            },
+            "ADS-PLC1.ST_ProcessResult": {
+                "additionalProperties": false,
+                "properties": {
+                    "bPassed": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 2
+                            }
+                        ]
+                    },
+                    "bValid": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 1
+                            }
+                        ]
+                    },
+                    "eCode": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_ProcessResultCode"
+                            },
+                            {
+                                "propertyOrder": 3
+                            }
+                        ]
+                    },
+                    "lrDispenseValue": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/LREAL"
+                            },
+                            {
+                                "propertyOrder": 7
+                            }
+                        ]
+                    },
+                    "sDetail": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.STRING-120"
+                            },
+                            {
+                                "propertyOrder": 8
+                            }
+                        ]
+                    },
+                    "udiAlertCode": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UDINT"
+                            },
+                            {
+                                "propertyOrder": 5
+                            }
+                        ]
+                    },
+                    "udiFaultCode": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UDINT"
+                            },
+                            {
+                                "propertyOrder": 4
+                            }
+                        ]
+                    },
+                    "usiRecipe": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/USINT"
+                            },
+                            {
+                                "propertyOrder": 6
+                            }
+                        ]
+                    }
+                },
+                "required": [
+                    "bValid",
+                    "bPassed",
+                    "eCode",
+                    "udiFaultCode",
+                    "udiAlertCode",
+                    "usiRecipe",
+                    "lrDispenseValue",
+                    "sDetail"
                 ],
                 "type": "object"
             },
@@ -1672,7 +4674,7 @@
     "KEYPASSWORD": "",
     "MAXCONNECTIONSPERCLIENT": 32,
     "MAXHTTPHEADERSIZE": 32768,
-    "MAXREQUESTSIZE": 4194304,
+    "MAXREQUESTSIZE": 16777216,
     "MAXSESSIONS": 128,
     "PERMESSAGEDEFLATEENABLED": true,
     "PROJECTNAME": "PatchPress_HMI",
@@ -4891,6 +7893,16 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HmiCommands"
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.0": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -5659,6 +8671,211 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionGripCloseRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionGripCloseRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 28
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionGripOpenRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionGripOpenRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 27
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionHorizontalBackRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionHorizontalBackRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 22
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionHorizontalFrontRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionHorizontalFrontRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 23
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionManualEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionManualEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "=====================================================\r\n Vision Manual Mode\r\n =====================================================",
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionManualRunSequence": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionManualRunSequence",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 32
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionRotate0Request": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionRotate0Request",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 29
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionRotate180Request": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionRotate180Request",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 30
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionSupportExtendRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionSupportExtendRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalFullDownRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionVerticalFullDownRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 26
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalIntermediateRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionVerticalIntermediateRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 25
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalUpRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bVisionVerticalUpRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 24
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeProcessSettings.rDownPressureBar": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -6180,6 +9397,16 @@
                         "propertyOrder": 2
                     }
                 ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus",
+            "SCHEMA": {
+                "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HmiStatus"
             },
             "USEMAPPING": true
         },
@@ -8819,6 +12046,211 @@
                     },
                     {
                         "propertyOrder": 24
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionGripClosed": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionGripClosed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 68
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionGripOpen": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionGripOpen",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 67
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionHorizontalBack": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionHorizontalBack",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "Position feedback",
+                        "propertyOrder": 63
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionHorizontalFront": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionHorizontalFront",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 64
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionManualRunSequenceAllowed": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionManualRunSequenceAllowed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 102
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionRotate0": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionRotate0",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 69
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionRotate180": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionRotate180",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 70
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionSupportExtended": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionSupportExtended",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 53
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionSupportRetracted": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionSupportRetracted",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 54
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionVerticalDown": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionVerticalDown",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 66
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionVerticalFullDownAllowed": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionVerticalFullDownAllowed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 57
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionVerticalUp": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionVerticalUp",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 65
                     }
                 ]
             },
@@ -13933,6 +17365,7 @@
                 "ADS.PLC1.GVL_HMI.sSystemName": 3,
                 "ADS.PLC1.GVL_HMI.sTwincat": 3,
                 "ADS.PLC1.GVL_HMI.sTwincatHMI": 3,
+                "ADS.PLC1.GVL_HMI.stCommands": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.0": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.1": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.aNestEnabled.2": 3,
@@ -13979,6 +17412,18 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bSiliconeSupportRetract": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bStart": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bStop": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionGripCloseRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionGripOpenRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionHorizontalBackRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionHorizontalFrontRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionManualEnable": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionManualRunSequence": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionRotate0Request": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionRotate180Request": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionSupportExtendRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalFullDownRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalIntermediateRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalUpRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeProcessSettings.rDownPressureBar": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeProcessSettings.tContactTime": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.bWarmupBoostEnabled": 3,
@@ -14011,6 +17456,7 @@
                 "ADS.PLC1.GVL_HMI.stStatistics.udiTotalCycles": 3,
                 "ADS.PLC1.GVL_HMI.stStatistics.udiTotalFail": 3,
                 "ADS.PLC1.GVL_HMI.stStatistics.udiTotalPass": 3,
+                "ADS.PLC1.GVL_HMI.stStatus": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bGearboxAssemblyPartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPartComplete": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPartPresent": 3,
@@ -14166,6 +17612,18 @@
                 "ADS.PLC1.GVL_HMI.stStatus.bTwoHandsSafe": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bUp24VPowerSupplyOk": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bUs24VPowerSupplyOk": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionGripClosed": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionGripOpen": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionHorizontalBack": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionHorizontalFront": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionManualRunSequenceAllowed": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionRotate0": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionRotate180": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionSupportExtended": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionSupportRetracted": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionVerticalDown": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionVerticalFullDownAllowed": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bVisionVerticalUp": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.eIndexPosition": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.eIndexState": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.eMachineState": 3,

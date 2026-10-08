@@ -30,6 +30,28 @@ STRUCT
     bHeatStakeManualHeadUp        : BOOL;
     bHeatStakeManualSupportUp     : BOOL;
 
+	// =====================================================
+	// Vision Manual Mode
+	// =====================================================
+	
+	bVisionManualEnable                : BOOL;
+	
+	bVisionHorizontalBackRequest       : BOOL;
+	bVisionHorizontalFrontRequest      : BOOL;
+	
+	bVisionVerticalUpRequest           : BOOL;
+	bVisionVerticalIntermediateRequest : BOOL;
+	bVisionVerticalFullDownRequest     : BOOL;
+	
+	bVisionGripOpenRequest             : BOOL;
+	bVisionGripCloseRequest            : BOOL;
+	
+	bVisionRotate0Request              : BOOL;
+	bVisionRotate180Request            : BOOL;
+	
+	bVisionSupportExtendRequest        : BOOL;
+	bVisionManualRunSequence 			: BOOL;
+
     // Nest settings command buffer. Every change is persisted automatically.
     aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
 
