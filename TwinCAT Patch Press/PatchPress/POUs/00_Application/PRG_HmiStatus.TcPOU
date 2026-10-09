@@ -235,6 +235,23 @@ GVL_HMI.stStatus.sOperatorMessage := GVL_MASTER.stStatus.sOperatorMessage;
 // Keep compatibility with the existing message control inherited from
 // Silicone: during AutoCycle, show the operator instruction in the main
 // message field when one is active.
+
+
+// =====================================================
+// TEST HISTORY
+// =====================================================
+// Publish the persistent Test History to the HMI.
+// Production Statistics reset does not affect this data.
+
+GVL_HMI.astTestHistory := GVL_Persistent.astTestHistory;
+
+GVL_HMI.uiTestHistoryWriteIndex :=
+    GVL_Persistent.uiTestHistoryWriteIndex;
+
+GVL_HMI.uiTestHistoryCount :=
+    GVL_Persistent.uiTestHistoryCount;
+	
+
 IF (GVL_MASTER.stStatus.eMachineState = E_MachineState.AutoCycle)
     AND (LEN(GVL_MASTER.stStatus.sOperatorMessage) > 0)
 THEN

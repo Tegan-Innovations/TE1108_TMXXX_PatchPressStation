@@ -10,6 +10,9 @@ VAR
     i                       : INT;
     uiNest                  : UINT;
     uiMethodNestId          : UINT;
+	bStatisticsEvent        : BOOL := FALSE;
+	uiStatisticsEventNestId : UINT := 0;
+	bStatisticsEventPassed  : BOOL := FALSE;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -133,6 +136,140 @@ IF bIndexStable AND (eIndexPosition <> E_TablePosition.Unknown) THEN
 END_IF]]></ST>
       </Implementation>
     </Method>
+    <Method Name="FinaliseResultAtPosition" Id="{103a97ef-17a2-465c-b799-3140c30b4be4}">
+      <Declaration><![CDATA[METHOD PUBLIC FinaliseResultAtPosition : BOOL
+VAR_INPUT
+    ePosition : E_TablePosition;
+END_VAR
+VAR
+    uiId : UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+FinaliseResultAtPosition := FALSE;
+uiId := GetNestIdAtPosition(ePosition);
+
+IF (uiId >= 1) AND (uiId <= 4) THEN
+
+    // No part in this physical nest: there is no product result to finalise.
+    IF NOT aNestInternal[uiId].bPartPresent THEN
+
+        aNestInternal[uiId].stResult.bValid := FALSE;
+        aNestInternal[uiId].stResult.bPassed := FALSE;
+        aNestInternal[uiId].stResult.eCode := E_ProcessResultCode.None;
+
+        aNestInternal[uiId].bProcessComplete := TRUE;
+        aNestInternal[uiId].bProcessRequired := FALSE;
+
+        FinaliseResultAtPosition := TRUE;
+
+    // A product result can only be finalised after all three process stages
+    // have left Waiting.
+    ELSIF
+        (aNestInternal[uiId].ePatchDispenseStage <> E_NestStageStatus.Waiting)
+        AND (aNestInternal[uiId].eHeatStakeStage <> E_NestStageStatus.Waiting)
+        AND (aNestInternal[uiId].eVisionStage <> E_NestStageStatus.Waiting)
+    THEN
+
+        aNestInternal[uiId].stResult.bValid := TRUE;
+
+        // =====================================================
+        // FINAL PRODUCT RESULT
+        // =====================================================
+        // PASS is only possible when ALL three required
+        // PatchPress processes have individually passed.
+        //
+        // Any other completed combination is a final FAIL,
+        // including combinations containing NotTested.
+        //
+        // Examples:
+        // Pass + Pass + Pass           -> PASS
+        // Pass + Pass + Fail           -> FAIL
+        // Pass + Fail + NotTested      -> FAIL
+        // Fail + NotTested + NotTested -> FAIL
+        // Pass + NotTested + NotTested -> FAIL
+
+		IF
+			(aNestInternal[uiId].ePatchDispenseStage = E_NestStageStatus.Complete)
+			AND (aNestInternal[uiId].eHeatStakeStage = E_NestStageStatus.Complete)
+			AND (aNestInternal[uiId].eVisionStage = E_NestStageStatus.Complete)
+		THEN
+
+            aNestInternal[uiId].stResult.bPassed := TRUE;
+            aNestInternal[uiId].stResult.eCode := E_ProcessResultCode.Pass;
+            aNestInternal[uiId].eDisposition := E_PartDisposition.Pass;
+            aNestInternal[uiId].stResult.sDetail :=
+                'Patch Press final result: PASS';
+
+        ELSE
+
+            aNestInternal[uiId].stResult.bPassed := FALSE;
+            aNestInternal[uiId].stResult.eCode := E_ProcessResultCode.Fail;
+            aNestInternal[uiId].eDisposition := E_PartDisposition.Reject;
+            aNestInternal[uiId].stResult.sDetail :=
+                'Patch Press final result: FAIL';
+
+        END_IF
+
+        aNestInternal[uiId].bProcessComplete := TRUE;
+        aNestInternal[uiId].bProcessRequired := FALSE;
+
+        // =====================================================
+        // PRODUCTION STATISTICS
+        // =====================================================
+        // Count the final product result exactly once for this
+        // physical nest.
+        IF NOT aNestInternal[uiId].bStatisticsCounted THEN
+
+            aNestStatisticsInternal[uiId].udiTotalTests :=
+                aNestStatisticsInternal[uiId].udiTotalTests + 1;
+
+            IF aNestInternal[uiId].stResult.bPassed THEN
+
+                aNestStatisticsInternal[uiId].udiGoodParts :=
+                    aNestStatisticsInternal[uiId].udiGoodParts + 1;
+
+            ELSE
+
+                aNestStatisticsInternal[uiId].udiBadParts :=
+                    aNestStatisticsInternal[uiId].udiBadParts + 1;
+
+            END_IF
+
+            IF aNestStatisticsInternal[uiId].udiTotalTests > 0 THEN
+
+                aNestStatisticsInternal[uiId].lrEfficiency :=
+                    UDINT_TO_LREAL(
+                        aNestStatisticsInternal[uiId].udiGoodParts
+                    )
+                    * 100.0
+                    / UDINT_TO_LREAL(
+                        aNestStatisticsInternal[uiId].udiTotalTests
+                    );
+
+            ELSE
+
+                aNestStatisticsInternal[uiId].lrEfficiency := 0.0;
+
+            END_IF
+			
+			// Generate a one-shot event when this product is counted.
+			// The machine uses this event to create exactly one
+			// Test History entry for the completed product.
+			bStatisticsEvent := TRUE;
+			uiStatisticsEventNestId := uiId;
+			bStatisticsEventPassed := aNestInternal[uiId].stResult.bPassed;
+            aNestInternal[uiId].bStatisticsCounted := TRUE;
+
+        END_IF
+
+        FinaliseResultAtPosition := TRUE;
+
+    END_IF
+
+END_IF]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="GetAllNests" Id="{aa3853bc-758e-419d-be3c-5d9c11c9ea70}">
       <Declaration><![CDATA[METHOD PUBLIC GetAllNests : ARRAY[1..4] OF ST_Nest]]></Declaration>
       <Implementation>
@@ -159,11 +296,118 @@ VAR_INPUT ePosition : E_TablePosition; END_VAR]]></Declaration>
         <ST><![CDATA[IF ePosition >= E_TablePosition.Position1 AND ePosition <= E_TablePosition.Position4 THEN GetNestIdAtPosition := aPositionToNest[TO_UINT(ePosition)]; ELSE GetNestIdAtPosition := 0; END_IF]]></ST>
       </Implementation>
     </Method>
+    <Method Name="MarkHeatStakeNotTestedAtPosition" Id="{151c59e0-e047-4434-83b6-2583f0e0b1c0}">
+      <Declaration><![CDATA[METHOD PUBLIC MarkHeatStakeNotTestedAtPosition
+VAR_INPUT ePosition : E_TablePosition; END_VAR
+VAR uiId : UINT; END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+uiId := GetNestIdAtPosition(ePosition);
+IF uiId >= 1 AND uiId <= 4 THEN
+    aNestInternal[uiId].stHeatStakeResult.bValid := FALSE;
+    aNestInternal[uiId].stHeatStakeResult.bPassed := FALSE;
+    aNestInternal[uiId].stHeatStakeResult.eCode := E_ProcessResultCode.None;
+    aNestInternal[uiId].eHeatStakeStage := E_NestStageStatus.NotTested;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MarkPatchDispenseNotTestedAtPosition" Id="{a16e2a9e-2659-4648-bbbd-ab30e5fccc5c}">
+      <Declaration><![CDATA[METHOD PUBLIC MarkPatchDispenseNotTestedAtPosition
+VAR_INPUT ePosition : E_TablePosition; END_VAR
+VAR uiId : UINT; END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+uiId := GetNestIdAtPosition(ePosition);
+IF uiId >= 1 AND uiId <= 4 THEN
+    aNestInternal[uiId].stPatchDispenseResult.bValid := FALSE;
+    aNestInternal[uiId].stPatchDispenseResult.bPassed := FALSE;
+    aNestInternal[uiId].stPatchDispenseResult.eCode := E_ProcessResultCode.None;
+    aNestInternal[uiId].ePatchDispenseStage := E_NestStageStatus.NotTested;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="MarkVisionNotTestedAtPosition" Id="{3fdd2071-dd2d-41d0-acd4-ba93bbfa2d17}">
+      <Declaration><![CDATA[METHOD PUBLIC MarkVisionNotTestedAtPosition
+VAR_INPUT ePosition : E_TablePosition; END_VAR
+VAR uiId : UINT; END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+uiId := GetNestIdAtPosition(ePosition);
+IF uiId >= 1 AND uiId <= 4 THEN
+    aNestInternal[uiId].stVisionResult.bValid := FALSE;
+    aNestInternal[uiId].stVisionResult.bPassed := FALSE;
+    aNestInternal[uiId].stVisionResult.eCode := E_ProcessResultCode.None;
+    aNestInternal[uiId].eVisionStage := E_NestStageStatus.NotTested;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ResetNestStatistics" Id="{4686ed6c-445c-4fbb-85fb-9e3ed12abe11}">
+      <Declaration><![CDATA[METHOD PUBLIC ResetNestStatistics
+VAR_INPUT
+    uiNestId : UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// =====================================================
+// RESET NEST PRODUCTION STATISTICS
+// =====================================================
+// Reset only the accumulated production counters for
+// the selected physical nest.
+//
+// IMPORTANT:
+// - Test History is preserved.
+// - Current nest/process results are preserved.
+// - Part presence is preserved.
+// - bStatisticsCounted is preserved so that a product
+//   already counted before the reset cannot be counted
+//   again simply because the statistics were cleared.
+
+IF (uiNestId >= 1) AND (uiNestId <= 4) THEN
+
+    aNestStatisticsInternal[uiNestId].udiTotalTests := 0;
+    aNestStatisticsInternal[uiNestId].udiGoodParts := 0;
+    aNestStatisticsInternal[uiNestId].udiBadParts := 0;
+    aNestStatisticsInternal[uiNestId].lrEfficiency := 0.0;
+
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="StoreHeatStakeResultAtPosition" Id="{47087ea7-1524-4d31-b8df-b5ffc8b33f8d}">
+      <Declaration><![CDATA[METHOD PUBLIC StoreHeatStakeResultAtPosition : BOOL
+VAR_INPUT ePosition : E_TablePosition; stResult : ST_ProcessResult; END_VAR
+VAR uiId : UINT; END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[
+StoreHeatStakeResultAtPosition := FALSE;
+uiId := GetNestIdAtPosition(ePosition);
+IF uiId >= 1 AND uiId <= 4 THEN
+    aNestInternal[uiId].stHeatStakeResult := stResult;
+    IF stResult.bValid AND stResult.bPassed THEN
+        aNestInternal[uiId].eHeatStakeStage := E_NestStageStatus.Complete;
+
+    ELSIF stResult.bValid THEN
+        // A Heat Stake failure makes Vision irrelevant for this part.
+        aNestInternal[uiId].eHeatStakeStage := E_NestStageStatus.Fail;
+
+        aNestInternal[uiId].stVisionResult.bValid := FALSE;
+        aNestInternal[uiId].stVisionResult.bPassed := FALSE;
+        aNestInternal[uiId].stVisionResult.eCode := E_ProcessResultCode.None;
+        aNestInternal[uiId].eVisionStage := E_NestStageStatus.NotTested;
+    END_IF
+
+    StoreHeatStakeResultAtPosition := TRUE;
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="StorePatchDispenseResultAtPosition" Id="{a92f119a-0c27-4512-8bbc-81ec3250a1f3}">
       <Declaration><![CDATA[METHOD PUBLIC StorePatchDispenseResultAtPosition : BOOL
 VAR_INPUT ePosition : E_TablePosition; stResult : ST_ProcessResult; END_VAR
 VAR uiId : UINT; END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
+      <Implementation>
+        <ST><![CDATA[
 StorePatchDispenseResultAtPosition := FALSE;
 uiId := GetNestIdAtPosition(ePosition);
 IF uiId >= 1 AND uiId <= 4 THEN
@@ -191,41 +435,15 @@ IF uiId >= 1 AND uiId <= 4 THEN
 
     StorePatchDispenseResultAtPosition := TRUE;
 END_IF
-]]></ST></Implementation>
+]]></ST>
+      </Implementation>
     </Method>
-
-    <Method Name="StoreHeatStakeResultAtPosition" Id="{47087ea7-1524-4d31-b8df-b5ffc8b33f8d}">
-      <Declaration><![CDATA[METHOD PUBLIC StoreHeatStakeResultAtPosition : BOOL
-VAR_INPUT ePosition : E_TablePosition; stResult : ST_ProcessResult; END_VAR
-VAR uiId : UINT; END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
-StoreHeatStakeResultAtPosition := FALSE;
-uiId := GetNestIdAtPosition(ePosition);
-IF uiId >= 1 AND uiId <= 4 THEN
-    aNestInternal[uiId].stHeatStakeResult := stResult;
-    IF stResult.bValid AND stResult.bPassed THEN
-        aNestInternal[uiId].eHeatStakeStage := E_NestStageStatus.Complete;
-
-    ELSIF stResult.bValid THEN
-        // A Heat Stake failure makes Vision irrelevant for this part.
-        aNestInternal[uiId].eHeatStakeStage := E_NestStageStatus.Fail;
-
-        aNestInternal[uiId].stVisionResult.bValid := FALSE;
-        aNestInternal[uiId].stVisionResult.bPassed := FALSE;
-        aNestInternal[uiId].stVisionResult.eCode := E_ProcessResultCode.None;
-        aNestInternal[uiId].eVisionStage := E_NestStageStatus.NotTested;
-    END_IF
-
-    StoreHeatStakeResultAtPosition := TRUE;
-END_IF
-]]></ST></Implementation>
-    </Method>
-
     <Method Name="StoreVisionResultAtPosition" Id="{be0b3a8a-2b1c-49f9-9df2-6bd47e39bcd4}">
       <Declaration><![CDATA[METHOD PUBLIC StoreVisionResultAtPosition : BOOL
 VAR_INPUT ePosition : E_TablePosition; stResult : ST_ProcessResult; END_VAR
 VAR uiId : UINT; END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
+      <Implementation>
+        <ST><![CDATA[
 StoreVisionResultAtPosition := FALSE;
 uiId := GetNestIdAtPosition(ePosition);
 IF uiId >= 1 AND uiId <= 4 THEN
@@ -237,128 +455,8 @@ IF uiId >= 1 AND uiId <= 4 THEN
     END_IF
     StoreVisionResultAtPosition := TRUE;
 END_IF
-]]></ST></Implementation>
+]]></ST>
+      </Implementation>
     </Method>
-
-    <Method Name="MarkPatchDispenseNotTestedAtPosition" Id="{a16e2a9e-2659-4648-bbbd-ab30e5fccc5c}">
-      <Declaration><![CDATA[METHOD PUBLIC MarkPatchDispenseNotTestedAtPosition
-VAR_INPUT ePosition : E_TablePosition; END_VAR
-VAR uiId : UINT; END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
-uiId := GetNestIdAtPosition(ePosition);
-IF uiId >= 1 AND uiId <= 4 THEN
-    aNestInternal[uiId].stPatchDispenseResult.bValid := FALSE;
-    aNestInternal[uiId].stPatchDispenseResult.bPassed := FALSE;
-    aNestInternal[uiId].stPatchDispenseResult.eCode := E_ProcessResultCode.None;
-    aNestInternal[uiId].ePatchDispenseStage := E_NestStageStatus.NotTested;
-END_IF
-]]></ST></Implementation>
-    </Method>
-
-    <Method Name="MarkHeatStakeNotTestedAtPosition" Id="{151c59e0-e047-4434-83b6-2583f0e0b1c0}">
-      <Declaration><![CDATA[METHOD PUBLIC MarkHeatStakeNotTestedAtPosition
-VAR_INPUT ePosition : E_TablePosition; END_VAR
-VAR uiId : UINT; END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
-uiId := GetNestIdAtPosition(ePosition);
-IF uiId >= 1 AND uiId <= 4 THEN
-    aNestInternal[uiId].stHeatStakeResult.bValid := FALSE;
-    aNestInternal[uiId].stHeatStakeResult.bPassed := FALSE;
-    aNestInternal[uiId].stHeatStakeResult.eCode := E_ProcessResultCode.None;
-    aNestInternal[uiId].eHeatStakeStage := E_NestStageStatus.NotTested;
-END_IF
-]]></ST></Implementation>
-    </Method>
-
-    <Method Name="MarkVisionNotTestedAtPosition" Id="{3fdd2071-dd2d-41d0-acd4-ba93bbfa2d17}">
-      <Declaration><![CDATA[METHOD PUBLIC MarkVisionNotTestedAtPosition
-VAR_INPUT ePosition : E_TablePosition; END_VAR
-VAR uiId : UINT; END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
-uiId := GetNestIdAtPosition(ePosition);
-IF uiId >= 1 AND uiId <= 4 THEN
-    aNestInternal[uiId].stVisionResult.bValid := FALSE;
-    aNestInternal[uiId].stVisionResult.bPassed := FALSE;
-    aNestInternal[uiId].stVisionResult.eCode := E_ProcessResultCode.None;
-    aNestInternal[uiId].eVisionStage := E_NestStageStatus.NotTested;
-END_IF
-]]></ST></Implementation>
-    </Method>
-
-    <Method Name="FinaliseResultAtPosition" Id="{103a97ef-17a2-465c-b799-3140c30b4be4}">
-      <Declaration><![CDATA[METHOD PUBLIC FinaliseResultAtPosition : BOOL
-VAR_INPUT ePosition : E_TablePosition; END_VAR
-VAR uiId : UINT; END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
-FinaliseResultAtPosition := FALSE;
-uiId := GetNestIdAtPosition(ePosition);
-
-IF uiId >= 1 AND uiId <= 4 THEN
-
-    IF NOT aNestInternal[uiId].bPartPresent THEN
-        aNestInternal[uiId].stResult.bValid := FALSE;
-        aNestInternal[uiId].stResult.bPassed := FALSE;
-        aNestInternal[uiId].stResult.eCode := E_ProcessResultCode.None;
-        aNestInternal[uiId].bProcessComplete := TRUE;
-        aNestInternal[uiId].bProcessRequired := FALSE;
-        FinaliseResultAtPosition := TRUE;
-
-    ELSIF
-        (aNestInternal[uiId].ePatchDispenseStage <> E_NestStageStatus.Waiting)
-        AND (aNestInternal[uiId].eHeatStakeStage <> E_NestStageStatus.Waiting)
-        AND (aNestInternal[uiId].eVisionStage <> E_NestStageStatus.Waiting)
-    THEN
-        aNestInternal[uiId].stResult.bValid := TRUE;
-
-        IF
-            (aNestInternal[uiId].ePatchDispenseStage = E_NestStageStatus.Fail)
-            OR (aNestInternal[uiId].eHeatStakeStage = E_NestStageStatus.Fail)
-            OR (aNestInternal[uiId].eVisionStage = E_NestStageStatus.Fail)
-        THEN
-            aNestInternal[uiId].stResult.bPassed := FALSE;
-            aNestInternal[uiId].stResult.eCode := E_ProcessResultCode.Fail;
-            aNestInternal[uiId].eDisposition := E_PartDisposition.Reject;
-            aNestInternal[uiId].stResult.sDetail := 'Patch Press final result: FAIL';
-        ELSE
-            aNestInternal[uiId].stResult.bPassed := TRUE;
-            aNestInternal[uiId].stResult.eCode := E_ProcessResultCode.Pass;
-            aNestInternal[uiId].eDisposition := E_PartDisposition.Pass;
-            aNestInternal[uiId].stResult.sDetail := 'Patch Press final result: PASS';
-        END_IF
-
-        aNestInternal[uiId].bProcessComplete := TRUE;
-        aNestInternal[uiId].bProcessRequired := FALSE;
-
-        // Count the final result exactly once for this physical nest.
-        IF NOT aNestInternal[uiId].bStatisticsCounted THEN
-            aNestStatisticsInternal[uiId].udiTotalTests :=
-                aNestStatisticsInternal[uiId].udiTotalTests + 1;
-
-            IF aNestInternal[uiId].stResult.bPassed THEN
-                aNestStatisticsInternal[uiId].udiGoodParts :=
-                    aNestStatisticsInternal[uiId].udiGoodParts + 1;
-            ELSE
-                aNestStatisticsInternal[uiId].udiBadParts :=
-                    aNestStatisticsInternal[uiId].udiBadParts + 1;
-            END_IF
-
-            IF aNestStatisticsInternal[uiId].udiTotalTests > 0 THEN
-                aNestStatisticsInternal[uiId].lrEfficiency :=
-                    UDINT_TO_LREAL(aNestStatisticsInternal[uiId].udiGoodParts)
-                    * 100.0
-                    / UDINT_TO_LREAL(aNestStatisticsInternal[uiId].udiTotalTests);
-            ELSE
-                aNestStatisticsInternal[uiId].lrEfficiency := 0.0;
-            END_IF
-
-            aNestInternal[uiId].bStatisticsCounted := TRUE;
-        END_IF
-
-        FinaliseResultAtPosition := TRUE;
-    END_IF
-END_IF
-]]></ST></Implementation>
-    </Method>
-
   </POU>
 </TcPlcObject>

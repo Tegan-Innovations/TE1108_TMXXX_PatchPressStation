@@ -9,6 +9,26 @@ VAR_GLOBAL PERSISTENT RETAIN
 
     // Persistent authority for the four index-table nest enable states.
     aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
+	
+	
+	// =====================================================
+	// TEST HISTORY
+	// =====================================================
+	
+	// Circular buffer containing the last 2001 completed
+	// product test results.
+	//
+	// Production Statistics reset does NOT modify this data.
+	astTestHistory : ARRAY[0..2000] OF ST_TestHistory;
+	
+	// Next position to be written in the circular buffer.
+	uiTestHistoryWriteIndex : UINT := 0;
+	
+	// Number of valid history entries currently available.
+	// Saturates at 2001 when the buffer becomes full.
+	uiTestHistoryCount : UINT := 0;
+
+
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

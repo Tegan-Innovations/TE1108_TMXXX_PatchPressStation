@@ -306,7 +306,13 @@ END_IF
 // ---------------------------------------------------------
 
 GVL_MASTER.stCommand.uiResetStatisticsNestId :=
-    GVL_HMI.stCommands.uiResetStatisticsNestId;]]></ST>
+    GVL_HMI.stCommands.uiResetStatisticsNestId;
+	
+	
+	
+	
+	
+	]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

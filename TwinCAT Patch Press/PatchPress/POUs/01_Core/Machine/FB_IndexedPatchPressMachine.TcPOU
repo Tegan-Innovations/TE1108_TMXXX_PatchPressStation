@@ -30,6 +30,8 @@ VAR
     stPatchDispenseNest : ST_Nest;
     stHeatStakeNest : ST_Nest;
     stVisionNest : ST_Nest;
+	stHistoryNest : ST_Nest;
+	uiHistoryNestId : UINT := 0;
 
     bPatchDispenseRequired : BOOL;
     bHeatStakeRequired : BOOL;
@@ -368,7 +370,34 @@ fbHeatStakeTemperature.Cyclic(
     stStatus => stHeatStakeTemperatureStatus
 );
 
-fbNestManager.Cyclic(bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked, eIndexPosition := stInputs.eIndexPosition, eOperatorPosition := stConfig.eOperatorPosition, bPartPresent := stInputs.bLoadingStationEaglePresent, aNestEnabled := stConfig.aNestEnabled);
+fbNestManager.Cyclic(
+    bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked,
+    eIndexPosition := stInputs.eIndexPosition,
+    eOperatorPosition := stConfig.eOperatorPosition,
+    bPartPresent := stInputs.bLoadingStationEaglePresent,
+    aNestEnabled := stConfig.aNestEnabled
+);
+
+// =====================================================
+// PRODUCTION STATISTICS RESET
+// =====================================================
+// Reset only the accumulated production counters for
+// the selected physical nest.
+//
+// Test History, current nest data and process results
+// are deliberately preserved.
+
+IF (stCommand.uiResetStatisticsNestId >= 1)
+    AND (stCommand.uiResetStatisticsNestId <= 4)
+THEN
+
+    fbNestManager.ResetNestStatistics(
+        uiNestId := stCommand.uiResetStatisticsNestId
+    );
+
+END_IF
+
+
 stOperatorNest := fbNestManager.GetNestAtPosition(stConfig.eOperatorPosition);
 stPatchDispenseNest := fbNestManager.GetNestAtPosition(stConfig.ePatchDispensePosition);
 stHeatStakeNest := fbNestManager.GetNestAtPosition(stConfig.eHeatStakePosition);
@@ -469,7 +498,11 @@ END_IF
 
 fbPatchDispense.Update(
     bEnable :=
-        (eMachineState = E_MachineState.ReadyToStart)
+        (
+            (eMachineState = E_MachineState.Initialising)
+            AND GVL_Safety.bAirSupplySafe
+        )
+        OR (eMachineState = E_MachineState.ReadyToStart)
         OR (eMachineState = E_MachineState.AutoCycle),
     bCommissioned := bPatchDispenseCommissioned,
     bSafetyOk := stInputs.stSafety.bSafetyOk,
@@ -487,7 +520,8 @@ fbPatchDispense.Update(
 
 fbHeatStake.Update(
     bEnable :=
-        (eMachineState = E_MachineState.Initialising)
+        (eMachineState = E_MachineState.Initialising 
+			AND GVL_Safety.bAirSupplySafe)
         OR (eMachineState = E_MachineState.ReadyToStart)
         OR (eMachineState = E_MachineState.AutoCycle)
         OR (eMachineState = E_MachineState.Manual),
@@ -586,9 +620,6 @@ bHeatStakeManualHeadDownAllowed :=
     AND NOT fbHeatStake.IsBusy()
     AND NOT bHeatStakeManualActionBusy
     AND bHeatStakeManualHeadUnlocked
-    AND stInputs.bStation2SupportExtended
-    AND NOT stInputs.bStation2SupportRetracted
-    AND stInputs.bHeatStakeEaglePresent
     AND stInputs.bHeatStakeHeadUp
     AND NOT stInputs.bHeatStakeHeadDown;
 
@@ -841,28 +872,66 @@ CASE usiHeatStakeManualActionStep OF
             usiHeatStakeManualActionStep := 0;
         END_IF
 
-    100: // Initialising: Unlock
+   100: // Initialising: wait for pneumatic supply, then Unlock
+    // Do not start any Heat Stake recovery timer until TwinSAFE confirms
+    // that pneumatic pressure is physically available.
+    IF GVL_Safety.bAirSupplySafe THEN
+
         bHeatStakeHeadUnlockRequest := TRUE;
-        tonHeatStakeManualAction(IN := TRUE, PT := T#1S);
+
+        tonHeatStakeManualAction(
+            IN := TRUE,
+            PT := T#1S
+        );
+
         IF tonHeatStakeManualAction.Q THEN
             tonHeatStakeManualAction(IN := FALSE);
+
             bHeatStakeManualHeadUnlocked := TRUE;
             usiHeatStakeManualActionStep := 110;
         END_IF
 
-    110: // Initialising: Head UP - physical feedback required
-        bHeatStakeHeadUnlockRequest := TRUE;
-        bHeatStakeHeadUpRequest := NOT stInputs.bHeatStakeHeadUp;
-        tonHeatStakeManualAction(IN := NOT stInputs.bHeatStakeHeadUp, PT := stConfig.tHeatStakeHeadMoveTimeout);
-        IF stInputs.bHeatStakeHeadUp THEN
-            tonHeatStakeManualAction(IN := FALSE);
-            usiHeatStakeManualActionStep := 120;
-        ELSIF tonHeatStakeManualAction.Q THEN
-            tonHeatStakeManualAction(IN := FALSE);
-            bHeatStakeManualHeadUpTimeoutFault := TRUE;
-            usiHeatStakeManualActionStep := 0;
-        END_IF
+    ELSE
+        tonHeatStakeManualAction(IN := FALSE);
+    END_IF
 
+	
+	110: // Initialising: Head UP - physical feedback required
+		// Keep the head unlocked for the complete UP movement.
+		IF GVL_Safety.bAirSupplySafe THEN
+	
+			bHeatStakeHeadUnlockRequest := TRUE;
+			bHeatStakeHeadUpRequest := NOT stInputs.bHeatStakeHeadUp;
+	
+			tonHeatStakeManualAction(
+				IN := NOT stInputs.bHeatStakeHeadUp,
+				PT := stConfig.tHeatStakeHeadMoveTimeout
+			);
+	
+			IF stInputs.bHeatStakeHeadUp THEN
+	
+				tonHeatStakeManualAction(IN := FALSE);
+				bHeatStakeHeadUpRequest := FALSE;
+	
+				usiHeatStakeManualActionStep := 120;
+	
+			ELSIF tonHeatStakeManualAction.Q THEN
+	
+				tonHeatStakeManualAction(IN := FALSE);
+				bHeatStakeManualHeadUpTimeoutFault := TRUE;
+	
+				usiHeatStakeManualActionStep := 0;
+	
+			END_IF
+	
+		ELSE
+			// Air disappeared during recovery.
+			// Freeze the movement timeout instead of generating a false
+			// Head UP timeout while pneumatic movement is impossible.
+			bHeatStakeHeadUpRequest := FALSE;
+			tonHeatStakeManualAction(IN := FALSE);
+		END_IF
+	
     120: // Initialising: Lock
         bHeatStakeHeadLockRequest := TRUE;
         tonHeatStakeManualAction(IN := TRUE, PT := T#1S);
@@ -920,7 +989,8 @@ END_IF
 
 fbHeatStakePressureRegulator.Cyclic(
     bEnable :=
-        (eMachineState = E_MachineState.ReadyToStart)
+        (eMachineState = E_MachineState.Initialising)
+        OR (eMachineState = E_MachineState.ReadyToStart)
         OR (eMachineState = E_MachineState.AutoCycle)
         OR (
             (eMachineState = E_MachineState.Manual)
@@ -1617,8 +1687,227 @@ THEN
         );
     END_IF
 
-    fbNestManager.FinaliseResultAtPosition(stConfig.eVisionPosition);
-    bCycleResultsStored := TRUE;
+// =====================================================
+// FINALISE PRODUCT RESULT
+// =====================================================
+
+IF fbNestManager.FinaliseResultAtPosition(
+    ePosition := stConfig.eVisionPosition
+) THEN
+
+    // Read the finalised nest immediately.
+    // At this point the final result and statistics are already valid.
+    stHistoryNest :=
+        fbNestManager.GetNestAtPosition(
+            stConfig.eVisionPosition
+        );
+
+    uiHistoryNestId := stHistoryNest.nId;
+
+
+    // =================================================
+    // TEST HISTORY
+    // =================================================
+
+    IF stHistoryNest.bPartPresent
+        AND stHistoryNest.stResult.bValid
+    THEN
+
+        // ---------------------------------------------
+        // GENERAL RESULT
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].uiNestId := uiHistoryNestId;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].eResult := stHistoryNest.eDisposition;
+
+
+        // ---------------------------------------------
+        // PATCH DISPENSE
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bPatchDispenseValid :=
+            stHistoryNest.stPatchDispenseResult.bValid;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bPatchDispensePass :=
+            stHistoryNest.stPatchDispenseResult.bPassed;
+
+
+        // ---------------------------------------------
+        // HEAT STAKE
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bHeatStakeValid :=
+            stHistoryNest.stHeatStakeResult.bValid;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bHeatStakePass :=
+            stHistoryNest.stHeatStakeResult.bPassed;
+
+
+        // ---------------------------------------------
+        // VISION
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bVisionValid :=
+            stHistoryNest.stVisionResult.bValid;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bVisionPass :=
+            stHistoryNest.stVisionResult.bPassed;
+
+
+        // ---------------------------------------------
+        // DATE / TIME
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].sDate := GVL_MASTER.sSystemDate;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].sTime := GVL_MASTER.sSystemTime;
+
+
+        // ---------------------------------------------
+        // FINAL RESULT TEXT
+        // ---------------------------------------------
+
+        IF stHistoryNest.stResult.bPassed THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sResult := 'PASS';
+
+        ELSE
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sResult := 'FAIL';
+
+        END_IF;
+
+
+        // ---------------------------------------------
+        // PATCH DISPENSE RESULT TEXT
+        // ---------------------------------------------
+
+        IF NOT stHistoryNest.stPatchDispenseResult.bValid THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sPatchDispenseResult := 'NOT TESTED';
+
+        ELSIF stHistoryNest.stPatchDispenseResult.bPassed THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sPatchDispenseResult := 'PASS';
+
+        ELSE
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sPatchDispenseResult := 'FAIL';
+
+        END_IF;
+
+
+        // ---------------------------------------------
+        // HEAT STAKE RESULT TEXT
+        // ---------------------------------------------
+
+        IF NOT stHistoryNest.stHeatStakeResult.bValid THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sHeatStakeResult := 'NOT TESTED';
+
+        ELSIF stHistoryNest.stHeatStakeResult.bPassed THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sHeatStakeResult := 'PASS';
+
+        ELSE
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sHeatStakeResult := 'FAIL';
+
+        END_IF;
+
+
+        // ---------------------------------------------
+        // VISION RESULT TEXT
+        // ---------------------------------------------
+
+        IF NOT stHistoryNest.stVisionResult.bValid THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sVisionResult := 'NOT TESTED';
+
+        ELSIF stHistoryNest.stVisionResult.bPassed THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sVisionResult := 'PASS';
+
+        ELSE
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sVisionResult := 'FAIL';
+
+        END_IF;
+
+
+        // ---------------------------------------------
+        // ADVANCE HISTORY BUFFER
+        // ---------------------------------------------
+
+        IF GVL_Persistent.uiTestHistoryCount < 2001 THEN
+
+            GVL_Persistent.uiTestHistoryCount :=
+                GVL_Persistent.uiTestHistoryCount + 1;
+
+        END_IF;
+
+        IF GVL_Persistent.uiTestHistoryWriteIndex < 2000 THEN
+
+            GVL_Persistent.uiTestHistoryWriteIndex :=
+                GVL_Persistent.uiTestHistoryWriteIndex + 1;
+
+        ELSE
+
+            GVL_Persistent.uiTestHistoryWriteIndex := 0;
+
+        END_IF;
+
+    END_IF;
+
+END_IF;
+
+// Prevent this cycle result from being stored/finalised again.
+bCycleResultsStored := TRUE;
+
+
 END_IF
 
 // Clear an old processed record only after operator disposition is complete.
@@ -1775,15 +2064,30 @@ END_IF
 
 // PLC-originated immediate faults request a controlled TwinSAFE run drop.
 // stInputs.bEventFault is the aggregate of active Events with bFault = TRUE.
-IF stInputs.bEventFault
+// Re-check after component cyclic execution so a fault detected in this scan
+// drops TwinSAFE immediately rather than waiting for the following PLC scan.
+// Existing event/process-cycle faults are allowed during Initialising so the
+// machine can restore pneumatic tooling to HOME.
+IF (
+        stInputs.bEventFault
+        AND (eMachineState <> E_MachineState.Initialising)
+    )
     OR fbIndex.IsFaulted()
     OR fbMainDoorLock.IsFaulted()
-    OR bProcessCycleFault
+    OR (
+        bProcessCycleFault
+        AND (eMachineState <> E_MachineState.Initialising)
+    )
     OR stHeatStakeTemperatureStatus.bFault
+    OR bInitialisationTimeoutFault
+    OR bStoppingTimeoutFault
 THEN
     bSafetyDropRequest := TRUE;
     eMachineState := E_MachineState.Fault;
 END_IF
+
+
+
 CASE eMachineState OF
 E_MachineState.PowerUp:
     bAutoCycleStopRequestLatched := FALSE;
@@ -2052,11 +2356,18 @@ stOutputsInternal.bMainDoorLockRequest := bAirAndDoorEnable;
 
 // Re-check after component cyclic execution so a fault detected in this scan
 // drops TwinSAFE immediately rather than waiting for the following PLC scan.
-// bEventFault represents any active alarm/event configured with bFault = TRUE.
-IF stInputs.bEventFault
+// Existing event/process-cycle faults are allowed during Initialising so the
+// machine can restore pneumatic tooling to HOME.
+IF (
+        stInputs.bEventFault
+        AND (eMachineState <> E_MachineState.Initialising)
+    )
     OR fbIndex.IsFaulted()
     OR fbMainDoorLock.IsFaulted()
-    OR bProcessCycleFault
+    OR (
+        bProcessCycleFault
+        AND (eMachineState <> E_MachineState.Initialising)
+    )
     OR stHeatStakeTemperatureStatus.bFault
     OR bInitialisationTimeoutFault
     OR bStoppingTimeoutFault
@@ -2304,12 +2615,7 @@ stStatus.bVisionHome :=
     AND stInputs.bRotaryGripperPick0
     AND NOT stInputs.bRotaryGripperPlace180;
 	
-stVisionStatus.bReady :=
-    bVisionManualEnableAllowed
-    AND stCommand.bVisionManualEnable
-    AND NOT fbVision.IsFaulted()
-    AND NOT bVisionManualSequenceActive
-    AND NOT bVisionManualHomeActive;
+
 
 stStatus.bVisionHorizontalBackAllowed := bVisionHorizontalBackAllowed;
 stStatus.bVisionHorizontalFrontAllowed := bVisionHorizontalFrontAllowed;

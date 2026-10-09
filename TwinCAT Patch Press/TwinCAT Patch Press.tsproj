@@ -2515,6 +2515,141 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
+			<Name GUID="{94F0423F-94ED-B090-CFF1-387053E49355}" AutoDeleteType="true">E_PartDisposition</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[None]]></Text>
+				<Enum>0</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Pass]]></Text>
+				<Enum>10</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Reject]]></Text>
+				<Enum>20</Enum>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>strict</Name>
+				</Property>
+				<Property>
+					<Name>to_string</Name>
+				</Property>
+				<Property>
+					<Name>generate_implicit_init_function</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{3578837C-02BD-4301-486E-52135A9283E5}" AutoDeleteType="true">ST_TestHistory</Name>
+			<BitSize>4848</BitSize>
+			<SubItem>
+				<Name>uiNestId</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>eResult</Name>
+				<Type GUID="{94F0423F-94ED-B090-CFF1-387053E49355}">E_PartDisposition</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bPatchDispenseValid</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bPatchDispensePass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>40</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bHeatStakeValid</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>48</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bHeatStakePass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>56</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bVisionValid</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bVisionPass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>72</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>80</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sPatchDispenseResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>248</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sHeatStakeResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sVisionResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>584</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>752</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sDate</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>2800</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name IecBaseType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
+			<Comment><![CDATA[ =====================================================
+ TEST HISTORY
+ =====================================================
+ Circular buffer containing the last 2001 completed
+ product test results.
+
+ Production Statistics reset does NOT modify this data.]]></Comment>
+			<BitSize>9700848</BitSize>
+			<BaseType GUID="{3578837C-02BD-4301-486E-52135A9283E5}">ST_TestHistory</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>2001</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
 			<Name GUID="{2438F91B-E188-4ED7-8594-54354F9ED6A4}" Namespace="Safety" TcBaseType="true">FSOE_6</Name>
 			<BitSize>48</BitSize>
 			<SubItem>
@@ -3201,11 +3336,24 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{6E29BA55-7354-385E-27BC-077EFD598772}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{F3BB489C-DAF3-72E9-F763-C37EB4D9A533}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
 						<Name>PlcTask Retains</Name>
+						<Var>
+							<Name>GVL_Persistent.uiTestHistoryWriteIndex</Name>
+							<Comment><![CDATA[ Next position to be written in the circular buffer.]]></Comment>
+							<Type>UINT</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.uiTestHistoryCount</Name>
+							<Comment><![CDATA[ Number of valid history entries currently available.
+ Saturates at 2001 when the buffer becomes full.]]></Comment>
+							<Type>UINT</Type>
+							<InOut>7</InOut>
+						</Var>
 						<Var>
 							<Name>GVL_Persistent.astEventsHistory</Name>
 							<Type GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}">ARRAY [0..200] OF ST_EventsHistory</Type>
@@ -3235,6 +3383,18 @@ External Setpoint Generation:
 						<Var>
 							<Name>GVL_Config.aNestEnabled</Name>
 							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.astTestHistory</Name>
+							<Comment><![CDATA[ =====================================================
+ TEST HISTORY
+ =====================================================
+ Circular buffer containing the last 2001 completed
+ product test results.
+
+ Production Statistics reset does NOT modify this data.]]></Comment>
+							<Type GUID="{86BD9829-E066-64DB-E7FC-79D367DA3D64}">ARRAY [0..2000] OF ST_TestHistory</Type>
 							<InOut>7</InOut>
 						</Var>
 					</Vars>

@@ -15,6 +15,9 @@ VAR_GLOBAL
     stStatistics : ST_HmiStatistics;
     bBlink_1Hz : BOOL;
     bHMIAlive : BOOL;
+	uiTestHistoryWriteIndex : UINT := 0;
+	uiTestHistoryCount : UINT := 0;
+	
 END_VAR
 VAR_GLOBAL CONSTANT
     sWHITE : STRING(40) := '{"color":"rgba(255,255,255,255)"}';
