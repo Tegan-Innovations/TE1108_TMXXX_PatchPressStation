@@ -2638,7 +2638,7 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name IecBaseType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
+			<Name GUID="{42636617-9481-1F27-4114-98289099B9CF}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
 			<Comment><![CDATA[ =====================================================
  TEST HISTORY
  =====================================================
