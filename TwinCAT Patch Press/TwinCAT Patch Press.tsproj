@@ -2515,7 +2515,7 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{94F0423F-94ED-B090-CFF1-387053E49355}" AutoDeleteType="true">E_PartDisposition</Name>
+			<Name GUID="{932F1814-5282-1BB1-311D-8F68B5F7DD9D}" AutoDeleteType="true">E_PartDisposition</Name>
 			<BitSize>16</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
 			<EnumInfo>
@@ -2529,6 +2529,10 @@ External Setpoint Generation:
 			<EnumInfo>
 				<Text><![CDATA[Reject]]></Text>
 				<Enum>20</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Reprocess]]></Text>
+				<Enum>30</Enum>
 			</EnumInfo>
 			<Properties>
 				<Property>
@@ -2546,7 +2550,7 @@ External Setpoint Generation:
 			</Properties>
 		</DataType>
 		<DataType>
-			<Name GUID="{3578837C-02BD-4301-486E-52135A9283E5}" AutoDeleteType="true">ST_TestHistory</Name>
+			<Name GUID="{34A45C7B-4398-761F-58FC-21F8A85B47E3}" AutoDeleteType="true">ST_TestHistory</Name>
 			<BitSize>4848</BitSize>
 			<SubItem>
 				<Name>uiNestId</Name>
@@ -2556,7 +2560,7 @@ External Setpoint Generation:
 			</SubItem>
 			<SubItem>
 				<Name>eResult</Name>
-				<Type GUID="{94F0423F-94ED-B090-CFF1-387053E49355}">E_PartDisposition</Type>
+				<Type GUID="{932F1814-5282-1BB1-311D-8F68B5F7DD9D}">E_PartDisposition</Type>
 				<BitSize>16</BitSize>
 				<BitOffs>16</BitOffs>
 			</SubItem>
@@ -2643,7 +2647,7 @@ External Setpoint Generation:
 
  Production Statistics reset does NOT modify this data.]]></Comment>
 			<BitSize>9700848</BitSize>
-			<BaseType GUID="{3578837C-02BD-4301-486E-52135A9283E5}">ST_TestHistory</BaseType>
+			<BaseType GUID="{34A45C7B-4398-761F-58FC-21F8A85B47E3}">ST_TestHistory</BaseType>
 			<ArrayInfo>
 				<LBound>0</LBound>
 				<Elements>2001</Elements>
@@ -3336,7 +3340,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{F3BB489C-DAF3-72E9-F763-C37EB4D9A533}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{29489F98-8A57-521A-A9C2-CAB6E9A4B910}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
@@ -3394,7 +3398,7 @@ External Setpoint Generation:
  product test results.
 
  Production Statistics reset does NOT modify this data.]]></Comment>
-							<Type GUID="{86BD9829-E066-64DB-E7FC-79D367DA3D64}">ARRAY [0..2000] OF ST_TestHistory</Type>
+							<Type GUID="{42636617-9481-1F27-4114-98289099B9CF}">ARRAY [0..2000] OF ST_TestHistory</Type>
 							<InOut>7</InOut>
 						</Var>
 					</Vars>
@@ -10303,7 +10307,11 @@ Bit 8 - 15 : reserved]]></Comment>
 		<OwnerA Name="TIID^Device 1 (EtherCAT)">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 18 (EL2904)">
 				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionInputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 TxPDO" VarB="Module 1 (FSOES)^RxPDO^FSOE"/>
-				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionOutputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 RxPDO" VarB="Module 1 (FSOES)^TxPDO^FSOE"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)">
+				<Link VarA="Term 1 (EK1100)^Term 18 (EL2904)^Module 1 (FSOES)^TxPDO^FSOE" VarB="ConnectionOutputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 RxPDO"/>
+				<Link VarA="Term 1 (EK1100)^Term 5 (EL1918)^Module 1 (FSOE)^FSoE Inputs^FSOE" VarB="ConnectionOutputs^TwinSafeGroup1.Term 5 (EL1918) - Module 1 (FSOE)_4 RxPDO"/>
+				<Link VarA="Term 1 (EK1100)^Term 6 (EL2904)^Module 1 (FSOES)^RxPDO^FSOE" VarB="ConnectionInputs^TwinSafeGroup1.Term 6 (EL2904) - Module 1 (FSOES)_5 TxPDO"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)">
 				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionInputs^TwinSafeGroup1.Term 4 (EL1918) - Module 1 (FSOE)_3 TxPDO" VarB="Module 1 (FSOE)^FSoE Outputs^FSOE"/>
@@ -10311,10 +10319,8 @@ Bit 8 - 15 : reserved]]></Comment>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)">
 				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionInputs^TwinSafeGroup1.Term 5 (EL1918) - Module 1 (FSOE)_4 TxPDO" VarB="Module 1 (FSOE)^FSoE Outputs^FSOE"/>
-				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionOutputs^TwinSafeGroup1.Term 5 (EL1918) - Module 1 (FSOE)_4 RxPDO" VarB="Module 1 (FSOE)^FSoE Inputs^FSOE"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 6 (EL2904)">
-				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionInputs^TwinSafeGroup1.Term 6 (EL2904) - Module 1 (FSOES)_5 TxPDO" VarB="Module 1 (FSOES)^RxPDO^FSOE"/>
 				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionOutputs^TwinSafeGroup1.Term 6 (EL2904) - Module 1 (FSOES)_5 RxPDO" VarB="Module 1 (FSOES)^TxPDO^FSOE"/>
 			</OwnerB>
 		</OwnerA>

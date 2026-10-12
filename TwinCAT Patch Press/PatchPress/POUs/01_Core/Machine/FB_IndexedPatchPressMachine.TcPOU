@@ -31,6 +31,7 @@ VAR
     stHeatStakeNest : ST_Nest;
     stVisionNest : ST_Nest;
 	stHistoryNest : ST_Nest;
+	stPatchDispenseCycleResult : ST_ProcessResult;
 	uiHistoryNestId : UINT := 0;
 
     bPatchDispenseRequired : BOOL;
@@ -443,11 +444,13 @@ bPatchDispenseRequired :=
 
 bHeatStakeRequired :=
     stHeatStakeNest.bPartPresent
+    AND (stHeatStakeNest.eDisposition <> E_PartDisposition.Reprocess)
     AND (stHeatStakeNest.ePatchDispenseStage = E_NestStageStatus.Complete)
     AND (stHeatStakeNest.eHeatStakeStage = E_NestStageStatus.Waiting);
 
 bVisionRequired :=
     stVisionNest.bPartPresent
+    AND (stVisionNest.eDisposition <> E_PartDisposition.Reprocess)
     AND (stVisionNest.ePatchDispenseStage = E_NestStageStatus.Complete)
     AND (stVisionNest.eHeatStakeStage = E_NestStageStatus.Complete)
     AND (stVisionNest.eVisionStage = E_NestStageStatus.Waiting);
@@ -1666,12 +1669,34 @@ IF (eProcessCycleState = E_CycleState.WaitingForProcessesComplete)
     AND bAllRequiredStationsComplete
     AND NOT bCycleResultsStored
 THEN
-    IF bPatchDispenseRequired THEN
-        fbNestManager.StorePatchDispenseResultAtPosition(
-            ePosition := stConfig.ePatchDispensePosition,
-            stResult := fbPatchDispense.GetResult()
-        );
-    END_IF
+
+	IF bPatchDispenseRequired THEN
+	
+		// Capture the station result once.
+		stPatchDispenseCycleResult := fbPatchDispense.GetResult();
+	
+		// Store the Patch Dispense result in the physical nest.
+		fbNestManager.StorePatchDispenseResultAtPosition(
+			ePosition := stConfig.ePatchDispensePosition,
+			stResult := stPatchDispenseCycleResult
+		);
+	
+		// -----------------------------------------------------
+		// PATCH DISPENSE FAILED
+		// -----------------------------------------------------
+		// Patch failure is not a definitive product Reject.
+		// The part must return to the operator for reprocessing.
+		IF stPatchDispenseCycleResult.bValid
+			AND NOT stPatchDispenseCycleResult.bPassed
+		THEN
+	
+			fbNestManager.MarkReprocessAtPosition(
+				ePosition := stConfig.ePatchDispensePosition
+			);
+	
+		END_IF
+	
+	END_IF
 
     IF bHeatStakeRequired THEN
         fbNestManager.StoreHeatStakeResultAtPosition(
@@ -1686,14 +1711,23 @@ THEN
             stResult := fbVision.GetResult()
         );
     END_IF
-
+	
 // =====================================================
 // FINALISE PRODUCT RESULT
 // =====================================================
 
-IF fbNestManager.FinaliseResultAtPosition(
-    ePosition := stConfig.eVisionPosition
-) THEN
+// Read the Vision nest before finalisation.
+// Reprocess parts must never be converted into a final Reject.
+stHistoryNest :=
+    fbNestManager.GetNestAtPosition(
+        stConfig.eVisionPosition
+    );
+
+IF (stHistoryNest.eDisposition <> E_PartDisposition.Reprocess)
+    AND fbNestManager.FinaliseResultAtPosition(
+        ePosition := stConfig.eVisionPosition
+    )
+THEN
 
     // Read the finalised nest immediately.
     // At this point the final result and statistics are already valid.
@@ -1914,10 +1948,17 @@ END_IF
 // A newly loaded part is not cleared because its load edge has already reset
 // stResult.bValid to FALSE in FB_NestTableManager.
 IF stOperatorStatus.bExchangeComplete
-    AND stOperatorNest.stResult.bValid
+    AND (
+        stOperatorNest.stResult.bValid
+        OR (stOperatorNest.eDisposition = E_PartDisposition.Reprocess)
+    )
     AND NOT stInputs.bLoadingStationEaglePresent
 THEN
-    fbNestManager.ClearOperatorNest(stConfig.eOperatorPosition);
+
+    fbNestManager.ClearOperatorNest(
+        stConfig.eOperatorPosition
+    );
+
 END_IF
 
 stOutputsInternal.bStation1SupportExtend := bStation1SupportExtendRequest;
@@ -2379,46 +2420,85 @@ END_IF
 // =========================================================
 // PRODUCT DISPOSITION ON MACHINE FAULT DURING PROCESS
 // =========================================================
-// If the machine enters Fault while one or more process stations are actively
-// working on parts, those parts can no longer be considered valid.
+// A product whose active process is interrupted by a machine
+// Fault can no longer continue as a valid production part.
 //
-// Important:
-// - A fault while merely waiting for the operator/index does NOT reject parts.
-// - Only stations that were actively processing (or were requested to start in
-//   this scan) are marked Fail.
-// - Patch failure automatically marks Heat Stake and Vision NotTested.
-// - Heat Stake failure automatically marks Vision NotTested.
-// - The result remains attached to the physical nest through recovery/indexing.
+// Rules:
+// - A completed upstream process remains Complete.
+// - The process interrupted by the Fault becomes Fail.
+// - Downstream processes become NotTested.
+// - The affected product must never reach the operator with
+//   an undefined final disposition.
+//
+// Products that were only waiting for their next process and
+// were not actively being processed are preserved and may
+// continue normally after machine recovery.
+
 IF (eMachineState = E_MachineState.Fault)
     AND (ePreviousMachineState = E_MachineState.AutoCycle)
 THEN
+
     stProcessFaultResult.bValid := TRUE;
     stProcessFaultResult.bPassed := FALSE;
     stProcessFaultResult.eCode := E_ProcessResultCode.Aborted;
     stProcessFaultResult.udiFaultCode := 0;
     stProcessFaultResult.udiAlertCode := 0;
 
-    IF bPatchDispenseRequired
-        AND (
-            bPatchDispenseProcessingBeforeUpdate
-            OR (bProcessStartStations AND bPatchDispenseRequired)
-        )
-    THEN
-        stProcessFaultResult.sDetail :=
-            'Patch Dispense aborted by machine fault during process';
 
-        fbNestManager.StorePatchDispenseResultAtPosition(
-            ePosition := stConfig.ePatchDispensePosition,
-            stResult := stProcessFaultResult
-        );
-    END_IF
+    // =====================================================
+	// PATCH DISPENSE INCOMPLETE / INTERRUPTED
+	// =====================================================
+	// If a part is physically at Patch Dispense and its Patch
+	// process was still required when AutoCycle entered Fault,
+	// the part must be removed for Reprocess.
+	//
+	// This also covers a Fault occurring before the Patch
+	// station actually became Busy.
+	//
+	// A Patch already completed successfully is preserved because
+	// bPatchDispenseRequired will already be FALSE.
+	
+	IF stPatchDispenseNest.bPartPresent
+		AND bPatchDispenseRequired
+	THEN
+	
+		// Record why the Patch process did not complete.
+		stProcessFaultResult.bValid := TRUE;
+		stProcessFaultResult.bPassed := FALSE;
+		stProcessFaultResult.eCode := E_ProcessResultCode.Aborted;
+		stProcessFaultResult.udiFaultCode := 0;
+		stProcessFaultResult.udiAlertCode := 0;
+		stProcessFaultResult.sDetail :=
+			'Patch Dispense incomplete - part requires reprocess';
+	
+		fbNestManager.StorePatchDispenseResultAtPosition(
+			ePosition := stConfig.ePatchDispensePosition,
+			stResult := stProcessFaultResult
+		);
+	
+		// IMPORTANT:
+		// Do not finalise as FAIL/Reject.
+		// Do not count Good/Bad.
+		// Do not create a Data History result.
+		fbNestManager.MarkReprocessAtPosition(
+			ePosition := stConfig.ePatchDispensePosition
+		);
+	
+	END_IF
 
-    IF bHeatStakeRequired
+    // =====================================================
+    // HEAT STAKE INTERRUPTED
+    // =====================================================
+    // Patch result is preserved.
+    // Heat Stake becomes Fail and Vision becomes NotTested.
+
+    IF stHeatStakeNest.bPartPresent
         AND (
             bHeatStakeProcessingBeforeUpdate
             OR (bProcessStartStations AND bHeatStakeRequired)
         )
     THEN
+
         stProcessFaultResult.sDetail :=
             'Heat Stake aborted by machine fault during process';
 
@@ -2426,14 +2506,31 @@ THEN
             ePosition := stConfig.eHeatStakePosition,
             stResult := stProcessFaultResult
         );
+
+        fbNestManager.MarkVisionNotTestedAtPosition(
+            stConfig.eHeatStakePosition
+        );
+
+        fbNestManager.FinaliseResultAtPosition(
+            stConfig.eHeatStakePosition
+        );
+
     END_IF
 
-    IF bVisionRequired
+
+    // =====================================================
+    // VISION INTERRUPTED
+    // =====================================================
+    // Patch and Heat Stake results are preserved.
+    // Vision becomes Fail.
+
+    IF stVisionNest.bPartPresent
         AND (
             bVisionProcessingBeforeUpdate
             OR (bProcessStartStations AND bVisionRequired)
         )
     THEN
+
         stProcessFaultResult.sDetail :=
             'Vision aborted by machine fault during process';
 
@@ -2441,9 +2538,14 @@ THEN
             ePosition := stConfig.eVisionPosition,
             stResult := stProcessFaultResult
         );
-    END_IF
-END_IF
 
+        fbNestManager.FinaliseResultAtPosition(
+            stConfig.eVisionPosition
+        );
+
+    END_IF
+
+END_IF
 
 // Validated Silicone-station handshake:
 // - Run/Stop is normally TRUE so TwinSAFE is running and can return Safety_OK.

@@ -328,6 +328,70 @@ END_IF
 ]]></ST>
       </Implementation>
     </Method>
+    <Method Name="MarkReprocessAtPosition" Id="{11b84306-b654-4f16-a1e1-6ede3fcaa773}">
+      <Declaration><![CDATA[METHOD PUBLIC MarkReprocessAtPosition : BOOL
+VAR_INPUT
+    ePosition : E_TablePosition;
+END_VAR
+VAR
+    uiId : UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[MarkReprocessAtPosition := FALSE;
+
+uiId := GetNestIdAtPosition(ePosition);
+
+IF (uiId >= 1) AND (uiId <= 4) THEN
+
+    IF aNestInternal[uiId].bPartPresent THEN
+
+        // -------------------------------------------------
+        // PART DISPOSITION
+        // -------------------------------------------------
+        // The part did not complete the production process.
+        // It must be removed by the operator and may be
+        // reintroduced later as a completely new part.
+        aNestInternal[uiId].eDisposition :=
+            E_PartDisposition.Reprocess;
+
+        // -------------------------------------------------
+        // FINAL PRODUCT RESULT
+        // -------------------------------------------------
+        // Reprocess is deliberately NOT a final PASS/FAIL.
+        // Therefore the final product result remains invalid.
+        //
+        // This prevents:
+        // - Good Parts increment
+        // - Bad Parts increment
+        // - Test History entry
+        aNestInternal[uiId].stResult.bValid := FALSE;
+        aNestInternal[uiId].stResult.bPassed := FALSE;
+        aNestInternal[uiId].stResult.eCode :=
+            E_ProcessResultCode.None;
+
+        // -------------------------------------------------
+        // PROCESS CONTROL
+        // -------------------------------------------------
+        // No further production process shall be requested
+        // for this part. It must travel directly through the
+        // remaining stations until it reaches the operator.
+        aNestInternal[uiId].bProcessRequired := FALSE;
+        aNestInternal[uiId].bProcessComplete := TRUE;
+
+        // -------------------------------------------------
+        // STATISTICS
+        // -------------------------------------------------
+        // A Reprocess part is neither Good nor Bad.
+        // No production counter is incremented here.
+        aNestInternal[uiId].bStatisticsCounted := FALSE;
+
+        MarkReprocessAtPosition := TRUE;
+
+    END_IF
+
+END_IF]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="MarkVisionNotTestedAtPosition" Id="{3fdd2071-dd2d-41d0-acd4-ba93bbfa2d17}">
       <Declaration><![CDATA[METHOD PUBLIC MarkVisionNotTestedAtPosition
 VAR_INPUT ePosition : E_TablePosition; END_VAR

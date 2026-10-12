@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_OperatorStation" Id="{ff731f13-9fb1-43b6-a19e-d679d0a53809}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_OperatorStation
@@ -16,8 +16,9 @@ VAR
     bPreviousRejectSensor     : BOOL;
     bRejectPulse              : BOOL;
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[]]></ST></Implementation>
-
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
     <Method Name="Cyclic" Id="{511ffeea-7deb-4d8b-b22e-31cebd596b3a}">
       <Declaration><![CDATA[METHOD PUBLIC Cyclic
 VAR_INPUT
@@ -29,7 +30,8 @@ VAR_INPUT
     bRequireRejectConfirm     : BOOL;
     bAllowEmptyNestIndex      : BOOL;
 END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
+      <Implementation>
+        <ST><![CDATA[
 bRejectPulse :=
     bRejectChutePartPresent
     AND NOT bPreviousRejectSensor;
@@ -66,16 +68,19 @@ ELSE
             bRejectConfirmed := FALSE;
             bRejectArmed := FALSE;
 
-            IF stOperatorNest.stResult.bValid THEN
+            IF stOperatorNest.stResult.bValid
+				OR (stOperatorNest.eDisposition = E_PartDisposition.Reprocess)
+			THEN
 
                 IF bPartPresent THEN
                     eState := E_OperatorExchangeState.WaitingForPartRemoval;
                 ELSE
                     bPartRemovedConfirmed := TRUE;
 
-                    IF NOT stOperatorNest.stResult.bPassed
-                        AND bRequireRejectConfirm
-                    THEN
+					IF (stOperatorNest.eDisposition <> E_PartDisposition.Reprocess)
+						AND NOT stOperatorNest.stResult.bPassed
+						AND bRequireRejectConfirm
+					THEN
                         eState := E_OperatorExchangeState.WaitingForRejectConfirmation;
                     ELSE
                         eState := E_OperatorExchangeState.WaitingForPartLoading;
@@ -88,25 +93,58 @@ ELSE
 
         E_OperatorExchangeState.WaitingForPartRemoval:
 
-            IF stOperatorNest.stResult.bPassed THEN
-                eInstruction := E_OperatorInstruction.RemovePassedPart;
-                sMessage := 'Remove passed part from operator nest';
-            ELSE
-                eInstruction := E_OperatorInstruction.RemoveFailedPart;
-                sMessage := 'Remove failed part from operator nest';
-            END_IF
+            IF stOperatorNest.eDisposition = E_PartDisposition.Reprocess THEN
+
+				// Reprocess is neither PASS nor definitive FAIL.
+				// The operator must remove the part, but it must NOT
+				// be sent to the reject chute.
+				eInstruction :=
+					E_OperatorInstruction.RemoveFailedPart;
+			
+				sMessage :=
+					'Remove part for reprocess';
+			
+			ELSIF stOperatorNest.stResult.bPassed THEN
+			
+				eInstruction :=
+					E_OperatorInstruction.RemovePassedPart;
+			
+				sMessage :=
+					'Remove passed part from operator nest';
+			
+			ELSE
+			
+				eInstruction :=
+					E_OperatorInstruction.RemoveFailedPart;
+			
+				sMessage :=
+					'Remove failed part from operator nest';
+			
+			END_IF
 
             IF NOT bPartPresent THEN
                 bPartRemovedConfirmed := TRUE;
                 bRejectArmed := FALSE;
 
-                IF NOT stOperatorNest.stResult.bPassed
-                    AND bRequireRejectConfirm
-                THEN
-                    eState := E_OperatorExchangeState.WaitingForRejectConfirmation;
-                ELSE
-                    eState := E_OperatorExchangeState.WaitingForPartLoading;
-                END_IF
+				IF (stOperatorNest.eDisposition = E_PartDisposition.Reprocess) THEN
+				
+					// Reprocess parts must NOT go to the reject chute.
+					eState :=
+						E_OperatorExchangeState.WaitingForPartLoading;
+				
+				ELSIF NOT stOperatorNest.stResult.bPassed
+					AND bRequireRejectConfirm
+				THEN
+				
+					eState :=
+						E_OperatorExchangeState.WaitingForRejectConfirmation;
+				
+				ELSE
+				
+					eState :=
+						E_OperatorExchangeState.WaitingForPartLoading;
+				
+				END_IF
             END_IF
 
         E_OperatorExchangeState.WaitingForRejectConfirmation:
@@ -219,39 +257,59 @@ stStatusInternal.bRejectWaitingForClear :=
 stStatusInternal.bRejectPopupRequest :=
     (
         eState = E_OperatorExchangeState.WaitingForPartRemoval
+        AND (stOperatorNest.eDisposition <> E_PartDisposition.Reprocess)
         AND stOperatorNest.stResult.bValid
         AND NOT stOperatorNest.stResult.bPassed
     )
     OR
-    (eState = E_OperatorExchangeState.WaitingForRejectConfirmation);
+    (
+        eState = E_OperatorExchangeState.WaitingForRejectConfirmation
+        AND (stOperatorNest.eDisposition <> E_PartDisposition.Reprocess)
+    );
 
 stStatusInternal.bPartPresent := bPartPresent;
 stStatusInternal.bRejectChutePartPresent := bRejectChutePartPresent;
 stStatusInternal.bResultValid := stOperatorNest.stResult.bValid;
 stStatusInternal.bResultPassed := stOperatorNest.stResult.bPassed;
 stStatusInternal.sMessage := sMessage;
-]]></ST></Implementation>
-    </Method>
 
+
+
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="GetInstruction" Id="{96151fe5-6551-4687-9395-251188bc16e1}">
       <Declaration><![CDATA[METHOD PUBLIC GetInstruction : E_OperatorInstruction]]></Declaration>
-      <Implementation><ST><![CDATA[GetInstruction := eInstruction;]]></ST></Implementation>
+      <Implementation>
+        <ST><![CDATA[GetInstruction := eInstruction;]]></ST>
+      </Implementation>
     </Method>
     <Method Name="GetState" Id="{50b48489-931c-45af-9267-a204b226aafd}">
       <Declaration><![CDATA[METHOD PUBLIC GetState : E_OperatorExchangeState]]></Declaration>
-      <Implementation><ST><![CDATA[GetState := eState;]]></ST></Implementation>
+      <Implementation>
+        <ST><![CDATA[GetState := eState;]]></ST>
+      </Implementation>
     </Method>
     <Method Name="GetStatus" Id="{e74991c2-1064-4f40-b23e-9f8304b38600}">
       <Declaration><![CDATA[METHOD PUBLIC GetStatus : ST_OperatorStationStatus]]></Declaration>
-      <Implementation><ST><![CDATA[GetStatus := stStatusInternal;]]></ST></Implementation>
+      <Implementation>
+        <ST><![CDATA[GetStatus := stStatusInternal;]]></ST>
+      </Implementation>
     </Method>
     <Method Name="IndexPermissive" Id="{73d11cbf-354c-424e-a2a8-318ace7b680f}">
       <Declaration><![CDATA[METHOD PUBLIC IndexPermissive : BOOL]]></Declaration>
-      <Implementation><ST><![CDATA[IndexPermissive := stStatusInternal.bIndexPermissive;]]></ST></Implementation>
+      <Implementation>
+        <ST><![CDATA[IndexPermissive := stStatusInternal.bIndexPermissive;]]></ST>
+      </Implementation>
     </Method>
     <Method Name="IsComplete" Id="{44a76064-7b6e-440a-b915-9333a5f0a70e}">
       <Declaration><![CDATA[METHOD PUBLIC IsComplete : BOOL]]></Declaration>
-      <Implementation><ST><![CDATA[IsComplete := bExchangeComplete;]]></ST></Implementation>
+      <Implementation>
+        <ST><![CDATA[IsComplete := bExchangeComplete;]]></ST>
+      </Implementation>
     </Method>
   </POU>
 </TcPlcObject>
