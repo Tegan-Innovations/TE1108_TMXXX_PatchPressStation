@@ -59,12 +59,13 @@ VAR
     tonInitialising : TON;
     tonStopping : TON;
     bInitialisationTimeoutFault : BOOL;
-    bStoppingTimeoutFault : BOOL;
-    bAutoCycleAllowed : BOOL;
-    sAutoCycleBlockReason : STRING(160);
-    bIndexMoveAccepted : BOOL;
-    bDoorLockOutput : BOOL;
-    rtManualIndexMove : R_TRIG;
+    bStoppingTimeoutFault 		: BOOL;
+    bAutoCycleAllowed 			: BOOL;
+    sAutoCycleBlockReason 		: STRING(160);
+    bIndexMoveAccepted 			: BOOL;
+    bDoorLockOutput 			: BOOL;
+    rtManualIndexMove 			: R_TRIG;
+	rtReprocessIndexAttempt 	: R_TRIG;
 
     bProcessStartStations       : BOOL;
     bProcessStopStations        : BOOL;
@@ -95,6 +96,8 @@ VAR
     bRejectChutePopupRequest        : BOOL;
     bRejectChuteStopRequestLatched  : BOOL;
     bRejectChutePopupReopenPending  : BOOL;
+	bReprocessPopupAcknowledged 	: BOOL := FALSE;
+	bReprocessAcknowledgePending 	: BOOL := FALSE;
 
     // Manual controlled-stop tracking.
     bManualSupportTargetUpAtRejectStop : BOOL;
@@ -990,6 +993,10 @@ THEN
     bHeatStakeManualStakeCycleActive := FALSE;
 END_IF
 
+// =====================================================
+// HEAT STAKE PRESSURE REGULATOR
+// Maintain configured pressure during operational states.
+// =====================================================
 fbHeatStakePressureRegulator.Cyclic(
     bEnable :=
         (eMachineState = E_MachineState.Initialising)
@@ -1007,7 +1014,6 @@ fbHeatStakePressureRegulator.Cyclic(
     rCommandBar => rHeatStakePressureScaledBar,
     iOutputRaw => iHeatStakePressureRaw
 );
-
 stHeatStakeProcessStatus.tContactTimeSet := stHeatStakeProcessSettings.tContactTime;
 stHeatStakeProcessStatus.rContactTimeSetSeconds :=
     TIME_TO_LREAL(stHeatStakeProcessSettings.tContactTime) / 1000.0;
@@ -1944,6 +1950,79 @@ bCycleResultsStored := TRUE;
 
 END_IF
 
+// =====================================================
+// REPROCESS POPUP - OPERATOR STATION
+// =====================================================
+// 
+// Activate Reprocess requirement when a Reprocess
+// part is present at the Operator Station.
+IF (stOperatorNest.ePosition = E_TablePosition.Position1)
+    AND (stOperatorNest.eDisposition = E_PartDisposition.Reprocess)
+    AND stOperatorNest.bPartPresent
+THEN
+    bReprocessAcknowledgePending := TRUE;
+END_IF
+
+// Reset acknowledgement memory only when there is
+// no active Reprocess acknowledgement pending
+// and the operator nest is empty.
+IF NOT stOperatorNest.bPartPresent
+    AND NOT bReprocessAcknowledgePending
+THEN
+    bReprocessPopupAcknowledged := FALSE;
+END_IF
+
+// Acknowledge the current Reprocess part.
+IF GVL_HMI.stCommands.bReprocessPopupAcknowledge THEN
+    bReprocessPopupAcknowledged := TRUE;
+    bReprocessAcknowledgePending := FALSE;
+    GVL_HMI.stCommands.bReprocessPopupAcknowledge := FALSE;
+END_IF
+
+// // Require acknowledgement only for an unacknowledged
+// // Reprocess part physically present at the Operator Station.
+// IF (stOperatorNest.ePosition = E_TablePosition.Position1)
+//     AND (stOperatorNest.eDisposition = E_PartDisposition.Reprocess)
+//     AND stOperatorNest.bPartPresent
+//     AND NOT bReprocessPopupAcknowledged
+// THEN
+//     bReprocessAcknowledgePending := TRUE;
+// END_IF
+
+// Popup remains requested until acknowledged,
+// // even if the part is physically removed.
+// GVL_HMI.stStatus.bReprocessPopupRequest :=
+//     bReprocessAcknowledgePending;
+// Reprocess popup request.
+// Keep the PLC interlock independent from popup visibility.
+
+rtReprocessIndexAttempt(
+    CLK := stInputs.bTwoHandsSafe
+);
+
+// Generate a new FALSE -> TRUE transition when the
+// operator attempts to index with Reprocess pending.
+IF NOT bReprocessAcknowledgePending THEN
+
+    GVL_HMI.stStatus.bReprocessPopupRequest := FALSE;
+
+ELSIF rtReprocessIndexAttempt.Q THEN
+
+    GVL_HMI.stStatus.bReprocessPopupRequest := FALSE;
+
+ELSE
+
+    GVL_HMI.stStatus.bReprocessPopupRequest := TRUE;
+
+END_IF
+// Request popup only for an unacknowledged Reprocess part
+// physically present at the Operator Station.
+// GVL_HMI.stStatus.bReprocessPopupRequest :=
+//     (stOperatorNest.ePosition = E_TablePosition.Position1)
+//     AND (stOperatorNest.eDisposition = E_PartDisposition.Reprocess)
+//     AND stOperatorNest.bPartPresent
+//     AND NOT bReprocessPopupAcknowledged;
+
 // Clear an old processed record only after operator disposition is complete.
 // A newly loaded part is not cleared because its load edge has already reset
 // stResult.bValid to FALSE in FB_NestTableManager.
@@ -2006,7 +2085,11 @@ stPermissives.bInitialisationAllowed := stInputs.stSafety.bSafetyOk
     AND stPermissives.bIndexInitialisationReady;
 
 stPermissives.bSafetyIndexPermissive := stInputs.stSafety.bMotionSafetyPermitted;
-stPermissives.bOperatorIndexPermissive := stOperatorStatus.bIndexPermissive;
+
+stPermissives.bOperatorIndexPermissive :=
+    stOperatorStatus.bIndexPermissive
+    AND NOT bReprocessAcknowledgePending;
+
 stPermissives.bStationsIndexPermissive := stPermissives.bStationsHome;
 // IMPORTANT:
 // The operator exchange permissive is a START permissive only.
@@ -2020,6 +2103,7 @@ stPermissives.bStationsIndexPermissive := stPermissives.bStationsHome;
 stPermissives.bIndexMoveAllowed :=
     stPermissives.bSafetyIndexPermissive
     AND stPermissives.bStationsIndexPermissive;
+	
 fbCommissioningGuard.Cyclic(bDispenseCommissioned := bPatchDispenseCommissioned, bHeatStakeCommissioned := bHeatStakeCommissioned, bVisionCommissioned := bVisionCommissioned, bCoreCommissioningMode := bCoreCommissioningMode, bCoreReady := ((eMachineState = E_MachineState.ReadyToStart) OR (eMachineState = E_MachineState.AutoCycle)), bAutoCycleAllowed => bAutoCycleAllowed, sBlockReason => sAutoCycleBlockReason);
 stPermissives.bAutoCycleAllowed := bAutoCycleAllowed;
 

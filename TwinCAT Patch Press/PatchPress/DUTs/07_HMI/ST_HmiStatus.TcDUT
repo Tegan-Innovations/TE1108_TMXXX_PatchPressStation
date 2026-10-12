@@ -37,10 +37,10 @@ STRUCT
     bAllStationsCommissioned  : BOOL;
     bAutoCycleAllowed         : BOOL;
 
-    bNest1Blocked             : BOOL;
-    bNest2Blocked             : BOOL;
-    bNest3Blocked             : BOOL;
-    bNest4Blocked             : BOOL;
+    bNest1Blocked             	: BOOL;
+    bNest2Blocked             	: BOOL;
+    bNest3Blocked             	: BOOL;
+    bNest4Blocked             	: BOOL;
 
     bDisabledNestPartIndexBlocked : BOOL;
     bDisabledNestPartPopupRequest : BOOL;
@@ -48,18 +48,19 @@ STRUCT
     sDisabledNestPartPopupMessage : STRING(255);
 
     // Reject chute full / controlled-stop status.
-    bRejectChuteFullLatched : BOOL;
-    bRejectChutePopupRequest : BOOL;
-    bRejectChuteStopRequest : BOOL;
-    bRejectChuteResetBlocked : BOOL;
-    sRejectChutePopupMessage : STRING(255);
+    bRejectChuteFullLatched   	: BOOL;
+    bRejectChutePopupRequest 	: BOOL;
+	bReprocessPopupRequest 		: BOOL;
+    bRejectChuteStopRequest 	: BOOL;
+    bRejectChuteResetBlocked 	: BOOL;
+    sRejectChutePopupMessage 	: STRING(255);
 
     // Heat Stake head cylinder diagnostics.
-    bHeatStakeHeadUp : BOOL;
-    bHeatStakeHeadDown : BOOL;
-    bHeatStakeHeadDownTimeoutFault : BOOL;
-    bHeatStakeHeadUpTimeoutFault : BOOL;
-    bHeatStakeHeadSensorConflictFault : BOOL;
+    bHeatStakeHeadUp 					: BOOL;
+    bHeatStakeHeadDown 					: BOOL;
+    bHeatStakeHeadDownTimeoutFault 		: BOOL;
+    bHeatStakeHeadUpTimeoutFault 		: BOOL;
+    bHeatStakeHeadSensorConflictFault 	: BOOL;
 	
 	// =====================================================
 	// Vision Manual Mode
@@ -119,30 +120,32 @@ STRUCT
     udiHeatStakeSettingsWriteErrorId : UDINT;
 
     // Current physical nest at each process station.
-    uiPatchDispenseNestId : UINT;
-    uiHeatStakeNestId     : UINT;
-    uiVisionNestId        : UINT;
+    uiPatchDispenseNestId 				: UINT;
+    uiHeatStakeNestId     				: UINT;
+    uiVisionNestId        				: UINT;
 
-    bHeatStakeManualEnableAllowed     : BOOL;
-    bHeatStakeManualStakeAllowed      : BOOL;
-    bHeatStakeManualUnlockAllowed     : BOOL;
-    bHeatStakeManualLockAllowed       : BOOL;
-    bHeatStakeManualHeadDownAllowed   : BOOL;
-    bHeatStakeManualHeadUpAllowed     : BOOL;
-    bHeatStakeManualSupportAllowed    : BOOL;
-    bHeatStakeManualActionBusy        : BOOL;
-    bHeatStakeManualHeadUnlocked      : BOOL;
-	bVisionManualRunSequenceAllowed   : BOOL;
-	bVisionManualHomeAllowed 		  : BOOL;
-	bVisionHome              		  : BOOL;
+    bHeatStakeManualEnableAllowed     	: BOOL;
+    bHeatStakeManualStakeAllowed      	: BOOL;
+    bHeatStakeManualUnlockAllowed     	: BOOL;
+    bHeatStakeManualLockAllowed       	: BOOL;
+    bHeatStakeManualHeadDownAllowed   	: BOOL;
+    bHeatStakeManualHeadUpAllowed     	: BOOL;
+    bHeatStakeManualSupportAllowed    	: BOOL;
+    bHeatStakeManualActionBusy        	: BOOL;
+    bHeatStakeManualHeadUnlocked      	: BOOL;
+	bVisionManualRunSequenceAllowed   	: BOOL;
+	bVisionManualHomeAllowed 		 	: BOOL;
+	bVisionHome              		  	: BOOL;
 
-    stVision                  : ST_PatchStageStatus;
-    eOperatorInstruction      : E_OperatorInstruction;
-    stOperatorStation         : ST_OperatorStationStatus;
-    aNest                     : ARRAY[1..4] OF ST_Nest;
-    sMachineMessage           : STRING(160);
-    sOperatorMessage          : STRING(255);
-    sAutoCycleBlockReason     : STRING(160);
+    stVision                  			: ST_PatchStageStatus;
+    eOperatorInstruction      			: E_OperatorInstruction;
+    stOperatorStation         			: ST_OperatorStationStatus;
+    aNest                     			: ARRAY[1..4] OF ST_Nest;
+    sMachineMessage           			: STRING(160);
+    sOperatorMessage          			: STRING(255);
+    sAutoCycleBlockReason     			: STRING(160);
+	
+	
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

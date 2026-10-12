@@ -293,10 +293,7 @@
     <Content Include="Contents\Screens\popups\Content_Popup_ManualMode.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Screens\popups\Content_Popup_Pneumatics.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Screens\popups\Content_Popup_Degassing.content">
+    <Content Include="Contents\Screens\popups\Content_Popup_Reprocess.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Screens\popups\Content_Popup_ApplyHeatParameters.content">

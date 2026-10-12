@@ -8446,6 +8446,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.bReprocessPopupAcknowledge": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bReprocessPopupAcknowledge",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 36
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.bReservoir1Degass": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -11859,6 +11876,23 @@
                     },
                     {
                         "propertyOrder": 15
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bReprocessPopupRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bReprocessPopupRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 44
                     }
                 ]
             },
@@ -17450,6 +17484,7 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bManualRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bNestCylindersManualEnable": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bOperatorLight": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bReprocessPopupAcknowledge": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReservoir1Degass": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReservoir1Select": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReservoir2Degass": 3,
@@ -17652,6 +17687,7 @@
                 "ADS.PLC1.GVL_HMI.stStatus.bRejectChutePartPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bRejectChutePopupRequest": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bRejectPopup": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bReprocessPopupRequest": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bReservoirDegassingPopup": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bResetButtonActive": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bRightFlapSafe": 3,

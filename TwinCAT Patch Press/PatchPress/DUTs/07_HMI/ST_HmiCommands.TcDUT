@@ -34,22 +34,22 @@ STRUCT
 	// Vision Manual Mode
 	// =====================================================
 	
-	bVisionManualEnable                : BOOL;
+	bVisionManualEnable                	: BOOL;
 	
-	bVisionHorizontalBackRequest       : BOOL;
-	bVisionHorizontalFrontRequest      : BOOL;
+	bVisionHorizontalBackRequest       	: BOOL;
+	bVisionHorizontalFrontRequest      	: BOOL;
 	
-	bVisionVerticalUpRequest           : BOOL;
-	bVisionVerticalIntermediateRequest : BOOL;
-	bVisionVerticalFullDownRequest     : BOOL;
+	bVisionVerticalUpRequest           	: BOOL;
+	bVisionVerticalIntermediateRequest 	: BOOL;
+	bVisionVerticalFullDownRequest     	: BOOL;
 	
-	bVisionGripOpenRequest             : BOOL;
-	bVisionGripCloseRequest            : BOOL;
+	bVisionGripOpenRequest             	: BOOL;
+	bVisionGripCloseRequest            	: BOOL;
 	
-	bVisionRotate0Request              : BOOL;
-	bVisionRotate180Request            : BOOL;
+	bVisionRotate0Request              	: BOOL;
+	bVisionRotate180Request            	: BOOL;
 	
-	bVisionSupportExtendRequest        : BOOL;
+	bVisionSupportExtendRequest        	: BOOL;
 	bVisionManualRunSequence 			: BOOL;
 	
 	bVisionManualHomeRequest 			: BOOL;
@@ -59,12 +59,13 @@ STRUCT
     aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
 
     // Popup OK acknowledgement.
-    bAcknowledgeDisabledNestPartPopup : BOOL;
+    bAcknowledgeDisabledNestPartPopup 	: BOOL;
+	bReprocessPopupAcknowledge 			: BOOL;
+    bAcknowledgeRejectChuteFull 		: BOOL;
 
-    // Reject chute full popup acknowledgement.
-    bAcknowledgeRejectChuteFull : BOOL;
-
-    uiResetStatisticsNestId: UINT;
+    uiResetStatisticsNestId				: UINT;
+	
+	
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

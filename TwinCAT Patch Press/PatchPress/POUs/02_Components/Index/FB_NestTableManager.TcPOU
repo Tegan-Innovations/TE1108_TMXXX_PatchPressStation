@@ -151,6 +151,18 @@ uiId := GetNestIdAtPosition(ePosition);
 
 IF (uiId >= 1) AND (uiId <= 4) THEN
 
+    // =====================================================
+    // REPROCESS PROTECTION
+    // =====================================================
+    // Reprocess is not a definitive product result.
+    // Never convert it to Pass or Reject.
+    // Never increment statistics for this attempt.
+
+    IF aNestInternal[uiId].eDisposition = E_PartDisposition.Reprocess THEN
+        RETURN;
+    END_IF
+
+    // No part in this physical nest: there is no product result to finalise.
     // No part in this physical nest: there is no product result to finalise.
     IF NOT aNestInternal[uiId].bPartPresent THEN
 
