@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_VSCamera" Id="{328e316d-dc5d-43ae-96a6-2d990b1fabfb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VSCamera
+VAR_INPUT
+	
+
+
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{938491e2-5bd3-452c-8578-e1ddfd9980c1}">
+      <Declaration><![CDATA[METHOD Cyclic : BOOL
+VAR_INPUT
+	
+	
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -28,6 +28,11 @@ VAR_GLOBAL
     stFestoModule2_VABX : ST_VABX_A_S_BV_V4A;
 	stFestoModule3_VABX : ST_VABX_A_S_BV_V4A;
     stFestoModule4_VABX : ST_VABX_A_S_BV_V4A;
+	
+	// Keyence vs camera
+	
+	stVSKeyenceCamera	: ST_VS_Keyence_Camera;
+	
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

@@ -3,8 +3,14 @@
   <POU Name="MAIN" Id="{58171a7d-5f08-4090-a464-779d1e8200c7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	//Testing Byte to char conversion from camera
+//--------------------------------------------------------------------------------------------
+	asChar : ARRAY[1..100] OF STRING;
+	aString : ARRAY [1..10] OF STRING;
+//--------------------------------------------------------------------------------------------
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[PRG_TerminalMapping.ReadInputs();
+    <Implementation>
+      <ST><![CDATA[PRG_TerminalMapping.ReadInputs();
 PRG_ReadInputs();
 PRG_HmiCommands();
 PRG_NestSettings();
@@ -14,6 +20,45 @@ PRG_HeatStakeTemperatureSettings();
 PRG_Events();
 PRG_HmiStatus();
 PRG_WriteOutputs();
-PRG_TerminalMapping.WriteOutputs();]]></ST></Implementation>
+PRG_TerminalMapping.WriteOutputs();
+
+	//Testing Byte to char conversion from camera
+//--------------------------------------------------------------------------------------------
+asChar[1] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[28]);
+asChar[2] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[29]);
+asChar[3] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[30]);
+asChar[4] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[31]);
+
+aString[1] := 	CONCAT(STR1 := asChar[1], STR2 := CONCAT(STR1 := asChar[2], 
+				CONCAT(STR1:= asChar[3], STR2 := asChar[4])));
+			
+asChar[5] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[32]);
+asChar[6] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[33]);
+asChar[7] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[34]);
+asChar[8] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[35]);
+
+aString[2] := 	CONCAT(STR1 := asChar[5], STR2 := CONCAT(STR1 := asChar[6], 
+				CONCAT(STR1:= asChar[7], STR2 := asChar[8])));
+				
+asChar[9] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[36]);
+asChar[10] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[37]);
+asChar[11] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[38]);
+asChar[12] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[39]);
+
+aString[3] := 	CONCAT(STR1 := asChar[9], STR2 := CONCAT(STR1 := asChar[10], 
+				CONCAT(STR1:= asChar[11], STR2 := asChar[12])));
+				
+asChar[13] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[40]);
+asChar[14] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[41]);
+asChar[15] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[42]);
+asChar[16] := F_ToCHR( GVL_EtherCAT.stVSKeyenceCamera.byByteResults[4]);
+
+aString[4] := 	CONCAT(STR1 := asChar[13], STR2 := CONCAT(STR1 := asChar[14], 
+				CONCAT(STR1:= asChar[15], STR2 := asChar[16])));
+				
+aString[5] := CONCAT(STR1 := aString[1], CONCAT(STR1 := ' ', STR2 := aString[2]));
+aString[6] := CONCAT(STR1 := aString[3], STR2 := aString[4]);
+//--------------------------------------------------------------------------------------------]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

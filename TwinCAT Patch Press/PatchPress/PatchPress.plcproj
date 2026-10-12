@@ -126,6 +126,9 @@
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_VABX_A_S_BV_V4A.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_VS_Keyence_Camera.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\07_HMI\E_LEDs_Mode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -342,6 +345,9 @@
     <Compile Include="POUs\02_Components\Temperature\FB_HeatStakeTemperatureControl.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\02_Components\VS Keyence Camera\FB_VSCamera.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\03_Stations\HeatStake\FB_HeatStakeStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -398,6 +404,7 @@
     <Folder Include="POUs\01_Core\Machine" />
     <Folder Include="POUs\01_Core\Process" />
     <Folder Include="POUs\02_Components" />
+    <Folder Include="POUs\02_Components\VS Keyence Camera" />
     <Folder Include="POUs\02_Components\Pressure" />
     <Folder Include="POUs\02_Components\Temperature" />
     <Folder Include="POUs\02_Components\Door" />
