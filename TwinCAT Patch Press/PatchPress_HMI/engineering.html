@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Kistler_HMI</title>
-  <meta name="tchmi-buildtime" content="2026-10-12T11:57:58">
+  <meta name="tchmi-buildtime" content="2026-10-13T08:03:24">
 
   <!-- target-densitydpi=device-dpi -->
   <meta name="viewport" content="initial-scale=1.0"><script>
@@ -1045,7 +1045,7 @@
 ]
 </script>
 </div>
-<div id="Main_Popup" data-tchmi-type="TcHmi.Controls.System.TcHmiPopup" data-tchmi-height="420" data-tchmi-height-unit="px" data-tchmi-width="480" data-tchmi-width-unit="px" data-tchmi-modal="True" data-tchmi-left="444" data-tchmi-top="100" data-tchmi-close-on-background="True" data-tchmi-zindex="5" data-tchmi-creator-visibility="Visible">
+<div id="Main_Popup" data-tchmi-type="TcHmi.Controls.System.TcHmiPopup" data-tchmi-height="420" data-tchmi-height-unit="px" data-tchmi-width="480" data-tchmi-width-unit="px" data-tchmi-modal="True" data-tchmi-left="444" data-tchmi-top="100" data-tchmi-close-on-background="False" data-tchmi-zindex="5" data-tchmi-creator-visibility="Visible" data-tchmi-scrolling="No">
 
 
 
@@ -1055,6 +1055,61 @@
 [
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bReprocessPopupRequest%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bReprocessPopupRequest%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "ControlApiFunction",
+                "active": true,
+                "control": "Main_Popup",
+                "fn": "open",
+                "asyncWait": true
+              },
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::TargetFile%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/TcHmi.Controls.System.TcHmiPopup.TargetFile",
+                  "value": {
+                    "path": "Contents/Screens/popups/Content_Popup_Reprocess.content"
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": []
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  },
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bTwoHandsSafe%/s%",
     "actions": [
       {
         "objectType": "Condition",

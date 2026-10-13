@@ -13533,6 +13533,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bRejectPopupRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stOperatorStation::bRejectPopupRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bBusy": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -17784,6 +17801,7 @@
                 "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTd": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTn": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperatureSettings.tTv": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bRejectPopupRequest": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bBusy": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bFault": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bHome": 3,

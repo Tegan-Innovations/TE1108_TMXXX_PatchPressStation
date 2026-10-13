@@ -969,9 +969,10 @@
 </div>
 <div id="Popup_region" data-tchmi-type="TcHmi.Controls.System.TcHmiRegion" data-tchmi-height="500" data-tchmi-height-unit="px" data-tchmi-left="419" data-tchmi-left-unit="px" data-tchmi-top="155" data-tchmi-top-unit="px" data-tchmi-width="500" data-tchmi-width-unit="px" data-tchmi-visibility="Collapsed" data-tchmi-creator-visibility="Visible">
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
-    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bRejectPopup%/s%",
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bRejectPopupRequest%/s%",
     "actions": [
       {
         "objectType": "Condition",
@@ -983,7 +984,7 @@
                 "compare1": {
                   "objectType": "Symbol",
                   "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bRejectPopup%/s%"
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bRejectPopupRequest%/s%"
                 },
                 "compare2": {
                   "objectType": "StaticValue",
@@ -1038,77 +1039,9 @@
         "asyncWait": true
       }
     ]
-  },
-  {
-    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bReservoirDegassingPopup%/s%",
-    "actions": [
-      {
-        "objectType": "Condition",
-        "active": true,
-        "parts": [
-          {
-            "if": [
-              {
-                "compare1": {
-                  "objectType": "Symbol",
-                  "valueType": "tchmi:general#/definitions/BOOL",
-                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.bReservoirDegassingPopup%/s%"
-                },
-                "compare2": {
-                  "objectType": "StaticValue",
-                  "valueType": "tchmi:general#/definitions/BOOL",
-                  "value": true
-                },
-                "compareOperator": "==",
-                "logic": null
-              }
-            ],
-            "then": [
-              {
-                "objectType": "WriteToSymbol",
-                "active": true,
-                "symbolExpression": "%ctx%owner::TargetContent%/ctx%",
-                "value": {
-                  "objectType": "StaticValue",
-                  "valueType": "tchmi:framework#/definitions/ContentPath",
-                  "value": "Contents/Screens/popups/Content_Popup_Degassing.content"
-                },
-                "asyncWait": true
-              },
-              {
-                "objectType": "WriteToSymbol",
-                "active": true,
-                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
-                "value": {
-                  "objectType": "StaticValue",
-                  "valueType": "tchmi:framework#/definitions/Visibility",
-                  "value": "Visible"
-                },
-                "asyncWait": true
-              }
-            ]
-          },
-          {
-            "else": [
-              {
-                "objectType": "WriteToSymbol",
-                "active": true,
-                "symbolExpression": "%ctx%owner::Visibility%/ctx%",
-                "value": {
-                  "objectType": "StaticValue",
-                  "valueType": "tchmi:framework#/definitions/Visibility",
-                  "value": "Collapsed"
-                },
-                "asyncWait": true
-              }
-            ]
-          }
-        ],
-        "asyncWait": true
-      }
-    ]
   }
-]</script>
+]
+</script>
 </div>
 <div id="TcHmiImage_42" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="60" data-tchmi-height-unit="px" data-tchmi-left="974" data-tchmi-left-unit="px" data-tchmi-src="Images/Client/minimed_logo.png" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="380" data-tchmi-width-unit="px">
 </div>
