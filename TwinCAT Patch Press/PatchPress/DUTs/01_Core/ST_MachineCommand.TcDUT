@@ -13,6 +13,7 @@ STRUCT
     bManualMainDoorUnlock : BOOL;
     bAcknowledge          : BOOL;
     bAcknowledgePuckRemovalFault : BOOL;
+	ePowerCmd : E_PLC_Power := E_PLC_Power.Idle;
 
     // Operator/nest light request from HMI.
     bOperatorLight        : BOOL;

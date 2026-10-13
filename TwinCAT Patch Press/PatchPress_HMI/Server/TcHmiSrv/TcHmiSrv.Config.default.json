@@ -526,8 +526,7 @@
                     0,
                     1,
                     2,
-                    3,
-                    4
+                    3
                 ],
                 "options": [
                     {
@@ -545,10 +544,6 @@
                     {
                         "label": "Cancel",
                         "value": 3
-                    },
-                    {
-                        "label": "ExitHMI",
-                        "value": 4
                     }
                 ],
                 "type": "integer"
@@ -8910,6 +8905,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.ePowerCmd": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::ePowerCmd",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:server#/definitions/ADS-PLC1.E_PLC_Power"
+                    },
+                    {
+                        "propertyOrder": 10
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeProcessSettings.rDownPressureBar": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -12414,6 +12426,23 @@
             "DOMAIN": "ADS",
             "DYNAMIC": true,
             "MAPPING": "PLC1::GVL_HMI::stStatus::iNestRotationAngle",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    },
+                    {
+                        "propertyOrder": 4
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.iPowerCountdown": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::iPowerCountdown",
             "SCHEMA": {
                 "allOf": [
                     {
@@ -17528,6 +17557,7 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalFullDownRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalIntermediateRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bVisionVerticalUpRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.ePowerCmd": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeProcessSettings.rDownPressureBar": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeProcessSettings.tContactTime": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.bWarmupBoostEnabled": 3,
@@ -17736,6 +17766,7 @@
                 "ADS.PLC1.GVL_HMI.stStatus.eMachineState": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.eOperatorInstruction": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.iNestRotationAngle": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.iPowerCountdown": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.sAutoCycleBlockReason": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.sDisabledNestPartPopupMessage": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.sHeatStakeSettingsApplyRejectReason": 3,

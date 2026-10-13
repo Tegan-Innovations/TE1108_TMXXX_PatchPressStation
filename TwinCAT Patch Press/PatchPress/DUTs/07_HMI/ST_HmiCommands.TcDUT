@@ -12,6 +12,7 @@ STRUCT
     bManualIndexForward    : BOOL;
     bManualIndexHome       : BOOL;
     bManualMainDoorUnlock  : BOOL;
+	ePowerCmd              : E_PLC_Power := E_PLC_Power.Idle;
 
     // Main-screen operator/nest light toggle.
     // Physical output: Term 9 EL2809 Ch6 (bNestLight).

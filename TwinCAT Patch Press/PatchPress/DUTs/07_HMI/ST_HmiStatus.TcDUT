@@ -3,57 +3,58 @@
   <DUT Name="ST_HmiStatus" Id="{d41f7c8f-993e-495c-ab35-890ed277e5d6}">
     <Declaration><![CDATA[TYPE ST_HmiStatus :
 STRUCT
-    eMachineState             : E_MachineState;
-    eIndexState               : E_IndexState;
-    eIndexPosition            : E_TablePosition;
-    iNestRotationAngle        : INT;
-    bReady                    : BOOL;
-    bBusy                     : BOOL;
-    bFaulted                  : BOOL;
-    bTwoHandsSafe             : BOOL;
+    eMachineState             	: E_MachineState;
+    eIndexState               	: E_IndexState;
+    eIndexPosition           	: E_TablePosition;
+	iPowerCountdown 		  	: INT := 0;
+    iNestRotationAngle        	: INT;
+    bReady                    	: BOOL;
+    bBusy                     	: BOOL;
+    bFaulted                  	: BOOL;
+    bTwoHandsSafe             	: BOOL;
     bLoadingStationEaglePresent : BOOL;
-    bRejectChutePartPresent   : BOOL;
-    bHeatStakeEaglePresent    : BOOL;
-    bHeatStakePatchPresent    : BOOL;
-    bPbupMagnetPresent        : BOOL;
-    bIndexReady               : BOOL;
-    bIndexLocked              : BOOL;
-    bIndexCompletedSensor     : BOOL;
-    bMainDoorClosed           : BOOL;
-    bMainDoorLocked           : BOOL;
-    bStartButtonActive        : BOOL;
-    bStopButtonActive         : BOOL;
-    bResetButtonActive        : BOOL;
-    bStartButtonLamp          : BOOL;
-    bUp24VPowerSupplyOk       : BOOL;
-    bUs24VPowerSupplyOk       : BOOL;
-    b48VPowerSupplyOk         : BOOL;
-    bMainDoorDiagnosticOk     : BOOL;
-    bMs6FeedbackOk            : BOOL;
-    bAirExhausted             : BOOL;
-    bLeftFlapSafe             : BOOL;
-    bRightFlapSafe            : BOOL;
-    bEnableSettings           : BOOL;
-    bAllStationsCommissioned  : BOOL;
-    bAutoCycleAllowed         : BOOL;
+    bRejectChutePartPresent   	: BOOL;
+    bHeatStakeEaglePresent    	: BOOL;
+    bHeatStakePatchPresent    	: BOOL;
+    bPbupMagnetPresent        	: BOOL;
+    bIndexReady               	: BOOL;
+    bIndexLocked              	: BOOL;
+    bIndexCompletedSensor     	: BOOL;
+    bMainDoorClosed           	: BOOL;
+    bMainDoorLocked           	: BOOL;
+    bStartButtonActive        	: BOOL;
+    bStopButtonActive         	: BOOL;
+    bResetButtonActive        	: BOOL;
+    bStartButtonLamp          	: BOOL;
+    bUp24VPowerSupplyOk       	: BOOL;
+    bUs24VPowerSupplyOk       	: BOOL;
+    b48VPowerSupplyOk         	: BOOL;
+    bMainDoorDiagnosticOk     	: BOOL;
+    bMs6FeedbackOk            	: BOOL;
+    bAirExhausted             	: BOOL;
+    bLeftFlapSafe             	: BOOL;
+    bRightFlapSafe            	: BOOL;
+    bEnableSettings           	: BOOL;
+    bAllStationsCommissioned  	: BOOL;
+    bAutoCycleAllowed         	: BOOL;
 
-    bNest1Blocked             	: BOOL;
-    bNest2Blocked             	: BOOL;
-    bNest3Blocked             	: BOOL;
-    bNest4Blocked             	: BOOL;
+    bNest1Blocked             			: BOOL;
+    bNest2Blocked             			: BOOL;
+    bNest3Blocked             			: BOOL;
+    bNest4Blocked             			: BOOL;
 
-    bDisabledNestPartIndexBlocked : BOOL;
-    bDisabledNestPartPopupRequest : BOOL;
-    uiDisabledNestPartPopupNestId : UINT;
-    sDisabledNestPartPopupMessage : STRING(255);
+    bDisabledNestPartIndexBlocked 		: BOOL;
+    bDisabledNestPartPopupRequest 		: BOOL;
+    uiDisabledNestPartPopupNestId 		: UINT;
+    sDisabledNestPartPopupMessage 		: STRING(255);
 
     // Reject chute full / controlled-stop status.
-    bRejectChuteFullLatched   	: BOOL;
-    bRejectChutePopupRequest 	: BOOL;
-	bReprocessPopupRequest 		: BOOL;
-    bRejectChuteStopRequest 	: BOOL;
-    bRejectChuteResetBlocked 	: BOOL;
-    sRejectChutePopupMessage 	: STRING(255);
+    bRejectChuteFullLatched   			: BOOL;
+    bRejectChutePopupRequest 			: BOOL;
+	bReprocessPopupRequest 				: BOOL;
+    bRejectChuteStopRequest 			: BOOL;
+    bRejectChuteResetBlocked 			: BOOL;
+    sRejectChutePopupMessage 			: STRING(255);
 
     // Heat Stake head cylinder diagnostics.
     bHeatStakeHeadUp 					: BOOL;
@@ -67,23 +68,23 @@ STRUCT
 	// =====================================================
 	
 	// General manual control
-	bVisionManualEnableAllowed : BOOL;
+	bVisionManualEnableAllowed 			: BOOL;
 	
 	// Individual motion permissives
-	bVisionHorizontalBackAllowed       : BOOL;
-	bVisionHorizontalFrontAllowed      : BOOL;
+	bVisionHorizontalBackAllowed       	: BOOL;
+	bVisionHorizontalFrontAllowed      	: BOOL;
 	
-	bVisionVerticalUpAllowed           : BOOL;
-	bVisionVerticalIntermediateAllowed : BOOL;
-	bVisionVerticalFullDownAllowed     : BOOL;
+	bVisionVerticalUpAllowed           	: BOOL;
+	bVisionVerticalIntermediateAllowed 	: BOOL;
+	bVisionVerticalFullDownAllowed     	: BOOL;
 	
-	bVisionGripOpenAllowed             : BOOL;
-	bVisionGripCloseAllowed            : BOOL;
+	bVisionGripOpenAllowed             	: BOOL;
+	bVisionGripCloseAllowed            	: BOOL;
 	
-	bVisionRotate0Allowed              : BOOL;
-	bVisionRotate180Allowed            : BOOL;
+	bVisionRotate0Allowed              	: BOOL;
+	bVisionRotate180Allowed            	: BOOL;
 	
-	bVisionSupportAllowed              : BOOL;
+	bVisionSupportAllowed              	: BOOL;
 	
 	// Position feedback
 	bVisionHorizontalBack  				: BOOL;
@@ -101,23 +102,23 @@ STRUCT
 	bVisionSupportExtended  			: BOOL;
 	bVisionSupportRetracted 			: BOOL;
 
-    stPatchDispense           : ST_PatchStageStatus;
-    stHeatStake               : ST_PatchStageStatus;
-    stHeatStakeTemperature    : ST_HeatStakeTemperatureStatus;
-    stHeatStakeProcess        : ST_HeatStakeProcessStatus;
-    stHeatStakeProcessSettings : ST_HeatStakeProcessSettings;
-    bHeatStakeProcessSettingsWriteBusy : BOOL;
+    stPatchDispense           			: ST_PatchStageStatus;
+    stHeatStake               			: ST_PatchStageStatus;
+    stHeatStakeTemperature    			: ST_HeatStakeTemperatureStatus;
+    stHeatStakeProcess        			: ST_HeatStakeProcessStatus;
+    stHeatStakeProcessSettings 			: ST_HeatStakeProcessSettings;
+    bHeatStakeProcessSettingsWriteBusy 	: BOOL;
     bHeatStakeProcessSettingsWriteError : BOOL;
     udiHeatStakeProcessSettingsWriteErrorId : UDINT;
-    stHeatStakeTemperatureSettings : ST_HeatStakeTemperatureSettings;
-    bHeatStakeSettingsApplyAccepted : BOOL;
-    bHeatStakeSettingsApplyRejected : BOOL;
-    bHeatStakeSettingsWriteBusy : BOOL;
-    bHeatStakeSettingsWriteError : BOOL;
-    bHeatStakeSettingsSaveSuccessful : BOOL;
-    bHeatStakeSettingsSaveFailed : BOOL;
+    stHeatStakeTemperatureSettings 		: ST_HeatStakeTemperatureSettings;
+    bHeatStakeSettingsApplyAccepted 	: BOOL;
+    bHeatStakeSettingsApplyRejected 	: BOOL;
+    bHeatStakeSettingsWriteBusy 		: BOOL;
+    bHeatStakeSettingsWriteError 		: BOOL;
+    bHeatStakeSettingsSaveSuccessful 	: BOOL;
+    bHeatStakeSettingsSaveFailed 		: BOOL;
     sHeatStakeSettingsApplyRejectReason : STRING(255);
-    udiHeatStakeSettingsWriteErrorId : UDINT;
+    udiHeatStakeSettingsWriteErrorId 	: UDINT;
 
     // Current physical nest at each process station.
     uiPatchDispenseNestId 				: UINT;

@@ -7,6 +7,14 @@ VAR
     rtReset : R_TRIG;
     rtAck : R_TRIG;
 
+    // Power management - countdown and controlled stop
+    bPowerRequestPending : BOOL;
+    ePowerRequestPending : E_PLC_Power := E_PLC_Power.Idle;
+    tonPowerDelay : TON;
+    tPowerDelay : TIME;
+    nPowerRemaining : DINT;
+    bPowerDelayElapsed : BOOL;
+
     // Manual Mode request handshake.
     rtManualRequest : R_TRIG;
     bManualRequestLatched : BOOL;
@@ -15,12 +23,53 @@ VAR
     rtRejectChuteAcknowledge : R_TRIG;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[rtStart(CLK := GVL_MASTER.stInputs.bStartButton OR GVL_HMI.stCommands.bStart);
+      <ST><![CDATA[// POWER MANAGEMENT - REQUEST / CANCEL / COUNTDOWN
+// =====================================================
+CASE GVL_HMI.stCommands.ePowerCmd OF
+    E_PLC_Power.Reboot,
+    E_PLC_Power.Shutdown:
+        IF NOT bPowerRequestPending THEN
+            ePowerRequestPending := GVL_HMI.stCommands.ePowerCmd;
+            bPowerRequestPending := TRUE;
+        END_IF
+
+    E_PLC_Power.Cancel:
+        bPowerRequestPending := FALSE;
+        ePowerRequestPending := E_PLC_Power.Idle;
+END_CASE
+GVL_HMI.stCommands.ePowerCmd := E_PLC_Power.Idle;
+
+CASE ePowerRequestPending OF
+    E_PLC_Power.Reboot:   tPowerDelay := T#15S;
+    E_PLC_Power.Shutdown: tPowerDelay := T#60S;
+ELSE
+    tPowerDelay := T#0S;
+END_CASE
+
+tonPowerDelay(IN := bPowerRequestPending, PT := tPowerDelay);
+bPowerDelayElapsed := bPowerRequestPending AND tonPowerDelay.Q;
+
+IF bPowerRequestPending THEN
+    nPowerRemaining := TIME_TO_DINT(tPowerDelay - tonPowerDelay.ET);
+    IF nPowerRemaining < 0 THEN nPowerRemaining := 0; END_IF
+    // Ceiling milliseconds to seconds, so 15, 14, ... 1, 0.
+    GVL_HMI.stStatus.iPowerCountdown := DINT_TO_INT((nPowerRemaining + 999) / 1000);
+ELSE
+    GVL_HMI.stStatus.iPowerCountdown := 0;
+END_IF
+
+// OS power execution deliberately NOT enabled in this step.
+// The execution must be gated by STOPPED and the machine safe-stop conditions.
+
+rtStart(CLK := GVL_MASTER.stInputs.bStartButton OR GVL_HMI.stCommands.bStart);
 rtReset(CLK := GVL_MASTER.stInputs.bResetButton OR GVL_HMI.stCommands.bReset);
 rtAck(CLK := GVL_HMI.stCommands.bAcknowledge);
 
 GVL_MASTER.stCommand.bStart := rtStart.Q;
-GVL_MASTER.stCommand.bStop := GVL_MASTER.stInputs.bStopButton OR GVL_HMI.stCommands.bStop;
+GVL_MASTER.stCommand.bStop :=
+    GVL_MASTER.stInputs.bStopButton
+    OR GVL_HMI.stCommands.bStop
+    OR bPowerRequestPending;
 GVL_MASTER.stCommand.bReset := rtReset.Q;
 GVL_MASTER.stCommand.bAcknowledge := rtAck.Q;
 
@@ -307,11 +356,6 @@ END_IF
 
 GVL_MASTER.stCommand.uiResetStatisticsNestId :=
     GVL_HMI.stCommands.uiResetStatisticsNestId;
-	
-	
-	
-	
-	
 	]]></ST>
     </Implementation>
   </POU>
