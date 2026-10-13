@@ -5,7 +5,22 @@
 VAR
     fbMachine : FB_IndexedPatchPressMachine;
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[fbMachine.Cyclic(
+    <Implementation>
+      <ST><![CDATA[// =========================================================
+// CLEAR HMI LOGOUT DIAGNOSTICS ON FAULT RESET
+// =========================================================
+
+IF GVL_MASTER.stCommand.bReset
+    AND (GVL_MASTER.stStatus.eMachineState = E_MachineState.Fault) THEN
+
+    GVL_HMI.bLogoutFaultActive := FALSE;
+    GVL_HMI.bHmiLogoutAutoCycle := FALSE;
+    GVL_HMI.bHmiLogoutStopped := FALSE;
+
+END_IF
+
+
+fbMachine.Cyclic(
     stInputs := GVL_MASTER.stInputs,
     stCommand := GVL_MASTER.stCommand,
     stConfig := GVL_Config.stMachine,
@@ -15,8 +30,24 @@ END_VAR]]></Declaration>
     bHeatStakeCommissioned := GVL_PatchPress_Interface.bHeatStakeCommissioned,
     bVisionCommissioned := GVL_PatchPress_Interface.bVisionCommissioned,
     bCoreCommissioningMode := GVL_PatchPress_Interface.bCoreCommissioningMode,
-    bLogoutHMI := FALSE,
+    bLogoutHMI := GVL_HMI.bLogoutRequest,
     stOutputs => GVL_MASTER.stOutputs,
-    stStatus => GVL_MASTER.stStatus);]]></ST></Implementation>
+    stStatus => GVL_MASTER.stStatus);
+	
+	
+	// =========================================================
+	// HMI LOGOUT REQUEST ACKNOWLEDGEMENT
+	// =========================================================
+	// The machine has already received the request in this PLC scan.
+	// Clear it only after FB_IndexedPatchPressMachine.Cyclic executes.
+	
+	IF GVL_HMI.bLogoutRequest THEN
+		GVL_HMI.bLogoutRequest := FALSE;
+	END_IF
+	
+	
+	
+	]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

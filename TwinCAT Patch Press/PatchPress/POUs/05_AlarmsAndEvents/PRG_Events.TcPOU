@@ -323,7 +323,23 @@ GVL_MASTER.stStationEvents[3].aEvents[8].bEventFlag :=
 GVL_MASTER.stStationEvents[3].aEvents[8].bEventText := 'Vision support cylinder sensor conflict';
 GVL_MASTER.stStationEvents[3].aEvents[8].sSolution := 'Check support-cylinder UP/DOWN sensors and mechanical adjustment';
 
+// =========================================================
+// EVENT 20 - HMI LOGOUT DURING OPERATION
+// =========================================================
 
+GVL_MASTER.stStationEvents[0].aEvents[20].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[20].bEventFlag :=GVL_HMI.bHmiLogoutAutoCycle;
+GVL_MASTER.stStationEvents[0].aEvents[20].bEventText :='HMI logout detected during automatic cycle';
+GVL_MASTER.stStationEvents[0].aEvents[20].sSolution :='Reset the machine';
+
+// =========================================================
+// EVENT 21 - HMI LOGOUT / NO USER LOGGED IN
+// =========================================================
+
+GVL_MASTER.stStationEvents[0].aEvents[21].bCycleStopRequest := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[21].bEventFlag :=GVL_HMI.bHmiLogoutStopped;
+GVL_MASTER.stStationEvents[0].aEvents[21].bEventText :='HMI logout or no user logged in';
+GVL_MASTER.stStationEvents[0].aEvents[21].sSolution :='Log in to continue operation';
 
 // -----------------------------------------------------------------------------
 // INDEX TABLE COMPONENT FAULTS

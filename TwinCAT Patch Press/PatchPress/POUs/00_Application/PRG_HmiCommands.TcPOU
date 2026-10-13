@@ -7,6 +7,7 @@ VAR
     rtReset : R_TRIG;
     rtAck : R_TRIG;
 
+
     // Power management - countdown and controlled stop
     bPowerRequestPending : BOOL;
     ePowerRequestPending : E_PLC_Power := E_PLC_Power.Idle;
@@ -64,6 +65,7 @@ END_IF
 rtStart(CLK := GVL_MASTER.stInputs.bStartButton OR GVL_HMI.stCommands.bStart);
 rtReset(CLK := GVL_MASTER.stInputs.bResetButton OR GVL_HMI.stCommands.bReset);
 rtAck(CLK := GVL_HMI.stCommands.bAcknowledge);
+
 
 GVL_MASTER.stCommand.bStart := rtStart.Q;
 GVL_MASTER.stCommand.bStop :=

@@ -2179,6 +2179,25 @@ END_IF
 IF bProcessRequestIndex THEN
     bIndexMoveAccepted := fbIndex.RequestMove();
 END_IF
+// =========================================================
+// UNEXPECTED HMI LOGOUT
+// =========================================================
+// Logout is permitted in Stopped and Stopping.
+// During operation, logout causes a machine Fault.
+// Do not request a TwinSAFE run drop for a user-session event.
+
+IF bLogoutHMI AND (
+    (eMachineState = E_MachineState.Initialising)
+    OR (eMachineState = E_MachineState.ReadyToStart)
+    OR (eMachineState = E_MachineState.AutoCycle)
+    OR (eMachineState = E_MachineState.Manual)
+) THEN
+    GVL_HMI.bLogoutFaultActive := TRUE;
+    bSafetyDropRequest := TRUE;
+	GVL_HMI.bHmiLogoutAutoCycle := TRUE;
+	GVL_HMI.bHmiLogoutStopped := FALSE;
+END_IF
+
 // TwinSAFE safety loss always places the machine in Fault, but it must NOT
 // generate a PLC Run/Stop drop request. RunRequest must return TRUE so
 // TwinSAFE can execute again and restore Safety_OK after the safety condition
