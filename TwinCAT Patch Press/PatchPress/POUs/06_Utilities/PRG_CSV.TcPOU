@@ -3,10 +3,83 @@
   <POU Name="PRG_CSV" Id="{6490c777-af82-4db6-9a89-0aafd490d054}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_CSV
 VAR
-END_VAR
-]]></Declaration>
+    // =====================================================
+    // CSV WRITER
+    // =====================================================
+    fbCSVWriter : FB_CSVWriter;
+
+    // =====================================================
+    // CSV CONFIGURATION
+    // =====================================================
+    sCSVFolderPath : STRING(255) :=
+        'C:\Users\Administrator\Desktop\csv';
+
+    // =====================================================
+    // CSV RECORD QUEUE
+    // =====================================================
+    aCSVQueue : ARRAY[0..99] OF ST_CycleDataCSV;
+
+    uiQueueWriteIndex : UINT := 0;
+    uiQueueReadIndex  : UINT := 0;
+    uiQueueCount      : UINT := 0;
+
+    // =====================================================
+    // WRITER CONTROL
+    // =====================================================
+    stCurrentRecord : ST_CycleDataCSV;
+
+    bWriterExecute : BOOL;
+    bWriterBusy    : BOOL;
+    bWriterDone    : BOOL;
+    bWriterError   : BOOL;
+
+    nWriterErrorId : UDINT;
+
+    // =====================================================
+    // DIAGNOSTICS
+    // =====================================================
+    udiTotalRecordsWritten : UDINT := 0;
+    udiTotalRecordsDropped : UDINT := 0;
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[// =========================================================
+// CSV MANAGER
+// =========================================================
+//
+// This program will manage the CSV record queue and
+// coordinate file operations through FB_CSVWriter.
+//
+// Current implementation:
+// - Declares the record queue.
+// - Initialises the CSV writer.
+// - Exposes writer status.
+// - Does not enqueue or write records yet.
+//
+// The queue handling and integration will be implemented
+// after the new files have been created.
+// =========================================================
+
+
+// =========================================================
+// CSV WRITER
+// =========================================================
+
+fbCSVWriter(
+    bExecute := bWriterExecute,
+    stCycleData := stCurrentRecord,
+    sFolderPath := sCSVFolderPath
+);
+
+
+// =========================================================
+// WRITER STATUS
+// =========================================================
+
+bWriterBusy := fbCSVWriter.bBusy;
+bWriterDone := fbCSVWriter.bDone;
+bWriterError := fbCSVWriter.bError;
+
+nWriterErrorId := fbCSVWriter.nErrorId;]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

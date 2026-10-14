@@ -3,8 +3,15 @@
   <DUT Name="ST_CycleDataCSV" Id="{0681c43b-3e24-403f-afd8-086ef301c475}">
     <Declaration><![CDATA[TYPE ST_CycleDataCSV :
 STRUCT
+    uiNestId             : UINT;
+    sGeneralResult       : STRING(20);
+    sPatchDispenseResult : STRING(20);
+    sHeatStakeResult     : STRING(20);
+    sVisionResult        : STRING(20);
+    sDate                : STRING(255);
+    sTime                : STRING(255);
+	
 END_STRUCT
-END_TYPE
-]]></Declaration>
+END_TYPE]]></Declaration>
   </DUT>
 </TcPlcObject>

@@ -1,12 +1,116 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_CSVWriter" Id="{bd8d4afd-df8e-4287-9614-7c006c8a4975}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM FB_CSVWriter
-VAR
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CSVWriter
+VAR_INPUT
+    bExecute : BOOL;
+    stCycleData : ST_CycleDataCSV;
+    sFolderPath : STRING(255) := 'C:\Users\Administrator\Desktop\csv';
 END_VAR
-]]></Declaration>
+
+VAR_OUTPUT
+    bBusy : BOOL;
+    bDone : BOOL;
+    bError : BOOL;
+    nErrorId : UDINT;
+END_VAR
+
+VAR
+    // File handling
+    fbFileOpen  : FB_FileOpen;
+    fbFilePuts  : FB_FilePuts;
+    fbFileClose : FB_FileClose;
+
+    // Command detection
+    rtExecute : R_TRIG;
+
+    // CSV writer state
+    nState : INT := 0;
+
+    // File information
+    sFilePath : STRING(255);
+    sFileName : STRING(100);
+    sCsvHeader : STRING(255);
+    sCsvLine : STRING(1024);
+
+    // Current record
+    stPendingRecord : ST_CycleDataCSV;
+
+    // File handle
+    hFile : UINT;
+
+    // Internal status
+    bWriteRequest : BOOL;
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[// =========================================================
+// CSV WRITER - INITIAL STRUCTURE
+// =========================================================
+//
+// This function block will manage CSV file operations.
+//
+// State 0   : Idle
+// State 10  : Prepare record
+// State 20  : Open file
+// State 30  : Write CSV header (when required)
+// State 40  : Write CSV record
+// State 50  : Close file
+// State 60  : Complete
+// State 100 : Error
+//
+// File operations will be implemented and enabled
+// after integration with PRG_CSV.
+// =========================================================
+
+// Detect a new write request.
+rtExecute(CLK := bExecute);
+
+// Default completion pulse.
+bDone := FALSE;
+
+CASE nState OF
+
+    // -----------------------------------------------------
+    // IDLE
+    // -----------------------------------------------------
+    0:
+        bBusy := FALSE;
+
+        IF rtExecute.Q THEN
+
+            stPendingRecord := stCycleData;
+
+            bBusy := TRUE;
+            bError := FALSE;
+            nErrorId := 0;
+
+            nState := 10;
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // PREPARE RECORD
+    // -----------------------------------------------------
+    10:
+
+        sCsvHeader :=
+            'NEST;RESULT;PATCH_DISPENSE;HEAT_STAKE;VISION;DATE;TIME';
+
+        // File-writing integration is not enabled yet.
+        // Return to Idle without reporting a successful write.
+        bBusy := FALSE;
+        nState := 0;
+
+
+    // -----------------------------------------------------
+    // ERROR
+    // -----------------------------------------------------
+    100:
+        bBusy := FALSE;
+        bError := TRUE;
+
+END_CASE]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

@@ -63,6 +63,9 @@
     <Compile Include="DUTs\01_Core\Machine\ST_PatchPressOutputs.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\01_Core\ST_CycleDataCSV.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\01_Core\ST_IndexStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -303,6 +306,9 @@
     <Compile Include="POUs\00_Application\PRG_WriteOutputs.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\01_Core\CSV\FB_CSVWriter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\01_Core\I_ProcessEquipment.TcIO">
       <SubType>Code</SubType>
     </Compile>
@@ -369,6 +375,9 @@
     <Compile Include="POUs\06_Utilities\F_ScaleLinear.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\06_Utilities\PRG_CSV.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -396,6 +405,7 @@
     <Folder Include="POUs\00_Application" />
     <Folder Include="POUs\01_Core" />
     <Folder Include="POUs\01_Core\Machine" />
+    <Folder Include="POUs\01_Core\CSV" />
     <Folder Include="POUs\01_Core\Process" />
     <Folder Include="POUs\02_Components" />
     <Folder Include="POUs\02_Components\Pressure" />
