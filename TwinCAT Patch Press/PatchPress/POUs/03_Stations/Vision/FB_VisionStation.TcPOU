@@ -29,6 +29,8 @@ VAR
     bGripClosedInternal         : BOOL;
     bRotate0Internal            : BOOL;
     bRotate180Internal          : BOOL;
+	// Vision / Camera
+	
 
     eStateInternal              : E_PatchStationState := E_PatchStationState.Disabled;
     usiStepInternal             : USINT := 0;
@@ -93,8 +95,9 @@ END_VAR]]></Declaration>
 //   vertical limit OFF, horizontal slide BACK.
 //
 // Process:
-//   10  Nest UP
-//   20  Vertical FULL DOWN - pick
+//	 5	 1st Vision Inspection(Patch welding, click part)
+//   10  Nest UP / Vertical FULL DOWN - pick
+//   20  
 //   30  Grip CLOSE
 //   40  Vertical UP
 //   50  Horizontal FRONT
@@ -102,8 +105,10 @@ END_VAR]]></Declaration>
 //   70  Vertical UP
 //   80  Nest DOWN
 //   90  Rotate 180 and hold 1 s
+//	 93	 2nd Vision Inspection (Butch Number)
+//	 95  Nest UP / 3rd Vision Inspection (Butch Number, date, click part, blue part)
 //   100 Rotate 0
-//   110 Nest UP
+//   110 4th Vision Inspection(PBUB)
 //   120 Vertical INTERMEDIATE - replace part
 //   130 Grip OPEN
 //   140 Vertical UP

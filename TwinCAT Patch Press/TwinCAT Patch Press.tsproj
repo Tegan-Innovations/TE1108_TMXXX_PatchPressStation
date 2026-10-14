@@ -4488,7 +4488,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{22D95D89-3AB6-5438-2C38-471A04D45D2F}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{1CF5C41B-921D-1528-CB61-D85B811A5ADF}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
@@ -4898,6 +4898,22 @@ External Setpoint Generation:
 							<Comment><![CDATA[ Logical physical I/O. Link these members to the same EtherCAT/TwinSAFE channels used by Kistler.
  Keeping terminal-specific names outside the core makes future hardware changes local to this GVL/mapper.]]></Comment>
 							<Type GUID="{F16733BE-081D-0B6E-132B-5CA901D24D6A}">ST_PhysicalInputs</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bLeftFlapSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bRightFlapSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bFlapsSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bTwoHandSafe</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.nTerminal_State</Name>
@@ -5378,22 +5394,6 @@ External Setpoint Generation:
 							<Name>GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State</Name>
 							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
 							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bLeftFlapSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bRightFlapSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bFlapsSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bTwoHandSafe</Name>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bAirSupplySafe</Name>

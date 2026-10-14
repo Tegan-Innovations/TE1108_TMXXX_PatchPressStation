@@ -2,14 +2,13 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_VSCamera" Id="{328e316d-dc5d-43ae-96a6-2d990b1fabfb}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_VSCamera
-VAR_INPUT
+
+VAR
+	
+	bError					: BOOL;
+	bReset					: BOOL;
 	
 
-
-END_VAR
-VAR_OUTPUT
-END_VAR
-VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -19,12 +18,201 @@ END_VAR
       <Declaration><![CDATA[METHOD Cyclic : BOOL
 VAR_INPUT
 	
+	bTrigger				: BOOL;
+	bChangeProgram			: BOOL;
+	nProgramNumber			: UDINT;
+	bGoToConfig				: BOOL;
+	bGoToRun				: BOOL;
+	bResultsAcknowledge		: BOOL;
+
+END_VAR
+VAR_OUTPUT
 	
+	sBatchNumber			: STRING;
+	sDate					: STRING;
+	bPatchOk				: BOOL;
+	bClickPart				: ARRAY [1..2] OF BOOL;
+	bBluePartOk				: BOOL;
+	bPBUBPartOk				: BOOL;
+	bGeneralPass			: BOOL;
+	bGeneralFail			: BOOL;
+	bProgramLoadComplete	: BOOL;
+	bResultsReady			: BOOL;
+	bRunStatus				: BOOL;
+
+END_VAR
+VAR_IN_OUT
+	
+	stCameraIO				: ST_VS_Keyence_Camera;
+
+END_VAR
+VAR
+	
+	rTrigger				: R_TRIG;
+	asChar					: ARRAY [1..20] OF STRING;
+	asReadStrings			: ARRAY [1..20] OF STRING;
 
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[]]></ST>
+        <ST><![CDATA[//---------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------TRIGGER-----------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+
+rTrigger(CLK := bTrigger);
+
+stCameraIO.bTrigger						:= rTrigger.Q;
+
+//---------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------CHANGE PROGRAM---------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+
+IF bChangeProgram THEN
+	
+	stCameraIO.bProgramNumber_out		:= nProgramNumber;
+	stCameraIO.bProgramLoadExecute		:= TRUE;
+	
+ELSE stCameraIO.bProgramLoadExecute		:= FALSE;
+
+END_IF
+
+//---------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------ERROR / RESET-----------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+
+bError									:= stCameraIO.abError[1] OR stCameraIO.abError[2]; 
+
+stCameraIO.abErrorClear[1]				:= bReset;
+stCameraIO.abErrorClear[2]				:= bReset;
+
+//---------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------RESULTS-----------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+
+//**********************************************BATCH NUMBER*****************************************************
+						
+asChar[1] 								:= F_ToCHR( stCameraIO.byByteResults[28]);
+asChar[2] 								:= F_ToCHR( stCameraIO.byByteResults[29]);
+asChar[3] 								:= F_ToCHR( stCameraIO.byByteResults[30]);
+asChar[4] 								:= F_ToCHR( stCameraIO.byByteResults[31]);
+
+asReadStrings[1] 						:= 	CONCAT(STR1 := asChar[1], STR2 := CONCAT(STR1 := asChar[2], 
+										CONCAT(STR1:= asChar[3], STR2 := asChar[4])));
+			
+asChar[5] 								:= F_ToCHR( stCameraIO.byByteResults[32]);
+asChar[6] 								:= F_ToCHR( stCameraIO.byByteResults[33]);
+asChar[7] 								:= F_ToCHR( stCameraIO.byByteResults[34]);
+asChar[8] 								:= F_ToCHR( stCameraIO.byByteResults[35]);
+
+asReadStrings[2] 						:= 	CONCAT(STR1 := asChar[5], STR2 := CONCAT(STR1 := asChar[6], 
+										CONCAT(STR1:= asChar[7], STR2 := asChar[8])));
+							
+sBatchNumber 							:= CONCAT(STR1 := asReadStrings[1], STR2 := asReadStrings[2]);	
+						
+//**********************************************DATE*************************************************************	
+						
+asChar[9] 								:= F_ToCHR( stCameraIO.byByteResults[36]);
+asChar[10] 								:= F_ToCHR( stCameraIO.byByteResults[37]);
+asChar[11] 								:= F_ToCHR( stCameraIO.byByteResults[38]);
+asChar[12] 								:= F_ToCHR( stCameraIO.byByteResults[39]);
+
+asReadStrings[3] 						:= 	CONCAT(STR1 := asChar[9], STR2 := CONCAT(STR1 := asChar[10], 
+										CONCAT(STR1:= asChar[11], STR2 := asChar[12])));
+				
+asChar[13] 								:= F_ToCHR( stCameraIO.byByteResults[40]);
+asChar[14] 								:= F_ToCHR( stCameraIO.byByteResults[41]);
+asChar[15] 								:= F_ToCHR( stCameraIO.byByteResults[42]);
+asChar[16] 								:= F_ToCHR( stCameraIO.byByteResults[4]);
+
+asReadStrings[4] 						:= 	CONCAT(STR1 := asChar[13], STR2 := CONCAT(STR1 := asChar[14], 
+										CONCAT(STR1:= asChar[15], STR2 := asChar[16])));
+				
+sDate									:= CONCAT(STR1 := asReadStrings[3], STR2 := asReadStrings[4]);	
+				
+//**********************************************PATCH OK*********************************************************
+
+IF stCameraIO.bCurrentProgramNumber = 0 THEN
+	
+	bPatchOk							:= stCameraIO.bToolJudge[0];	
+	
+ELSE bPatchOk							:= FALSE;
+
+END_IF
+
+//**********************************************CLICK PART*******************************************************
+
+IF stCameraIO.bCurrentProgramNumber = 0 THEN
+	
+	bClickPart[1]						:= stCameraIO.bToolJudge[1];	
+	
+ELSE bPatchOk							:= FALSE;
+
+END_IF
+
+IF stCameraIO.bCurrentProgramNumber = 2 THEN
+	
+	bClickPart[1]						:= stCameraIO.bToolJudge[1];	
+	
+ELSE bClickPart[1]						:= FALSE;
+
+END_IF
+
+//**********************************************BLUE PART*********************************************************
+
+IF stCameraIO.bCurrentProgramNumber = 2 THEN
+	
+	bClickPart[2]						:= stCameraIO.bToolJudge[0];	
+	
+ELSE bClickPart[2]						:= FALSE;
+
+END_IF
+
+//**********************************************BLUE PART*********************************************************
+
+IF stCameraIO.bCurrentProgramNumber = 3 THEN
+	
+	bPBUBPartOk							:= stCameraIO.bToolJudge[0];	
+	
+ELSE bPBUBPartOk						:= FALSE;
+
+END_IF
+
+//---------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------I/O---------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+
+bGeneralPass							:= stCameraIO.bGeneralPass;
+bGeneralFail							:= stCameraIO.bGeneralPass;
+bProgramLoadComplete					:= stCameraIO.bProgramLoadComplete;
+bResultsReady							:= stCameraIO.bResultsReady;	
+bRunStatus								:= stCameraIO.bRunStatus;	
+
+
+stCameraIO.bGoToConfig					:= bGoToConfig;
+stCameraIO.bGoToRun						:= bGoToRun;
+stCameraIO.bResultAck					:= bResultsAcknowledge;	
+
+
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsFaulted" Id="{0ac36af5-7e02-445f-b51f-a1f65d3c6e2b}">
+      <Declaration><![CDATA[METHOD IsFaulted : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IsFaulted := bError; ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{75f82180-9678-4791-a5b0-2123636c0831}">
+      <Declaration><![CDATA[METHOD Reset : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[bReset := bReset;]]></ST>
       </Implementation>
     </Method>
   </POU>

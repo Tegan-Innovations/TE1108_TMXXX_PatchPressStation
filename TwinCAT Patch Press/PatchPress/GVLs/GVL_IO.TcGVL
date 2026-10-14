@@ -8,6 +8,7 @@ VAR_GLOBAL
     stInputs        AT %I*   : ST_PhysicalInputs;
     stOutputs       AT %Q*   : ST_PhysicalOutputs;   
 
+
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

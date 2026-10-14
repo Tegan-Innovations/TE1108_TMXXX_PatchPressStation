@@ -46,6 +46,20 @@ STRUCT
     bNestLight                         : BOOL;
     uiHeatStakePwm1Raw                 : UINT;
     uiHeatStakePwm2Raw                 : UINT;
+	
+	//camera
+	sBatchNumber			: STRING;
+	sDate					: STRING;
+	bPatchOk				: BOOL;
+	bClickPart				: ARRAY [1..2] OF BOOL;
+	bBluePartOk				: BOOL;
+	bPBUBPartOk				: BOOL;
+	bGeneralPass			: BOOL;
+	bGeneralFail			: BOOL;
+	bProgramLoadComplete	: BOOL;
+	bResultsReady			: BOOL;
+	bRunStatus				: BOOL;
+	
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

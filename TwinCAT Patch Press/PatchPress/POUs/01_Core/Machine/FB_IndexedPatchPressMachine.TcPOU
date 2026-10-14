@@ -12,6 +12,7 @@ VAR
     fbHeatStakeTemperature : FB_HeatStakeTemperatureControl;
     fbHeatStakePressureRegulator : FB_VeabPressureRegulator;
     fbVision : FB_VisionStation;
+	fbVSCamera : FB_VSCamera;
     fbProcessCycle : FB_ProcessCycle;
     fbCommissioningGuard : FB_PatchPressCommissioningGuard;
     eMachineState : E_MachineState := E_MachineState.PowerUp;
@@ -213,21 +214,25 @@ VAR
     // Fault reset is latched because PRG_Events executes after PRG_Main.
     // The event manager may clear its fault latch on the same Reset scan,
     // therefore the machine must remember the request until the following scan.
-    bFaultResetRequested : BOOL;
-    bAirAndDoorEnable : BOOL;
-
+    bFaultResetRequested 				: BOOL;
+    bAirAndDoorEnable 					: BOOL;
     // Air can only be latched ON by System Initialising.
     // Once ON, it may remain ON through Stopping/Stopped while the main door
     // stays closed. Opening the door, or entering Fault, clears this latch.
-    bAirSupplyLatched : BOOL;
-
+    bAirSupplyLatched 					: BOOL;
     // PLC-originated machine faults pulse the TwinSAFE Run/Stop request low.
     // RunRequest is otherwise TRUE so TwinSAFE can execute and return Safety_OK.
-    bSafetyDropRequest : BOOL;
-    tpSafetyRunDrop : TP;
-
-    tonLedBlink : TON;
-    rtLedBlink : R_TRIG;
+    bSafetyDropRequest 					: BOOL;
+    tpSafetyRunDrop 					: TP;
+    tonLedBlink 						: TON;
+    rtLedBlink 							: R_TRIG;
+	
+	tonHMIAliveOn  						: TON;
+	tonHMIAliveOff 						: TON;
+	bOutHMI        						: BOOL := TRUE;
+	
+	
+	
     bLedBlinkState : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
@@ -246,6 +251,10 @@ VAR_INPUT
     bVisionCommissioned : BOOL;
     bCoreCommissioningMode : BOOL;
     bLogoutHMI : BOOL;
+	
+	
+	
+	
 END_VAR
 VAR_OUTPUT
     stOutputs : ST_MachineOutputs;
@@ -373,6 +382,30 @@ fbHeatStakeTemperature.Cyclic(
     uiPwm2Raw => stOutputsInternal.uiHeatStakePwm2Raw,
     stStatus => stHeatStakeTemperatureStatus
 );
+
+//Camera
+//---------------------------------------------------------------------------------------------------
+fbVSCamera.Cyclic(	bTrigger				:= stInputs.bTrigger,
+					bChangeProgram			:= stInputs.bChangeProgram,
+					nProgramNumber			:= stInputs.nProgramNumber,
+					bGoToConfig				:= stInputs.bGoToConfig,
+					bGoToRun				:= stInputs.bGoToRun,
+					bResultsAcknowledge		:= stInputs.bResultsAcknowledge,
+					sBatchNumber			=> stOutputsInternal.sBatchNumber,
+					sDate					=> stOutputsInternal.sDate,
+					bPatchOk				=> stOutputsInternal.bPatchOk,
+					bClickPart				=> stOutputsInternal.bClickPart,
+					bBluePartOk				=> stOutputsInternal.bBluePartOk,
+					bPBUBPartOk				=> stOutputsInternal.bPBUBPartOk,
+					bGeneralPass			=> stOutputsInternal.bGeneralPass,
+					bGeneralFail			=> stOutputsInternal.bGeneralFail,
+					bProgramLoadComplete	=> stOutputsInternal.bProgramLoadComplete,
+					bResultsReady			=> stOutputsInternal.bResultsReady,
+					bRunStatus				=> stOutputsInternal.bRunStatus,
+					
+					stCameraIO				:= GVL_EtherCAT.stVSKeyenceCamera);
+					
+//---------------------------------------------------------------------------------------------------					
 
 fbNestManager.Cyclic(
     bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked,
@@ -2179,6 +2212,69 @@ END_IF
 IF bProcessRequestIndex THEN
     bIndexMoveAccepted := fbIndex.RequestMove();
 END_IF
+
+
+
+// =========================================================
+// HMI HEARTBEAT MONITORING
+// =========================================================
+tonHMIAliveOn(
+    IN := GVL_HMI.bHMIAlive,
+    PT := T#2S
+);
+
+tonHMIAliveOff(
+    IN := NOT GVL_HMI.bHMIAlive,
+    PT := T#2S
+);
+
+bOutHMI := tonHMIAliveOn.Q OR tonHMIAliveOff.Q;
+
+
+// =========================================================
+// HMI UNAVAILABLE - STOPPED MESSAGE
+// =========================================================
+
+// Show the HMI unavailable message only while
+// the machine is Stopped and heartbeat is missing.
+GVL_HMI.bHmiLogoutStopped := bOutHMI AND (eMachineState = E_MachineState.Stopped);
+
+// =========================================================
+// HMI CONNECTION LOSS - SAFETY DROP REQUEST
+// =========================================================
+// A confirmed heartbeat timeout during an active machine
+// state requests a TwinSAFE Run/Stop drop.
+//
+// Stopped and Stopping do not generate a new fault.
+
+IF bOutHMI AND (
+    (eMachineState = E_MachineState.Initialising)
+    OR (eMachineState = E_MachineState.ReadyToStart)
+    OR (eMachineState = E_MachineState.AutoCycle)
+    OR (eMachineState = E_MachineState.Manual)
+) THEN
+    bSafetyDropRequest := TRUE;
+END_IF
+
+// =========================================================
+// UNEXPECTED HMI LOGOUT
+// =========================================================
+// Logout is permitted in Stopped and Stopping.
+// During operation, logout causes a machine Fault.
+// Do not request a TwinSAFE run drop for a user-session event.
+
+IF bLogoutHMI AND (
+    (eMachineState = E_MachineState.Initialising)
+    OR (eMachineState = E_MachineState.ReadyToStart)
+    OR (eMachineState = E_MachineState.AutoCycle)
+    OR (eMachineState = E_MachineState.Manual)
+) THEN
+    GVL_HMI.bLogoutFaultActive := TRUE;
+    bSafetyDropRequest := TRUE;
+	GVL_HMI.bHmiLogoutAutoCycle := TRUE;
+	GVL_HMI.bHmiLogoutStopped := FALSE;
+END_IF
+
 // TwinSAFE safety loss always places the machine in Fault, but it must NOT
 // generate a PLC Run/Stop drop request. RunRequest must return TRUE so
 // TwinSAFE can execute again and restore Safety_OK after the safety condition
@@ -2416,12 +2512,17 @@ E_MachineState.Fault:
     // Latch Reset. PRG_Events runs after PRG_Main and may only clear
     // GVL_MASTER.bMachineFault later in this PLC scan. Without this latch,
     // a one-scan Reset pulse is lost before the machine can leave Fault.
-    IF stCommand.bReset THEN
+    IF stCommand.bReset AND NOT bOutHMI THEN
         bFaultResetRequested := TRUE;
         bInitialisationTimeoutFault := FALSE;
         bStoppingTimeoutFault := FALSE;
         fbIndex.Reset();
     END_IF
+	
+		// Do not retain a pending Reset while HMI is unavailable.
+	IF bOutHMI THEN
+		bFaultResetRequested := FALSE;
+	END_IF
 
     // Leave Fault only after Safety and the event system have both recovered.
     IF bFaultResetRequested

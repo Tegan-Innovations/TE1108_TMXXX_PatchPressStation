@@ -18,6 +18,10 @@ VAR_GLOBAL
 	uiTestHistoryWriteIndex : UINT := 0;
 	uiTestHistoryCount : UINT := 0;
 	
+	bLogoutFaultActive : BOOL;
+	bHmiLogoutAutoCycle : BOOL;
+	bHmiLogoutStopped : BOOL;
+	
 END_VAR
 VAR_GLOBAL CONSTANT
     sWHITE : STRING(40) := '{"color":"rgba(255,255,255,255)"}';
