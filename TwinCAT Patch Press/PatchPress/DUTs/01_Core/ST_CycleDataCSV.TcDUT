@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_CycleDataCSV" Id="{0681c43b-3e24-403f-afd8-086ef301c475}">
+    <Declaration><![CDATA[TYPE ST_CycleDataCSV :
+STRUCT
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
