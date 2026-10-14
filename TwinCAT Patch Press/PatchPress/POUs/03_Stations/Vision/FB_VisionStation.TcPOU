@@ -54,6 +54,14 @@ VAR
     bGripOpenRequestInternal        : BOOL;
     bRotate0RequestInternal         : BOOL;
     bRotate180RequestInternal       : BOOL;
+	
+	bTriggerRequestInternal			: BOOL;
+	bChangeProgramRequestInternal	: BOOL;
+	bGetResultsRequestInternal		: BOOL;
+	bGetProgramLoadCompleteInternal	: BOOL;
+	bGetResultsReadyRequestInternal	: BOOL;
+	nProgramNumberInternal			: UDINT;
+	nVisionResultsInternal			: ST_VisionResults;
 
     bStopRequestInternal        : BOOL;
     eSupportFaultInternal       : E_SupportCylinderFault := E_SupportCylinderFault.None;
@@ -85,6 +93,10 @@ END_VAR]]></Declaration>
     <Method Name="Cyclic" Id="{65862579-9f61-4da1-8e48-a04cc629adc5}">
       <Declaration><![CDATA[METHOD PUBLIC Cyclic
 VAR_INPUT
+END_VAR
+VAR
+	
+
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// ============================================================================
@@ -95,26 +107,25 @@ END_VAR]]></Declaration>
 //   vertical limit OFF, horizontal slide BACK.
 //
 // Process:
-//	 5	 1st Vision Inspection(Patch welding, click part)
-//   10  Nest UP / Vertical FULL DOWN - pick
-//   20  
-//   30  Grip CLOSE
-//   40  Vertical UP
-//   50  Horizontal FRONT
-//   60  Vertical INTERMEDIATE
-//   70  Vertical UP
-//   80  Nest DOWN
+//	 10	 1st Vision Inspection(Patch welding, click part)
+//   20  Nest UP and open grippers
+//   30  Vertical FULL DOWN - pick  
+//   40  Grip CLOSE
+//   50  Vertical UP
+//   60  Horizontal FRONT
+//   70  Vertical INTERMEDIATE
+//   80  Vertical UP / Nest DOWN
 //   90  Rotate 180 and hold 1 s
-//	 93	 2nd Vision Inspection (Butch Number)
-//	 95  Nest UP / 3rd Vision Inspection (Butch Number, date, click part, blue part)
-//   100 Rotate 0
-//   110 4th Vision Inspection(PBUB)
-//   120 Vertical INTERMEDIATE - replace part
-//   130 Grip OPEN
-//   140 Vertical UP
-//   150 Return complete tooling to HOME, then Complete
+//	 100	 2nd Vision Inspection (Butch Number)
+//	 110 Nest UP / Rotate 0 /3rd Vision Inspection (Butch Number, date, click part, blue part)
+//   120 4th Vision Inspection(PBUB)
+//   130 Vertical INTERMEDIATE - replace part
+//   140 Grip OPEN
+//   150 Vertical UP
+//   160 Return complete tooling to HOME, then Complete
 //
 // Every ordinary transition has a 500 ms settle delay.
+
 
 
 // ============================================================================
@@ -275,8 +286,9 @@ ELSE
 
 
             CASE usiStepInternal OF
+			
 
-                10: // Vertical UP
+				10: // Vertical UP
 
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
 
@@ -377,7 +389,7 @@ ELSE
                     bStepTargetReached := bHomeInternal;
 
                     sDiagnosticInternal := 'Vision homing: verifying HOME';
-
+					
 
                 ELSE
 
@@ -482,11 +494,35 @@ ELSE
             CASE usiStepInternal OF
 
 
+				// ------------------------------------------------------------
+                // STEP 10 - Camera
                 // ------------------------------------------------------------
-                // STEP 10 - NEST UP
+				
+				10: 	// 1st Camera Inspection
+					//Checking patch welding, click part quality
+					nProgramNumberInternal := 0;
+					IF bGetProgramLoadCompleteInternal THEN
+						
+						bTriggerRequestInternal					:= TRUE;
+						
+						IF bGetResultsReadyRequestInternal THEN
+							
+							stResultInternal.CameraResults		:= nVisionResultsInternal;
+							
+							bTriggerRequestInternal				:= FALSE;
+							bStepTargetReached				:= TRUE;
+							
+						END_IF
+						
+					END_IF
+					
+					sDiagnosticInternal := 'Vision: Camera First Inspection';
+					
+                // ------------------------------------------------------------
+                // STEP 20 - NEST UP AND OPEN GRIPPERS
                 // ------------------------------------------------------------
 
-                10:
+                20:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -501,14 +537,14 @@ ELSE
 
                     bStepTargetReached := bSupportExtendedInternal;
 
-                    sDiagnosticInternal := 'Vision: nest support UP';
+                    sDiagnosticInternal := 'Vision: nest support UP and Open grippers ';
 
 
                 // ------------------------------------------------------------
-                // STEP 20 - FULL VERTICAL DOWN FOR PICK
+                // STEP 30 - FULL VERTICAL DOWN FOR PICK
                 // ------------------------------------------------------------
 
-                20:
+                30:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -534,10 +570,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 30 - GRIP CLOSE AT FULL DOWN
+                // STEP 40 - GRIP CLOSE AT FULL DOWN
                 // ------------------------------------------------------------
 
-                30:
+                40:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -559,10 +595,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 40 - VERTICAL UP
+                // STEP 50 - VERTICAL UP
                 // ------------------------------------------------------------
 
-                40:
+                50:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -583,10 +619,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 50 - HORIZONTAL FRONT
+                // STEP 60 - HORIZONTAL FRONT
                 // ------------------------------------------------------------
 
-                50:
+                60:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -610,10 +646,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 60 - VERTICAL INTERMEDIATE
+                // STEP 70 - VERTICAL INTERMEDIATE
                 // ------------------------------------------------------------
 
-                60:
+                70:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -647,10 +683,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 70 - VERTICAL UP
+                // STEP 80 - VERTICAL UP AND NEST DOWN
                 // ------------------------------------------------------------
 
-                70:
+                80:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -663,21 +699,8 @@ ELSE
 
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
-
-                    bStepTargetReached :=
-                        bVerticalUpInternal
-                        AND NOT bVerticalDownInternal;
-
-                    sDiagnosticInternal := 'Vision: vertical UP before flip';
-
-
-                // ------------------------------------------------------------
-                // STEP 80 - NEST DOWN
-                // ------------------------------------------------------------
-
-                80:
-
-                    bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+					
+					bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
 
@@ -688,11 +711,12 @@ ELSE
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
                     bStepTargetReached :=
-                        bSupportRetractedInternal
-                        AND NOT bSupportExtendedInternal;
+                        (bVerticalUpInternal
+                        AND NOT bVerticalDownInternal) AND
+						(bSupportRetractedInternal
+                        AND NOT bSupportExtendedInternal);
 
-                    sDiagnosticInternal := 'Vision: nest support DOWN before flip';
-
+                    sDiagnosticInternal := 'Vision: vertical UP before flip and nest support DOWN before flip';
 
                 // ------------------------------------------------------------
                 // STEP 90 - ROTATE 180 AND HOLD
@@ -719,13 +743,31 @@ ELSE
 
                     sDiagnosticInternal := 'Vision: rotate 180 - holding 1 s';
 
-
+				100: 	// 2ndt Camera Inspection
+					//Checking batch number while cylinder is rotating
+					nProgramNumberInternal := 1;
+					IF bGetProgramLoadCompleteInternal THEN
+						
+						bTriggerRequestInternal					:= TRUE;
+						
+						IF bGetResultsReadyRequestInternal THEN
+							
+							stResultInternal.CameraResults		:= nVisionResultsInternal;
+							bTriggerRequestInternal				:= FALSE;
+							bStepTargetReached				:= TRUE;
+							
+						END_IF
+						
+					END_IF
+					
+					sDiagnosticInternal := 'Vision: Camera second Inspection';
+					
                 // ------------------------------------------------------------
                 // STEP 100 - ROTATE BACK TO 0
                 // ------------------------------------------------------------
 
-                100:
-
+                110:
+					//cylinder
                     tonRotate180Hold(IN := FALSE);
 
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
@@ -737,21 +779,9 @@ ELSE
 
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
-
-                    bStepTargetReached :=
-                        bRotate0Internal
-                        AND NOT bRotate180Internal;
-
-                    sDiagnosticInternal := 'Vision: rotate back to 0';
-
-
-                // ------------------------------------------------------------
-                // STEP 110 - NEST UP
-                // ------------------------------------------------------------
-
-                110:
-
-                    bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
+					
+					//nest
+					 bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
 
@@ -761,19 +791,63 @@ ELSE
 
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
+					
+					//camera
+					
+					// 3rd Camera Inspection
+					//Checking batch number, date, blue part in position, clcick part quality
+					nProgramNumberInternal := 2;
+					IF bGetProgramLoadCompleteInternal THEN
+						
+						bTriggerRequestInternal					:= TRUE;
+						
+						IF bGetResultsReadyRequestInternal THEN
+							
+							stResultInternal.CameraResults		:= nVisionResultsInternal;
+							bTriggerRequestInternal				:= FALSE;
+							
+						END_IF
+						
+					END_IF
 
                     bStepTargetReached :=
-                        bSupportExtendedInternal
-                        AND NOT bSupportRetractedInternal;
+                        (bRotate0Internal
+                        AND NOT bRotate180Internal) AND
+						(bSupportExtendedInternal
+                        AND NOT bSupportRetractedInternal)
+						AND  bGetResultsReadyRequestInternal;
 
-                    sDiagnosticInternal := 'Vision: nest support UP - replace part';
-
-
+                    sDiagnosticInternal := 'Vision: rotate back to 0 AND nest support UP - replace part and Camera Third Inspection';
+					
+					
+				// ------------------------------------------------------------
+                // STEP 120 - Camera
                 // ------------------------------------------------------------
-                // STEP 120 - VERTICAL INTERMEDIATE FOR REPLACE
+				120: 	// 4th Camera Inspection
+					//Checking PBUB quality
+					nProgramNumberInternal := 3;
+					IF bGetProgramLoadCompleteInternal THEN
+						
+						bTriggerRequestInternal					:= TRUE;
+						
+						IF bGetResultsReadyRequestInternal THEN
+							
+							stResultInternal.CameraResults		:= nVisionResultsInternal;
+							bTriggerRequestInternal				:= FALSE;
+							bStepTargetReached					:= TRUE;
+							
+						END_IF
+						
+					END_IF
+					
+					sDiagnosticInternal := 'Vision: Camera Fourth Inspection';
+				
+					
+                // ------------------------------------------------------------
+                // STEP 130 - VERTICAL INTERMEDIATE FOR REPLACE
                 // ------------------------------------------------------------
 
-                120:
+                130:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -801,10 +875,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 130 - GRIP OPEN AT INTERMEDIATE
+                // STEP 140 - GRIP OPEN AT INTERMEDIATE
                 // ------------------------------------------------------------
 
-                130:
+                140:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -826,10 +900,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 140 - VERTICAL UP
+                // STEP 150 - VERTICAL UP
                 // ------------------------------------------------------------
 
-                140:
+                150:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -850,10 +924,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 150 - RETURN HOME
+                // STEP 160 - RETURN HOME
                 // ------------------------------------------------------------
 
-                150:
+                160:
 
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -1438,6 +1512,10 @@ VAR_INPUT
     bGripClosed         : BOOL;
     bRotate0            : BOOL;
     bRotate180          : BOOL;
+	
+	//CAMERA
+	nProgramNumber		: UDINT;
+	nVisionCameraResults: ST_VisionResults;
 
     tSupportTimeout     : TIME;
 END_VAR
@@ -1456,6 +1534,14 @@ VAR_OUTPUT
     bGripOpenRequest         : BOOL;
     bRotate0Request          : BOOL;
     bRotate180Request        : BOOL;
+	
+	//camera
+	bTriggerRequest			: BOOL;
+	bChangeProgramRequest	: BOOL;
+	bGetResultsRequest		: BOOL;
+	bGetProgramLoadComplete	: BOOL;
+	bGetResultsReadyRequest	: BOOL;
+	
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
@@ -1508,6 +1594,15 @@ bGripCloseRequest := bGripCloseRequestInternal;
 bGripOpenRequest := bGripOpenRequestInternal;
 bRotate0Request := bRotate0RequestInternal;
 bRotate180Request := bRotate180RequestInternal;
+
+//camera
+bTriggerRequest					:=		bTriggerRequestInternal;
+bChangeProgramRequest			:=		bChangeProgramRequestInternal;
+bGetResultsRequest				:= 		bGetResultsRequestInternal;
+bGetProgramLoadComplete			:=		bGetProgramLoadCompleteInternal;
+bGetResultsReadyRequest			:= 		bGetResultsReadyRequestInternal;
+nProgramNumber					:= 		nProgramNumberInternal;
+nVisionCameraResults			:= 		nVisionResultsInternal;
 ]]></ST>
       </Implementation>
     </Method>
