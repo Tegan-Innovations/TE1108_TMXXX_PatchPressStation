@@ -243,6 +243,10 @@ VAR
 	
 	
     bLedBlinkState : BOOL;
+	
+	btest								: ARRAY [1..10] OF BOOL;
+	ntest								: UDINT;
+	
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -396,12 +400,27 @@ fbHeatStakeTemperature.Cyclic(
 //---------------------------------------------------------------------------------------------------
 fbVSCamera( stCameraIO := GVL_EtherCAT.stVSKeyenceCamera);
 
-bVisionTriggerRequest := fbVSCamera.RequestTrigger();
-bVisionChangeProgramRequest := fbVSCamera.RequestChangeProgram(nProgramNumber := nVisionProgramNumber);
-bVisionGetProgramLoadComplete := fbVSCamera.GetProgramLoadComplete();
-bVisionGetResultsReadyRequest := fbVSCamera.GetResultsReady();
+(*bVisionTriggerRequest  btest[1] := fbVSCamera.RequestTrigger();
+(*bVisionChangeProgramRequest OR*) btest[2]:= fbVSCamera.RequestChangeProgram(nProgramNumber := nVisionProgramNumber);*)
+//bVisionGetProgramLoadComplete := fbVSCamera.GetProgramLoadComplete();
+//(*bVisionGetResultsReadyRequest OR*) btest[4]:= fbVSCamera.GetResultsReady();
 
-IF bVisionGetResultsRequest THEN
+IF btest[1] THEN
+	
+	fbVSCamera.RequestTrigger(bEnable := TRUE);
+	
+ELSE fbVSCamera.RequestTrigger(bEnable := FALSE);
+
+END_IF
+
+IF btest[2] THEN
+	
+	fbVSCamera.RequestChangeProgram(nProgramNumber := ntest);
+
+
+END_IF
+
+IF bVisionGetResultsRequest OR btest[5] THEN
 	
 	fbVSCamera.GetResults(stVisionResults => nVisionResults, bResetResults := FALSE);
 	

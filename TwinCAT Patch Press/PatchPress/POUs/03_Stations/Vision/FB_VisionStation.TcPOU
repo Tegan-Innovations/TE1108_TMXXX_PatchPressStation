@@ -498,7 +498,7 @@ ELSE
                 // STEP 10 - Camera
                 // ------------------------------------------------------------
 				
-				10: 	// 1st Camera Inspection
+				(*10: 	// 1st Camera Inspection
 					//Checking patch welding, click part quality
 					nProgramNumberInternal := 0;
 					IF bGetProgramLoadCompleteInternal THEN
@@ -517,12 +517,12 @@ ELSE
 					END_IF
 					
 					sDiagnosticInternal := 'Vision: Camera First Inspection';
-					
+					*)
                 // ------------------------------------------------------------
                 // STEP 20 - NEST UP AND OPEN GRIPPERS
                 // ------------------------------------------------------------
 
-                20:
+                10:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -544,7 +544,7 @@ ELSE
                 // STEP 30 - FULL VERTICAL DOWN FOR PICK
                 // ------------------------------------------------------------
 
-                30:
+                20:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -573,7 +573,7 @@ ELSE
                 // STEP 40 - GRIP CLOSE AT FULL DOWN
                 // ------------------------------------------------------------
 
-                40:
+                30:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -598,7 +598,7 @@ ELSE
                 // STEP 50 - VERTICAL UP
                 // ------------------------------------------------------------
 
-                50:
+                40:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -622,7 +622,7 @@ ELSE
                 // STEP 60 - HORIZONTAL FRONT
                 // ------------------------------------------------------------
 
-                60:
+                50:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -649,7 +649,7 @@ ELSE
                 // STEP 70 - VERTICAL INTERMEDIATE
                 // ------------------------------------------------------------
 
-                70:
+                60:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -686,7 +686,7 @@ ELSE
                 // STEP 80 - VERTICAL UP AND NEST DOWN
                 // ------------------------------------------------------------
 
-                80:
+                70:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -722,7 +722,7 @@ ELSE
                 // STEP 90 - ROTATE 180 AND HOLD
                 // ------------------------------------------------------------
 
-                90:
+                80:
 
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -743,7 +743,7 @@ ELSE
 
                     sDiagnosticInternal := 'Vision: rotate 180 - holding 1 s';
 
-				100: 	// 2ndt Camera Inspection
+				(*100: 	// 2ndt Camera Inspection
 					//Checking batch number while cylinder is rotating
 					nProgramNumberInternal := 1;
 					IF bGetProgramLoadCompleteInternal THEN
@@ -761,12 +761,12 @@ ELSE
 					END_IF
 					
 					sDiagnosticInternal := 'Vision: Camera second Inspection';
-					
+					*)
                 // ------------------------------------------------------------
                 // STEP 100 - ROTATE BACK TO 0
                 // ------------------------------------------------------------
 
-                110:
+                90:
 					//cylinder
                     tonRotate180Hold(IN := FALSE);
 
@@ -791,7 +791,7 @@ ELSE
 
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
-					
+					(*
 					//camera
 					
 					// 3rd Camera Inspection
@@ -809,17 +809,17 @@ ELSE
 						END_IF
 						
 					END_IF
-
+					*)
                     bStepTargetReached :=
                         (bRotate0Internal
                         AND NOT bRotate180Internal) AND
 						(bSupportExtendedInternal
                         AND NOT bSupportRetractedInternal)
-						AND  bGetResultsReadyRequestInternal;
+						(*AND  bGetResultsReadyRequestInternal*);
 
                     sDiagnosticInternal := 'Vision: rotate back to 0 AND nest support UP - replace part and Camera Third Inspection';
 					
-					
+				(*	
 				// ------------------------------------------------------------
                 // STEP 120 - Camera
                 // ------------------------------------------------------------
@@ -841,13 +841,13 @@ ELSE
 					END_IF
 					
 					sDiagnosticInternal := 'Vision: Camera Fourth Inspection';
-				
+				*)
 					
                 // ------------------------------------------------------------
                 // STEP 130 - VERTICAL INTERMEDIATE FOR REPLACE
                 // ------------------------------------------------------------
 
-                130:
+                100:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -878,7 +878,7 @@ ELSE
                 // STEP 140 - GRIP OPEN AT INTERMEDIATE
                 // ------------------------------------------------------------
 
-                140:
+                110:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -903,7 +903,7 @@ ELSE
                 // STEP 150 - VERTICAL UP
                 // ------------------------------------------------------------
 
-                150:
+                120:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -927,7 +927,7 @@ ELSE
                 // STEP 160 - RETURN HOME
                 // ------------------------------------------------------------
 
-                160:
+                130:
 
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;

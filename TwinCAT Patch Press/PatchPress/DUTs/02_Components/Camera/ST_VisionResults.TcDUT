@@ -8,7 +8,8 @@ STRUCT
 	sDate						: STRING;
 	nBluePartPresent			: INT;//0: NO RESULT, 1: PASS, 2: FAIL
 	nClickPartPresent			: ARRAY[1..2] OF INT;//0: NO RESULT, 1: PASS, 2: FAIL / bClickPartPresent[1] FIRST INSPECTION, bClickPartPresent[2] THIRD INSPECTION
-	nPatchok					: INT;//0: NO RESULT, 1: PASS, 2: FAIL
+	nBottomPatchok				: INT;//0: NO RESULT, 1: PASS, 2: FAIL
+	nTopPatchok					: INT;//0: NO RESULT, 1: PASS, 2: FAIL
 	nPBUBOK						: INT;//0: NO RESULT, 1: PASS, 2: FAIL
 	
 	bGeneralPass				: BOOL;

@@ -128,18 +128,25 @@ stVisionResults.sDate 								:= GetDate();
 
 IF stCameraIO.bCurrentProgramNumber = 0 THEN
 	
-	IF stCameraIO.bToolJudge[1] THEN
+	IF stCameraIO.bToolJudge[4] THEN
 		
 		stVisionResults.nClickPartPresent[1]		:= 1;
 		
 	ELSE stVisionResults.nClickPartPresent[1]		:= 2;
 		
 	END_IF
-	IF stCameraIO.bToolJudge[0] THEN
+	IF stCameraIO.bToolJudge[2] THEN
 		
-		stVisionResults.nPatchok					:= 1;
+		stVisionResults.nBottomPatchok				:= 1;
 		
-	ELSE stVisionResults.nPatchok					:= 2;
+	ELSE stVisionResults.nBottomPatchok				:= 2;
+		
+	END_IF
+	IF stCameraIO.bToolJudge[3] THEN
+		
+		stVisionResults.nTopPatchok					:= 1;
+		
+	ELSE stVisionResults.nTopPatchok				:= 2;
 		
 	END_IF
 	
@@ -153,7 +160,7 @@ ELSIF stCameraIO.bCurrentProgramNumber = 2 THEN
 	stVisionResults.sDate 							:= GetDate();
 	stVisionResults.sPatchNumber[2] 				:= GetBatchNumber();
 
-	IF stCameraIO.bToolJudge[0] THEN
+	IF stCameraIO.bToolJudge[6] THEN
 		
 		stVisionResults.nClickPartPresent[2]		:= 1;
 		
@@ -187,7 +194,8 @@ ELSIF bResetResults THEN
 	stVisionResults.nBluePartPresent				:= 0;
 	stVisionResults.nClickPartPresent[1]			:= 0;
 	stVisionResults.nClickPartPresent[2]			:= 0;
-	stVisionResults.nPatchok						:= 0;
+	stVisionResults.nBottomPatchok					:= 0;
+	stVisionResults.nTopPatchok						:= 0;
 	stVisionResults.nPBUBOK							:= 0;
 	bResetResults									:= FALSE;
 
@@ -238,9 +246,10 @@ IF stCameraIO.bCurrentProgramNumber <> nProgramNumber THEN
 	stCameraIO.bProgramNumber_out 			:= nProgramNumber;
 	stCameraIO.bProgramLoadExecute			:= TRUE;
 	
+ELSE stCameraIO.bProgramLoadExecute			:= FALSE;
 END_IF
 
-stCameraIO.bProgramLoadExecute			:= FALSE;]]></ST>
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequestGoToConfig" Id="{70852fe4-8347-4cf1-8aff-87a468052393}">
@@ -265,26 +274,22 @@ stCameraIO.bGoToRun := FALSE;]]></ST>
     </Method>
     <Method Name="RequestTrigger" Id="{bee14638-6b9a-45ce-b2ef-ffa8ac3627c8}">
       <Declaration><![CDATA[METHOD RequestTrigger : BOOL
+
 VAR_INPUT
-END_VAR
-VAR
 	
-	tonResultsReadyDelay						: TON;
+	bEnable				:BOOL;
 
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[tonResultsReadyDelay( IN := stCameraIO.bResultsReady, PT := T#300MS);
-
-IF NOT tonResultsReadyDelay.Q THEN
+        <ST><![CDATA[IF bEnable THEN
 	
-	stCameraIO.bTrigger							:= TRUE;
+	stCameraIO.bTrigger			:= TRUE;
+
+ELSE stCameraIO.bTrigger			:= FALSE;
 	
-ELSE stCameraIO.bTrigger						:= FALSE;
-
-
 END_IF
-stCameraIO.bTrigger								:= FALSE;]]></ST>
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reset" Id="{75f82180-9678-4791-a5b0-2123636c0831}">
