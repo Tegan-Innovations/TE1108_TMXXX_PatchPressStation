@@ -3,8 +3,10 @@
   <POU Name="MAIN" Id="{58171a7d-5f08-4090-a464-779d1e8200c7}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[PRG_TerminalMapping.ReadInputs();
+    <Implementation>
+      <ST><![CDATA[PRG_TerminalMapping.ReadInputs();
 PRG_ReadInputs();
 PRG_HmiCommands();
 PRG_NestSettings();
@@ -14,6 +16,9 @@ PRG_HeatStakeTemperatureSettings();
 PRG_Events();
 PRG_HmiStatus();
 PRG_WriteOutputs();
-PRG_TerminalMapping.WriteOutputs();]]></ST></Implementation>
+PRG_TerminalMapping.WriteOutputs();
+
+]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

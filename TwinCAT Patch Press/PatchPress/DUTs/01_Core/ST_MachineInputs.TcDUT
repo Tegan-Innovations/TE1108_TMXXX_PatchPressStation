@@ -71,6 +71,15 @@ STRUCT
     diHeatStakeTc1Raw              : DINT;
     diHeatStakeTc2Raw              : DINT;
     diHeatStakeTc3Raw              : DINT;
+	
+	//camera
+	bTrigger				: BOOL;
+	bChangeProgram			: BOOL;
+	nProgramNumber			: UDINT;
+	bGoToConfig				: BOOL;
+	bGoToRun				: BOOL;
+	bResultsAcknowledge		: BOOL;
+	
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

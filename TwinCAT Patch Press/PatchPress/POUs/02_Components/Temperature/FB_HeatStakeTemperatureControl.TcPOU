@@ -80,8 +80,9 @@ VAR CONSTANT
     cHeaterInternalHighLimitC : LREAL := 380.0;
     cHeaterSetpointMarginC : LREAL := 5.0;
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[]]></ST></Implementation>
-
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
     <Method Name="Cyclic" Id="{73a8a83a-3b5c-49fb-a066-6fda31dbdc27}">
       <Declaration><![CDATA[METHOD PUBLIC Cyclic
 VAR_INPUT
@@ -102,7 +103,8 @@ VAR
     rOut1Limited : LREAL;
     rOut2Limited : LREAL;
 END_VAR]]></Declaration>
-      <Implementation><ST><![CDATA[
+      <Implementation>
+        <ST><![CDATA[
 // Engineering scaling from EL3314-0092.
 rTc1C := DINT_TO_LREAL(diTc1Raw) * cTcScaleCPerDigit;
 rTc2C := DINT_TO_LREAL(diTc2Raw) * cTcScaleCPerDigit;
@@ -432,7 +434,8 @@ ELSIF stStatus.bAtTemperature THEN
 ELSE
     stStatus.sDiagnostic := 'Heat Stake temperature control idle';
 END_IF
-]]></ST></Implementation>
+]]></ST>
+      </Implementation>
     </Method>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_VS_Keyence_Camera" Id="{55149138-86c7-4898-ae39-3afe88c6c503}">
+    <Declaration><![CDATA[TYPE ST_VS_Keyence_Camera :
+STRUCT
+	
+	sModuleName : STRING(80) := 'Keyence VS-S320MX | Keyence Camera';
+	
+	//inputs
+	bTriggerReady				 AT %I* : BOOL;
+	bTriggerAcknowledge			 AT %I* : BOOL;
+	bGeneralPass				 AT %I* : BOOL;
+	bGeneralFail				 AT %I* : BOOL;
+	bResultsReady				 AT %I* : BOOL;
+	bRunStatus					 AT %I* : BOOL;
+	abError						 AT %I* : ARRAY[1..2] OF BOOL;
+	bProgramLoadComplete		 AT %I* : BOOL;
+	bToolJudge					 AT %I* : ARRAY[0..7] OF BOOL;
+	bCurrentProgramNumber		 AT %I* : UDINT;
+	byByteResults				 AT %I* : ARRAY [0..127] OF BYTE;
+
+	//outputs
+	bTrigger					 AT %Q* : BOOL;
+	bReset						 AT %Q* : BOOL;
+	bResultAck					 AT %Q* : BOOL;
+	bGoToRun					 AT %Q* : BOOL;
+	bGoToConfig					 AT %Q* : BOOL;
+	abErrorClear				 AT %Q* : ARRAY[1..2] OF BOOL;
+	bProgramLoadExecute			 AT %Q* : BOOL;
+	bProgramNumber_out			 AT %Q* : UDINT;
+	
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

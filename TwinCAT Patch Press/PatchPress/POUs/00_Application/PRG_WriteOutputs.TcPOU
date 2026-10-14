@@ -4,7 +4,8 @@
     <Declaration><![CDATA[PROGRAM PRG_WriteOutputs
 VAR
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[GVL_IO.stOutputs.bSafetyRunRequest := GVL_MASTER.stOutputs.bSafetyRunRequest;
+    <Implementation>
+      <ST><![CDATA[GVL_IO.stOutputs.bSafetyRunRequest := GVL_MASTER.stOutputs.bSafetyRunRequest;
 GVL_IO.stOutputs.bSafetyResetRequest := GVL_MASTER.stOutputs.bSafetyResetRequest;
 GVL_IO.stOutputs.bSafetyErrorAcknowledgementRequest := GVL_MASTER.stOutputs.bSafetyErrorAcknowledgementRequest;
 GVL_IO.stOutputs.bAirSupplyEnable := GVL_MASTER.stOutputs.bAirSupplyEnable;
@@ -46,6 +47,8 @@ GVL_IO.stOutputs.bStatusIndicatorGreen := GVL_MASTER.stOutputs.bLedPass;
 GVL_IO.stOutputs.bInternalLight := GVL_MASTER.stOutputs.bInternalLight;
 GVL_IO.stOutputs.bNestLight := GVL_MASTER.stOutputs.bNestLight;
 GVL_IO.stOutputs.uiHeatStakePwm1Raw := GVL_MASTER.stOutputs.uiHeatStakePwm1Raw;
-GVL_IO.stOutputs.uiHeatStakePwm2Raw := GVL_MASTER.stOutputs.uiHeatStakePwm2Raw;]]></ST></Implementation>
+GVL_IO.stOutputs.uiHeatStakePwm2Raw := GVL_MASTER.stOutputs.uiHeatStakePwm2Raw;
+]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>
