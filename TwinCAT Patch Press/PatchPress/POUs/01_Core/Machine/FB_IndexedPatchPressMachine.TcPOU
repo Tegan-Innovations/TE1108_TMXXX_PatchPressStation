@@ -12,6 +12,7 @@ VAR
     fbHeatStakeTemperature : FB_HeatStakeTemperatureControl;
     fbHeatStakePressureRegulator : FB_VeabPressureRegulator;
     fbVision : FB_VisionStation;
+	fbVSCamera : FB_VSCamera;
     fbProcessCycle : FB_ProcessCycle;
     fbCommissioningGuard : FB_PatchPressCommissioningGuard;
     eMachineState : E_MachineState := E_MachineState.PowerUp;
@@ -185,6 +186,15 @@ VAR
     bVisionRotate0Request         : BOOL;
     bVisionRotate180Request       : BOOL;
 	
+	//CAMERA
+	bVisionTriggerRequest			: BOOL;
+	bVisionChangeProgramRequest		: BOOL;
+	bVisionGetResultsRequest		: BOOL;
+	bVisionGetProgramLoadComplete	: BOOL;
+	bVisionGetResultsReadyRequest	: BOOL;
+	nVisionProgramNumber			: UDINT;
+	
+	nVisionResults					: ST_VisionResults;
 	
 		
 		// Vision Manual Mode
@@ -233,6 +243,10 @@ VAR
 	
 	
     bLedBlinkState : BOOL;
+	
+	btest								: ARRAY [1..10] OF BOOL;
+	ntest								: UDINT;
+	
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -381,6 +395,40 @@ fbHeatStakeTemperature.Cyclic(
     uiPwm2Raw => stOutputsInternal.uiHeatStakePwm2Raw,
     stStatus => stHeatStakeTemperatureStatus
 );
+
+//Camera
+//---------------------------------------------------------------------------------------------------
+fbVSCamera( stCameraIO := GVL_EtherCAT.stVSKeyenceCamera);
+
+(*bVisionTriggerRequest  btest[1] := fbVSCamera.RequestTrigger();
+(*bVisionChangeProgramRequest OR*) btest[2]:= fbVSCamera.RequestChangeProgram(nProgramNumber := nVisionProgramNumber);*)
+//bVisionGetProgramLoadComplete := fbVSCamera.GetProgramLoadComplete();
+//(*bVisionGetResultsReadyRequest OR*) btest[4]:= fbVSCamera.GetResultsReady();
+
+IF btest[1] THEN
+	
+	fbVSCamera.RequestTrigger(bEnable := TRUE);
+	
+ELSE fbVSCamera.RequestTrigger(bEnable := FALSE);
+
+END_IF
+
+IF btest[2] THEN
+	
+	fbVSCamera.RequestChangeProgram(nProgramNumber := ntest);
+
+
+END_IF
+
+IF bVisionGetResultsRequest OR btest[5] THEN
+	
+	fbVSCamera.GetResults(stVisionResults => nVisionResults, bResetResults := FALSE);
+	
+ELSE fbVSCamera.GetResults( bResetResults := TRUE);
+
+END_IF
+					
+//---------------------------------------------------------------------------------------------------					
 
 fbNestManager.Cyclic(
     bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked,
@@ -1103,8 +1151,10 @@ fbVision.Update(
     bGripClosed := stInputs.bRotaryGripperClosed,
     bRotate0 := stInputs.bRotaryGripperPick0,
     bRotate180 := stInputs.bRotaryGripperPlace180,
-
+	
     tSupportTimeout := stConfig.tStationSupportTimeout,
+	nProgramNumber	:= nVisionProgramNumber,
+	nVisionCameraResults:= nVisionResults,
 
     stStatus => stVisionStatus,
     bSupportExtendRequest => bStation3SupportExtendRequest,
@@ -1118,7 +1168,13 @@ fbVision.Update(
     bGripCloseRequest => bVisionGripCloseRequest,
     bGripOpenRequest => bVisionGripOpenRequest,
     bRotate0Request => bVisionRotate0Request,
-    bRotate180Request => bVisionRotate180Request
+    bRotate180Request => bVisionRotate180Request,
+	//camera
+	bTriggerRequest					=>		bVisionTriggerRequest,
+	bChangeProgramRequest			=>		bVisionChangeProgramRequest,
+	bGetResultsRequest				=>		bVisionGetResultsRequest,
+	bGetProgramLoadComplete			=>		bVisionGetProgramLoadComplete,
+	bGetResultsReadyRequest			=>		bVisionGetResultsReadyRequest
 );
 
 // =====================================================

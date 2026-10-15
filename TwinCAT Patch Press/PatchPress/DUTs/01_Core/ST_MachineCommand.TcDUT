@@ -53,6 +53,10 @@ STRUCT
     bAcknowledgeDisabledNestPartPopup : BOOL;
     bAcknowledgeRejectChuteFull : BOOL;
     uiResetStatisticsNestId : UINT;
+	
+	//camera
+	
+	
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

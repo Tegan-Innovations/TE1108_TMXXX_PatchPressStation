@@ -108,6 +108,9 @@
     <Compile Include="DUTs\01_Core\ST_TestHistory.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\02_Components\Camera\ST_VisionResults.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\02_Components\Temperature\ST_HeatStakeTemperatureSettings.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -115,6 +118,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\02_Components\Motion\ST_Axis.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\03_Stations\Vision\ST_CameraProcessSettings.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\ST_PhysicalOutputs.TcDUT">
@@ -127,6 +133,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_VABX_A_S_BV_V4A.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_VS_Keyence_Camera.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\07_HMI\E_LEDs_Mode.TcDUT">
@@ -336,9 +345,6 @@
     <Compile Include="POUs\02_Components\Index\UINT_TO_E_TablePosition.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\02_Components\Pneumatics\FB_PuckLocker.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\02_Components\Pneumatics\FB_Support.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -346,6 +352,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\02_Components\Temperature\FB_HeatStakeTemperatureControl.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\02_Components\VS Keyence Camera\FB_VSCamera.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\03_Stations\HeatStake\FB_HeatStakeStation.TcPOU">
@@ -390,6 +399,7 @@
     <Folder Include="DUTs\01_Core\Process" />
     <Folder Include="DUTs\01_Core\Operator" />
     <Folder Include="DUTs\02_Components\Motion" />
+    <Folder Include="DUTs\02_Components\Camera" />
     <Folder Include="DUTs\07_HMI" />
     <Folder Include="DUTs\03_Stations" />
     <Folder Include="DUTs\03_Stations\Common" />
@@ -408,6 +418,7 @@
     <Folder Include="POUs\01_Core\CSV" />
     <Folder Include="POUs\01_Core\Process" />
     <Folder Include="POUs\02_Components" />
+    <Folder Include="POUs\02_Components\VS Keyence Camera" />
     <Folder Include="POUs\02_Components\Pressure" />
     <Folder Include="POUs\02_Components\Temperature" />
     <Folder Include="POUs\02_Components\Door" />
@@ -459,10 +470,22 @@
           <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
+        <o>
+          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
         <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
         <o>
           <v n="Name">"{29BD8D0C-3586-4548-BB48-497B9A01693F}"</v>
           <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+            <v>NamingConventions</v>
+            <o>
+              <v n="Name">"NamingConventions"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
             <v>Rules</v>
             <o>
               <v n="Name">"Rules"</v>
@@ -470,6 +493,12 @@
               <d n="Values" t="Hashtable" />
             </o>
           </d>
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
+        <o>
+          <v n="Name">"{40450F57-0AA3-4216-96F3-5444ECB29763}"</v>
+          <d n="SubKeys" t="Hashtable" />
           <d n="Values" t="Hashtable" />
         </o>
         <v>{8A0FB252-96EB-4DCC-A5B4-B4804D05E2D6}</v>
@@ -489,6 +518,12 @@
             <v>DisabledWarningIds</v>
             <v>410,5410</v>
           </d>
+        </o>
+        <v>{eeeeeeee-3909-4298-8022-501ac3238667}</v>
+        <o>
+          <v n="Name">"{eeeeeeee-3909-4298-8022-501ac3238667}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
         </o>
         <v>{F66C7017-BDD8-4114-926C-81D6D687E35F}</v>
         <o>

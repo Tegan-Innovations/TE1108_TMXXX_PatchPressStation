@@ -1876,6 +1876,33 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
+			<Name GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..2] OF BOOL</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>1</LBound>
+				<Elements>2</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..7] OF BOOL</Name>
+			<BitSize>64</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>8</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{53AB2BCA-C5AB-B7CE-D17C-430953A42679}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..127] OF BYTE</Name>
+			<BitSize>1024</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>128</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
 			<Name GUID="{99AF247C-BA0A-DB60-AA15-61FDDB5B3B05}" AutoDeleteType="true">ST_PhysicalOutputs</Name>
 			<BitSize>320</BitSize>
 			<SubItem>
@@ -2854,12 +2881,12 @@ External Setpoint Generation:
 			</ArrayInfo>
 		</DataType>
 		<DataType>
-			<Name GUID="{18071995-0000-0000-0000-00200000000F}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..14] OF BIT</Name>
-			<BitSize>15</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
+			<Name GUID="{18071995-0000-0000-0000-00030000000C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..11] OF BYTE</Name>
+			<BitSize>96</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
 			<ArrayInfo>
 				<LBound>0</LBound>
-				<Elements>15</Elements>
+				<Elements>12</Elements>
 			</ArrayInfo>
 		</DataType>
 		<DataType>
@@ -2870,6 +2897,1127 @@ External Setpoint Generation:
 				<LBound>0</LBound>
 				<Elements>16</Elements>
 			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000300000080}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..127] OF BYTE</Name>
+			<BitSize>1024</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>128</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000300000062}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..97] OF BYTE</Name>
+			<BitSize>784</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>98</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000300000044}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..67] OF BYTE</Name>
+			<BitSize>544</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>68</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000300000026}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..37] OF BYTE</Name>
+			<BitSize>304</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>38</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000300000008}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..7] OF BYTE</Name>
+			<BitSize>64</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>8</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000300000020}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..31] OF BYTE</Name>
+			<BitSize>256</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>32</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000300000002}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..1] OF BYTE</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>2</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000300000004}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF BYTE</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-00200000000F}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..14] OF BIT</Name>
+			<BitSize>15</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>15</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{E8444853-3BAA-51A1-0E64-2996EF2FA842}">PN_Status_Register_0_6D643818</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Trigger_Ready</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{98D873A8-4EB0-B451-122B-6122509767B8}">PN_Status_Register_1_B68F815A</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Trigger_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{4BB62952-90EE-999B-E303-2CD1EB6F9A9B}">PN_Status_Register_2_989BD5B4</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Pass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Fail</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Result_Ready</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Run_Status</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Error0_Status</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Error1_Status</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{F4639E20-0043-73FF-B232-708D477E5843}">PN_Status_Register_3_49B4D296</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Command_complete</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Command_error</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Command_ready</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Program_Load_Complete</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Program_Load_Complete_from_SD_Card</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{95A4AE0C-8AB3-7603-05AC-088AED425F00}">PN_Status_Register_4_69F0CA57</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Soft_Event_0_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_1_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_2_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_3_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_4_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_5_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_6_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_7_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{0E5EDE7F-531B-93EA-7F3A-542A02C28257}">PN_Status_Register_5_E0627519</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Assignable_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{7DD95745-3AA3-BDCF-B90D-A05B94947130}">PN_Status_Register_6_ABC7F4CB</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Assignable_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{6BD93C59-E3DC-FDCA-8690-728F1F149CAF}">PN_Status_Register_7_B6FD5B1C</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Assignable_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{8320FACC-1917-46EC-1502-09BCD8D0041B}">PN_Status_Register_8_62C13116</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Tool_Judge_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{00B09F56-02BE-5949-FB9E-D00DACC5A645}">PN_Status_Register_9_118FC6BF</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Tool_Judge_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{ABD0FCE3-136A-B5D0-9C85-4DC534B209F4}">PN_Status_Register_10_2F44D821</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Tool_Judge_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{989A5E66-89CA-ECEC-CB59-83E2B730F7FA}">PN_Status_Register_11_6C02BED0</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Tool_Judge_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Tool_Judge_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{87B7F409-9C92-CCD9-1CC5-267E49A883B1}">PN_Control_Register_0_84CB05CE</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Trigger</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{A4661435-55F3-4E7B-0ACD-2253872F51DF}">PN_Control_Register_1_666EA34B</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Trigger_Disable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Output_Disable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reset</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{F13E1C21-0819-C85A-99A7-8919C935AF03}">PN_Control_Register_2_23428668</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Reserved_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Result_Handshake_Enable</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Result_Ack</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Go_to_Run</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Go_to_Setting</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Error0_Clear</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Error1_Clear</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{46DBA3F7-715B-E557-4F59-355D2F606231}">PN_Control_Register_3_CFDBEBCC</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Command_Request</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Program_Load_Execute</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Program_Load_Execute_from_SD_Card</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Reserved_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{860DC75B-2508-7E5F-E7D5-B07EBE847E9A}">PN_Control_Register_4_1C9CB30A</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Soft_Event_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Soft_Event_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{6D9C9F99-C20E-2688-D57D-578FF091F4C4}">PN_Control_Register_5_00B7B1B2</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Assignable_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{B3052BD6-6948-6FB9-9525-32AB73B84FC7}">PN_Control_Register_6_B0C1DF78</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Assignable_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{51F13F0F-7C33-FB31-5BAF-85D194EAF296}">PN_Control_Register_7_EDB706F3</Name>
+			<BitSize>8</BitSize>
+			<SubItem>
+				<Name>Assignable_0</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_1</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>1</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_2</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>2</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_3</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>3</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_4</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>4</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_5</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>5</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_6</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>6</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>Assignable_7</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000010}">BIT</Type>
+				<BitSize>1</BitSize>
+				<BitOffs>7</BitOffs>
+			</SubItem>
 		</DataType>
 	</DataTypes>
 	<ImageDatas>
@@ -3340,7 +4488,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{A03E2A62-4FD7-A3DD-B59E-9E65B3105CE3}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{C653374D-FD61-3607-26FA-C9FE1FAD13F1}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
@@ -3671,6 +4819,39 @@ External Setpoint Generation:
 						<Var>
 							<Name>GVL_EtherCAT.stFestoModule4_VABX.bCoil7</Name>
 							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTrigger</Name>
+							<Comment><![CDATA[outputs]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bReset</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bResultAck</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGoToRun</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGoToConfig</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.abErrorClear</Name>
+							<Type GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}">ARRAY [1..2] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadExecute</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramNumber_out</Name>
+							<Type>UDINT</Type>
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bSafetyRunRequest</Name>
@@ -4213,6 +5394,67 @@ External Setpoint Generation:
 							<Name>GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State</Name>
 							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
 							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bLeftFlapSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTriggerReady</Name>
+							<Comment><![CDATA[inputs]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGeneralPass</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGeneralFail</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bResultsReady</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bRunStatus</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.abError</Name>
+							<Type GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}">ARRAY [1..2] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadComplete</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bToolJudge</Name>
+							<Type GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}">ARRAY [0..7] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber</Name>
+							<Type>UDINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.byByteResults</Name>
+							<Type GUID="{53AB2BCA-C5AB-B7CE-D17C-430953A42679}">ARRAY [0..127] OF BYTE</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bRightFlapSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bFlapsSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bTwoHandSafe</Name>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bAirSupplySafe</Name>
@@ -8064,21 +9306,163 @@ Bit 8 - 15 : reserved]]></Comment>
 					<Box Id="21" BoxType="9171" BoxFlags="#x00000020">
 						<Name>Term 21 (EL6633)</Name>
 						<ImageId>1001</ImageId>
-						<EtherCAT SlaveType="8" AdsServerAddress="ac12ef1b02160000" PdiType="#x0408" ExecIo="true" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="47" FoeType="1" VendorId="#x00000002" ProductCode="#x19e93052" RevisionNo="#x00110000" InfoDataAddr="true" InfoDataNetId="true" TimeoutStateChange1="60000" TimeoutStateChange2="30000" TimeoutStateChange3="30000" TimeoutStateChange4="300" TimeoutMailbox2="2000" GenerateOwnNetId="true" InitializeOwnNetId="true" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6633 PROFINET IO Controller" Desc="EL6633" PortABoxInfo="#x01000014">
+						<EtherCAT SlaveType="8" AdsServerAddress="ac12ef1b03010000" FixedAdsServerNetId="true" PdiType="#x0408" ExecIo="true" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="47" FoeType="1" VendorId="#x00000002" ProductCode="#x19e93052" RevisionNo="#x00110000" InfoDataAddr="true" InfoDataNetId="true" OwnAddrExtern="true" TimeoutStateChange1="60000" TimeoutStateChange2="30000" TimeoutStateChange3="30000" TimeoutStateChange4="300" TimeoutMailbox2="2000" GenerateOwnNetId="true" InitializeOwnNetId="true" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6633 PROFINET IO Controller" Desc="EL6633" PortABoxInfo="#x01000014">
 							<SyncMan>001000042600010001000000400000040004001026010000</SyncMan>
 							<SyncMan>001400042200010002000000400000040004001422010000</SyncMan>
-							<SyncMan>001800006400000003000000000000000000001864010000</SyncMan>
-							<SyncMan>702900002000000004000000000000000000702920010000</SyncMan>
+							<SyncMan>001832016400010003000000000000000000001864010000</SyncMan>
+							<SyncMan>702948012000010004000000000000000000702920010000</SyncMan>
 							<SyncMan>e03a00006400000003000000000000000000e03a64010000</SyncMan>
 							<SyncMan>e04000002000000004000000000000000000e04020010000</SyncMan>
-							<Fmmu>0000000000000000000000020000000001000000060000000200000000000000</Fmmu>
-							<Fmmu>0000000000000000000000010000000002000000060000000300000000000000</Fmmu>
+							<Fmmu>0000000000000000001800020100000001000000060000000200000000000000</Fmmu>
+							<Fmmu>0000000000000000702900010100000002000000060000000300000000000000</Fmmu>
 							<Fmmu>0000000000000000000000020000000001000000060000000400010000000000</Fmmu>
 							<Fmmu>0000000000000000000000010000000002000000060000000500010000000000</Fmmu>
 							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
 							<BootStrapData>0010140200181402</BootStrapData>
 							<SuName>Term 21 (EL6633)_0</SuName>
 							<SuName>Term 21 (EL6633)_1</SuName>
+							<Pdo Name="vs-01_Inputs" Index="#x1a00" Flags="#x0001" SyncMan="3">
+								<Entry Name="vs-01_PnIoBoxState" Index="#x6000" Sub="#x01" Flags="#x00000100">
+									<DefaultDataMask>1f001f00</DefaultDataMask>
+									<Type>UINT</Type>
+								</Entry>
+								<Entry Name="vs-01_PnIoBoxDiag" Index="#x6000" Sub="#x02" Flags="#x00000100">
+									<Type>UINT</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_1" Index="#x6001" Sub="#x01" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-00030000000C}">ARRAY [0..11] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_2" Index="#x6001" Sub="#x02" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000010}">ARRAY [0..15] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_3" Index="#x6001" Sub="#x03" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000080}">ARRAY [0..127] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 004" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000062}">ARRAY [0..97] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 005" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000044}">ARRAY [0..67] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 006" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000026}">ARRAY [0..37] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 007" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000008}">ARRAY [0..7] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_8" Index="#x6001" Sub="#x08" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 009" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_10" Index="#x6001" Sub="#x0a" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 011" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_12" Index="#x6001" Sub="#x0c" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 013" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_14" Index="#x6001" Sub="#x0e" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 015" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_16" Index="#x6001" Sub="#x10" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 017" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="vs-01_Outputs" Index="#x1600" InOut="1" Flags="#x0001" SyncMan="2">
+								<Entry Name="vs-01_PnIoBoxCtrl" Index="#x7000" Sub="#x01" Flags="#x00000100">
+									<Type>UINT</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_1" Index="#x7001" Sub="#x01" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000008}">ARRAY [0..7] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_2" Index="#x7001" Sub="#x02" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000004}">ARRAY [0..3] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_3" Index="#x7001" Sub="#x03" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000080}">ARRAY [0..127] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 004" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000062}">ARRAY [0..97] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 005" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000044}">ARRAY [0..67] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 006" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000026}">ARRAY [0..37] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 007" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000008}">ARRAY [0..7] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_8" Index="#x7001" Sub="#x08" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 009" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_10" Index="#x7001" Sub="#x0a" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 011" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_12" Index="#x7001" Sub="#x0c" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 013" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_14" Index="#x7001" Sub="#x0e" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 015" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+								<Entry Name="vs-01_SubmoduleData_16" Index="#x7001" Sub="#x10" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+								</Entry>
+								<Entry Name="SubIndex 017" Flags="#x00000100">
+									<Type GUID="{18071995-0000-0000-0000-000300000002}">ARRAY [0..1] OF BYTE</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Device_2_ProtocolState" Index="#x1bfe" Flags="#x0001" SyncMan="3">
+								<Entry Name="Device_2_DevState" Index="#xf100" Sub="#x01" Flags="#x00000100">
+									<Type>UINT</Type>
+								</Entry>
+								<Entry Name="Device_2_PnIoError" Index="#xf100" Sub="#x02" Flags="#x00000100">
+									<Type>UINT</Type>
+								</Entry>
+								<Entry Name="Device_2_PnIoDiag" Index="#xf100" Sub="#x03" Flags="#x00000100">
+									<Type>UINT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Device_2_ProtocolCtrl" Index="#x17fe" InOut="1" Flags="#x0001" SyncMan="2">
+								<Entry Name="Device_2_DevCtrl" Index="#xf200" Sub="#x01" Flags="#x00000100">
+									<Type>UINT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="ECatState" Index="#x1bff" Flags="#x0001" SyncMan="3">
+								<Entry Name="Device_2_ECatState" Index="#xf101" Sub="#x01" Flags="#x00000100">
+									<Type>UINT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="ECatCtrl" Index="#x17ff" InOut="1" Flags="#x0001" SyncMan="2">
+								<Entry Name="Device_2_ECatCtrl" Index="#xf201" Sub="#x01" Flags="#x00000100">
+									<Type>UINT</Type>
+								</Entry>
+							</Pdo>
 							<CoeProfile ProfileNo="5001"/>
 						</EtherCAT>
 					</Box>
@@ -10296,10 +11680,918 @@ Bit 8 - 15 : reserved]]></Comment>
 				</Box>
 				<EtherCAT DcSyncMode="3" EnableVirtualSwitch="true" MaxSwitchPorts="2" MaxSwitchFrames="120"/>
 			</Device>
+			<Device Id="2" DevType="164" AmsPort="28674" AmsNetId="172.18.239.27.3.1" RemoteName="Device 2 (EL6633)">
+				<Name>Device 2 (EL6633)</Name>
+				<AddressInfo>
+					<Ecat>
+						<EtherCATDeviceId>21</EtherCATDeviceId>
+						<EtherCATDeviceName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL6633)</EtherCATDeviceName>
+					</Ecat>
+				</AddressInfo>
+				<Image Id="5" AddrType="4" ImageType="3" SizeIn="306" SizeOut="328">
+					<Name>Image</Name>
+				</Image>
+				<Box Id="22" BoxType="9121">
+					<Name>vs-01</Name>
+					<Comment><![CDATA[GSDML Name: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Path: $(TWINCAT3DIR)Config\Io\Profinet\
+VendorName: Keyence
+OrderNumber: VS-XXXX
+HW Release Version: 1.0
+SW Release Version: 1.0]]></Comment>
+					<ImageId>121</ImageId>
+					<Vars VarGrpType="1">
+						<Name>Inputs</Name>
+						<Var>
+							<Name>PnIoBoxState</Name>
+							<Comment><![CDATA[0 = No error
+1 = Profinet device state machine is in boot mode
+2 = Device not found
+3 = The stationname is not unique
+4 = IP could not be set
+5 = IP conflict
+6 = DCP set was not successful
+7 = Watchdog error
+8 = Datahold error
+9 = RTC3: Sync mode could not be initiated
+10 = Profinet controller has a link error
+11 = The aliasname is not unique
+12 = The automatic name assignement isn't possible - wrong device type
+13 = IOC-AR is established but no application ready
+14 = IOC-AR is established but module difference
+15 = At least one InputCR is invalid, provider in stop or problemindicator is set
+16 = At least one OutputCR is invalid, provider in stop or problemindicator is set
+31 = Only for EtherCAT gateways: WC-State of cyclic EtherCAT frame is 1
+]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>PnIoBoxDiag</Name>
+							<Comment><![CDATA[0x0000 = No diagnosis
+0x0001 = IOC-AR is not established
+0x0002 = IOC-AR is established
+0x0004 = IOC-AR is established but no application ready
+0x0008 = IOC-AR is established but module difference
+0x0010 = At least one AlarmCR got a diagnosis alarm
+0x0100 = At least one InputCR is invalid
+0x0200 = At least one InputCR Provider is in stop
+0x0400 = At least one InputCR Problemindicator is set
+0x1000 = At least one OutputCR is invalid
+0x2000 = At least one OutputCR Provider is in stop
+0x4000 = At least one OutputCR Problemindicator is set
+]]></Comment>
+							<Type>WORD</Type>
+							<BitOffs>16</BitOffs>
+						</Var>
+					</Vars>
+					<Vars VarGrpType="2">
+						<Name>Outputs</Name>
+						<Var>
+							<Name>PnIoBoxCtrl</Name>
+							<Type>WORD</Type>
+						</Var>
+					</Vars>
+					<Profinet DeviceId="5013" VendorId="509" FrameOffset="32768" IPAdd="c0a8001e" ProtocolType="3" BoxOnDeviceTyp="164" MaxPhysSlotNr="16" AvailableSlots="0..16" InstanceServerPort="50000" InstanceClientPort="50001" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="16" SendClockFaktor="32" MaxInputLen="1440" MaxOutputLen="1440" SendClockFactorData="200040008000" RedRatio="0100020004000800100020004000800000010002" BoxTypeInfo="VS-XXXX Series Machine Vision System" MacAdd5="6" PDOmapping="1" OutputErrorBehavior="2" GSDMLPath="$(TWINCAT3DIR)Config\Io\Profinet\GSDML-V2.42-Keyence-VS-XXXX-20230509.xml" ImagePath="$(TWINCAT3DIR)Config\Io\Profinet\GSDML-01FD-1395-VS-XXXX.bmp" MainFamily="Sensors" ProductFamily="Keyence Machine Vision System" OrderNr="VS-XXXX" DefaultDNSName="vs-xxxx" VendorName="Keyence" FamDescription="VS Series Machine Vision System" GraphicFile="GSDML-01FD-1395-VS-XXXX" SWVersion="1.0" HWVersion="1.0" AltLanguage="7">
+						<UsedGsdmlModule ModuleIdentNumber="1" ModuleName="DAP Module" InfoText="VS-XXXX Series Machine Vision System" OrderNumber="VS-XXXX">
+							<Slot>0</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlModule ModuleIdentNumber="257" Id="101" ModuleName="Status" InfoText="Status Info" ModuleCategory="Status Bit Modules">
+							<Slot>1</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlModule ModuleIdentNumber="258" Id="102" ModuleName="Assignable Status" InfoText="Assignable Status Info" ModuleCategory="Status Byte Modules">
+							<Slot>2</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlModule ModuleIdentNumber="262" Id="106" ModuleName="Result Data 128Byte" InfoText="Reads result data from VS" ModuleCategory="Result Byte Modules">
+							<Slot>3</Slot>
+							<Slot>4</Slot>
+							<Slot>5</Slot>
+							<Slot>6</Slot>
+							<Slot>7</Slot>
+							<Slot>8</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlModule ModuleIdentNumber="260" Id="104" ModuleName="Result Data 32Byte" InfoText="Reads result data from VS" ModuleCategory="Result Byte Modules">
+							<Slot>3</Slot>
+							<Slot>4</Slot>
+							<Slot>5</Slot>
+							<Slot>6</Slot>
+							<Slot>7</Slot>
+							<Slot>8</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlModule ModuleIdentNumber="513" Id="201" ModuleName="Control" InfoText="Control Info" ModuleCategory="Control Bit Modules">
+							<Slot>9</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlModule ModuleIdentNumber="514" Id="202" ModuleName="Program Number" InfoText="Program Number Info" ModuleCategory="Control Byte Modules">
+							<Slot>10</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlModule ModuleIdentNumber="518" Id="206" ModuleName="Parameter 128Byte" InfoText="Writes data to VS" ModuleCategory="Parameter Byte Modules">
+							<Slot>11</Slot>
+							<Slot>12</Slot>
+							<Slot>13</Slot>
+							<Slot>14</Slot>
+							<Slot>15</Slot>
+							<Slot>16</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlModule ModuleIdentNumber="516" Id="204" ModuleName="Parameter 32Byte" InfoText="Writes data to VS" ModuleCategory="Parameter Byte Modules">
+							<Slot>11</Slot>
+							<Slot>12</Slot>
+							<Slot>13</Slot>
+							<Slot>14</Slot>
+							<Slot>15</Slot>
+							<Slot>16</Slot>
+						</UsedGsdmlModule>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="DIM 2" SubModuleName="VS-XXXX" InfoText="VS-XXXX Series Machine Vision System"/>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="1" SubModuleName="Status" InfoText="Status Info">
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Trigger Ready</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Trigger Ack</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Pass</BitText>
+								<BitText Offset="0" Length="0">Fail</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Result Ready</BitText>
+								<BitText Offset="0" Length="0">Run Status</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Error0 Status</BitText>
+								<BitText Offset="0" Length="0">Error1 Status</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Command complete</BitText>
+								<BitText Offset="0" Length="0">Command error</BitText>
+								<BitText Offset="0" Length="0">Command ready</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Program Load Complete</BitText>
+								<BitText Offset="0" Length="0">Program Load Complete from SD Card</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Soft Event 0 Ack</BitText>
+								<BitText Offset="0" Length="0">Soft Event 1 Ack</BitText>
+								<BitText Offset="0" Length="0">Soft Event 2 Ack</BitText>
+								<BitText Offset="0" Length="0">Soft Event 3 Ack</BitText>
+								<BitText Offset="0" Length="0">Soft Event 4 Ack</BitText>
+								<BitText Offset="0" Length="0">Soft Event 5 Ack</BitText>
+								<BitText Offset="0" Length="0">Soft Event 6 Ack</BitText>
+								<BitText Offset="0" Length="0">Soft Event 7 Ack</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+							</DataItemIn>
+							<DataItemIn Name="Status Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+								<BitText Offset="0" Length="0">Tool Judge</BitText>
+							</DataItemIn>
+						</UsedGsdmlSubModule>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="2" SubModuleName="Assignable Status" InfoText="Assignable Status Info">
+							<DataItemIn Name="Error0 Code" VarSize="32" VarType="{18071995-0000-0000-0000-000000000008}"/>
+							<DataItemIn Name="Error1 Code" VarSize="32" VarType="{18071995-0000-0000-0000-000000000008}"/>
+							<DataItemIn Name="Program Number" VarSize="32" VarType="{18071995-0000-0000-0000-000000000008}"/>
+							<DataItemIn Name="Total Count" VarSize="32" VarType="{18071995-0000-0000-0000-000000000008}"/>
+						</UsedGsdmlSubModule>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="6" SubModuleName="Result Data 128Byte" InfoText="Reads result data from VS">
+							<DataItemIn Name="Result Data" VarSize="1024" VarType="{18071995-0000-0000-0000-000300000080}"/>
+						</UsedGsdmlSubModule>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="4" SubModuleName="Result Data 32Byte" InfoText="Reads result data from VS">
+							<DataItemIn Name="Result Data" VarSize="256" VarType="{18071995-0000-0000-0000-000300000020}"/>
+						</UsedGsdmlSubModule>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="11" SubModuleName="Control" InfoText="Control Info">
+							<DataItemOut Name="Control Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Trigger</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+							</DataItemOut>
+							<DataItemOut Name="Control Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Trigger Disable</BitText>
+								<BitText Offset="0" Length="0">Output Disable</BitText>
+								<BitText Offset="0" Length="0">Reset</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+							</DataItemOut>
+							<DataItemOut Name="Control Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Result Handshake Enable</BitText>
+								<BitText Offset="0" Length="0">Result Ack</BitText>
+								<BitText Offset="0" Length="0">Go to Run</BitText>
+								<BitText Offset="0" Length="0">Go to Setting</BitText>
+								<BitText Offset="0" Length="0">Error0 Clear</BitText>
+								<BitText Offset="0" Length="0">Error1 Clear</BitText>
+							</DataItemOut>
+							<DataItemOut Name="Control Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Command Request</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Program Load Execute</BitText>
+								<BitText Offset="0" Length="0">Program Load Execute from SD Card</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+								<BitText Offset="0" Length="0">Reserved</BitText>
+							</DataItemOut>
+							<DataItemOut Name="Control Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Soft Event 0</BitText>
+								<BitText Offset="0" Length="0">Soft Event 1</BitText>
+								<BitText Offset="0" Length="0">Soft Event 2</BitText>
+								<BitText Offset="0" Length="0">Soft Event 3</BitText>
+								<BitText Offset="0" Length="0">Soft Event 4</BitText>
+								<BitText Offset="0" Length="0">Soft Event 5</BitText>
+								<BitText Offset="0" Length="0">Soft Event 6</BitText>
+								<BitText Offset="0" Length="0">Soft Event 7</BitText>
+							</DataItemOut>
+							<DataItemOut Name="Control Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+							</DataItemOut>
+							<DataItemOut Name="Control Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+							</DataItemOut>
+							<DataItemOut Name="Control Register" VarSize="8" VarType="{18071995-0000-0000-0000-000000000032}">
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+								<BitText Offset="0" Length="0">Assignable</BitText>
+							</DataItemOut>
+						</UsedGsdmlSubModule>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="12" SubModuleName="Program Number" InfoText="Program Number Info">
+							<DataItemOut Name="Program Number" VarSize="32" VarType="{18071995-0000-0000-0000-000000000008}"/>
+						</UsedGsdmlSubModule>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="16" SubModuleName="Parameter 128Byte" InfoText="Writes data to VS">
+							<DataItemOut Name="Parameter" VarSize="1024" VarType="{18071995-0000-0000-0000-000300000080}"/>
+						</UsedGsdmlSubModule>
+						<UsedGsdmlSubModule SubSlotNumber="1" TypeOfSubmodule="3" Id="14" SubModuleName="Parameter 32Byte" InfoText="Writes data to VS">
+							<DataItemOut Name="Parameter" VarSize="256" VarType="{18071995-0000-0000-0000-000300000020}"/>
+						</UsedGsdmlSubModule>
+						<API Id="1">
+							<Name>API</Name>
+							<ImageId>4</ImageId>
+							<Module Id="#x031d0001" DAP="true" ModuleIdentNumber="1" ModuleInfo="VS-XXXX Series Machine Vision System">
+								<Name>Term 1 (DAP Module)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: VS-XXXX Series Machine Vision System
+OrderNumber: VS-XXXX]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0001" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="DIM 2" AddSubModFlags="28">
+									<Name>Subterm 1 (VS-XXXX)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: VS-XXXX Series Machine Vision System
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+								<SubModule Id="#x031c0002" SubModuleIdentNumber="1" TypeOfSubModule="1" SubSlotNumber="32768" IsFixSubmodule="true" SubModuleID="IDS_DAP1I" InterfaceData="0100000000000000000000000000000000000000000098000300000000000000">
+									<Name>Subterm 2 (Interface)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+								<SubModule Id="#x031c0003" SubModuleIdentNumber="2" TypeOfSubModule="2" SubSlotNumber="32769" IsFixSubmodule="true" SubModuleID="IDS_DAP1P" PortData="00000000000008010000000000000000000000000000000000000000">
+									<Name>Subterm 3 (Port 1)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0002" ModuleIdentNumber="257" SlotNumber="1" ModuleInfo="Status Info" ModuleID="101" DirectDeletable="true">
+								<Name>Term 2 (Status)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Status Info
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0004" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="1">
+									<Name>Subterm 4 (Status)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Status Info
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+										<Var>
+											<Name>Status Register[0]</Name>
+											<Type GUID="{E8444853-3BAA-51A1-0E64-2996EF2FA842}">PN_Status_Register_0_6D643818</Type>
+											<BitOffs>32</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[1]</Name>
+											<Type GUID="{98D873A8-4EB0-B451-122B-6122509767B8}">PN_Status_Register_1_B68F815A</Type>
+											<BitOffs>40</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[2]</Name>
+											<Type GUID="{4BB62952-90EE-999B-E303-2CD1EB6F9A9B}">PN_Status_Register_2_989BD5B4</Type>
+											<BitOffs>48</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[3]</Name>
+											<Type GUID="{F4639E20-0043-73FF-B232-708D477E5843}">PN_Status_Register_3_49B4D296</Type>
+											<BitOffs>56</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[4]</Name>
+											<Type GUID="{95A4AE0C-8AB3-7603-05AC-088AED425F00}">PN_Status_Register_4_69F0CA57</Type>
+											<BitOffs>64</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[5]</Name>
+											<Type GUID="{0E5EDE7F-531B-93EA-7F3A-542A02C28257}">PN_Status_Register_5_E0627519</Type>
+											<BitOffs>72</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[6]</Name>
+											<Type GUID="{7DD95745-3AA3-BDCF-B90D-A05B94947130}">PN_Status_Register_6_ABC7F4CB</Type>
+											<BitOffs>80</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[7]</Name>
+											<Type GUID="{6BD93C59-E3DC-FDCA-8690-728F1F149CAF}">PN_Status_Register_7_B6FD5B1C</Type>
+											<BitOffs>88</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[8]</Name>
+											<Type GUID="{8320FACC-1917-46EC-1502-09BCD8D0041B}">PN_Status_Register_8_62C13116</Type>
+											<BitOffs>96</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[9]</Name>
+											<Type GUID="{00B09F56-02BE-5949-FB9E-D00DACC5A645}">PN_Status_Register_9_118FC6BF</Type>
+											<BitOffs>104</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[10]</Name>
+											<Type GUID="{ABD0FCE3-136A-B5D0-9C85-4DC534B209F4}">PN_Status_Register_10_2F44D821</Type>
+											<BitOffs>112</BitOffs>
+										</Var>
+										<Var>
+											<Name>Status Register[11]</Name>
+											<Type GUID="{989A5E66-89CA-ECEC-CB59-83E2B730F7FA}">PN_Status_Register_11_6C02BED0</Type>
+											<BitOffs>120</BitOffs>
+										</Var>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0003" ModuleIdentNumber="258" SlotNumber="2" ModuleInfo="Assignable Status Info" ModuleID="102" DirectDeletable="true">
+								<Name>Term 3 (Assignable Status)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Assignable Status Info
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0005" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="2">
+									<Name>Subterm 5 (Assignable Status)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Assignable Status Info
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+										<Var Swapping="#x3">
+											<Name>Error0 Code</Name>
+											<Type>UDINT</Type>
+											<BitOffs>128</BitOffs>
+										</Var>
+										<Var Swapping="#x3">
+											<Name>Error1 Code</Name>
+											<Type>UDINT</Type>
+											<BitOffs>160</BitOffs>
+										</Var>
+										<Var Swapping="#x3">
+											<Name>Program Number</Name>
+											<Type>UDINT</Type>
+											<BitOffs>192</BitOffs>
+										</Var>
+										<Var Swapping="#x3">
+											<Name>Total Count</Name>
+											<Type>UDINT</Type>
+											<BitOffs>224</BitOffs>
+										</Var>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0004" ModuleIdentNumber="262" SlotNumber="3" ModuleInfo="Reads result data from VS" ModuleID="106" DirectDeletable="true">
+								<Name>Term 4 (Result Data 128Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Reads result data from VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0006" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="6">
+									<Name>Subterm 6 (Result Data 128Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Reads result data from VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+										<Var>
+											<Name>Result Data</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000080}">ARRAY [0..127] OF BYTE</Type>
+											<BitOffs>256</BitOffs>
+										</Var>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0005" ModuleIdentNumber="260" SlotNumber="4" ModuleInfo="Reads result data from VS" ModuleID="104" DirectDeletable="true">
+								<Name>Term 5 (Result Data 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Reads result data from VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0007" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="4">
+									<Name>Subterm 7 (Result Data 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Reads result data from VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+										<Var>
+											<Name>Result Data</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>1280</BitOffs>
+										</Var>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0006" ModuleIdentNumber="260" SlotNumber="5" ModuleInfo="Reads result data from VS" ModuleID="104" DirectDeletable="true">
+								<Name>Term 6 (Result Data 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Reads result data from VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0008" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="4">
+									<Name>Subterm 8 (Result Data 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Reads result data from VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+										<Var>
+											<Name>Result Data</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>1536</BitOffs>
+										</Var>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0007" ModuleIdentNumber="260" SlotNumber="6" ModuleInfo="Reads result data from VS" ModuleID="104" DirectDeletable="true">
+								<Name>Term 7 (Result Data 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Reads result data from VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0009" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="4">
+									<Name>Subterm 9 (Result Data 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Reads result data from VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+										<Var>
+											<Name>Result Data</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>1792</BitOffs>
+										</Var>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0008" ModuleIdentNumber="260" SlotNumber="7" ModuleInfo="Reads result data from VS" ModuleID="104" DirectDeletable="true">
+								<Name>Term 8 (Result Data 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Reads result data from VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c000a" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="4">
+									<Name>Subterm 10 (Result Data 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Reads result data from VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+										<Var>
+											<Name>Result Data</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>2048</BitOffs>
+										</Var>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0009" ModuleIdentNumber="260" SlotNumber="8" ModuleInfo="Reads result data from VS" ModuleID="104" DirectDeletable="true">
+								<Name>Term 9 (Result Data 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Reads result data from VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c000b" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="4">
+									<Name>Subterm 11 (Result Data 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Reads result data from VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+										<Var>
+											<Name>Result Data</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>2304</BitOffs>
+										</Var>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d000a" ModuleIdentNumber="513" SlotNumber="9" ModuleInfo="Control Info" ModuleID="201" DirectDeletable="true">
+								<Name>Term 10 (Control)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Control Info
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c000c" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="11">
+									<Name>Subterm 12 (Control)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Control Info
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+										<Var>
+											<Name>Control Register[0]</Name>
+											<Type GUID="{87B7F409-9C92-CCD9-1CC5-267E49A883B1}">PN_Control_Register_0_84CB05CE</Type>
+											<BitOffs>16</BitOffs>
+										</Var>
+										<Var>
+											<Name>Control Register[1]</Name>
+											<Type GUID="{A4661435-55F3-4E7B-0ACD-2253872F51DF}">PN_Control_Register_1_666EA34B</Type>
+											<BitOffs>24</BitOffs>
+										</Var>
+										<Var>
+											<Name>Control Register[2]</Name>
+											<Type GUID="{F13E1C21-0819-C85A-99A7-8919C935AF03}">PN_Control_Register_2_23428668</Type>
+											<BitOffs>32</BitOffs>
+										</Var>
+										<Var>
+											<Name>Control Register[3]</Name>
+											<Type GUID="{46DBA3F7-715B-E557-4F59-355D2F606231}">PN_Control_Register_3_CFDBEBCC</Type>
+											<BitOffs>40</BitOffs>
+										</Var>
+										<Var>
+											<Name>Control Register[4]</Name>
+											<Type GUID="{860DC75B-2508-7E5F-E7D5-B07EBE847E9A}">PN_Control_Register_4_1C9CB30A</Type>
+											<BitOffs>48</BitOffs>
+										</Var>
+										<Var>
+											<Name>Control Register[5]</Name>
+											<Type GUID="{6D9C9F99-C20E-2688-D57D-578FF091F4C4}">PN_Control_Register_5_00B7B1B2</Type>
+											<BitOffs>56</BitOffs>
+										</Var>
+										<Var>
+											<Name>Control Register[6]</Name>
+											<Type GUID="{B3052BD6-6948-6FB9-9525-32AB73B84FC7}">PN_Control_Register_6_B0C1DF78</Type>
+											<BitOffs>64</BitOffs>
+										</Var>
+										<Var>
+											<Name>Control Register[7]</Name>
+											<Type GUID="{51F13F0F-7C33-FB31-5BAF-85D194EAF296}">PN_Control_Register_7_EDB706F3</Type>
+											<BitOffs>72</BitOffs>
+										</Var>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d000b" ModuleIdentNumber="514" SlotNumber="10" ModuleInfo="Program Number Info" ModuleID="202" DirectDeletable="true">
+								<Name>Term 11 (Program Number)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Program Number Info
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c000d" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="12">
+									<Name>Subterm 13 (Program Number)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Program Number Info
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+										<Var Swapping="#x3">
+											<Name>Program Number</Name>
+											<Type>UDINT</Type>
+											<BitOffs>80</BitOffs>
+										</Var>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d000c" ModuleIdentNumber="518" SlotNumber="11" ModuleInfo="Writes data to VS" ModuleID="206" DirectDeletable="true">
+								<Name>Term 12 (Parameter 128Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Writes data to VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c000e" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="16">
+									<Name>Subterm 14 (Parameter 128Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Writes data to VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+										<Var>
+											<Name>Parameter</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000080}">ARRAY [0..127] OF BYTE</Type>
+											<BitOffs>112</BitOffs>
+										</Var>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d000d" ModuleIdentNumber="516" SlotNumber="12" ModuleInfo="Writes data to VS" ModuleID="204" DirectDeletable="true">
+								<Name>Term 13 (Parameter 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Writes data to VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c000f" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="14">
+									<Name>Subterm 15 (Parameter 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Writes data to VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+										<Var>
+											<Name>Parameter</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>1136</BitOffs>
+										</Var>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d000e" ModuleIdentNumber="516" SlotNumber="13" ModuleInfo="Writes data to VS" ModuleID="204" DirectDeletable="true">
+								<Name>Term 14 (Parameter 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Writes data to VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0010" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="14">
+									<Name>Subterm 16 (Parameter 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Writes data to VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+										<Var>
+											<Name>Parameter</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>1392</BitOffs>
+										</Var>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d000f" ModuleIdentNumber="516" SlotNumber="14" ModuleInfo="Writes data to VS" ModuleID="204" DirectDeletable="true">
+								<Name>Term 15 (Parameter 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Writes data to VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0011" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="14">
+									<Name>Subterm 17 (Parameter 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Writes data to VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+										<Var>
+											<Name>Parameter</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>1648</BitOffs>
+										</Var>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0010" ModuleIdentNumber="516" SlotNumber="15" ModuleInfo="Writes data to VS" ModuleID="204" DirectDeletable="true">
+								<Name>Term 16 (Parameter 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Writes data to VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0012" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="14">
+									<Name>Subterm 18 (Parameter 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Writes data to VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+										<Var>
+											<Name>Parameter</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>1904</BitOffs>
+										</Var>
+									</Vars>
+								</SubModule>
+							</Module>
+							<Module Id="#x031d0011" ModuleIdentNumber="516" SlotNumber="16" ModuleInfo="Writes data to VS" ModuleID="204" DirectDeletable="true">
+								<Name>Term 17 (Parameter 32Byte)</Name>
+								<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Module Info: Writes data to VS
+]]></Comment>
+								<ImageId>182</ImageId>
+								<SubModule Id="#x031c0013" TypeOfSubModule="3" SubSlotNumber="1" IsFixSubmodule="true" SubModuleID="14">
+									<Name>Subterm 19 (Parameter 32Byte)</Name>
+									<Comment><![CDATA[GSDML: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+Submodule Info: Writes data to VS
+]]></Comment>
+									<ImageId>183</ImageId>
+									<Vars VarGrpType="1">
+										<Name>Inputs</Name>
+									</Vars>
+									<Vars VarGrpType="2">
+										<Name>Outputs</Name>
+										<Var>
+											<Name>Parameter</Name>
+											<Type GUID="{18071995-0000-0000-0000-000300000020}">ARRAY [0..31] OF BYTE</Type>
+											<BitOffs>2160</BitOffs>
+										</Var>
+									</Vars>
+								</SubModule>
+							</Module>
+						</API>
+					</Profinet>
+				</Box>
+				<Profinet PLCPortNr="851" AddPortCount="1">
+					<Ethernet DeviceDesc="EL6633 PROFINET IO Controller"/>
+					<PNController ClientPort="60000" ServerPort="61000" VendorId="288" DeviceId="42" IPData="00000000c0a80014ffffff00c0a80001" SystemName="el6633-pncontroller" SyncDomainName="el6633-syncdomain" IRTSendClock="32" EngineeringFlags="1">
+						<RTData CableLength="10"/>
+					</PNController>
+				</Profinet>
+			</Device>
 		</Io>
 	</Project>
 	<Mappings>
 		<MappingInfo Identifier="{00000000-2001-0850-0020-500841000403}" Id="#x02030030"/>
+		<MappingInfo Identifier="{00000000-2001-0850-0020-500850000403}" Id="#x02030060"/>
 		<MappingInfo Identifier="{00000000-0010-0304-3000-040310000403}" Id="#x02030010"/>
 		<MappingInfo Identifier="{00000000-0020-0304-3000-040322000403}" Id="#x02030040"/>
 		<MappingInfo Identifier="{08502001-0020-0304-0020-500820000403}" Id="#x02030050" Watchdog="00000000000000000000000000000000"/>
@@ -10557,6 +12849,36 @@ Bit 8 - 15 : reserved]]></Comment>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7" VarB="Channel 7^Output"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch8" VarB="Channel 8^Output"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch9" VarB="Channel 9^Output"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 2 (EL6633)^vs-01">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.abError[1]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Error0_Status"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.abError[2]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Error1_Status"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber" VarB="API^Term 3 (Assignable Status)^Subterm 5 (Assignable Status)^Inputs^Program Number"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bGeneralFail" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Fail"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bGeneralPass" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Pass"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadComplete" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[3]^Program_Load_Complete"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bResultsReady" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Result_Ready"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bRunStatus" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Run_Status"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[0]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_0"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[1]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_1"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[2]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_2"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[3]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_3"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[4]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_4"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[5]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_5"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[6]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_6"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[7]" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_7"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[1]^Trigger_Ack"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bTriggerReady" VarB="API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[0]^Trigger_Ready"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.byByteResults" VarB="API^Term 4 (Result Data 128Byte)^Subterm 6 (Result Data 128Byte)^Inputs^Result Data"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.abErrorClear[1]" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Error0_Clear"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.abErrorClear[2]" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Error1_Clear"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bGoToConfig" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Go_to_Setting"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bGoToRun" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Go_to_Run"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadExecute" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[3]^Program_Load_Execute"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bProgramNumber_out" VarB="API^Term 11 (Program Number)^Subterm 13 (Program Number)^Outputs^Program Number"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bReset" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[1]^Reset"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bResultAck" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Result_Ack"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bTrigger" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[0]^Trigger"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

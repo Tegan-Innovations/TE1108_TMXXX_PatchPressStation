@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
+# TcXaeShell Solution File, Format Version 11.00
 VisualStudioVersion = 17.14.37216.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{B1E792BE-AA5F-4E3C-8C82-674BF9C0715B}") = "TwinCAT Patch Press", "TwinCAT Patch Press\TwinCAT Patch Press.tsproj", "{E29DC8A2-CCB9-98A8-F98A-06857A0FEFBD}"

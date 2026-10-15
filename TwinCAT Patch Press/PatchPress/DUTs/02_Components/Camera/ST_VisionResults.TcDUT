@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_VisionResults" Id="{c6a27702-d9a7-4232-b66a-0417301beb76}">
+    <Declaration><![CDATA[TYPE ST_VisionResults :
+STRUCT
+	
+	sPatchNumber				: ARRAY [1..2] OF STRING;
+	sDate						: STRING;
+	nBluePartPresent			: INT;//0: NO RESULT, 1: PASS, 2: FAIL
+	nClickPartPresent			: ARRAY[1..2] OF INT;//0: NO RESULT, 1: PASS, 2: FAIL / bClickPartPresent[1] FIRST INSPECTION, bClickPartPresent[2] THIRD INSPECTION
+	nBottomPatchok				: INT;//0: NO RESULT, 1: PASS, 2: FAIL
+	nTopPatchok					: INT;//0: NO RESULT, 1: PASS, 2: FAIL
+	nPBUBOK						: INT;//0: NO RESULT, 1: PASS, 2: FAIL
+	
+	bGeneralPass				: BOOL;
+	bGeneralFail				: BOOL;
+	
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

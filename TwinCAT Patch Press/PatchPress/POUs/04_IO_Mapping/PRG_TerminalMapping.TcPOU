@@ -255,7 +255,6 @@ GVL_EtherCAT.stFestoModule3_VABX.bCoil4 := GVL_IO.stOutputs.bVisionLimitOff;
 GVL_EtherCAT.stFestoModule3_VABX.bCoil5 := GVL_IO.stOutputs.bVisionLimitOn;
 GVL_EtherCAT.stFestoModule3_VABX.bCoil6 := GVL_IO.stOutputs.bVisionGripClose;
 GVL_EtherCAT.stFestoModule3_VABX.bCoil7 := GVL_IO.stOutputs.bVisionGripOpen;
-
 (*
 ======================================================================================================================
  BOX 1 | Festo VABX EtherCAT manifold - Module 4 | Heat Stake Head
