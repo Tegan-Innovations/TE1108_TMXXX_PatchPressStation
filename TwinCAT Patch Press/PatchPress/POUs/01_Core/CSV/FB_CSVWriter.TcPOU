@@ -5,7 +5,8 @@
 VAR_INPUT
     bExecute : BOOL;
     stCycleData : ST_CycleDataCSV;
-    sFolderPath : STRING(255) := 'C:\Users\Administrator\Desktop\csv';
+    sFolderPath : STRING(255) :=
+        'C:\Users\Administrator\Desktop\csv';
 END_VAR
 
 VAR_OUTPUT
@@ -16,57 +17,66 @@ VAR_OUTPUT
 END_VAR
 
 VAR
-    // File handling
+    // File operations
     fbFileOpen  : FB_FileOpen;
     fbFilePuts  : FB_FilePuts;
     fbFileClose : FB_FileClose;
 
-    // Command detection
     rtExecute : R_TRIG;
 
-    // CSV writer state
+    // State machine
     nState : INT := 0;
 
-    // File information
-    sFilePath : STRING(255);
-    sFileName : STRING(100);
-    sCsvHeader : STRING(255);
-    sCsvLine : STRING(1024);
+    // File data
+    sFilePath : T_MaxString;
+    sDateSafe : STRING(255);
+    sCsvLine  : T_MaxString;
 
-    // Current record
     stPendingRecord : ST_CycleDataCSV;
 
-    // File handle
     hFile : UINT;
 
-    // Internal status
-    bWriteRequest : BOOL;
+    // File operation commands
+    bOpenExecute  : BOOL;
+    bPutsExecute  : BOOL;
+    bCloseExecute : BOOL;
+
+    nOpenMode : DWORD;
+    sLineToWrite : T_MaxString;
+
+    bHeaderRequired : BOOL;
+    bWriteFailed : BOOL;
+    nLastFileError : UDINT;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// =========================================================
-// CSV WRITER - INITIAL STRUCTURE
+// CSV WRITER - PATCH PRESS
 // =========================================================
+// Based on the Silicone Station file-writing sequence.
 //
-// This function block will manage CSV file operations.
+// One daily CSV file:
+// CycleData_DD_MM_YYYY.csv
 //
-// State 0   : Idle
-// State 10  : Prepare record
-// State 20  : Open file
-// State 30  : Write CSV header (when required)
-// State 40  : Write CSV record
-// State 50  : Close file
-// State 60  : Complete
-// State 100 : Error
+// Open -> Write -> Close
 //
-// File operations will be implemented and enabled
-// after integration with PRG_CSV.
+// Header is written only when the daily file does
+// not already exist.
+//
+// bDone is TRUE only after successful file closing.
 // =========================================================
 
-// Detect a new write request.
 rtExecute(CLK := bExecute);
 
-// Default completion pulse.
 bDone := FALSE;
+
+bOpenExecute := FALSE;
+bPutsExecute := FALSE;
+bCloseExecute := FALSE;
+
+
+// =========================================================
+// STATE MACHINE
+// =========================================================
 
 CASE nState OF
 
@@ -74,6 +84,7 @@ CASE nState OF
     // IDLE
     // -----------------------------------------------------
     0:
+
         bBusy := FALSE;
 
         IF rtExecute.Q THEN
@@ -84,33 +95,355 @@ CASE nState OF
             bError := FALSE;
             nErrorId := 0;
 
+            bWriteFailed := FALSE;
+            nLastFileError := 0;
+
+            hFile := 0;
+
+            // Use the date captured with the result.
+            sDateSafe := stPendingRecord.sDate;
+
+            // Replace slash in the filename.
+            FindAndReplace(
+                pSrcString := ADR(sDateSafe),
+                pDeleteString := ADR('/'),
+                pInsertString := ADR('_'),
+                pDstString := ADR(sDateSafe),
+                nDstSize := SIZEOF(sDateSafe)
+            );
+
+            sFilePath := CONCAT(
+                sFolderPath,
+                '\CycleData_'
+            );
+
+            sFilePath := CONCAT(
+                sFilePath,
+                sDateSafe
+            );
+
+            sFilePath := CONCAT(
+                sFilePath,
+                '.csv'
+            );
+
+            // Check whether the daily file exists.
+            nOpenMode :=
+                FOPEN_MODEREAD OR FOPEN_MODETEXT;
+
             nState := 10;
 
         END_IF
 
 
     // -----------------------------------------------------
-    // PREPARE RECORD
+    // CHECK EXISTING FILE
     // -----------------------------------------------------
     10:
 
-        sCsvHeader :=
+        bOpenExecute := TRUE;
+        nState := 11;
+
+
+    11:
+
+        IF NOT fbFileOpen.bBusy THEN
+
+            IF fbFileOpen.bError THEN
+
+                // File not found or not accessible.
+                // The subsequent append operation will
+                // determine whether writing is possible.
+                bHeaderRequired := TRUE;
+
+                nOpenMode :=
+                    FOPEN_MODEAPPEND OR FOPEN_MODETEXT;
+
+                nState := 20;
+
+            ELSE
+
+                // Existing file: no new header.
+                bHeaderRequired := FALSE;
+                hFile := fbFileOpen.hFile;
+
+                nState := 12;
+
+            END_IF
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // CLOSE EXISTENCE-CHECK HANDLE
+    // -----------------------------------------------------
+    12:
+
+        bCloseExecute := TRUE;
+        nState := 13;
+
+
+    13:
+
+        IF NOT fbFileClose.bBusy THEN
+
+            IF fbFileClose.bError THEN
+
+                bWriteFailed := TRUE;
+                nLastFileError := fbFileClose.nErrID;
+
+                nState := 99;
+
+            ELSE
+
+                hFile := 0;
+
+                nOpenMode :=
+                    FOPEN_MODEAPPEND OR FOPEN_MODETEXT;
+
+                nState := 20;
+
+            END_IF
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // OPEN FILE FOR APPEND
+    // -----------------------------------------------------
+    20:
+
+        bOpenExecute := TRUE;
+        nState := 21;
+
+
+    21:
+
+        IF NOT fbFileOpen.bBusy THEN
+
+            IF fbFileOpen.bError THEN
+
+                bWriteFailed := TRUE;
+                nLastFileError := fbFileOpen.nErrID;
+
+                nState := 99;
+
+            ELSE
+
+                hFile := fbFileOpen.hFile;
+
+                IF bHeaderRequired THEN
+                    nState := 30;
+                ELSE
+                    nState := 40;
+                END_IF
+
+            END_IF
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // WRITE HEADER
+    // -----------------------------------------------------
+    30:
+
+        sLineToWrite :=
             'NEST;RESULT;PATCH_DISPENSE;HEAT_STAKE;VISION;DATE;TIME';
 
-        // File-writing integration is not enabled yet.
-        // Return to Idle without reporting a successful write.
+//         // Windows line ending (CRLF).
+//         sLineToWrite := CONCAT(
+//             sLineToWrite,
+//             '$R$N'
+//         );
+
+        bPutsExecute := TRUE;
+        nState := 31;
+
+
+    31:
+
+        IF NOT fbFilePuts.bBusy THEN
+
+            IF fbFilePuts.bError THEN
+
+                bWriteFailed := TRUE;
+                nLastFileError := fbFilePuts.nErrID;
+
+                nState := 50;
+
+            ELSE
+
+                nState := 40;
+
+            END_IF
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // BUILD AND WRITE RESULT
+    // -----------------------------------------------------
+    40:
+
+        sCsvLine :=
+            UINT_TO_STRING(stPendingRecord.uiNestId);
+
+        sCsvLine := CONCAT(
+            sCsvLine, ';'
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine,
+            stPendingRecord.sGeneralResult
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine, ';'
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine,
+            stPendingRecord.sPatchDispenseResult
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine, ';'
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine,
+            stPendingRecord.sHeatStakeResult
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine, ';'
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine,
+            stPendingRecord.sVisionResult
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine, ';'
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine,
+            stPendingRecord.sDate
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine, ';'
+        );
+
+        sCsvLine := CONCAT(
+            sCsvLine,
+            stPendingRecord.sTime
+        );
+
+        // Add Windows line ending (CRLF).
+        sLineToWrite := CONCAT(
+            sCsvLine,
+            '$R'
+        );
+
+        bPutsExecute := TRUE;
+        nState := 41;
+
+    41:
+
+        IF NOT fbFilePuts.bBusy THEN
+
+            IF fbFilePuts.bError THEN
+
+                bWriteFailed := TRUE;
+                nLastFileError := fbFilePuts.nErrID;
+
+            END_IF
+
+            nState := 50;
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // CLOSE FILE
+    // -----------------------------------------------------
+    50:
+
+        bCloseExecute := TRUE;
+        nState := 51;
+
+
+    51:
+
+        IF NOT fbFileClose.bBusy THEN
+
+            IF fbFileClose.bError THEN
+
+                bWriteFailed := TRUE;
+                nLastFileError := fbFileClose.nErrID;
+
+            END_IF
+
+            hFile := 0;
+            nState := 99;
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // COMPLETE
+    // -----------------------------------------------------
+    99:
+
         bBusy := FALSE;
+
+        IF bWriteFailed THEN
+
+            bError := TRUE;
+            nErrorId := nLastFileError;
+
+        ELSE
+
+            bDone := TRUE;
+
+        END_IF
+
         nState := 0;
 
+END_CASE
 
-    // -----------------------------------------------------
-    // ERROR
-    // -----------------------------------------------------
-    100:
-        bBusy := FALSE;
-        bError := TRUE;
 
-END_CASE]]></ST>
+// =========================================================
+// BECKHOFF FILE FUNCTION BLOCKS
+// =========================================================
+// Each FB is called once per PLC scan.
+// bExecute generates a rising edge at the requested state.
+// =========================================================
+
+fbFileOpen(
+    sNetId := '',
+    sPathName := sFilePath,
+    nMode := nOpenMode,
+    ePath := PATH_GENERIC,
+    bExecute := bOpenExecute
+);
+
+fbFilePuts(
+    sNetId := '',
+    hFile := hFile,
+    sLine := sLineToWrite,
+    bExecute := bPutsExecute
+);
+
+fbFileClose(
+    sNetId := '',
+    hFile := hFile,
+    bExecute := bCloseExecute
+);]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

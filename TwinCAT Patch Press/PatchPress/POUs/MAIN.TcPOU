@@ -12,6 +12,7 @@ PRG_HmiCommands();
 PRG_NestSettings();
 PRG_HeatStakeProcessSettings();
 PRG_Main();
+PRG_CSV();
 PRG_HeatStakeTemperatureSettings();
 PRG_Events();
 PRG_HmiStatus();

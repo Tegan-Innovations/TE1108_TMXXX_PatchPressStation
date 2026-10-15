@@ -29,6 +29,17 @@ VAR_GLOBAL PERSISTENT RETAIN
 	uiTestHistoryCount : UINT := 0;
 
 
+    // =====================================================
+    // CSV - FINAL PRODUCT RESULT HANDOFF
+    // =====================================================
+    // Persistent handoff between Machine and PRG_CSV.
+
+    stCSVPendingRecord : ST_CycleDataCSV;
+    bCSVPendingRecord  : BOOL := FALSE;
+
+    // CSV diagnostics
+    bCSVQueueOverflow : BOOL := FALSE;
+    udiCSVRecordsDropped : UDINT := 0;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

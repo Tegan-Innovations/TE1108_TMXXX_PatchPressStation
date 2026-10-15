@@ -22,11 +22,7 @@ VAR_GLOBAL
 	// HMI logout diagnostics
 	bHmiLogoutAutoCycle 	: BOOL := FALSE;
 	bHmiLogoutStopped   	: BOOL := FALSE;
-	
-	bLogoutFaultActive : BOOL;
-	bHmiLogoutAutoCycle : BOOL;
-	bHmiLogoutStopped : BOOL;
-	
+
 END_VAR
 VAR_GLOBAL CONSTANT
     sWHITE 					: STRING(40) := '{"color":"rgba(255,255,255,255)"}';

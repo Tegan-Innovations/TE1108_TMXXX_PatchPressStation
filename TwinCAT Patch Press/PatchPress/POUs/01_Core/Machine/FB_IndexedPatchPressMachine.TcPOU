@@ -1982,7 +1982,63 @@ THEN
         END_IF;
 
 
-        // ---------------------------------------------
+		// =====================================================
+		// CSV - CAPTURE FINAL PRODUCT RESULT
+		// =====================================================
+		// Capture the final validated Test History record.
+		// REPROCESS is excluded by the existing finalisation.
+		// =====================================================
+		
+		IF NOT GVL_Persistent.bCSVPendingRecord THEN
+		
+			GVL_Persistent.stCSVPendingRecord.uiNestId :=
+				GVL_Persistent.astTestHistory[
+					GVL_Persistent.uiTestHistoryWriteIndex
+				].uiNestId;
+		
+			GVL_Persistent.stCSVPendingRecord.sGeneralResult :=
+				GVL_Persistent.astTestHistory[
+					GVL_Persistent.uiTestHistoryWriteIndex
+				].sResult;
+		
+			GVL_Persistent.stCSVPendingRecord.sPatchDispenseResult :=
+				GVL_Persistent.astTestHistory[
+					GVL_Persistent.uiTestHistoryWriteIndex
+				].sPatchDispenseResult;
+		
+			GVL_Persistent.stCSVPendingRecord.sHeatStakeResult :=
+				GVL_Persistent.astTestHistory[
+					GVL_Persistent.uiTestHistoryWriteIndex
+				].sHeatStakeResult;
+		
+			GVL_Persistent.stCSVPendingRecord.sVisionResult :=
+				GVL_Persistent.astTestHistory[
+					GVL_Persistent.uiTestHistoryWriteIndex
+				].sVisionResult;
+		
+			GVL_Persistent.stCSVPendingRecord.sDate :=
+				GVL_Persistent.astTestHistory[
+					GVL_Persistent.uiTestHistoryWriteIndex
+				].sDate;
+		
+			GVL_Persistent.stCSVPendingRecord.sTime :=
+				GVL_Persistent.astTestHistory[
+					GVL_Persistent.uiTestHistoryWriteIndex
+				].sTime;
+		
+			GVL_Persistent.bCSVPendingRecord := TRUE;
+		
+		ELSE
+		
+			// Previous record has not yet been consumed.
+			GVL_Persistent.udiCSVRecordsDropped :=
+				GVL_Persistent.udiCSVRecordsDropped + 1;
+		
+			GVL_Persistent.bCSVQueueOverflow := TRUE;
+		
+		END_IF
+		
+		// ---------------------------------------------
         // ADVANCE HISTORY BUFFER
         // ---------------------------------------------
 

@@ -14,6 +14,8 @@ VAR
     sCSVFolderPath : STRING(255) :=
         'C:\Users\Administrator\Desktop\csv';
 
+
+
     // =====================================================
     // CSV RECORD QUEUE
     // =====================================================
@@ -35,33 +37,164 @@ VAR
 
     nWriterErrorId : UDINT;
 
+    nCSVState : INT := 0;
+    bRetryWriter : BOOL := FALSE;
+
     // =====================================================
     // DIAGNOSTICS
     // =====================================================
     udiTotalRecordsWritten : UDINT := 0;
     udiTotalRecordsDropped : UDINT := 0;
+
+    bQueueFull : BOOL;
+    bQueueOverflow : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// =========================================================
 // CSV MANAGER
 // =========================================================
+// Receives completed cycle records and stores them in
+// a FIFO queue.
 //
-// This program will manage the CSV record queue and
-// coordinate file operations through FB_CSVWriter.
+// Records are removed only after successful writing.
 //
-// Current implementation:
-// - Declares the record queue.
-// - Initialises the CSV writer.
-// - Exposes writer status.
-// - Does not enqueue or write records yet.
-//
-// The queue handling and integration will be implemented
-// after the new files have been created.
+// States:
+//   0  - Idle
+//   10 - Start writing
+//   20 - Wait for writer completion
+//   90 - Writer error
 // =========================================================
+
+// =========================================================
+// 1. ENQUEUE NEW RECORD
+// =========================================================
+
+IF GVL_Persistent.bCSVPendingRecord THEN
+
+    IF uiQueueCount < 100 THEN
+
+        // Copy the pending record into the FIFO.
+        aCSVQueue[uiQueueWriteIndex] :=
+            GVL_Persistent.stCSVPendingRecord;
+
+        uiQueueWriteIndex := uiQueueWriteIndex + 1;
+
+        IF uiQueueWriteIndex >= 100 THEN
+            uiQueueWriteIndex := 0;
+        END_IF
+
+        uiQueueCount := uiQueueCount + 1;
+
+        // Release handoff only after successful enqueue.
+        GVL_Persistent.bCSVPendingRecord := FALSE;
+
+    ELSE
+
+        // Queue is full: preserve the pending record.
+        GVL_Persistent.bCSVQueueOverflow := TRUE;
+
+    END_IF
+
+END_IF
+
+// =========================================================
+// 2. QUEUE STATUS
+// =========================================================
+
+bQueueFull := (uiQueueCount >= 100);
 
 
 // =========================================================
-// CSV WRITER
+// 3. WRITER STATE MACHINE
+// =========================================================
+
+// Default: generate a one-scan execution pulse.
+bWriterExecute := FALSE;
+
+CASE nCSVState OF
+
+    // -----------------------------------------------------
+    // IDLE
+    // -----------------------------------------------------
+    0:
+
+        IF uiQueueCount > 0 THEN
+
+            // Load the oldest queued record.
+            stCurrentRecord :=
+                aCSVQueue[uiQueueReadIndex];
+
+            nCSVState := 10;
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // START WRITER
+    // -----------------------------------------------------
+    10:
+
+        bWriterExecute := TRUE;
+
+        nCSVState := 20;
+
+
+    // -----------------------------------------------------
+    // WAIT FOR WRITER
+    // -----------------------------------------------------
+    20:
+
+        IF bWriterDone THEN
+
+            // Remove record only after successful write.
+            uiQueueReadIndex := uiQueueReadIndex + 1;
+
+            IF uiQueueReadIndex >= 100 THEN
+                uiQueueReadIndex := 0;
+            END_IF
+
+            IF uiQueueCount > 0 THEN
+                uiQueueCount := uiQueueCount - 1;
+            END_IF
+
+            udiTotalRecordsWritten :=
+                udiTotalRecordsWritten + 1;
+
+            nCSVState := 0;
+
+        ELSIF bWriterError THEN
+
+            // Keep the current record in the queue.
+            nCSVState := 90;
+
+        END_IF
+
+
+    // -----------------------------------------------------
+    // WRITER ERROR
+    // -----------------------------------------------------
+    90:
+
+        // Manual retry after the underlying issue
+        // has been corrected.
+        IF bRetryWriter THEN
+
+            bRetryWriter := FALSE;
+
+            nCSVState := 0;
+
+        END_IF
+
+
+ELSE
+
+    nCSVState := 0;
+
+END_CASE
+
+
+// =========================================================
+// 4. CSV WRITER EXECUTION
 // =========================================================
 
 fbCSVWriter(
@@ -72,7 +205,7 @@ fbCSVWriter(
 
 
 // =========================================================
-// WRITER STATUS
+// 5. WRITER STATUS
 // =========================================================
 
 bWriterBusy := fbCSVWriter.bBusy;
