@@ -58,9 +58,12 @@ VAR
 	bTriggerRequestInternal			: BOOL;
 	bChangeProgramRequestInternal	: BOOL;
 	bGetResultsRequestInternal		: BOOL;
-	bGetProgramLoadCompleteInternal	: BOOL;
-	bGetResultsReadyRequestInternal	: BOOL;
-	nProgramNumberInternal			: UDINT;
+	bResetResultsRequestInternal	: BOOL;
+	nSetProgramNumberInternal		: UDINT;
+	bAcknowledgeResultsInternal		: BOOL;
+	
+	nCurrentProgramNumberInternal	: UDINT;
+	bCameraResultsReadyInternal		: BOOL;
 	nVisionResultsInternal			: ST_VisionResults;
 
     bStopRequestInternal        : BOOL;
@@ -74,6 +77,7 @@ VAR
     tonSupportRetractTimeout    : TON;
     tonToolingSensorConflict    : TON;
 	tonIntermediatePosition 	: TON;
+	tonChangeProgram			: TON := (PT := T#1S);
 
     tStepDelay                  : TIME := T#100MS;
     tRotate180Hold              : TIME := T#1S;
@@ -276,6 +280,21 @@ ELSE
 			//   Nest DOWN, vertical UP, rotation 0 deg, grip OPEN,
 			//   vertical limit OFF, horizontal slide BACK.
 
+			//Leaving camera with the right program to performance first test--------------------------
+			
+			IF nCurrentProgramNumberInternal<> 0 THEN
+				
+				nSetProgramNumberInternal				:= 0;
+				bChangeProgramRequestInternal			:= TRUE;
+				
+			ELSIF nCurrentProgramNumberInternal = 0 THEN
+				
+				bChangeProgramRequestInternal			:= FALSE;
+				
+			END_IF
+			
+
+			//-------------------------------------------------------------------------------------------
             IF usiStepInternal = 0 THEN
 
                 IF bHomeInternal THEN
@@ -388,7 +407,7 @@ ELSE
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bHomeInternal;
+                    bStepTargetReached := bHomeInternal AND (nCurrentProgramNumberInternal = 0);
 
                     sDiagnosticInternal := 'Vision homing: verifying HOME';
 					
@@ -499,27 +518,17 @@ ELSE
 				// ------------------------------------------------------------
                 // CAMERA PLACEHOLDER - FIRST INSPECTION (COMMENTED)
                 // ------------------------------------------------------------
-				
-				(*10: 	// 1st Camera Inspection
-					//Checking patch welding, click part quality
-					nProgramNumberInternal := 0;
-					IF bGetProgramLoadCompleteInternal THEN
+				(*
+					bTriggerRequestInternal					:= TRUE;
+					IF bCameraResultsReadyInternal THEN
 						
-						bTriggerRequestInternal					:= TRUE;
+						bTriggerRequestInternal				:= FALSE;
+						bGetResultsRequest					:= TRUE;
 						
-						IF bGetResultsReadyRequestInternal THEN
-							
-							stResultInternal.CameraResults		:= nVisionResultsInternal;
-							
-							bTriggerRequestInternal				:= FALSE;
-							bStepTargetReached				:= TRUE;
-							
-						END_IF
 						
 					END_IF
-					
-					sDiagnosticInternal := 'Vision: Camera First Inspection';
 					*)
+				
                 // FIX CAMERA PREPARATION - STEP 5: FIRST INSPECTION (PROGRAM 0)
                 // TODO: select program 0; wait for load complete; pulse trigger;
                 // TODO: await fresh results; validate patch welding / click part;
@@ -1640,8 +1649,9 @@ VAR_INPUT
     bRotate180          : BOOL;
 	
 	//CAMERA
-	nProgramNumber		: UDINT;
+	nCurrentProgramNumber: UDINT;
 	nVisionCameraResults: ST_VisionResults;
+	bResultsReady		: BOOL;
 
     tSupportTimeout     : TIME;
 END_VAR
@@ -1665,12 +1675,15 @@ VAR_OUTPUT
 	bTriggerRequest			: BOOL;
 	bChangeProgramRequest	: BOOL;
 	bGetResultsRequest		: BOOL;
-	bGetProgramLoadComplete	: BOOL;
-	bGetResultsReadyRequest	: BOOL;
+	bRequestResetResults	: BOOL;
+	nProgramNumber			: UDINT;
+	bAcknowledgeResults		: BOOL;
+	
 	
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
+	
 bEnableInternal := bEnable;
 bCommissionedInternal := bCommissioned;
 bSafetyOkInternal := bSafetyOk;
@@ -1725,11 +1738,12 @@ bRotate180Request := bRotate180RequestInternal;
 bTriggerRequest					:=		bTriggerRequestInternal;
 bChangeProgramRequest			:=		bChangeProgramRequestInternal;
 bGetResultsRequest				:= 		bGetResultsRequestInternal;
-bGetProgramLoadComplete			:=		bGetProgramLoadCompleteInternal;
-bGetResultsReadyRequest			:= 		bGetResultsReadyRequestInternal;
-nProgramNumber					:= 		nProgramNumberInternal;
-nVisionCameraResults			:= 		nVisionResultsInternal;
-]]></ST>
+bRequestResetResults			:=		bResetResultsRequestInternal;
+nProgramNumber 					:= 		nSetProgramNumberInternal;
+bAcknowledgeResults				:= 		bAcknowledgeResultsInternal;
+
+nCurrentProgramNumberInternal	:= 		nCurrentProgramNumber;
+bCameraResultsReadyInternal		:= 		bResultsReady;]]></ST>
       </Implementation>
     </Method>
   </POU>

@@ -2489,7 +2489,7 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{42636617-9481-1F27-4114-98289099B9CF}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
+			<Name IecBaseType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
 			<Comment><![CDATA[ =====================================================
  TEST HISTORY
  =====================================================
@@ -4534,7 +4534,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{AB210A43-5CEC-5ADE-0F61-F6176C590096}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{E1A24D30-0042-BA31-A735-2B8C4BA68C9E}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
@@ -11748,10 +11748,7 @@ Bit 8 - 15 : reserved]]></Comment>
 				</Image>
 				<Box Id="22" BoxType="9121">
 					<Name>vs-01</Name>
-					<Comment><![CDATA[
-The GSDML is not available!
-
-GSDML Name: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+					<Comment><![CDATA[GSDML Name: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
 Path: $(TWINCAT3DIR)Config\Io\Profinet\
 VendorName: Keyence
 OrderNumber: VS-XXXX

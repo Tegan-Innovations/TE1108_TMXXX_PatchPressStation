@@ -190,9 +190,11 @@ VAR
 	bVisionTriggerRequest			: BOOL;
 	bVisionChangeProgramRequest		: BOOL;
 	bVisionGetResultsRequest		: BOOL;
-	bVisionGetProgramLoadComplete	: BOOL;
 	bVisionGetResultsReadyRequest	: BOOL;
+	bVisionResetResultsRequest		: BOOL;
+	bVisionAcknowledgeResultsRquest	: BOOL;
 	nVisionProgramNumber			: UDINT;
+	bVisionGetCurrentProgram		: UDINT;
 	
 	nVisionResults					: ST_VisionResults;
 	
@@ -400,12 +402,11 @@ fbHeatStakeTemperature.Cyclic(
 //---------------------------------------------------------------------------------------------------
 fbVSCamera( stCameraIO := GVL_EtherCAT.stVSKeyenceCamera);
 
-(*bVisionTriggerRequest  btest[1] := fbVSCamera.RequestTrigger();
-(*bVisionChangeProgramRequest OR*) btest[2]:= fbVSCamera.RequestChangeProgram(nProgramNumber := nVisionProgramNumber);*)
-//bVisionGetProgramLoadComplete := fbVSCamera.GetProgramLoadComplete();
-//(*bVisionGetResultsReadyRequest OR*) btest[4]:= fbVSCamera.GetResultsReady();
+bVisionGetResultsReadyRequest := fbVSCamera.GetResultsReady();
+bVisionGetCurrentProgram		:= 	fbVSCamera.GetCurrentProgram();
 
-IF btest[1] THEN
+
+IF bVisionTriggerRequest THEN
 	
 	fbVSCamera.RequestTrigger(bEnable := TRUE);
 	
@@ -413,19 +414,27 @@ ELSE fbVSCamera.RequestTrigger(bEnable := FALSE);
 
 END_IF
 
-IF btest[2] THEN
+IF bVisionChangeProgramRequest THEN
 	
-	fbVSCamera.RequestChangeProgram(nProgramNumber := ntest);
-
+	fbVSCamera.RequestChangeProgram(bEnable := TRUE,nProgramNumber := ntest);
+	
+ELSE fbVSCamera.RequestChangeProgram(bEnable := FALSE,nProgramNumber := ntest);
 
 END_IF
 
-IF bVisionGetResultsRequest OR btest[5] THEN
+IF bVisionGetResultsRequest AND NOT bVisionResetResultsRequest THEN
 	
 	fbVSCamera.GetResults(stVisionResults => nVisionResults, bResetResults := FALSE);
 	
-ELSE fbVSCamera.GetResults( bResetResults := TRUE);
+ELSIF bVisionResetResultsRequest THEN 
 
+	fbVSCamera.GetResults( stVisionResults => nVisionResults, bResetResults := TRUE);
+
+END_IF
+IF bVisionGetResultsReadyRequest THEN
+	
+	fbVSCamera.RequestResultsAck(bEnable := TRUE);
+ELSE fbVSCamera.RequestResultsAck(bEnable := FALSE);
 END_IF
 					
 //---------------------------------------------------------------------------------------------------					
@@ -1153,8 +1162,9 @@ fbVision.Update(
     bRotate180 := stInputs.bRotaryGripperPlace180,
 	
     tSupportTimeout := stConfig.tStationSupportTimeout,
-	nProgramNumber	:= nVisionProgramNumber,
+	nCurrentProgramNumber	:= bVisionGetCurrentProgram,
 	nVisionCameraResults:= nVisionResults,
+	bResultsReady		:= bVisionGetResultsReadyRequest,
 
     stStatus => stVisionStatus,
     bSupportExtendRequest => bStation3SupportExtendRequest,
@@ -1172,9 +1182,9 @@ fbVision.Update(
 	//camera
 	bTriggerRequest					=>		bVisionTriggerRequest,
 	bChangeProgramRequest			=>		bVisionChangeProgramRequest,
-	bGetResultsRequest				=>		bVisionGetResultsRequest,
-	bGetProgramLoadComplete			=>		bVisionGetProgramLoadComplete,
-	bGetResultsReadyRequest			=>		bVisionGetResultsReadyRequest
+	bRequestResetResults				=>		bVisionResetResultsRequest,
+	bAcknowledgeResults				=> bVisionAcknowledgeResultsRquest,
+	nProgramNumber			=>		nVisionProgramNumber
 );
 
 // =====================================================

@@ -65,6 +65,15 @@ asReadStrings[2] 						:= 	CONCAT(STR1 := asChar[5], STR2 := CONCAT(STR1 := asCh
 GetBatchNumber 							:= CONCAT(STR1 := asReadStrings[1], STR2 := asReadStrings[2]);	]]></ST>
       </Implementation>
     </Method>
+    <Method Name="GetCurrentProgram" Id="{0d7530fa-7ff4-4ef0-8969-8691a2248813}">
+      <Declaration><![CDATA[METHOD GetCurrentProgram : UDINT
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[GetCurrentProgram    					:= stCameraIO.bCurrentProgramNumber;]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="GetDate" Id="{8af8142e-1b68-481a-947a-21e5a4590817}">
       <Declaration><![CDATA[METHOD GetDate : STRING
 VAR_INPUT
@@ -96,98 +105,59 @@ asReadStrings[2] 						:= 	CONCAT(STR1 := asChar[5], STR2 := CONCAT(STR1 := asCh
 GetDate									:= CONCAT(STR1 := asReadStrings[1], STR2 := asReadStrings[2]);	]]></ST>
       </Implementation>
     </Method>
-    <Method Name="GetProgramLoadComplete" Id="{0d7530fa-7ff4-4ef0-8969-8691a2248813}">
-      <Declaration><![CDATA[METHOD GetProgramLoadComplete : BOOL
-VAR_INPUT
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[GetProgramLoadComplete    					:= stCameraIO.bProgramLoadComplete;]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="GetResults" Id="{ed5abd06-54dd-47eb-a34b-13eb8c625f84}">
+    <Method Name="GetResults" Id="{adc0f12e-de38-4d7e-b2cb-7165e465647b}">
       <Declaration><![CDATA[METHOD GetResults : BOOL
 VAR_INPUT
-	
 	bResetResults				: BOOL;
-
+ 
 END_VAR
 VAR
-	
 
+ 
 END_VAR
 VAR_OUTPUT
-	
 	stVisionResults				: ST_VisionResults;
-	
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-stVisionResults.sDate 								:= GetDate();
-
-IF stCameraIO.bCurrentProgramNumber = 0 THEN
-	
+        <ST><![CDATA[stVisionResults.sDate 								:= GetDate();
+ 
+IF stCameraIO.bCurrentProgramNumber = 0 AND NOT bResetResults THEN
 	IF stCameraIO.bToolJudge[4] THEN
-		
 		stVisionResults.nClickPartPresent[1]		:= 1;
-		
 	ELSE stVisionResults.nClickPartPresent[1]		:= 2;
-		
 	END_IF
 	IF stCameraIO.bToolJudge[2] THEN
-		
 		stVisionResults.nBottomPatchok				:= 1;
-		
 	ELSE stVisionResults.nBottomPatchok				:= 2;
-		
 	END_IF
 	IF stCameraIO.bToolJudge[3] THEN
-		
 		stVisionResults.nTopPatchok					:= 1;
-		
 	ELSE stVisionResults.nTopPatchok				:= 2;
-		
 	END_IF
-	
 
-ELSIF stCameraIO.bCurrentProgramNumber = 1 THEN
-	
+ 
+ELSIF stCameraIO.bCurrentProgramNumber = 1 AND NOT bResetResults THEN
 	stVisionResults.sPatchNumber[1] 				:= GetBatchNumber();
-
-ELSIF stCameraIO.bCurrentProgramNumber = 2 THEN
-	
+ 
+ELSIF stCameraIO.bCurrentProgramNumber = 2 AND NOT bResetResults THEN
 	stVisionResults.sDate 							:= GetDate();
 	stVisionResults.sPatchNumber[2] 				:= GetBatchNumber();
-
+ 
 	IF stCameraIO.bToolJudge[6] THEN
-		
 		stVisionResults.nClickPartPresent[2]		:= 1;
-		
 	ELSE stVisionResults.nClickPartPresent[2]		:= 2;
-		
 	END_IF
-	
 	IF stCameraIO.bToolJudge[1] THEN
-		
 		stVisionResults.nBluePartPresent			:= 1;
-		
 	ELSE stVisionResults.nBluePartPresent			:= 2;
-		
 	END_IF
-	
-ELSIF stCameraIO.bCurrentProgramNumber = 3 THEN
-	
+ELSIF stCameraIO.bCurrentProgramNumber = 3 AND NOT bResetResults THEN
 	IF stCameraIO.bToolJudge[0] THEN
-		
 		stVisionResults.nPBUBOK						:= 1;
-		
 	ELSE stVisionResults.nPBUBOK					:= 2;
-		
 	END_IF
-
+ 
 ELSIF bResetResults THEN
-	
 	stVisionResults.sPatchNumber[1]					:= '';
 	stVisionResults.sPatchNumber[2]					:= '';
 	stVisionResults.sDate							:= '';
@@ -198,18 +168,23 @@ ELSIF bResetResults THEN
 	stVisionResults.nTopPatchok						:= 0;
 	stVisionResults.nPBUBOK							:= 0;
 	bResetResults									:= FALSE;
-
-END_IF
-]]></ST>
+ 
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="GetResultsReady" Id="{9cbb4362-1746-498c-9239-edc22e263276}">
-      <Declaration><![CDATA[METHOD GetResultsReady : BOOL
+      <Declaration><![CDATA[METHOD PUBLIC GetResultsReady : BOOL
 VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	
+	ResultsReady				: BOOL;
+
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[GetResultsReady					:= stCameraIO.bResultsReady;]]></ST>
+        <ST><![CDATA[GetResultsReady					:= stCameraIO.bResultsReady;
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="IsFaulted" Id="{0ac36af5-7e02-445f-b51f-a1f65d3c6e2b}">
@@ -235,19 +210,27 @@ END_VAR
 VAR_INPUT
 	
 	nProgramNumber				: UDINT;	
+	bEnable						: BOOL;
 
 END_VAR
 
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-IF stCameraIO.bCurrentProgramNumber <> nProgramNumber THEN
+        <ST><![CDATA[IF bEnable THEN
 	
-	stCameraIO.bProgramNumber_out 			:= nProgramNumber;
-	stCameraIO.bProgramLoadExecute			:= TRUE;
+	IF stCameraIO.bCurrentProgramNumber <> nProgramNumber THEN
 	
+		stCameraIO.bProgramNumber_out 			:= nProgramNumber;
+		stCameraIO.bProgramLoadExecute			:= TRUE;
+	
+	ELSE stCameraIO.bProgramLoadExecute			:= FALSE;
+	END_IF
+
 ELSE stCameraIO.bProgramLoadExecute			:= FALSE;
+
+
 END_IF
+
 
 ]]></ST>
       </Implementation>
@@ -269,7 +252,25 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[stCameraIO.bGoToRun := TRUE;
-stCameraIO.bGoToRun := FALSE;]]></ST>
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RequestResultsAck" Id="{0102a543-2a50-470a-96ab-519c460d1ab9}">
+      <Declaration><![CDATA[METHOD RequestResultsAck : BOOL
+VAR_INPUT
+	
+	bEnable				: BOOL;
+
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bEnable THEN
+	
+	stCameraIO.bResultAck			:= TRUE;
+
+ELSE stCameraIO.bResultAck			:= FALSE;
+	
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequestTrigger" Id="{bee14638-6b9a-45ce-b2ef-ffa8ac3627c8}">
