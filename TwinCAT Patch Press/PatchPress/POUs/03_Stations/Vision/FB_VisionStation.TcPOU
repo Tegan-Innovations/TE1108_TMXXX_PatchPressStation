@@ -157,6 +157,51 @@ bStepTargetReached := FALSE;
 bFaultInternal := FALSE;
 
 
+
+// ============================================================================
+// KEYENCE CAMERA - INDIVIDUAL INSPECTION RESULTS
+// FUTURE IMPLEMENTATION - REVIEW BEFORE ENABLING
+// ============================================================================
+// 
+// All four inspections must be executed, even if a previous inspection FAILS.
+// 
+// Inspection mapping:
+//     [1] Program 0 - 
+//     [2] Program 1 - 
+//     [3] Program 2 - 
+//     [4] Program 3 - 
+// 
+// Results are stored in:
+//     stResultInternal.CameraResults.aInspectionCompleted[1..4]
+//     stResultInternal.CameraResults.aInspectionPassed[1..4]
+// 
+// Result interpretation:
+//     Completed = FALSE, Passed = FALSE -> NOT TESTED
+//     Completed = TRUE,  Passed = TRUE  -> PASS
+//     Completed = TRUE,  Passed = FALSE -> FAIL
+// 
+// Implementation requirements:
+//     1. Reset both arrays when a NEW cycle is accepted.
+//     2. Execute all four camera programs.
+//     3. Save each result after receiving a valid camera response.
+//     4. Never stop the sequence because of an individual quality FAIL.
+//     5. Evaluate the overall PASS/FAIL after all four inspections.
+//     6. Preserve partial results if a station Fault interrupts the cycle.
+//     7. Handle communication faults and timeouts separately.
+// 
+// Final result:
+//     Four completed + four PASS -> Vision PASS
+//     Four completed + any FAIL  -> Vision FAIL
+//     Any incomplete inspection  -> Vision cannot PASS
+// 
+// NOTE:
+//     Camera communication and sequence implementation are handled
+//     separately by the developer responsible for Keyence integration.
+// 
+// ============================================================================
+
+
+
 // ============================================================================
 // HOME FEEDBACK
 // ============================================================================
@@ -1153,6 +1198,64 @@ ELSE
                 ELSIF usiStepInternal < 150 THEN
                     usiStepInternal := usiStepInternal + 10;
                 ELSE
+					
+(*
+				====================================================================
+				TODO - KEYENCE CAMERA FINAL RESULT EVALUATION
+				FUTURE IMPLEMENTATION - REVIEW BEFORE ENABLING
+				====================================================================
+				
+				Required local variables:
+					iInspection : INT;
+					bAllInspectionsCompleted : BOOL;
+					bAllInspectionsPassed : BOOL;
+				
+				Evaluate only after the four camera inspections have been executed.
+				
+				bAllInspectionsCompleted := TRUE;
+				bAllInspectionsPassed := TRUE;
+				
+				FOR iInspection := 1 TO 4 DO
+				
+					IF NOT stResultInternal.CameraResults.aInspectionCompleted[iInspection] THEN
+				
+						bAllInspectionsCompleted := FALSE;
+						bAllInspectionsPassed := FALSE;
+				
+					ELSIF NOT stResultInternal.CameraResults.aInspectionPassed[iInspection] THEN
+				
+						bAllInspectionsPassed := FALSE;
+				
+					END_IF;
+				
+				END_FOR;
+				
+				FINAL RESULT:
+				
+				1. All inspections completed and passed:
+					stResultInternal.bValid := TRUE;
+					stResultInternal.bPassed := TRUE;
+					stResultInternal.eCode := E_ProcessResultCode.Pass;
+				
+				2. All inspections completed, at least one failed:
+					stResultInternal.bValid := TRUE;
+					stResultInternal.bPassed := FALSE;
+					stResultInternal.eCode := E_ProcessResultCode.Fail;
+				
+				3. One or more inspections incomplete:
+					Do not report PASS.
+					Handle communication failure, timeout or interrupted
+					inspection according to the existing station fault policy.
+				
+				IMPORTANT:
+					- An individual quality FAIL must never skip another inspection.
+					- The overall result is calculated only after all four inspections.
+					- Replace the bSimulatedFail logic when integration is ready.
+					- Preserve the individual results in CameraResults.
+					- Do not modify the CSV structure.
+				
+				====================================================================
+*)
 
                     // FIX: camera inspection steps are currently commented; use commissioning
                     // simulated PASS/FAIL selector as the process result.
@@ -1593,8 +1696,7 @@ usiStepInternal := 0;
 VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-RequestStart := FALSE;
+        <ST><![CDATA[RequestStart := FALSE;
 
 IF bEnableInternal
     AND bCommissionedInternal
@@ -1609,12 +1711,32 @@ THEN
     stResultInternal.udiAlertCode := 0;
     stResultInternal.sDetail := '';
 
+    (*
+    // ============================================================
+    // TODO - KEYENCE CAMERA RESULTS RESET
+    // Enable after camera integration review.
+    // Reset inspection results only when a new cycle is accepted.
+    // ============================================================
+
+    stResultInternal.CameraResults.aInspectionCompleted[1] := FALSE;
+    stResultInternal.CameraResults.aInspectionCompleted[2] := FALSE;
+    stResultInternal.CameraResults.aInspectionCompleted[3] := FALSE;
+    stResultInternal.CameraResults.aInspectionCompleted[4] := FALSE;
+
+    stResultInternal.CameraResults.aInspectionPassed[1] := FALSE;
+    stResultInternal.CameraResults.aInspectionPassed[2] := FALSE;
+    stResultInternal.CameraResults.aInspectionPassed[3] := FALSE;
+    stResultInternal.CameraResults.aInspectionPassed[4] := FALSE;
+
+    // Preserve partial results before resetting a previous cycle.
+    // ============================================================
+    *)
+
     eSupportFaultInternal := E_SupportCylinderFault.None;
     eStateInternal := E_PatchStationState.Processing;
     usiStepInternal := 10;
     RequestStart := TRUE;
-END_IF
-]]></ST>
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequestStop" Id="{c0843154-582c-4b39-b05f-d6fcabc70c1d}">
