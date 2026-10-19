@@ -74,9 +74,10 @@ STRUCT
     bReady                  : BOOL;
     bBusy                   : BOOL;
     bFaulted                : BOOL;
-    bInitialisationTimeoutFault : BOOL;
-    bStoppingTimeoutFault   : BOOL;
-    bProcessCycleTimeoutFault : BOOL;
+    bInitialisationTimeoutFault 	: BOOL;
+    bStoppingTimeoutFault   		: BOOL;
+    bProcessCycleTimeoutFault 		: BOOL;
+	bHeaterDwellTimeoutFault    	: BOOL;
     bSafetyStopRequested    : BOOL;
     bSafetyRunRequested     : BOOL;
     bEventFault             : BOOL;

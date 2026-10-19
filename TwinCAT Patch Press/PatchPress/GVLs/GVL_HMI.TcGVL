@@ -29,6 +29,7 @@ VAR_GLOBAL CONSTANT
     sBLACK 					: STRING(40) := '{"color":"rgba(0,0,0,1)"}';
     sYELLOW 				: STRING(40) := '{"color":"rgba(255,255,0,1)"}';
     sGREEN 					: STRING(40) := '{"color":"rgba(70,166,63,1)"}';
+	sORANGE 				: STRING(40) := '{"color":"rgba(232,107,23,1)"}';
     sRED 					: STRING(40) := '{"color":"rgba(255,0,0,1)"}';
     sBLUEInProgress 		: STRING(40) := '{"color":"rgba(54,100,221,1)"}';
     sGREY 					: STRING(40) := '{"color":"rgba(164,158,158,1)"}';

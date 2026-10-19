@@ -8,10 +8,12 @@ VAR
     rtCycleTrigger      : R_TRIG;
     tonSequenceTimeout  : TON;
 
-    bStopPending        : BOOL;
-    bStartIssued        : BOOL;
-    bIndexRequestIssued : BOOL;
-    bSequenceTimeoutFaultInternal : BOOL;
+    bStopPending        			: BOOL;
+    bStartIssued        			: BOOL;
+    bIndexRequestIssued 			: BOOL;
+    bSequenceTimeoutFaultInternal 	: BOOL;
+
+	
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -37,6 +39,7 @@ VAR_INPUT
     bAllStationsReady         : BOOL;
     bAllStationsComplete      : BOOL;
     bAnyStationFault          : BOOL;
+	bHeaterDwellPending 	  : BOOL;
 
     tSequenceTimeout          : TIME;
 END_VAR
@@ -200,10 +203,15 @@ CASE eStateInternal OF
             eStateInternal := E_CycleState.WaitingForProcessCycleTrigger;
         END_IF
 
-    E_CycleState.WaitingForProcessCycleTrigger:
-
-        IF bStopPending THEN
-            eStateInternal := E_CycleState.ControlledStop;
+	E_CycleState.WaitingForProcessCycleTrigger:
+	
+		IF bStopPending THEN
+			eStateInternal := E_CycleState.ControlledStop;
+	
+		ELSIF bHeaterDwellPending THEN
+			// Block new cycles while waiting for Heater Dwell.
+			// The machine controller will perform the safe
+			// transition to Dwell.
 
         // The disabled-nest interlock is reported only after a fresh operator
         // index attempt. The machine stays in this state and does not index.
@@ -228,6 +236,10 @@ CASE eStateInternal OF
 
         IF bStopPending THEN
             eStateInternal := E_CycleState.ControlledStop;
+			
+		ELSIF bHeaterDwellPending THEN
+			// No index movement has been requested yet.
+			eStateInternal := E_CycleState.WaitingForProcessCycleTrigger;
 
         ELSIF bSafetyOk
             AND bStationsIndexPermissive

@@ -3,6 +3,8 @@
   <POU Name="PRG_Events" Id="{d91f2867-40c6-48eb-9107-f41ea1d35528}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Events
 VAR
+// 	sHeaterMinimum : STRING(32);
+// 	sHeaterCurrent : STRING(32);
     fbEventsManager : FB_EventsManager;
     tonUpSupplyLost : TON;
     tonUsSupplyLost : TON;
@@ -152,22 +154,49 @@ GVL_MASTER.stStationEvents[3].aEvents[11].bEventText := 'Vision station fault';
 GVL_MASTER.stStationEvents[3].aEvents[11].sSolution :=
     'Check Vision station diagnostic, process equipment and simulation fault request';
 
-// -----------------------------------------------------------------------------
-// HEAT STAKE TEMPERATURE CONTROL
-// -----------------------------------------------------------------------------
-GVL_MASTER.stStationEvents[3].aEvents[12].bFault := FALSE;
-GVL_MASTER.stStationEvents[3].aEvents[12].bMessage := TRUE;
-GVL_MASTER.stStationEvents[3].aEvents[12].bEventFlag :=
-    (GVL_MASTER.stStatus.eMachineState = E_MachineState.AutoCycle)
-    AND GVL_MASTER.stStatus.stHeatStakeTemperature.bLowTemperature
-    AND NOT GVL_MASTER.stStatus.stHeatStakeTemperature.bLowTemperatureTimeout;
-GVL_MASTER.stStationEvents[3].aEvents[12].bEventText :=
-    'Heat Stake temperature below process minimum - index inhibited';
-GVL_MASTER.stStationEvents[3].aEvents[12].sSolution :=
-    'Wait for both heaters to reach the configured minimum temperature';
+// =====================================================
+// EVENT 12 - HEAT STAKE LOW TEMPERATURE WARNING
+// =====================================================
 
-GVL_MASTER.stStationEvents[3].aEvents[13].bFault := TRUE;
-GVL_MASTER.stStationEvents[3].aEvents[13].bEventFlag :=
+// // Convert live temperature values to text.
+// sHeaterMinimum := LREAL_TO_STRING(
+//     GVL_MASTER.stStatus.stHeatStakeTemperature.rLowLimitC
+// );
+// 
+// sHeaterCurrent := LREAL_TO_STRING(
+//     GVL_MASTER.stStatus.stHeatStakeTemperature.rOverTempTemperatureC
+// );
+// 
+// // Warning configuration.
+// GVL_MASTER.stStationEvents[3].aEvents[12].bFault := FALSE;
+// GVL_MASTER.stStationEvents[3].aEvents[12].bMessage := TRUE;
+// GVL_MASTER.stStationEvents[3].aEvents[12].bPersistentMessage := TRUE;
+// 
+// // Active during AutoCycle and Dwell when temperature is low.
+// GVL_MASTER.stStationEvents[3].aEvents[12].bEventFlag :=
+//     (
+//         (GVL_MASTER.stStatus.eMachineState = E_MachineState.AutoCycle)
+//         OR (GVL_MASTER.stStatus.eMachineState = E_MachineState.Dwell)
+//     )
+//     AND NOT GVL_MASTER.stStatus.stHeatStakeTemperature.bIndexTemperatureReady;
+// 
+// // Dynamic warning message.
+// GVL_MASTER.stStationEvents[3].aEvents[12].bEventText :=
+//                 'Heater Temp below min - Min: ';
+// GVL_MASTER.stStationEvents[3].aEvents[12].sSolution :=
+//     CONCAT(
+//         CONCAT(
+//             CONCAT(
+//                 'Low Limit Temp: ',
+//                 sHeaterMinimum
+//             ),
+//             ' C | Current Temp: '
+//         ),
+//         sHeaterCurrent
+//     );
+
+GVL_MASTER.stStationEvents[3].aEvents[13].bFault :=FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[13].bEventFlag := 
     GVL_MASTER.stStatus.stHeatStakeTemperature.bLowTemperatureTimeout;
 GVL_MASTER.stStationEvents[3].aEvents[13].bEventText :=
     'Heat Stake low temperature timeout';
@@ -285,6 +314,16 @@ GVL_MASTER.stStationEvents[3].aEvents[23].bFault := TRUE;
 GVL_MASTER.stStationEvents[3].aEvents[23].bEventFlag := GVL_MASTER.stStatus.bHeatStakeHeadSensorConflictFault;
 GVL_MASTER.stStationEvents[3].aEvents[23].bEventText := 'Heat Stake head position sensor conflict';
 GVL_MASTER.stStationEvents[3].aEvents[23].sSolution := 'Check Head UP/DOWN sensor wiring, magnetic sensor adjustment and mechanical position';
+
+// =====================================================
+// EVENT 24 - HEAT STAKE DWELL TIMEOUT
+// =====================================================
+
+GVL_MASTER.stStationEvents[3].aEvents[24].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[24].bEventFlag :=GVL_MASTER.stStatus.bHeaterDwellTimeoutFault;
+GVL_MASTER.stStationEvents[3].aEvents[24].bEventText :='Heat Stake Dwell timeout - temperature did not recover';
+GVL_MASTER.stStationEvents[3].aEvents[24].sSolution :='Check heaters, thermocouples and temperature settings. Correct the problem and reset the machine';
+
 
 GVL_MASTER.stStationEvents[3].aEvents[3].bFault := TRUE;
 GVL_MASTER.stStationEvents[3].aEvents[3].bEventFlag :=

@@ -252,12 +252,24 @@ GVL_HMI.uiTestHistoryCount :=
     GVL_Persistent.uiTestHistoryCount;
 	
 
-IF (GVL_MASTER.stStatus.eMachineState = E_MachineState.AutoCycle)
+IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Dwell THEN
+
+    // Show live heater temperature in the main HMI message.
+    GVL_HMI.stStatus.sMachineMessage :=
+        GVL_MASTER.stStationEvents[3].aEvents[12].bEventText;
+
+ELSIF (GVL_MASTER.stStatus.eMachineState = E_MachineState.AutoCycle)
     AND (LEN(GVL_MASTER.stStatus.sOperatorMessage) > 0)
 THEN
-    GVL_HMI.stStatus.sMachineMessage := GVL_MASTER.stStatus.sOperatorMessage;
+
+    GVL_HMI.stStatus.sMachineMessage :=
+        GVL_MASTER.stStatus.sOperatorMessage;
+
 ELSE
-    GVL_HMI.stStatus.sMachineMessage := GVL_MASTER.stStatus.sMachineMessage;
+
+    GVL_HMI.stStatus.sMachineMessage :=
+        GVL_MASTER.stStatus.sMachineMessage;
+
 END_IF
 
 GVL_HMI.stStatus.sAutoCycleBlockReason := GVL_MASTER.stStatus.sAutoCycleBlockReason;
@@ -269,6 +281,10 @@ CASE GVL_MASTER.stInputs.eIndexPosition OF
     E_TablePosition.Position4: GVL_HMI.stStatus.iNestRotationAngle := 90;
 ELSE GVL_HMI.stStatus.iNestRotationAngle := 0;
 END_CASE
+
+
+
+
 CASE GVL_MASTER.stStatus.eMachineState OF
     E_MachineState.PowerUp: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM POWER UP'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sYELLOW; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sBLACK;
     E_MachineState.Initialising: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM INITIALIZING'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sYELLOW; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sBLACK;
@@ -281,11 +297,19 @@ CASE GVL_MASTER.stStatus.eMachineState OF
             GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sWHITE;
             GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sGREEN;
         END_IF
-    E_MachineState.AutoCycle: GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM AUTO CYCLE'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREEN; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
-    E_MachineState.Stopping: GVL_HMI.StatusHMI.sMachineStatusText := 'STOPPING'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREY; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
-    E_MachineState.Stopped: GVL_HMI.StatusHMI.sMachineStatusText := 'CYCLE STOPPED'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREY; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+	
+	E_MachineState.Dwell:
+		GVL_HMI.StatusHMI.sMachineStatusText :='DWELL'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sORANGE; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.AutoCycle: 
+			GVL_HMI.StatusHMI.sMachineStatusText := 'SYSTEM AUTO CYCLE'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREEN; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+	E_MachineState.Stopping: 
+			GVL_HMI.StatusHMI.sMachineStatusText := 'STOPPING'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREY; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
+    E_MachineState.Stopped: 
+			GVL_HMI.StatusHMI.sMachineStatusText := 'CYCLE STOPPED'; GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sGREY; GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
     E_MachineState.Fault:
-        GVL_HMI.StatusHMI.sMachineStatusText := 'IMMEDIATE FAULT';
+        	GVL_HMI.StatusHMI.sMachineStatusText := 'IMMEDIATE FAULT';
+			
+			
         IF bFlash THEN
             GVL_HMI.StatusHMI.sBannerBckColor := GVL_HMI.sREDFail;
             GVL_HMI.StatusHMI.sBannerTextColor := GVL_HMI.sWHITE;
