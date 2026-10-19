@@ -17,6 +17,8 @@ STRUCT
     sVisionResult       : STRING(20);
     sTime               : STRING(255);
     sDate               : STRING(255);
+	
+	stVisionInspectionResults : ST_VisionResults;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>
