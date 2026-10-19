@@ -43,18 +43,19 @@ VAR
     // Required to know which physical parts were actually being processed if
     // Safety is lost, because Update() immediately disables the station when
     // Safety_OK goes FALSE.
-    bPatchDispenseProcessingBeforeUpdate : BOOL;
-    bHeatStakeProcessingBeforeUpdate : BOOL;
-    bVisionProcessingBeforeUpdate : BOOL;
+    bPatchDispenseProcessingBeforeUpdate 	: BOOL;
+    bHeatStakeProcessingBeforeUpdate 		: BOOL;
+    bVisionProcessingBeforeUpdate 			: BOOL;
+	bHeatStakeHeadDownStarted 				: BOOL;
 
     // Machine-state transition tracking for one-shot product disposition.
-    ePreviousMachineState : E_MachineState := E_MachineState.PowerUp;
-    stProcessFaultResult : ST_ProcessResult;
+    ePreviousMachineState 					: E_MachineState := E_MachineState.PowerUp;
+    stProcessFaultResult 					: ST_ProcessResult;
 
-    bAllRequiredStationsReady : BOOL;
-    bAllRequiredStationsComplete : BOOL;
-    bAnyStationInProcess : BOOL;
-    bCycleResultsStored : BOOL;
+    bAllRequiredStationsReady 				: BOOL;
+    bAllRequiredStationsComplete 			: BOOL;
+    bAnyStationInProcess 					: BOOL;
+    bCycleResultsStored 					: BOOL;
 
     stPermissives : ST_MachinePermissives;
     tonInitialising : TON;
@@ -104,39 +105,39 @@ VAR
     bManualSupportTargetUpAtRejectStop : BOOL;
     bManualRejectStopReady             : BOOL;
 
-    bStation1SupportExtendRequest  : BOOL;
-    bStation1SupportRetractRequest : BOOL;
-    bStation2SupportExtendRequest  : BOOL;
-    bStation2SupportRetractRequest : BOOL;
+    bStation1SupportExtendRequest  	: BOOL;
+    bStation1SupportRetractRequest 	: BOOL;
+    bStation2SupportExtendRequest  	: BOOL;
+    bStation2SupportRetractRequest 	: BOOL;
 
-    bHeatStakeHeadLockRequest : BOOL;
-    bHeatStakeHeadUnlockRequest : BOOL;
-    bHeatStakeHeadDownRequest : BOOL;
-    bHeatStakeHeadUpRequest : BOOL;
-    rHeatStakePressureCommandBar : LREAL;
-    iHeatStakePressureRaw : INT;
-    rHeatStakePressureScaledBar : LREAL;
-    bHeatStakeContactDwellActive : BOOL;
-    usiHeatStakeSequenceStep : USINT;
+    bHeatStakeHeadLockRequest 		: BOOL;
+    bHeatStakeHeadUnlockRequest 	: BOOL;
+    bHeatStakeHeadDownRequest 		: BOOL;
+    bHeatStakeHeadUpRequest 		: BOOL;
+    rHeatStakePressureCommandBar 	: LREAL;
+    iHeatStakePressureRaw 			: INT;
+    rHeatStakePressureScaledBar 	: LREAL;
+    bHeatStakeContactDwellActive 	: BOOL;
+    usiHeatStakeSequenceStep 		: USINT;
 
     // Heat Stake Manual Mode
-    rtHeatStakeManualStakePatch : R_TRIG;
-    rtHeatStakeManualUnlock     : R_TRIG;
-    rtHeatStakeManualLock       : R_TRIG;
-    rtHeatStakeManualHeadDown   : R_TRIG;
-    rtHeatStakeManualHeadUp     : R_TRIG;
-    rtHeatStakeInitialising     : R_TRIG;
+    rtHeatStakeManualStakePatch 	: R_TRIG;
+    rtHeatStakeManualUnlock     	: R_TRIG;
+    rtHeatStakeManualLock       	: R_TRIG;
+    rtHeatStakeManualHeadDown   	: R_TRIG;
+    rtHeatStakeManualHeadUp     	: R_TRIG;
+    rtHeatStakeInitialising     	: R_TRIG;
 
-    tonHeatStakeManualAction     : TON;
-    usiHeatStakeManualActionStep : USINT := 0;
-    bHeatStakeManualHeadUnlocked : BOOL := FALSE;
+    tonHeatStakeManualAction     	: TON;
+    usiHeatStakeManualActionStep 	: USINT := 0;
+    bHeatStakeManualHeadUnlocked 	: BOOL := FALSE;
     bHeatStakeManualStakeCycleActive : BOOL := FALSE;
 
-    bHeatStakeStationHeadDownTimeoutFault : BOOL;
-    bHeatStakeStationHeadUpTimeoutFault : BOOL;
-    bHeatStakeStationHeadSensorConflictFault : BOOL;
-    bHeatStakeManualHeadDownTimeoutFault : BOOL;
-    bHeatStakeManualHeadUpTimeoutFault : BOOL;
+    bHeatStakeStationHeadDownTimeoutFault 		: BOOL;
+    bHeatStakeStationHeadUpTimeoutFault 		: BOOL;
+    bHeatStakeStationHeadSensorConflictFault 	: BOOL;
+    bHeatStakeManualHeadDownTimeoutFault 		: BOOL;
+    bHeatStakeManualHeadUpTimeoutFault 			: BOOL;
 
     bHeatStakeManualEnableAllowed   : BOOL;
     bHeatStakeManualStakeAllowed    : BOOL;
@@ -146,6 +147,7 @@ VAR
     bHeatStakeManualHeadUpAllowed   : BOOL;
     bHeatStakeManualSupportAllowed  : BOOL;
     bHeatStakeManualActionBusy      : BOOL;
+	
 	// Vision Manual Mode
 	bVisionSupportAllowed 			: BOOL;
 	tpVisionManualHorizontalBack  	: TP;
@@ -170,11 +172,11 @@ VAR
 	bVisionManualRotate180Active 			: BOOL;
 
     // Manual Heat Stake tooling-position tracking uses physical sensors.
-    bHeatStakeManualHomePosition     : BOOL;
-    bHeatStakeManualOutOfHome        : BOOL;
+    bHeatStakeManualHomePosition     		: BOOL;
+    bHeatStakeManualOutOfHome        		: BOOL;
 
-    bStation3SupportExtendRequest  : BOOL;
-    bStation3SupportRetractRequest : BOOL;
+    bStation3SupportExtendRequest  			: BOOL;
+    bStation3SupportRetractRequest 			: BOOL;
     bVisionHorizontalBackRequest  : BOOL;
     bVisionHorizontalFrontRequest : BOOL;
     bVisionVerticalUpRequest      : BOOL;
@@ -621,6 +623,7 @@ fbHeatStake.Update(
     bContactDwellActive => bHeatStakeContactDwellActive,
     usiSequenceStep => usiHeatStakeSequenceStep,
     bHeadDownTimeoutFault => bHeatStakeStationHeadDownTimeoutFault,
+	bHeadDownStarted => bHeatStakeHeadDownStarted,
     bHeadUpTimeoutFault => bHeatStakeStationHeadUpTimeoutFault,
     bHeadSensorConflictFault => bHeatStakeStationHeadSensorConflictFault
 );
@@ -2768,37 +2771,60 @@ THEN
 	
 	END_IF
 
-    // =====================================================
-    // HEAT STAKE INTERRUPTED
-    // =====================================================
-    // Patch result is preserved.
-    // Heat Stake becomes Fail and Vision becomes NotTested.
-
-    IF stHeatStakeNest.bPartPresent
-        AND (
-            bHeatStakeProcessingBeforeUpdate
-            OR (bProcessStartStations AND bHeatStakeRequired)
-        )
-    THEN
-
-        stProcessFaultResult.sDetail :=
-            'Heat Stake aborted by machine fault during process';
-
-        fbNestManager.StoreHeatStakeResultAtPosition(
-            ePosition := stConfig.eHeatStakePosition,
-            stResult := stProcessFaultResult
-        );
-
-        fbNestManager.MarkVisionNotTestedAtPosition(
-            stConfig.eHeatStakePosition
-        );
-
-        fbNestManager.FinaliseResultAtPosition(
-            stConfig.eHeatStakePosition
-        );
-
-    END_IF
-
+   	// =====================================================
+	// HEAT STAKE INTERRUPTED
+	// =====================================================
+	// Before head-down: Reprocess.
+	// After head-down: Reject.
+	// Preserve the completed Patch Dispense result.
+	
+	IF stHeatStakeNest.bPartPresent
+		AND bHeatStakeRequired
+	THEN
+	
+		stProcessFaultResult.bValid := TRUE;
+		stProcessFaultResult.bPassed := FALSE;
+		stProcessFaultResult.eCode := E_ProcessResultCode.Aborted;
+		stProcessFaultResult.udiFaultCode := 0;
+		stProcessFaultResult.udiAlertCode := 0;
+	
+		IF bHeatStakeHeadDownStarted THEN
+	
+			// Physical process started: Reject.
+			stProcessFaultResult.sDetail :=
+				'Heat Stake interrupted after head-down - Reject';
+	
+			fbNestManager.StoreHeatStakeResultAtPosition(
+				ePosition := stConfig.eHeatStakePosition,
+				stResult := stProcessFaultResult
+			);
+	
+			fbNestManager.MarkVisionNotTestedAtPosition(
+				stConfig.eHeatStakePosition
+			);
+	
+			fbNestManager.FinaliseResultAtPosition(
+				stConfig.eHeatStakePosition
+			);
+	
+		ELSE
+	
+			// Physical process not started: Reprocess.
+			stProcessFaultResult.sDetail :=
+				'Heat Stake interrupted before head-down - Reprocess';
+	
+			fbNestManager.StoreHeatStakeResultAtPosition(
+				ePosition := stConfig.eHeatStakePosition,
+				stResult := stProcessFaultResult
+			);
+	
+			fbNestManager.MarkReprocessAtPosition(
+				ePosition := stConfig.eHeatStakePosition
+			);
+	
+		END_IF
+	
+	END_IF
 
     // =====================================================
     // VISION INTERRUPTED
