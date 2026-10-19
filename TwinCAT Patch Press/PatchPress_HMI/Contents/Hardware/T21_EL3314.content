@@ -1,0 +1,10 @@
+<div id="EL1801_39" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480">
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+<div id="IO_27" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="480" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-target-user-control="Contents/UserControl/4CH_Dig_IO_CARD.usercontrol" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="1080" data-tchmi-width-unit="px" data-tchmi-image="Images/IO/EL3314.png" data-tchmi-_1_inputoutputname="IVEK Heater Temperature" data-tchmi-_2_inputoutputname="CH2 - SPARE" data-tchmi-_3_inputoutputname="CH3 - SPARE" data-tchmi-_4_inputoutputname="CH4 - SPARE" data-tchmi-state_string="%s%ADS.PLC1.GVL_EtherCAT.stTerm33_EL3314.sTerminalName%/s%" data-tchmi-_1inputoutputsignal="%s%ADS.PLC1.GVL_HMI.stStatus.stMachine.bIvekHeaterTemperatureOutOfRange%/s%" data-tchmi-_2_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm33_EL3314.iEL3314_Ch2%/s%" data-tchmi-_3_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm33_EL3314.iEL3314_Ch3%/s%" data-tchmi-_4_inputoutputsignal="%s%ADS.PLC1.GVL_EtherCAT.stTerm33_EL3314.iEL3314_Ch4%/s%" data-tchmi-cardoperational="%s%ADS.PLC1.GVL_EtherCAT.stTerm33_EL3314.stTerminalInfo.bTerminalOperational%/s%">
+</div>
+</div>
