@@ -321,8 +321,8 @@ GVL_MASTER.stStationEvents[3].aEvents[23].sSolution := 'Check Head UP/DOWN senso
 
 GVL_MASTER.stStationEvents[3].aEvents[24].bFault := TRUE;
 GVL_MASTER.stStationEvents[3].aEvents[24].bEventFlag :=GVL_MASTER.stStatus.bHeaterDwellTimeoutFault;
-GVL_MASTER.stStationEvents[3].aEvents[24].bEventText :='Heat Stake Dwell timeout - temperature did not recover';
-GVL_MASTER.stStationEvents[3].aEvents[24].sSolution :='Check heaters, thermocouples and temperature settings. Correct the problem and reset the machine';
+GVL_MASTER.stStationEvents[3].aEvents[24].bEventText :='Dwell timeout - temperature did not recover';
+GVL_MASTER.stStationEvents[3].aEvents[24].sSolution :='Check heaters, thermocouples and temperature settings.';
 
 
 GVL_MASTER.stStationEvents[3].aEvents[3].bFault := TRUE;
