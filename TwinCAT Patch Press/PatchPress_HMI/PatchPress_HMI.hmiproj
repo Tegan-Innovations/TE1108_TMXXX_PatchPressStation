@@ -206,7 +206,7 @@
     <Content Include="Contents\Hardware\EL9189.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Hardware\T00_EL6652.content">
+    <Content Include="Contents\Hardware\T14_EL6652.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T01_EK1100.content">
@@ -224,10 +224,13 @@
     <Content Include="Contents\Hardware\T05_EL1918.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Contents\Hardware\T00_EL1918.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Contents\Hardware\T07_EL1809.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Hardware\T00_EL3064.content">
+    <Content Include="Contents\Hardware\T12_EL3064.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T10_EL2809.content">
@@ -236,31 +239,10 @@
     <Content Include="Contents\Hardware\T11_EL3058.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Hardware\T12_EL9410.content">
+    <Content Include="Contents\Hardware\T13_EL9410.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Hardware\T13_EL2502.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T14_EL9576.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T15_EL7201.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T16_EL7201.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T17_EL7201.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T22_EL6633.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T21_EL3314.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T18_EL2904.content">
+    <Content Include="Contents\Hardware\T00_EL2904.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T06_EL2904.content">
@@ -269,13 +251,13 @@
     <Content Include="Contents\Hardware\T08_EL1809.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Hardware\T19_EL1809.content">
+    <Content Include="Contents\Hardware\T00_EL1809.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T09_EL2809.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Hardware\T00_EL2809.content">
+    <Content Include="Contents\Hardware\T13_EL2809.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\IOs\Main_IOs.content">
@@ -670,9 +652,6 @@
     <Content Include="Images\IO\EL1918_Detail.PNG">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Images\IO\EL2502.png">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="Images\IO\EL2809.png">
       <SubType>Content</SubType>
     </Content>
@@ -731,9 +710,6 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\IO\EL6910_Detail.PNG">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Images\IO\EL7201.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\IO\el7211.png">

@@ -132,9 +132,6 @@
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL6633.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL9576.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_VABX_A_S_BV_V4A.TcDUT">
       <SubType>Code</SubType>
     </Compile>

@@ -1424,6 +1424,33 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 		<DataType>
+			<Name GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..2] OF BOOL</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>1</LBound>
+				<Elements>2</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..7] OF BOOL</Name>
+			<BitSize>64</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>8</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{53AB2BCA-C5AB-B7CE-D17C-430953A42679}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..127] OF BYTE</Name>
+			<BitSize>1024</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>128</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
 			<Name GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}" AutoDeleteType="true">E_TablePosition</Name>
 			<BitSize>16</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
@@ -1876,33 +1903,6 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..2] OF BOOL</Name>
-			<BitSize>16</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>1</LBound>
-				<Elements>2</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..7] OF BOOL</Name>
-			<BitSize>64</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>8</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{53AB2BCA-C5AB-B7CE-D17C-430953A42679}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..127] OF BYTE</Name>
-			<BitSize>1024</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>128</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
 			<Name GUID="{99AF247C-BA0A-DB60-AA15-61FDDB5B3B05}" AutoDeleteType="true">ST_PhysicalOutputs</Name>
 			<BitSize>320</BitSize>
 			<SubItem>
@@ -2125,6 +2125,52 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
+			<Name GUID="{7200358D-65A9-7605-1ED8-73A5B9A47549}" AutoDeleteType="true">ST_CycleDataCSV</Name>
+			<BitSize>4784</BitSize>
+			<SubItem>
+				<Name>uiNestId</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sGeneralResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sPatchDispenseResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>184</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sHeatStakeResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sVisionResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>520</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sDate</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>688</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>2736</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
 			<Name GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}" AutoDeleteType="true">ST_EventsHistory</Name>
 			<BitSize>8256</BitSize>
 			<SubItem>
@@ -2172,15 +2218,6 @@ External Setpoint Generation:
 			<ArrayInfo>
 				<LBound>0</LBound>
 				<Elements>201</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..4] OF BOOL</Name>
-			<BitSize>32</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>1</LBound>
-				<Elements>4</Elements>
 			</ArrayInfo>
 		</DataType>
 		<DataType>
@@ -2320,6 +2357,15 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
+			<Name GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..4] OF BOOL</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>1</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
 			<Name GUID="{932F1814-5282-1BB1-311D-8F68B5F7DD9D}" AutoDeleteType="true">E_PartDisposition</Name>
 			<BitSize>16</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
@@ -2355,108 +2401,8 @@ External Setpoint Generation:
 			</Properties>
 		</DataType>
 		<DataType>
-			<Name GUID="{EE46EC2F-6B36-8180-D9E8-E7F6A4D1EA07}" AutoDeleteType="true">ST_VisionResults</Name>
-			<BitSize>2128</BitSize>
-			<SubItem>
-				<Name>sPatchNumber</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>2</Elements>
-				</ArrayInfo>
-				<BitSize>1296</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sDate</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</Type>
-				<BitSize>648</BitSize>
-				<BitOffs>1296</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nBluePartPresent</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>1952</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nClickPartPresent</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>2</Elements>
-				</ArrayInfo>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL / bClickPartPresent[1] FIRST INSPECTION, bClickPartPresent[2] THIRD INSPECTION]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>1968</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nBottomPatchok</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>2000</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nTopPatchok</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>2016</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nPBUBOK</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>2032</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bGeneralPass</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>2048</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bGeneralFail</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>2056</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>aInspectionCompleted</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>4</Elements>
-				</ArrayInfo>
-				<Comment><![CDATA[ Individual Keyence inspection results
- [1] Program 0
- [2] Program 1
- [3] Program 2
- [4] Program 3
-
- Completed = FALSE              -> NOT TESTED
- Completed = TRUE, Passed = TRUE  -> PASS
- Completed = TRUE, Passed = FALSE -> FAIL]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>2064</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>aInspectionPassed</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>4</Elements>
-				</ArrayInfo>
-				<BitSize>32</BitSize>
-				<BitOffs>2096</BitOffs>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{F9A71F27-B340-167B-6A1C-C6A7C7647174}" AutoDeleteType="true">ST_TestHistory</Name>
-			<BitSize>6976</BitSize>
+			<Name GUID="{34A45C7B-4398-761F-58FC-21F8A85B47E3}" AutoDeleteType="true">ST_TestHistory</Name>
+			<BitSize>4848</BitSize>
 			<SubItem>
 				<Name>uiNestId</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
@@ -2541,12 +2487,6 @@ External Setpoint Generation:
 				<BitSize>2048</BitSize>
 				<BitOffs>2800</BitOffs>
 			</SubItem>
-			<SubItem>
-				<Name>stVisionInspectionResults</Name>
-				<Type GUID="{EE46EC2F-6B36-8180-D9E8-E7F6A4D1EA07}">ST_VisionResults</Type>
-				<BitSize>2128</BitSize>
-				<BitOffs>4848</BitOffs>
-			</SubItem>
 		</DataType>
 		<DataType>
 			<Name IecBaseType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
@@ -2557,58 +2497,12 @@ External Setpoint Generation:
  product test results.
 
  Production Statistics reset does NOT modify this data.]]></Comment>
-			<BitSize>13958976</BitSize>
-			<BaseType GUID="{F9A71F27-B340-167B-6A1C-C6A7C7647174}">ST_TestHistory</BaseType>
+			<BitSize>9700848</BitSize>
+			<BaseType GUID="{34A45C7B-4398-761F-58FC-21F8A85B47E3}">ST_TestHistory</BaseType>
 			<ArrayInfo>
 				<LBound>0</LBound>
 				<Elements>2001</Elements>
 			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{7200358D-65A9-7605-1ED8-73A5B9A47549}" AutoDeleteType="true">ST_CycleDataCSV</Name>
-			<BitSize>4784</BitSize>
-			<SubItem>
-				<Name>uiNestId</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sGeneralResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>16</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sPatchDispenseResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>184</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sHeatStakeResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>352</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sVisionResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>520</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sDate</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>688</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sTime</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>2736</BitOffs>
-			</SubItem>
 		</DataType>
 		<DataType>
 			<Name GUID="{6A1349E5-5DBA-5F01-9FCA-F3A3779D4934}" AutoDeleteType="true">ST_MachineConfig</Name>
@@ -4640,7 +4534,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{CDF15A7A-99D9-FDCF-9BBE-241F0F160D4D}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{E1A24D30-0042-BA31-A735-2B8C4BA68C9E}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
@@ -4651,36 +4545,23 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
-							<Name>GVL_Persistent.astEventsHistory</Name>
-							<Type GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}">ARRAY [0..200] OF ST_EventsHistory</Type>
+							<Name>GVL_Persistent.bCSVQueueOverflow</Name>
+							<Comment><![CDATA[ CSV diagnostics]]></Comment>
+							<Type>BOOL</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
-							<Name>GVL_Persistent.aNestEnabled</Name>
-							<Comment><![CDATA[ Persistent authority for the four index-table nest enable states.]]></Comment>
-							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
+							<Name>GVL_Persistent.udiCSVRecordsDropped</Name>
+							<Type>UDINT</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
-							<Name>GVL_Persistent.stHeatStakeTemperatureSettings</Name>
-							<Type GUID="{3865B92D-E0AA-4CC0-BC36-652BC0C48B5C}">ST_HeatStakeTemperatureSettings</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Persistent.stHeatStakeProcessSettings</Name>
-							<Type GUID="{140B09FC-1E31-6B4A-5929-9C5D94DE2671}">ST_HeatStakeProcessSettings</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Persistent.astTestHistory</Name>
+							<Name>GVL_Persistent.stCSVPendingRecord</Name>
 							<Comment><![CDATA[ =====================================================
- TEST HISTORY
+ CSV - FINAL PRODUCT RESULT HANDOFF
  =====================================================
- Circular buffer containing the last 2001 completed
- product test results.
-
- Production Statistics reset does NOT modify this data.]]></Comment>
-							<Type GUID="{8264B377-2953-EC72-C6F2-6C3113F3B9C6}">ARRAY [0..2000] OF ST_TestHistory</Type>
+ Persistent handoff between Machine and PRG_CSV.]]></Comment>
+							<Type GUID="{7200358D-65A9-7605-1ED8-73A5B9A47549}">ST_CycleDataCSV</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
@@ -4697,23 +4578,36 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
-							<Name>GVL_Persistent.stCSVPendingRecord</Name>
+							<Name>GVL_Persistent.astEventsHistory</Name>
+							<Type GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}">ARRAY [0..200] OF ST_EventsHistory</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.stHeatStakeTemperatureSettings</Name>
+							<Type GUID="{3865B92D-E0AA-4CC0-BC36-652BC0C48B5C}">ST_HeatStakeTemperatureSettings</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.stHeatStakeProcessSettings</Name>
+							<Type GUID="{140B09FC-1E31-6B4A-5929-9C5D94DE2671}">ST_HeatStakeProcessSettings</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.aNestEnabled</Name>
+							<Comment><![CDATA[ Persistent authority for the four index-table nest enable states.]]></Comment>
+							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.astTestHistory</Name>
 							<Comment><![CDATA[ =====================================================
- CSV - FINAL PRODUCT RESULT HANDOFF
+ TEST HISTORY
  =====================================================
- Persistent handoff between Machine and PRG_CSV.]]></Comment>
-							<Type GUID="{7200358D-65A9-7605-1ED8-73A5B9A47549}">ST_CycleDataCSV</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Persistent.bCSVQueueOverflow</Name>
-							<Comment><![CDATA[ CSV diagnostics]]></Comment>
-							<Type>BOOL</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Persistent.udiCSVRecordsDropped</Name>
-							<Type>UDINT</Type>
+ Circular buffer containing the last 2001 completed
+ product test results.
+
+ Production Statistics reset does NOT modify this data.]]></Comment>
+							<Type GUID="{42636617-9481-1F27-4114-98289099B9CF}">ARRAY [0..2000] OF ST_TestHistory</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
@@ -4729,6 +4623,39 @@ External Setpoint Generation:
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
 						<Name>PlcTask Outputs</Name>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTrigger</Name>
+							<Comment><![CDATA[outputs]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bReset</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bResultAck</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGoToRun</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGoToConfig</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.abErrorClear</Name>
+							<Type GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}">ARRAY [1..2] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadExecute</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramNumber_out</Name>
+							<Type>UDINT</Type>
+						</Var>
 						<Var>
 							<Name>GVL_IO.stOutputs</Name>
 							<Type GUID="{99AF247C-BA0A-DB60-AA15-61FDDB5B3B05}">ST_PhysicalOutputs</Type>
@@ -4998,39 +4925,6 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTrigger</Name>
-							<Comment><![CDATA[outputs]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bReset</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bResultAck</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGoToRun</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGoToConfig</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.abErrorClear</Name>
-							<Type GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}">ARRAY [1..2] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadExecute</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramNumber_out</Name>
-							<Type>UDINT</Type>
-						</Var>
-						<Var>
 							<Name>GVL_Safety.bSafetyRunRequest</Name>
 							<Comment><![CDATA[ ---------------------------------------------------------------------
  Standard PLC -> TwinSAFE request aliases (link as PLC outputs in the
@@ -5053,6 +4947,51 @@ External Setpoint Generation:
 					</Vars>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTriggerReady</Name>
+							<Comment><![CDATA[inputs]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGeneralPass</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGeneralFail</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bResultsReady</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bRunStatus</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.abError</Name>
+							<Type GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}">ARRAY [1..2] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadComplete</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bToolJudge</Name>
+							<Type GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}">ARRAY [0..7] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber</Name>
+							<Type>UDINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stVSKeyenceCamera.byByteResults</Name>
+							<Type GUID="{53AB2BCA-C5AB-B7CE-D17C-430953A42679}">ARRAY [0..127] OF BYTE</Type>
+						</Var>
 						<Var>
 							<Name>GVL_Safety.bSafetyOk</Name>
 							<Comment><![CDATA[ ---------------------------------------------------------------------
@@ -5575,51 +5514,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>GVL_Safety.bAirSupplySafe</Name>
 							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTriggerReady</Name>
-							<Comment><![CDATA[inputs]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGeneralPass</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bGeneralFail</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bResultsReady</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bRunStatus</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.abError</Name>
-							<Type GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}">ARRAY [1..2] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadComplete</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bToolJudge</Name>
-							<Type GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}">ARRAY [0..7] OF BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber</Name>
-							<Type>UDINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stVSKeyenceCamera.byByteResults</Name>
-							<Type GUID="{53AB2BCA-C5AB-B7CE-D17C-430953A42679}">ARRAY [0..127] OF BYTE</Type>
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bFsoeOk</Name>
@@ -11854,10 +11748,7 @@ Bit 8 - 15 : reserved]]></Comment>
 				</Image>
 				<Box Id="22" BoxType="9121">
 					<Name>vs-01</Name>
-					<Comment><![CDATA[
-The GSDML is not available!
-
-GSDML Name: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+					<Comment><![CDATA[GSDML Name: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
 Path: $(TWINCAT3DIR)Config\Io\Profinet\
 VendorName: Keyence
 OrderNumber: VS-XXXX
