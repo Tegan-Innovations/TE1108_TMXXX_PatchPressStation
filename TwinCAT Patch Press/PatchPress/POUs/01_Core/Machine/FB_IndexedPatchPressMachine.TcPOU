@@ -1883,14 +1883,6 @@ THEN
             GVL_Persistent.uiTestHistoryWriteIndex
         ].bVisionPass :=
             stHistoryNest.stVisionResult.bPassed;
-		
-		// Store individual Vision inspection results
-		// for persistent history and future CSV integration.
-		
-		GVL_Persistent.astTestHistory[
-			GVL_Persistent.uiTestHistoryWriteIndex
-		].stVisionInspectionResults :=
-			stHistoryNest.stVisionResult.CameraResults;
 
 
         // ---------------------------------------------

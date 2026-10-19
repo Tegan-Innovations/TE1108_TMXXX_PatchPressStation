@@ -1,0 +1,10 @@
+<div id="EL1801_18" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480">
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+<div id="IO_9" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="480" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-target-user-control="Contents/UserControl/08CH_Dig_IO_CARD.usercontrol" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="1080" data-tchmi-width-unit="px" data-tchmi-image="Images/IO/EL1918.png" data-tchmi-state_string="%s%ADS.PLC1.GVL_IO.dw_T05_EL1918.stTerminalInfo.sTerminalInfo%/s%" data-tchmi-_1inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T05_EL1918.iLeftTouchButtonNC%/s%" data-tchmi-_2_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T05_EL1918.iRightTouchButtonNC%/s%" data-tchmi-_3_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T05_EL1918.iLeftTouchButtonNO%/s%" data-tchmi-_4_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T05_EL1918.iRightTouchButtonNO%/s%" data-tchmi-_5_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T05_EL1918.iProcessDoorClosed1%/s%" data-tchmi-_6_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T05_EL1918.iProcessDoorClosed2%/s%" data-tchmi-_7_inputoutputsignal="%s%ADS.PLC1.GVL_IO.dw_T05_EL1918.iProcessDoorFB%/s%" data-tchmi-_1_inputoutputname="Front Door Left Flap | Channel 1" data-tchmi-_2_inputoutputname="Front Door Left Flap | Channel 2" data-tchmi-_3_inputoutputname="Front Door Left Flap | Feedback" data-tchmi-_4_inputoutputname="Front Door Right Flap | Channel 1" data-tchmi-_5_inputoutputname="Front Door Right Flap | Channel 2" data-tchmi-_6_inputoutputname="Front Door Right Flap | Feedback" data-tchmi-_7_inputoutputname="CH7 - SPARE" data-tchmi-_8_inputoutputname="CH8 - SPARE">
+</div>
+</div>
