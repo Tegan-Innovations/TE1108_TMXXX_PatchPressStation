@@ -70,6 +70,8 @@ VAR
     sAutoCycleBlockReason 					: STRING(160);
     bIndexMoveAccepted 						: BOOL;
     bDoorLockOutput 						: BOOL;
+	bMainDoorUnlockAcknowledged 			: BOOL := FALSE;
+	bMainDoorHotLockRequired 				: BOOL := FALSE;
 	
     rtManualIndexMove 						: R_TRIG;
 	rtReprocessIndexAttempt 				: R_TRIG;
@@ -2783,35 +2785,81 @@ END_IF
 
 fbIndex.Cyclic(bEnable := (eMachineState <> E_MachineState.PowerUp) AND (eMachineState <> E_MachineState.Fault), bReset := stCommand.bReset, bAutomaticMode := (eMachineState = E_MachineState.AutoCycle), bManualMode := (eMachineState = E_MachineState.Manual), bMovePermissive := stPermissives.bIndexMoveAllowed, bSafetyMotionPermitted := stInputs.stSafety.bMotionSafetyPermitted, bTwoHandsSafe := stInputs.bTwoHandsSafe, bStationsHome := stPermissives.bStationsHome, bProcessToolingRetracted := stPermissives.bStationsIndexPermissive, bTableReady := stInputs.bIndexReady, bTableLocked := stInputs.bIndexLocked, bCompletedSensor := stInputs.bIndexCompletedSensor, bSupportExtended := TRUE, bSupportRetracted := TRUE, eCurrentPosition := stInputs.eIndexPosition, tRotateDelay := stConfig.tIndexRotateDelay, tStopDelay := stConfig.tIndexStopDelay, tSupportTimeout := stConfig.tIndexSupportTimeout, tMovementTimeout := stConfig.tIndexTimeout, tTwoHandHold := stConfig.tTwoHandHold, tTwoHandRecoveryTimeout := stConfig.tTwoHandRecoveryTimeout, bRotatePortA => stOutputsInternal.bIndexRotatePortA, bStopPortB => stOutputsInternal.bIndexStopPortB, bSupportExtendRequest => stOutputsInternal.bIndexSupportExtend, bSupportRetractRequest => stOutputsInternal.bIndexSupportRetract);
 stIndexStatus := fbIndex.GetStatus();
-fbMainDoorLock.Cyclic(
-    bEnableAutomatic := bAirAndDoorEnable,
-    bManualEnable := FALSE,
-    bManualLockRequest := FALSE,
-    bManualUnlockRequest := FALSE,
 
-    bStopRequest :=
-        (eMachineState = E_MachineState.Fault)
-        OR (eMachineState = E_MachineState.Stopping)
-        OR (eMachineState = E_MachineState.Stopped),
 
-    bResetRequest := stCommand.bReset,
 
-    bDoorClosed := stInputs.bMainDoorClosed,
-    bDoorLocked := stInputs.bMainDoorLocked,
-    bIndexBusy := stIndexStatus.bBusy,
-    bProcessSafePosition := TRUE,
-    tLockTimeout := stConfig.tDoorLockTimeout,
-    tUnlockTimeout := stConfig.tDoorUnlockTimeout,
-    bDoorUnsafe := stInputs.bMainDoorUnsafe,
-    bLockOutput => bDoorLockOutput
-);
+///////////////////////////////////////////////////////////////////
 
-stMainDoorStatus := fbMainDoorLock.GetStatus();
 
-// Exact Silicone Station strategy:
-// the standard PLC requests the door lock directly from the machine state.
-// TwinSAFE validates the conditions and controls the physical AZM300 lock.
-stOutputsInternal.bMainDoorLockRequest := bAirAndDoorEnable;
+ // =====================================================
+ // MAIN DOOR - HOT TEMPERATURE PROTECTION
+ // =====================================================
+
+ // Reset acknowledgement when leaving Stopped.
+ IF eMachineState <> E_MachineState.Stopped THEN
+     bMainDoorUnlockAcknowledged := FALSE;
+
+ // Accept acknowledgement only in Stopped.
+ ELSIF GVL_HMI.stCommands.bManualMainDoorUnlock THEN
+     bMainDoorUnlockAcknowledged := TRUE;
+ END_IF;
+
+ // Consume HMI command.
+ GVL_HMI.stCommands.bManualMainDoorUnlock := FALSE;
+
+ // Keep door locked in Stopped while heaters are hot,
+ // until operator acknowledges.
+ bMainDoorHotLockRequired :=
+     (eMachineState = E_MachineState.Stopped)
+     AND NOT bMainDoorUnlockAcknowledged
+     AND (
+         (stHeatStakeTemperatureStatus.rHeater1TemperatureC >
+             GVL_Config.rMainDoorHotTemperatureLimitC)
+         OR
+         (stHeatStakeTemperatureStatus.rHeater2TemperatureC >
+             GVL_Config.rMainDoorHotTemperatureLimitC)
+     );
+
+ // =====================================================
+ // MAIN DOOR SUPERVISION
+ // =====================================================
+
+ fbMainDoorLock.Cyclic(
+     bEnableAutomatic := bAirAndDoorEnable,
+     bManualEnable := FALSE,
+     bManualLockRequest := FALSE,
+     bManualUnlockRequest := FALSE,
+
+     bStopRequest :=
+         (eMachineState = E_MachineState.Fault)
+         OR (eMachineState = E_MachineState.Stopping)
+         OR (
+             (eMachineState = E_MachineState.Stopped)
+             AND NOT bMainDoorHotLockRequired
+         ),
+
+     bResetRequest := stCommand.bReset,
+     bDoorClosed := stInputs.bMainDoorClosed,
+     bDoorLocked := stInputs.bMainDoorLocked,
+     bIndexBusy := stIndexStatus.bBusy,
+     bProcessSafePosition := TRUE,
+     tLockTimeout := stConfig.tDoorLockTimeout,
+     tUnlockTimeout := stConfig.tDoorUnlockTimeout,
+     bDoorUnsafe := stInputs.bMainDoorUnsafe,
+     bLockOutput => bDoorLockOutput
+ );
+
+ stMainDoorStatus := fbMainDoorLock.GetStatus();
+
+ // =====================================================
+ // PHYSICAL DOOR LOCK REQUEST
+ // =====================================================
+
+ stOutputsInternal.bMainDoorLockRequest :=
+     bAirAndDoorEnable
+     OR bMainDoorHotLockRequired;
+
+	///////////////////////////////
 
 // Re-check after component cyclic execution so a fault detected in this scan
 // drops TwinSAFE immediately rather than waiting for the following PLC scan.

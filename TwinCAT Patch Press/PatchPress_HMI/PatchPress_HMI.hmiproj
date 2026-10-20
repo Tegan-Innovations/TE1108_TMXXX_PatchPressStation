@@ -299,6 +299,9 @@
     <Content Include="Contents\Screens\Manual_Mode.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Contents\Screens\popups\Content_Popup_High_Temperature.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Contents\Screens\popups\Content_Popup_RejectChuteFull.content">
       <SubType>Content</SubType>
     </Content>

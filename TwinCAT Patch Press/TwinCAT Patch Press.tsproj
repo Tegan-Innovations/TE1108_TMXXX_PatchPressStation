@@ -4096,7 +4096,6 @@ External Setpoint Generation:
 			<Licenses>
 				<Target>
 					<ManualSelect>{796D380F-D49E-4C0C-A05F-500052FAC883}</ManualSelect>
-					<ManualSelect>{777F1598-583B-4503-99BB-7C02E0ABD97E}</ManualSelect>
 				</Target>
 			</Licenses>
 			<Tasks>
@@ -4543,11 +4542,16 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{A1A9520F-AE0B-E1F2-B2EA-3FA3A64F3D18}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{C8EC8AC5-BF43-7306-5271-6D50D21A9671}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
 						<Name>PlcTask Retains</Name>
+						<Var>
+							<Name>GVL_Config.rMainDoorHotTemperatureLimitC</Name>
+							<Type>REAL</Type>
+							<InOut>7</InOut>
+						</Var>
 						<Var>
 							<Name>GVL_Config.stMachine</Name>
 							<Type GUID="{88850EA5-6CBB-1407-90A9-2E03D8D42F5A}">ST_MachineConfig</Type>

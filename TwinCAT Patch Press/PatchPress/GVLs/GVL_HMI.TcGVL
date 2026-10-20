@@ -22,6 +22,8 @@ VAR_GLOBAL
 	// HMI logout diagnostics
 	bHmiLogoutAutoCycle 	: BOOL := FALSE;
 	bHmiLogoutStopped   	: BOOL := FALSE;
+	bUnlockDoorVisible 		: BOOL  := FALSE; 
+	bUnlockDoorPopupRequest : BOOL := FALSE;
 
 END_VAR
 VAR_GLOBAL CONSTANT

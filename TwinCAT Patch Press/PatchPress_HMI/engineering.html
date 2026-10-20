@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Kistler_HMI</title>
-  <meta name="tchmi-buildtime" content="2026-10-19T16:23:47">
+  <meta name="tchmi-buildtime" content="2026-10-20T13:01:46">
 
   <!-- target-densitydpi=device-dpi -->
   <meta name="viewport" content="initial-scale=1.0"><script>
@@ -229,147 +229,98 @@
 <script src="/Contents/CSS_JAVA/Heartbeat.js" defer=""></script>
 </head>
 <body class="tchmi-body-designer">
-	<div id="NestSuport_6" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480" data-tchmi-zindex="4" data-tchmi-creator-partial-key="/Contents/Screens/Settings/settings_Others.content">
+	<div id="Content1_38" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1366" data-tchmi-height="480" data-tchmi-zindex="19" data-tchmi-creator-locked="False" data-tchmi-creator-partial-key="/Contents/Screens/Manual_Mode.content">
 
 
-
-
-
-<div id="TcHmiButton_IvekSettingsBt" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="80" data-tchmi-height-unit="px" data-tchmi-left="264" data-tchmi-left-unit="px" data-tchmi-text="Open IVEK Settings" data-tchmi-top="248" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-zindex="2">
-
-
-
-<script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
-[
-  {
-    "accessright": "operate",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Operator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Operator",
-    "permission": "Allow"
-  }
-]
-</script>
 
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
-    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onAttached",
     "actions": [
       {
-        "objectType": "JavaScript",
+        "objectType": "WriteToSymbol",
         "active": true,
-        "sourceLines": [
-          "(function () {",
-          "    const symbol =",
-          "        '%s%ADS.PLC1.GVL_HMI.bCmdOpenIvekSettings%/s%';",
-          "",
-          "    const pulseDurationMs = 3000;",
-          "",
-          "    console.log(",
-          "        '[IVEK Launcher] Writing TRUE to:',",
-          "        symbol",
-          "    );",
-          "",
-          "    TcHmi.Symbol.writeEx(",
-          "        symbol,",
-          "        true,",
-          "        function (data) {",
-          "            if (",
-          "                data &&",
-          "                data.error !== undefined &&",
-          "                data.error !== TcHmi.Errors.NONE",
-          "            ) {",
-          "                console.error(",
-          "                    '[IVEK Launcher] Failed to write TRUE.',",
-          "                    data",
-          "                );",
-          "                return;",
-          "            }",
-          "",
-          "            console.log(",
-          "                '[IVEK Launcher] TRUE successfully written.'",
-          "            );",
-          "",
-          "            window.setTimeout(function () {",
-          "                console.log(",
-          "                    '[IVEK Launcher] Writing FALSE to:',",
-          "                    symbol",
-          "                );",
-          "",
-          "                TcHmi.Symbol.writeEx(",
-          "                    symbol,",
-          "                    false,",
-          "                    function (resetData) {",
-          "                        if (",
-          "                            resetData &&",
-          "                            resetData.error !== undefined &&",
-          "                            resetData.error !== TcHmi.Errors.NONE",
-          "                        ) {",
-          "                            console.error(",
-          "                                '[IVEK Launcher] Failed to write FALSE.',",
-          "                                resetData",
-          "                            );",
-          "                            return;",
-          "                        }",
-          "",
-          "                        console.log(",
-          "                            '[IVEK Launcher] FALSE successfully written.'",
-          "                        );",
-          "                    }",
-          "                );",
-          "            }, pulseDurationMs);",
-          "        }",
-          "    );",
-          "})();"
-        ],
-        "asyncWait": true,
-        "waitMode": "Synchronous"
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stCommands.bManualModeEnable%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  },
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onDetached",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stCommands.bManualModeEnable%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": false
+        },
+        "asyncWait": true
       }
     ]
   }
 ]</script>
-</div>
-<div id="TcHmiTextblock_1342" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="101" data-tchmi-height-unit="px" data-tchmi-left="175" data-tchmi-left-unit="px" data-tchmi-text="Press below button to open IVEK DigiSpence 4000BT Settings" data-tchmi-top="108" data-tchmi-top-unit="px" data-tchmi-width="352" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="25" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="2">
-</div>
+<div id="TcHmiTabNavigation_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTabNavigation" data-tchmi-height="447" data-tchmi-height-unit="px" data-tchmi-left="334" data-tchmi-left-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-top="17" data-tchmi-top-unit="px" data-tchmi-width="1020" data-tchmi-width-unit="px" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Bold">
+<script data-tchmi-target-attribute="data-tchmi-tabs" type="application/json">
+[
+  {
+    "displayName": "Patch Dispense",
+    "name": "Patch",
+    "scrolling": "No",
+    "targetFile": {
+      "path": "Contents/Screens/ManualTabs/PatchTab.content"
+    }
+  },
+  {
+    "displayName": "Heat Stake",
+    "name": "HeatStake",
+    "targetFile": {
+      "path": "Contents/Screens/ManualTabs/HeatStakeTab.content"
+    }
+  },
+  {
+    "displayName": "Vision Inspection",
+    "name": "Vision",
+    "targetFile": {
+      "path": "Contents/Screens/ManualTabs/VisionTab.content"
+    }
+  }
+]
+</script>
 
 
-<div id="TcHmiContainer_106" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="360" data-tchmi-height-unit="px" data-tchmi-left="145" data-tchmi-left-unit="px" data-tchmi-top="65" data-tchmi-top-unit="px" data-tchmi-width="810" data-tchmi-width-unit="px" data-tchmi-zindex="0" data-tchmi-is-enabled="False" data-tchmi-creator-visibility="Visible">
-<script data-tchmi-target-attribute="data-tchmi-background-image-padding" type="application/json">
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-active-tab-color" type="application/json">
 {
-  "left": 0,
-  "right": 0,
-  "top": 0,
-  "bottom": 0,
-  "leftUnit": "px",
-  "rightUnit": "px",
-  "topUnit": "px",
-  "bottomUnit": "px"
+  "color": "rgba(255, 255, 255, 1)"
 }
 </script>
 
+<script data-tchmi-target-attribute="data-tchmi-active-tab-text-color" type="application/json">
+{
+  "color": "rgba(0, 103, 240, 1)"
+}
+</script>
+</div>
+<div id="IVEK_Container_2" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="447" data-tchmi-height-unit="px" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="17" data-tchmi-top-unit="px" data-tchmi-width="303" data-tchmi-width-unit="px" data-tchmi-zindex="2">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 2,
@@ -392,50 +343,12 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
-[
-  {
-    "accessright": "operate",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Operator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Operator",
-    "permission": "Allow"
-  }
-]
-</script>
-
-
-
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
-  "color": "None"
+  "color": "rgba(255, 255, 255, 0)"
 }
 </script>
-</div>
-<div id="TcHmiTextbox_44" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="450" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="DigiSpence 4000BT" data-tchmi-top="51" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="200" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="32" data-tchmi-creator-visibility="Visible">
+<div id="TcHmiTextbox_IvekTitle_47" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="66" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Indexer" data-tchmi-top="-17" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="22">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -452,125 +365,11 @@
 }
 </script>
 </div>
-<div id="TcHmiButton_IvekPrimeBt" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="80" data-tchmi-height-unit="px" data-tchmi-left="668" data-tchmi-left-unit="px" data-tchmi-text="Prime" data-tchmi-top="108" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-zindex="2" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.bIvekPrime%/s%" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.stStatus.bIvekPrimePermissive%/s%">
-<script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
-[
-  {
-    "accessright": "operate",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Operator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Operator",
-    "permission": "Allow"
-  }
-]
-</script>
-
-
-</div>
-<div id="TcHmiButton_IvekReferenceBt" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="80" data-tchmi-height-unit="px" data-tchmi-left="668" data-tchmi-left-unit="px" data-tchmi-text="Reference" data-tchmi-top="209" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-zindex="2" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.bIvekReference%/s%" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.stStatus.bIvekReferencePermissive%/s%">
-<script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
-[
-  {
-    "accessright": "operate",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Operator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Operator",
-    "permission": "Allow"
-  }
-]
-</script>
-
-
-</div>
-<div id="TcHmiButton_IvekStopBt" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="80" data-tchmi-height-unit="px" data-tchmi-left="668" data-tchmi-left-unit="px" data-tchmi-text="Stop Ivek" data-tchmi-top="310" data-tchmi-top-unit="px" data-tchmi-width="180" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-zindex="2" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.bIvekMaintenanceStop|BindingMode=TwoWay%/s%">
-<script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
-[
-  {
-    "accessright": "operate",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "operate",
-    "group": "Operator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Administrator",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Engineer",
-    "permission": "Allow"
-  },
-  {
-    "accessright": "observe",
-    "group": "Operator",
-    "permission": "Allow"
-  }
-]
-</script>
-
-
-</div>
-<div id="TcHmiRectangle_103" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="340" data-tchmi-height-unit="px" data-tchmi-left="155" data-tchmi-left-unit="px" data-tchmi-top="75" data-tchmi-top-unit="px" data-tchmi-width="390" data-tchmi-width-unit="px">
+<div id="TcHmiRectangle_CylindersBackground_118" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="437" data-tchmi-height-unit="px" data-tchmi-left="3" data-tchmi-left-unit="px" data-tchmi-top="3" data-tchmi-top-unit="px" data-tchmi-width="293" data-tchmi-width-unit="px" data-tchmi-zindex="0">
 
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
-  "color": "rgba(255, 255, 255, 0.7843137)"
+  "color": "rgba(255, 255, 255, 1)"
 }
 </script>
 
@@ -580,19 +379,277 @@
 }
 </script>
 </div>
-<div id="TcHmiRectangle_104" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="340" data-tchmi-height-unit="px" data-tchmi-left="556" data-tchmi-left-unit="px" data-tchmi-top="75" data-tchmi-top-unit="px" data-tchmi-width="390" data-tchmi-width-unit="px">
+<div id="TcHmiCheckbox_IndexTableEnable" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-height="40" data-tchmi-height-unit="px" data-tchmi-left="73" data-tchmi-left-unit="px" data-tchmi-text="Enable" data-tchmi-top="389" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-font-style="Normal" data-tchmi-text-font-size="20" data-tchmi-zindex="16" data-tchmi-text-horizontal-alignment="Center" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.stCommands.bIndexerManualEnable%/s%">
+<script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
+{
+  "left": "Solid",
+  "right": "Solid",
+  "top": "Solid",
+  "bottom": "Solid"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
+{
+  "left": 1,
+  "right": 1,
+  "top": 1,
+  "bottom": 1,
+  "leftUnit": "px",
+  "rightUnit": "px",
+  "topUnit": "px",
+  "bottomUnit": "px"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
+{
+  "color": "rgba(168, 162, 162, 1)"
+}
+</script>
+</div>
+<div id="PatchIndexTable" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-left="21" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/PatchIndexTableV2.png" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="255" data-tchmi-width-unit="px" data-tchmi-zindex="7">
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.stStatus.uiPatchDispenseNestId%/s%",
+    "actions": [
+      {
+        "objectType": "JavaScript",
+        "active": true,
+        "sourceLines": [
+          "(function () {",
+          "    var control = TcHmi.Controls.get('PatchIndexTable');",
+          "",
+          "    if (!control) {",
+          "        console.error('Control PatchIndexTable was not found.');",
+          "        return;",
+          "    }",
+          "",
+          "    var symPatch = '%s%ADS.PLC1.GVL_HMI.stStatus.uiPatchDispenseNestId%/s%';",
+          "    var symHeat = '%s%ADS.PLC1.GVL_HMI.stStatus.uiHeatStakeNestId%/s%';",
+          "    var symVision = '%s%ADS.PLC1.GVL_HMI.stStatus.uiVisionNestId%/s%';",
+          "",
+          "    TcHmi.Symbol.readEx2(symPatch, function (patchData) {",
+          "        if (patchData.error !== TcHmi.Errors.NONE) { return; }",
+          "        TcHmi.Symbol.readEx2(symHeat, function (heatData) {",
+          "            if (heatData.error !== TcHmi.Errors.NONE) { return; }",
+          "            TcHmi.Symbol.readEx2(symVision, function (visionData) {",
+          "                if (visionData.error !== TcHmi.Errors.NONE) { return; }",
+          "",
+          "                var patchNest = Number(patchData.value);",
+          "                var heatNest = Number(heatData.value);",
+          "                var visionNest = Number(visionData.value);",
+          "                var ids = [patchNest, heatNest, visionNest];",
+          "",
+          "                var valid = ids.every(function (v) {",
+          "                    return Number.isInteger(v) && v >= 1 && v <= 4;",
+          "                });",
+          "",
+          "                if (!valid || new Set(ids).size !== 3) {",
+          "                    console.warn('Indexer station Nest IDs are not valid yet:', ids);",
+          "                    return;",
+          "                }",
+          "",
+          "                // Nests are always 1,2,3,4. The missing ID is the operator nest.",
+          "                var operatorNest = 10 - patchNest - heatNest - visionNest;",
+          "",
+          "                // PatchIndexTableV2.png calibration:",
+          "                // 0 deg: Nest 2 bottom, Nest 1 right, Nest 4 top, Nest 3 left.",
+          "                var angleByOperatorNest = {",
+          "                    2: 0,",
+          "                    1: 90,",
+          "                    4: 180,",
+          "                    3: 270",
+          "                };",
+          "",
+          "                var targetNormalized = angleByOperatorNest[operatorNest];",
+          "                if (typeof targetNormalized !== 'number') { return; }",
+          "",
+          "                var angleKey = 'patchPressManualIndexerAngle';",
+          "                var frameKey = 'patchPressManualIndexerFrame';",
+          "",
+          "                if (typeof window[angleKey] !== 'number') {",
+          "                    window[angleKey] = targetNormalized;",
+          "                    control.setTransform([",
+          "                        {",
+          "                            transformType: 'Rotate',",
+          "                            angleUnit: 'deg',",
+          "                            angle: targetNormalized",
+          "                        }",
+          "                    ]);",
+          "                    return;",
+          "                }",
+          "",
+          "                if (window[frameKey]) {",
+          "                    window.cancelAnimationFrame(window[frameKey]);",
+          "                    window[frameKey] = null;",
+          "                }",
+          "",
+          "                var startAngle = window[angleKey];",
+          "                var startNormalized = ((startAngle % 360) + 360) % 360;",
+          "                // Use the shortest signed quarter-turn so the image",
+"                // follows the real index direction instead of taking",
+"                // the long 270-degree path.",
+"                var delta = ((targetNormalized - startNormalized + 540) % 360) - 180;",
+          "",
+          "                if (delta === 0) {",
+          "                    control.setTransform([",
+          "                        {",
+          "                            transformType: 'Rotate',",
+          "                            angleUnit: 'deg',",
+          "                            angle: startAngle",
+          "                        }",
+          "                    ]);",
+          "                    return;",
+          "                }",
+          "",
+          "                var targetAngle = startAngle + delta;",
+          "                var duration = 550;",
+          "                var startTime = null;",
+          "",
+          "                function easeInOut(p) {",
+          "                    return p < 0.5",
+          "                        ? 2 * p * p",
+          "                        : 1 - Math.pow(-2 * p + 2, 2) / 2;",
+          "                }",
+          "",
+          "                function animate(currentTime) {",
+          "                    if (startTime === null) { startTime = currentTime; }",
+          "                    var progress = Math.min((currentTime - startTime) / duration, 1);",
+          "                    var eased = easeInOut(progress);",
+          "                    var animatedAngle = startAngle + (targetAngle - startAngle) * eased;",
+          "",
+          "                    control.setTransform([",
+          "                        {",
+          "                            transformType: 'Rotate',",
+          "                            angleUnit: 'deg',",
+          "                            angle: animatedAngle",
+          "                        }",
+          "                    ]);",
+          "",
+          "                    window[angleKey] = animatedAngle;",
+          "",
+          "                    if (progress < 1) {",
+          "                        window[frameKey] = window.requestAnimationFrame(animate);",
+          "                    } else {",
+          "                        window[angleKey] = targetAngle;",
+          "                        window[frameKey] = null;",
+          "                    }",
+          "                }",
+          "",
+          "                window[frameKey] = window.requestAnimationFrame(animate);",
+          "            });",
+          "        });",
+          "    });",
+          "}());"
+        ],
+        "asyncWait": false
+      }
+    ]
+  }
+]
+</script>
+</div>
+<div id="TcHmiTextblock_1392" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="21" data-tchmi-left-unit="px" data-tchmi-text="Patch Dispense" data-tchmi-top="288" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold">
+</div>
+<div id="TcHmiTextblock_1393" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="21" data-tchmi-left-unit="px" data-tchmi-text="Heat Stake" data-tchmi-top="318" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold">
+</div>
+<div id="TcHmiTextblock_1394" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="21" data-tchmi-left-unit="px" data-tchmi-text="Vision Inspection" data-tchmi-top="348" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold">
+</div>
+<div id="TcHmiTextblock_1396" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="188" data-tchmi-left-unit="px" data-tchmi-text="Nest" data-tchmi-top="318" data-tchmi-top-unit="px" data-tchmi-width="50" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold">
+</div>
+<div id="TcHmiTextblock_1397" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="188" data-tchmi-left-unit="px" data-tchmi-text="Nest" data-tchmi-top="348" data-tchmi-top-unit="px" data-tchmi-width="50" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold">
+</div>
+<div id="TcHmiTextblock_1395" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="188" data-tchmi-left-unit="px" data-tchmi-text="Nest" data-tchmi-top="288" data-tchmi-top-unit="px" data-tchmi-width="50" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold">
+</div>
+<div id="TcHmiTextblock_PatchNestNumber" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="246" data-tchmi-left-unit="px" data-tchmi-text="%s%ADS.PLC1.GVL_HMI.stStatus.uiPatchDispenseNestId%/s%" data-tchmi-top="288" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-weight="Bold">
+<script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
+{
+  "left": "Solid",
+  "right": "Solid",
+  "top": "Solid",
+  "bottom": "Solid"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
+{
+  "left": 1,
+  "right": 1,
+  "top": 1,
+  "bottom": 1,
+  "leftUnit": "px",
+  "rightUnit": "px",
+  "topUnit": "px",
+  "bottomUnit": "px"
+}
+</script>
 
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
-  "color": "rgba(255, 255, 255, 0.7843137)"
+  "color": "rgba(226, 226, 226, 1)"
+}
+</script>
+</div>
+<div id="TcHmiTextblock_HeatNestNumber" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="246" data-tchmi-left-unit="px" data-tchmi-text="%s%ADS.PLC1.GVL_HMI.stStatus.uiHeatStakeNestId%/s%" data-tchmi-top="318" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-weight="Bold">
+<script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
+{
+  "left": "Solid",
+  "right": "Solid",
+  "top": "Solid",
+  "bottom": "Solid"
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-stroke-color" type="application/json">
+<script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
-  "color": "rgba(0, 0, 0, 0)"
+  "left": 1,
+  "right": 1,
+  "top": 1,
+  "bottom": 1,
+  "leftUnit": "px",
+  "rightUnit": "px",
+  "topUnit": "px",
+  "bottomUnit": "px"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(226, 226, 226, 1)"
+}
+</script>
+</div>
+<div id="TcHmiTextblock_VisionNestNumber" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="246" data-tchmi-left-unit="px" data-tchmi-text="%s%ADS.PLC1.GVL_HMI.stStatus.uiVisionNestId%/s%" data-tchmi-top="348" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-weight="Bold">
+<script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
+{
+  "left": "Solid",
+  "right": "Solid",
+  "top": "Solid",
+  "bottom": "Solid"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
+{
+  "left": 1,
+  "right": 1,
+  "top": 1,
+  "bottom": 1,
+  "leftUnit": "px",
+  "rightUnit": "px",
+  "topUnit": "px",
+  "bottomUnit": "px"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(226, 226, 226, 1)"
+}
+</script>
+</div>
 </div>
 </div>
 </body>

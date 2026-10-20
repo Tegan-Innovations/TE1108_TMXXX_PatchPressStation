@@ -931,6 +931,69 @@
         "asyncWait": true
       }
     ]
+  },
+  {
+    "event": "%s%ADS.PLC1.GVL_HMI.bUnlockDoorPopupRequest%/s%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.bUnlockDoorPopupRequest%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": true
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::TargetFile%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/TcHmi.Controls.System.TcHmiPopup.TargetFile",
+                  "value": {
+                    "path": "Contents/Screens/popups/Content_Popup_High_Temperature.content"
+                  }
+                },
+                "asyncWait": true
+              },
+              {
+                "objectType": "ControlApiFunction",
+                "active": true,
+                "control": "Main_Popup",
+                "fn": "open",
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "ControlApiFunction",
+                "active": true,
+                "control": "Main_Popup",
+                "fn": "close",
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
   }
 ]
 </script>

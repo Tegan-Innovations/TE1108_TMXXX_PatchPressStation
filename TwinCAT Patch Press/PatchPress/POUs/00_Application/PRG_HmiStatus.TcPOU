@@ -86,6 +86,9 @@ GVL_HMI.stStatus.bHeatStakeHeadDownTimeoutFault := GVL_MASTER.stStatus.bHeatStak
 GVL_HMI.stStatus.bHeatStakeHeadUpTimeoutFault := GVL_MASTER.stStatus.bHeatStakeHeadUpTimeoutFault;
 GVL_HMI.stStatus.bHeatStakeHeadSensorConflictFault := GVL_MASTER.stStatus.bHeatStakeHeadSensorConflictFault;
 
+GVL_HMI.bUnlockDoorVisible := (GVL_HMI.Ststatus.eMachineState = E_MachineState.Stopped);
+
+
 IF (GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId >= 1)
     AND (GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId <= 4)
 THEN

@@ -7909,6 +7909,26 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.bUnlockDoorPopupRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::bUnlockDoorPopupRequest",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.bUnlockDoorVisible": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::bUnlockDoorVisible",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.sApplication": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -17593,6 +17613,8 @@
                 "ADS.PLC1.GVL_HMI.bIvekSettingsLaunchError": 3,
                 "ADS.PLC1.GVL_HMI.bIvekSettingsLaunchPending": 3,
                 "ADS.PLC1.GVL_HMI.bLogoutRequest": 3,
+                "ADS.PLC1.GVL_HMI.bUnlockDoorPopupRequest": 3,
+                "ADS.PLC1.GVL_HMI.bUnlockDoorVisible": 3,
                 "ADS.PLC1.GVL_HMI.i_bHMIIndexerManualEnable": 3,
                 "ADS.PLC1.GVL_HMI.sApplication": 3,
                 "ADS.PLC1.GVL_HMI.sHMIServer": 3,
