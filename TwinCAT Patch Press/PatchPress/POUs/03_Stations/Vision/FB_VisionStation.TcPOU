@@ -81,13 +81,20 @@ VAR
 
     tStepDelay                  : TIME := T#100MS;
     tRotate180Hold              : TIME := T#1S;
-    tMoveTimeout                : TIME := T#5S;
+    tMoveTimeout                : TIME := T#30S;
     tSupportMoveTimeout         : TIME := T#5S;
     tToolingSensorConflict      : TIME := T#300MS;
 	tIntermediatePosition 		: TIME := T#200MS;
+	tTakingPictureWHileRotating	: TIME := T#600MS;
+	tDelayInspectionPlaceHolder	: TIME;
 
     bStepTargetReached          : BOOL;
     bToolingSensorConflict      : BOOL;
+	
+	rTrigger						: R_TRIG;
+	tonCameraTriggerDelay			: ARRAY [1..2] OF TON;
+	tonTakingPictureWHileRotating	: TON;
+	tonDelayInspectionPlaceHolder	: TON;
 
     stResultInternal            : ST_ProcessResult;
 END_VAR]]></Declaration>
@@ -100,10 +107,17 @@ VAR_INPUT
 END_VAR
 VAR
 	
+	
 
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
+bTriggerRequestInternal					:= tonTakingPictureWHileRotating.Q OR usiStepInternal = 10 OR usiStepInternal = 110;
+tonCameraTriggerDelay[1](PT := T#500MS);
+tonCameraTriggerDelay[2](PT := T#500MS);
+tonTakingPictureWHileRotating(PT := tTakingPictureWHileRotating);
+tonDelayInspectionPlaceHolder(PT := tDelayInspectionPlaceHolder);
+
  // ============================================================================
  // Vision Station / Flipping sequence
  // ============================================================================
@@ -113,25 +127,25 @@ END_VAR]]></Declaration>
  //
  // Process (ACTIVE mechanical steps + RESERVED camera steps):
  //
- //    5  1st Vision Inspection - Program 0          // TODO: Patch welding and click part quality
- //   10  Nest UP and open grippers
- //   20  Vertical FULL DOWN - pick
- //   30  Grip CLOSE
- //   40  Vertical UP
- //   50  Horizontal FRONT
- //   60  Vertical INTERMEDIATE
- //   70  Vertical UP before flip
- //   80  Nest DOWN before flip                       // FIX: separated from Step 70
- //   90  Rotate 180 and hold 1 s
- //   95  2nd Vision Inspection - Program 1          // TODO: Batch number
- //  100  Rotate back to 0                            // FIX: nest remains DOWN
- //  110  Nest UP after rotation                      // FIX: separated from Step 100
- //  115  3rd Vision Inspection - Program 2          // TODO: Batch number, date, click part and blue part
- //  117  4th Vision Inspection - Program 3          // TODO: PBUB quality
- //  120  Vertical INTERMEDIATE - replace part
- //  130  Grip OPEN
- //  140  Vertical UP
- //  150  Return tooling to HOME, then Complete
+ //   10  1st Vision Inspection - Program 0          // TODO: Patch welding and click part quality
+ //   20  Nest UP and open grippers
+ //   30  Vertical FULL DOWN - pick
+ //   40  Grip CLOSE
+ //   50  Vertical UP
+ //   60  Horizontal FRONT
+ //   70  Vertical INTERMEDIATE
+ //   80  Vertical UP before flip
+ //   90  Nest DOWN before flip                       // FIX: separated from Step 70
+ //   100  Rotate 180 and hold 1 s
+ //   110  2nd Vision Inspection - Program 1          // TODO: Batch number
+ //  120  Rotate back to 0                            // FIX: nest remains DOWN
+ //  130  Nest UP after rotation                      // FIX: separated from Step 100
+ //  140  3rd Vision Inspection - Program 2          // TODO: Batch number, date, click part and blue part
+ //  150  4th Vision Inspection - Program 3          // TODO: PBUB quality
+ //  160  Vertical INTERMEDIATE - replace part
+ //  170  Grip OPEN
+ //  180  Vertical UP
+ //  190  Return tooling to HOME, then Complete
 
 
 // ============================================================================
@@ -153,7 +167,7 @@ bGripOpenRequestInternal := FALSE;
 bRotate0RequestInternal := FALSE;
 bRotate180RequestInternal := FALSE;
 
-bStepTargetReached := FALSE;
+//bStepTargetReached := FALSE;
 bFaultInternal := FALSE;
 
 
@@ -467,6 +481,7 @@ ELSE
                     eStateInternal := E_PatchStationState.Ready;
                     usiStepInternal := 0;
                     sDiagnosticInternal := 'Vision: ready - tooling home';
+					bStepTargetReached					:= FALSE;
 
                 END_IF
 
@@ -516,40 +531,49 @@ ELSE
 
 
 				// ------------------------------------------------------------
-                // CAMERA PLACEHOLDER - FIRST INSPECTION (COMMENTED)
+                // STEP 10 - CAMERA PLACEHOLDER - FIRST INSPECTION 
                 // ------------------------------------------------------------
-				(*
-					bTriggerRequestInternal					:= TRUE;
+				10:
+					
+					
 					IF bCameraResultsReadyInternal THEN
 						
-						bTriggerRequestInternal				:= FALSE;
-						bGetResultsRequest					:= TRUE;
+						bGetResultsRequestInternal			:= TRUE;
+						bAcknowledgeResultsInternal			:= TRUE;
+						tonCameraTriggerDelay[1].IN			:= TRUE;
 						
 						
 					END_IF
-					*)
-				
-                // FIX CAMERA PREPARATION - STEP 5: FIRST INSPECTION (PROGRAM 0)
-                // TODO: select program 0; wait for load complete; pulse trigger;
-                // TODO: await fresh results; validate patch welding / click part;
-                // TODO: save result, handle FAIL and timeout before advancing.
-                // NOTE: bypass only. Start caller must enter Processing at Step 5
-                // to execute this placeholder; existing Step 10 start is unchanged.
-                5:
-                    bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-                    bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
-                    bVerticalUpRequestInternal := NOT bVerticalUpInternal;
-                    bLimitOffRequestInternal := NOT bLimitOffInternal;
-                    bGripOpenRequestInternal := NOT bGripOpenedInternal;
-                    // FIX: no camera trigger or program command until integration.
-                    bStepTargetReached := bHomeInternal;
-                    sDiagnosticInternal := 'Vision: camera 1 reserved - bypass';
+					
+					IF tonCameraTriggerDelay[1].Q THEN
+							
+							bGetResultsRequestInternal			:= FALSE;
+							bAcknowledgeResultsInternal			:= FALSE;
+							nSetProgramNumberInternal			:= 1;
+							bChangeProgramRequestInternal		:= TRUE;
+							tonCameraTriggerDelay[2].IN			:= TRUE;
+							tonCameraTriggerDelay[1].IN			:= FALSE;
+							
+							
+					END_IF
+					IF tonCameraTriggerDelay[2].Q THEN
+							
+							
+							bChangeProgramRequestInternal		:= FALSE;
+							bStepTargetReached					:= TRUE;
+							tonCameraTriggerDelay[2].IN			:= FALSE;
+							
+							
+					END_IF
+						
+					sDiagnosticInternal := 'Vision: Camera first inspection ';
+					
 
                 // ------------------------------------------------------------
-                // STEP 10 - NEST UP AND OPEN GRIPPERS
+                // STEP 20 - NEST UP AND OPEN GRIPPERS
                 // ------------------------------------------------------------
 
-                10:
+                20:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -568,10 +592,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 20 - FULL VERTICAL DOWN FOR PICK
+                // STEP 30 - FULL VERTICAL DOWN FOR PICK
                 // ------------------------------------------------------------
 
-                20:
+                30:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -597,10 +621,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 30 - GRIP CLOSE AT FULL DOWN
+                // STEP 40 - GRIP CLOSE AT FULL DOWN
                 // ------------------------------------------------------------
 
-                30:
+                40:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -622,10 +646,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 40 - VERTICAL UP
+                // STEP 50 - VERTICAL UP
                 // ------------------------------------------------------------
 
-                40:
+                50:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -646,10 +670,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 50 - HORIZONTAL FRONT
+                // STEP 60 - HORIZONTAL FRONT
                 // ------------------------------------------------------------
 
-                50:
+                60:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -673,10 +697,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 60 - VERTICAL INTERMEDIATE
+                // STEP 70 - VERTICAL INTERMEDIATE
                 // ------------------------------------------------------------
 
-                60:
+                70:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -710,11 +734,11 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 70 - VERTICAL UP BEFORE FLIP
+                // STEP 80 - VERTICAL UP BEFORE FLIP
                 // FIX: split vertical UP and support DOWN into separate steps.
                 // ------------------------------------------------------------
 
-                70:
+                80:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -739,11 +763,11 @@ ELSE
                     sDiagnosticInternal := 'Vision: vertical UP before flip';
 
                 // ------------------------------------------------------------
-                // STEP 80 - NEST SUPPORT DOWN BEFORE FLIP
+                // STEP 90 - NEST SUPPORT DOWN BEFORE FLIP
                 // FIX: retract support only after vertical UP is confirmed.
                 // ------------------------------------------------------------
 
-                80:
+                90:
 
                     // FIX: support extension remains FALSE by default.
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
@@ -763,11 +787,12 @@ ELSE
                     sDiagnosticInternal := 'Vision: nest support DOWN before flip';
 
                 // ------------------------------------------------------------
-                // STEP 90 - ROTATE 180 AND HOLD
+                // STEP 100 - ROTATE 180 AND HOLD
                 // ------------------------------------------------------------
 
-                90: // FIX: was 80; support retract now uses Step 80.
+                100: // FIX: was 80; support retract now uses Step 80.
 
+					tonTakingPictureWHileRotating.IN := TRUE;
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
@@ -778,60 +803,103 @@ ELSE
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate180RequestInternal := NOT bRotate180Internal;
 
-                    tonRotate180Hold(
-                        IN := bRotate180Internal,
-                        PT := tRotate180Hold
-                    );
-
-                    bStepTargetReached := tonRotate180Hold.Q;
-
-                    sDiagnosticInternal := 'Vision: rotate 180 - holding 1 s';
-
-				(*100: 	// 2ndt Camera Inspection
-					//Checking batch number while cylinder is rotating
-					nProgramNumberInternal := 1;
-					IF bGetProgramLoadCompleteInternal THEN
+					//Camera
+					IF nCurrentProgramNumberInternal = 1 THEN
+					
+					IF bCameraResultsReadyInternal THEN
 						
-						bTriggerRequestInternal					:= TRUE;
+						bGetResultsRequestInternal			:= TRUE;
+						bAcknowledgeResultsInternal			:= TRUE;
+						tonCameraTriggerDelay[1].IN			:= TRUE;
 						
-						IF bGetResultsReadyRequestInternal THEN
-							
-							stResultInternal.CameraResults		:= nVisionResultsInternal;
-							bTriggerRequestInternal				:= FALSE;
-							bStepTargetReached				:= TRUE;
-							
-						END_IF
 						
 					END_IF
 					
-					sDiagnosticInternal := 'Vision: Camera second Inspection';
-					*)
+					END_IF
+					IF tonCameraTriggerDelay[1].Q THEN
+							
+							bGetResultsRequestInternal			:= FALSE;
+							bAcknowledgeResultsInternal			:= FALSE;
+							nSetProgramNumberInternal			:= 2;
+							tonDelayInspectionPlaceHolder.IN	:= TRUE;
+							bChangeProgramRequestInternal		:= TRUE;
+							tonCameraTriggerDelay[2].IN			:= TRUE;
+							tonCameraTriggerDelay[1].IN			:= FALSE;
+							
+							
+					END_IF
+					IF tonCameraTriggerDelay[2].Q THEN
+							
+							
+							bChangeProgramRequestInternal		:= FALSE;
+							tonCameraTriggerDelay[2].IN			:= FALSE;
+							
+							
+					END_IF
+					IF tonDelayInspectionPlaceHolder.Q THEN
+						
+						tonTakingPictureWHileRotating.IN	:= FALSE; 
+						
+					END_IF
+					
+					bStepTargetReached := tonDelayInspectionPlaceHolder.Q;
+					
+					sDiagnosticInternal := 'Vision: rotate 180, Camera second Inspection - holding 1 s';
+				
                 // FIX CAMERA PREPARATION - STEP 95: SECOND INSPECTION (PROGRAM 1)
                 // TODO: select program 1, trigger and await fresh result;
                 // TODO: inspect batch number at 180 deg, store PASS/FAIL;
                 // TODO: handle camera timeout and avoid repeated triggers.
                 // NOTE: bypass only; hold safe 180-deg inspection position.
-                95:
-                    bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-                    bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
-                    bVerticalUpRequestInternal := NOT bVerticalUpInternal;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
-                    bGripCloseRequestInternal := NOT bGripClosedInternal;
-                    bStepTargetReached := bSupportRetractedInternal
-                        AND NOT bSupportExtendedInternal
-                        AND bVerticalUpInternal AND NOT bVerticalDownInternal
-                        AND bRotate180Internal AND NOT bRotate0Internal;
-                    sDiagnosticInternal := 'Vision: camera 2 reserved - bypass';
-
+        
+				// ------------------------------------------------------------
+                // STEP 110 - CAMERA PLACEHOLDER - THIRD INSPECTION
                 // ------------------------------------------------------------
-                // STEP 100 - ROTATE BACK TO 0
+				
+				110:
+					tonDelayInspectionPlaceHolder.IN		:= FALSE;
+					tonTakingPictureWHileRotating.IN := FALSE;
+				
+					IF nCurrentProgramNumberInternal = 2 THEN
+					
+					IF bCameraResultsReadyInternal THEN
+						
+						bGetResultsRequestInternal			:= TRUE;
+						bAcknowledgeResultsInternal			:= TRUE;
+						tonCameraTriggerDelay[1].IN			:= TRUE;
+						
+						
+					END_IF
+					END_IF
+					
+					IF tonCameraTriggerDelay[1].Q THEN
+							
+							bGetResultsRequestInternal			:= FALSE;
+							bAcknowledgeResultsInternal			:= FALSE;
+							nSetProgramNumberInternal			:= 0;
+							bChangeProgramRequestInternal		:= TRUE;
+							tonCameraTriggerDelay[2].IN			:= TRUE;
+							tonCameraTriggerDelay[1].IN			:= FALSE;
+							
+							
+					END_IF
+					IF tonCameraTriggerDelay[2].Q THEN
+							
+							
+							bChangeProgramRequestInternal		:= FALSE;
+							bStepTargetReached					:= TRUE;
+							tonCameraTriggerDelay[2].IN			:= FALSE;
+							
+							
+					END_IF
+				
+                // ------------------------------------------------------------
+                // STEP 120 - ROTATE BACK TO 0
                 // FIX: keep support DOWN until rotation is confirmed at 0 deg.
                 // ------------------------------------------------------------
 
-                100: // FIX: was Step 90.
-
-                    tonRotate180Hold(IN := FALSE);
-
+                120: 
+					
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
@@ -856,11 +924,14 @@ ELSE
                     sDiagnosticInternal := 'Vision: rotate back to 0 with nest DOWN';
 
                 // ------------------------------------------------------------
-                // STEP 110 - NEST SUPPORT UP AFTER ROTATION
+                // STEP 130 - NEST SUPPORT UP AFTER ROTATION
                 // FIX: move support only after rotation to 0 deg is complete.
                 // ------------------------------------------------------------
+				
+				
+					
 
-                110:
+                130:
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -885,90 +956,13 @@ ELSE
                 // TODO: inspect batch/date/blue part/click part and store result;
                 // TODO: implement timeout, FAIL handling and one-shot trigger.
                 // NOTE: bypass only; keep nest UP and tooling in position.
-                115:
-                    bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
-                    bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
-                    bVerticalUpRequestInternal := NOT bVerticalUpInternal;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
-                    bGripCloseRequestInternal := NOT bGripClosedInternal;
-                    bStepTargetReached := bSupportExtendedInternal
-                        AND NOT bSupportRetractedInternal
-                        AND bRotate0Internal AND NOT bRotate180Internal;
-                    sDiagnosticInternal := 'Vision: camera 3 reserved - bypass';
-
-                // FIX CAMERA PREPARATION - STEP 117: FOURTH INSPECTION (PROGRAM 3)
-                // TODO: select program 3, trigger, await fresh result;
-                // TODO: inspect PBUB, store result separately from other cameras;
-                // TODO: handle FAIL/timeout before vertical intermediate.
-                // NOTE: bypass only; keep nest UP and tooling in position.
-                117:
-                    bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
-                    bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
-                    bVerticalUpRequestInternal := NOT bVerticalUpInternal;
-                    bLimitOnRequestInternal := NOT bLimitOnInternal;
-                    bGripCloseRequestInternal := NOT bGripClosedInternal;
-                    bStepTargetReached := bSupportExtendedInternal
-                        AND NOT bSupportRetractedInternal
-                        AND bRotate0Internal AND NOT bRotate180Internal;
-                    sDiagnosticInternal := 'Vision: camera 4 reserved - bypass';
+				
 
                 // ------------------------------------------------------------
-                // CAMERA THIRD INSPECTION - PRESERVED, NOT ACTIVE
-                // FIX: placeholder remains commented; no camera logic removed.
-                // ------------------------------------------------------------
-(*
-					//camera
-					
-					// 3rd Camera Inspection
-					//Checking batch number, date, blue part in position, clcick part quality
-					nProgramNumberInternal := 2;
-					IF bGetProgramLoadCompleteInternal THEN
-						
-						bTriggerRequestInternal					:= TRUE;
-						
-						IF bGetResultsReadyRequestInternal THEN
-							
-							stResultInternal.CameraResults		:= nVisionResultsInternal;
-							bTriggerRequestInternal				:= FALSE;
-							
-						END_IF
-						
-					END_IF
-					*)
-
-                // ------------------------------------------------------------
-                // CAMERA FOURTH INSPECTION - PRESERVED, NOT ACTIVE
-                // FIX: placeholder remains commented; no camera logic removed.
-                // ------------------------------------------------------------
-(*	
-				// ------------------------------------------------------------
-                // CAMERA PLACEHOLDER - FOURTH INSPECTION (COMMENTED)
-                // ------------------------------------------------------------
-				120: 	// 4th Camera Inspection
-					//Checking PBUB quality
-					nProgramNumberInternal := 3;
-					IF bGetProgramLoadCompleteInternal THEN
-						
-						bTriggerRequestInternal					:= TRUE;
-						
-						IF bGetResultsReadyRequestInternal THEN
-							
-							stResultInternal.CameraResults		:= nVisionResultsInternal;
-							bTriggerRequestInternal				:= FALSE;
-							bStepTargetReached					:= TRUE;
-							
-						END_IF
-						
-					END_IF
-					
-					sDiagnosticInternal := 'Vision: Camera Fourth Inspection';
-				*)
-
-                // ------------------------------------------------------------
-                // STEP 120 - VERTICAL INTERMEDIATE FOR REPLACE
+                // STEP 140 - VERTICAL INTERMEDIATE FOR REPLACE
                 // ------------------------------------------------------------
 
-                120: // FIX: renumbered after separating support movements.
+                140: // FIX: renumbered after separating support movements.
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -996,10 +990,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 130 - GRIP OPEN AT INTERMEDIATE
+                // STEP 150 - GRIP OPEN AT INTERMEDIATE
                 // ------------------------------------------------------------
 
-                130: // FIX: renumbered after separating support movements.
+                150: // FIX: renumbered after separating support movements.
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -1021,10 +1015,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 140 - VERTICAL UP
+                // STEP 160 - VERTICAL UP
                 // ------------------------------------------------------------
 
-                140: // FIX: renumbered after separating support movements.
+                160: // FIX: renumbered after separating support movements.
 
                     bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
@@ -1045,10 +1039,10 @@ ELSE
 
 
                 // ------------------------------------------------------------
-                // STEP 150 - RETURN HOME
+                // STEP 170 - RETURN HOME
                 // ------------------------------------------------------------
 
-                150: // FIX: renumbered after separating support movements.
+                170: // FIX: renumbered after separating support movements.
 
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -1064,7 +1058,26 @@ ELSE
                     bStepTargetReached := bHomeInternal;
 
                     sDiagnosticInternal := 'Vision: returning tooling to home';
+				
+				// ------------------------------------------------------------
+                // STEP 180 - CAMERA PBUB - FOURTH INSPECTION
+                // ------------------------------------------------------------                
+				180:
+                   
+				   	nSetProgramNumberInternal			:= 0;
+					bChangeProgramRequestInternal		:= TRUE;
+                    bStepTargetReached := TRUE;
+                       
+				190:
+				
+					bChangeProgramRequestInternal		:= FALSE;
+					bStepTargetReached := TRUE;
 
+                // FIX CAMERA PREPARATION - STEP 117: FOURTH INSPECTION (PROGRAM 3)
+                // TODO: select program 3, trigger, await fresh result;
+                // TODO: inspect PBUB, store result separately from other cameras;
+                // TODO: handle FAIL/timeout before vertical intermediate.
+                // NOTE: bypass only; keep nest UP and tooling in position.
 
                 ELSE
 
@@ -1079,18 +1092,12 @@ ELSE
             // PROCESSING TRANSITIONS
             // ================================================================
 
-            IF usiStepInternal = 90 THEN
-
-                tonStepDelay(IN := FALSE);
-
-            ELSE
-
+            
                 tonStepDelay(
                     IN := bStepTargetReached,
                     PT := tStepDelay
                 );
 
-            END_IF
 
 
             tonMoveTimeout(
@@ -1121,17 +1128,17 @@ ELSE
                 stResultInternal.udiAlertCode := 0;
                 stResultInternal.sDetail := 'Vision tooling movement timeout';
 
-
-            ELSIF (usiStepInternal = 90) AND bStepTargetReached THEN
+			(*
+            ELSIF (usiStepInternal = 20) AND bStepTargetReached THEN
 
                 tonMoveTimeout(IN := FALSE);
                 tonRotate180Hold(IN := FALSE);
                 // FIX CAMERA PREPARATION: route through camera 2 placeholder.
                 // OLD: usiStepInternal := 100;
-                usiStepInternal := 95;
+                usiStepInternal := 95;*)
 
 
-            ELSIF (usiStepInternal <> 90) AND tonStepDelay.Q THEN
+            ELSIF (usiStepInternal < 190) AND tonStepDelay.Q THEN
 
                 tonMoveTimeout(IN := FALSE);
                 tonStepDelay(IN := FALSE);
@@ -1140,19 +1147,9 @@ ELSE
                 // OLD: IF usiStepInternal < 150 THEN
                 // OLD:     usiStepInternal := usiStepInternal + 10;
                 // OLD: ELSE
-                IF usiStepInternal = 5 THEN
-                    usiStepInternal := 10;
-                ELSIF usiStepInternal = 95 THEN
-                    usiStepInternal := 100;
-                ELSIF usiStepInternal = 110 THEN
-                    usiStepInternal := 115;
-                ELSIF usiStepInternal = 115 THEN
-                    usiStepInternal := 117;
-                ELSIF usiStepInternal = 117 THEN
-                    usiStepInternal := 120;
-                ELSIF usiStepInternal < 150 THEN
-                    usiStepInternal := usiStepInternal + 10;
-                ELSE
+              
+                usiStepInternal := usiStepInternal + 10;
+            ELSIF usiStepInternal = 190 THEN
 
                     // FIX: camera inspection steps are currently commented; use commissioning
                     // simulated PASS/FAIL selector as the process result.
@@ -1181,7 +1178,7 @@ ELSE
 
                 END_IF
 
-            END_IF
+           
 
 
         // ====================================================================
@@ -1585,7 +1582,21 @@ ELSE
 END_IF
 
 usiStepInternal := 0;
-]]></ST>
+
+
+bChangeProgramRequestInternal	:= FALSE;
+bTriggerRequestInternal			:= FALSE;
+bGetResultsRequestInternal		:= FALSE;
+bResetResultsRequestInternal	:= FALSE;
+nSetProgramNumberInternal		:= 0;
+bAcknowledgeResultsInternal		:= FALSE;
+
+bStepTargetReached 				:= FALSE;
+
+tonTakingPictureWHileRotating.IN := FALSE;
+tonCameraTriggerDelay[1].IN			:= FALSE;
+tonCameraTriggerDelay[2].IN			:= FALSE;
+tonDelayInspectionPlaceHolder.IN 	:= FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequestStart" Id="{a1f1fc65-484d-43e4-b289-6715c8e6c817}">
@@ -1743,7 +1754,8 @@ nProgramNumber 					:= 		nSetProgramNumberInternal;
 bAcknowledgeResults				:= 		bAcknowledgeResultsInternal;
 
 nCurrentProgramNumberInternal	:= 		nCurrentProgramNumber;
-bCameraResultsReadyInternal		:= 		bResultsReady;]]></ST>
+bCameraResultsReadyInternal		:= 		bResultsReady;
+nVisionResultsInternal			:= 	nVisionCameraResults;]]></ST>
       </Implementation>
     </Method>
   </POU>

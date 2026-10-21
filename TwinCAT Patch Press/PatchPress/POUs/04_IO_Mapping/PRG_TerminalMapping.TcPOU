@@ -267,7 +267,7 @@ GVL_EtherCAT.stFestoModule4_VABX.bCoil0 := GVL_IO.stOutputs.bVisionRotate0;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil1 := GVL_IO.stOutputs.bVisionRotate180;
 
 // Validated Heat Stake head pneumatic mapping - preserved unchanged.
-GVL_EtherCAT.stFestoModule4_VABX.bCoil2 := GVL_IO.stOutputs.bHeatStakeHeadLock;
+//GVL_EtherCAT.stFestoModule4_VABX.bCoil2 := GVL_IO.stOutputs.bHeatStakeHeadLock;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil3 := GVL_IO.stOutputs.bHeatStakeHeadUnlock;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil4 := GVL_IO.stOutputs.bHeatStakeHeadDown;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil5 := GVL_IO.stOutputs.bHeatStakeHeadUp;

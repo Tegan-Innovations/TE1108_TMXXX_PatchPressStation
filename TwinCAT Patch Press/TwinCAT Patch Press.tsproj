@@ -2125,237 +2125,6 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{88850EA5-6CBB-1407-90A9-2E03D8D42F5A}" AutoDeleteType="true">ST_MachineConfig</Name>
-			<BitSize>608</BitSize>
-			<SubItem>
-				<Name>tInitialiseTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>0</BitOffs>
-				<Default>
-					<DateTime>T#20S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tHeaterDwellTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>32</BitOffs>
-				<Default>
-					<DateTime>T#10M</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tStoppingTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>64</BitOffs>
-				<Default>
-					<DateTime>T#15S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tIndexTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>96</BitOffs>
-				<Default>
-					<DateTime>T#10S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tIndexRotateDelay</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>128</BitOffs>
-				<Default>
-					<DateTime>T#500MS</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tIndexStopDelay</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>160</BitOffs>
-				<Default>
-					<DateTime>T#1S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tIndexSupportTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>192</BitOffs>
-				<Default>
-					<DateTime>T#5S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tStationSupportTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>224</BitOffs>
-				<Default>
-					<DateTime>T#5S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tHeatStakeHeadMoveTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<Comment><![CDATA[ Heat Stake head UP/DOWN feedback timeout.]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>256</BitOffs>
-				<Default>
-					<DateTime>T#3S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tTwoHandHold</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>288</BitOffs>
-				<Default>
-					<DateTime>T#500MS</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tTwoHandRecoveryTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>320</BitOffs>
-				<Default>
-					<DateTime>T#10S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tDoorLockTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>352</BitOffs>
-				<Default>
-					<DateTime>T#10S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tDoorUnlockTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>384</BitOffs>
-				<Default>
-					<DateTime>T#10S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tOperatorIdleTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>416</BitOffs>
-				<Default>
-					<DateTime>T#30S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>eOperatorPosition</Name>
-				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>448</BitOffs>
-				<Default>
-					<EnumText>E_TablePosition.Position1</EnumText>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>ePatchDispensePosition</Name>
-				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>464</BitOffs>
-				<Default>
-					<EnumText>E_TablePosition.Position2</EnumText>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>eHeatStakePosition</Name>
-				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>480</BitOffs>
-				<Default>
-					<EnumText>E_TablePosition.Position3</EnumText>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>eVisionPosition</Name>
-				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>496</BitOffs>
-				<Default>
-					<EnumText>E_TablePosition.Position4</EnumText>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>eRejectPosition</Name>
-				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>512</BitOffs>
-				<Default>
-					<EnumText>E_TablePosition.Position1</EnumText>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>bRequireTwoHandsForIndex</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>528</BitOffs>
-				<Default>
-					<Bool>true</Bool>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>bAllowEmptyNestIndex</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>536</BitOffs>
-				<Default>
-					<Bool>true</Bool>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>bRequireRejectConfirm</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>544</BitOffs>
-				<Default>
-					<Bool>true</Bool>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>aNestEnabled</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>4</Elements>
-				</ArrayInfo>
-				<BitSize>32</BitSize>
-				<BitOffs>552</BitOffs>
-				<Default>
-					<SubItem>
-						<Name>[1]</Name>
-						<Bool>true</Bool>
-					</SubItem>
-					<SubItem>
-						<Name>[2]</Name>
-						<Bool>true</Bool>
-					</SubItem>
-					<SubItem>
-						<Name>[3]</Name>
-						<Bool>true</Bool>
-					</SubItem>
-					<SubItem>
-						<Name>[4]</Name>
-						<Bool>true</Bool>
-					</SubItem>
-				</Default>
-			</SubItem>
-		</DataType>
-		<DataType>
 			<Name GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}" AutoDeleteType="true">ST_EventsHistory</Name>
 			<BitSize>8256</BitSize>
 			<SubItem>
@@ -2674,7 +2443,7 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{42636617-9481-1F27-4114-98289099B9CF}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
+			<Name IecBaseType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
 			<Comment><![CDATA[ =====================================================
  TEST HISTORY
  =====================================================
@@ -2733,6 +2502,237 @@ External Setpoint Generation:
 				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
 				<BitSize>2048</BitSize>
 				<BitOffs>2736</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{88850EA5-6CBB-1407-90A9-2E03D8D42F5A}" AutoDeleteType="true">ST_MachineConfig</Name>
+			<BitSize>608</BitSize>
+			<SubItem>
+				<Name>tInitialiseTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<DateTime>T#20S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tHeaterDwellTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<DateTime>T#10M</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tStoppingTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<DateTime>T#15S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tIndexTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<DateTime>T#10S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tIndexRotateDelay</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<DateTime>T#500MS</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tIndexStopDelay</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+				<Default>
+					<DateTime>T#1S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tIndexSupportTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+				<Default>
+					<DateTime>T#5S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tStationSupportTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+				<Default>
+					<DateTime>T#5S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tHeatStakeHeadMoveTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<Comment><![CDATA[ Heat Stake head UP/DOWN feedback timeout.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+				<Default>
+					<DateTime>T#3S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tTwoHandHold</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>288</BitOffs>
+				<Default>
+					<DateTime>T#500MS</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tTwoHandRecoveryTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>320</BitOffs>
+				<Default>
+					<DateTime>T#10S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tDoorLockTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>352</BitOffs>
+				<Default>
+					<DateTime>T#10S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tDoorUnlockTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+				<Default>
+					<DateTime>T#10S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tOperatorIdleTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+				<Default>
+					<DateTime>T#30S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>eOperatorPosition</Name>
+				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>448</BitOffs>
+				<Default>
+					<EnumText>E_TablePosition.Position1</EnumText>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>ePatchDispensePosition</Name>
+				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>464</BitOffs>
+				<Default>
+					<EnumText>E_TablePosition.Position2</EnumText>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>eHeatStakePosition</Name>
+				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>480</BitOffs>
+				<Default>
+					<EnumText>E_TablePosition.Position3</EnumText>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>eVisionPosition</Name>
+				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>496</BitOffs>
+				<Default>
+					<EnumText>E_TablePosition.Position4</EnumText>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>eRejectPosition</Name>
+				<Type GUID="{F04D3115-42E9-6EB7-4F07-15AE40BC9B63}">E_TablePosition</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>512</BitOffs>
+				<Default>
+					<EnumText>E_TablePosition.Position1</EnumText>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>bRequireTwoHandsForIndex</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>528</BitOffs>
+				<Default>
+					<Bool>true</Bool>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>bAllowEmptyNestIndex</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>536</BitOffs>
+				<Default>
+					<Bool>true</Bool>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>bRequireRejectConfirm</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>544</BitOffs>
+				<Default>
+					<Bool>true</Bool>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>aNestEnabled</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<ArrayInfo>
+					<LBound>1</LBound>
+					<Elements>4</Elements>
+				</ArrayInfo>
+				<BitSize>32</BitSize>
+				<BitOffs>552</BitOffs>
+				<Default>
+					<SubItem>
+						<Name>[1]</Name>
+						<Bool>true</Bool>
+					</SubItem>
+					<SubItem>
+						<Name>[2]</Name>
+						<Bool>true</Bool>
+					</SubItem>
+					<SubItem>
+						<Name>[3]</Name>
+						<Bool>true</Bool>
+					</SubItem>
+					<SubItem>
+						<Name>[4]</Name>
+						<Bool>true</Bool>
+					</SubItem>
+				</Default>
 			</SubItem>
 		</DataType>
 		<DataType>
@@ -4543,21 +4543,11 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{A1A9520F-AE0B-E1F2-B2EA-3FA3A64F3D18}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{836927AD-0ABA-6957-6EB8-137321DAF47A}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
 						<Name>PlcTask Retains</Name>
-						<Var>
-							<Name>GVL_Config.stMachine</Name>
-							<Type GUID="{88850EA5-6CBB-1407-90A9-2E03D8D42F5A}">ST_MachineConfig</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Persistent.bCSVPendingRecord</Name>
-							<Type>BOOL</Type>
-							<InOut>7</InOut>
-						</Var>
 						<Var>
 							<Name>GVL_Persistent.uiTestHistoryWriteIndex</Name>
 							<Comment><![CDATA[ Next position to be written in the circular buffer.]]></Comment>
@@ -4614,6 +4604,11 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
+							<Name>GVL_Persistent.bCSVPendingRecord</Name>
+							<Type>BOOL</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
 							<Name>GVL_Persistent.bCSVQueueOverflow</Name>
 							<Comment><![CDATA[ CSV diagnostics]]></Comment>
 							<Type>BOOL</Type>
@@ -4622,6 +4617,11 @@ External Setpoint Generation:
 						<Var>
 							<Name>GVL_Persistent.udiCSVRecordsDropped</Name>
 							<Type>UDINT</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Config.stMachine</Name>
+							<Type GUID="{88850EA5-6CBB-1407-90A9-2E03D8D42F5A}">ST_MachineConfig</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
@@ -4956,21 +4956,6 @@ External Setpoint Generation:
 					</Vars>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.nTerminal_State</Name>
-							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.nTerminal_State</Name>
-							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.nTerminal_State</Name>
-							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
-							<Type>UINT</Type>
-						</Var>
 						<Var>
 							<Name>GVL_Safety.bSafetyOk</Name>
 							<Comment><![CDATA[ ---------------------------------------------------------------------
@@ -5347,6 +5332,21 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.nTerminal_State</Name>
 							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
 							<Type>UINT</Type>
 						</Var>
@@ -11757,10 +11757,7 @@ Bit 8 - 15 : reserved]]></Comment>
 				</Image>
 				<Box Id="22" BoxType="9121">
 					<Name>vs-01</Name>
-					<Comment><![CDATA[
-The GSDML is not available!
-
-GSDML Name: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
+					<Comment><![CDATA[GSDML Name: GSDML-V2.42-Keyence-VS-XXXX-20230509.xml
 Path: $(TWINCAT3DIR)Config\Io\Profinet\
 VendorName: Keyence
 OrderNumber: VS-XXXX
