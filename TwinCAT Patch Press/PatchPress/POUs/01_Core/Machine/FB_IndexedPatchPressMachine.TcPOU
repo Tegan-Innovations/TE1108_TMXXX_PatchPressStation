@@ -488,9 +488,9 @@ END_IF
 
 IF bVisionChangeProgramRequest THEN
 	
-	fbVSCamera.RequestChangeProgram(bEnable := TRUE,nProgramNumber := ntest);
+	fbVSCamera.RequestChangeProgram(bEnable := TRUE,nProgramNumber := nVisionProgramNumber);
 	
-ELSE fbVSCamera.RequestChangeProgram(bEnable := FALSE,nProgramNumber := ntest);
+ELSE fbVSCamera.RequestChangeProgram(bEnable := FALSE,nProgramNumber := nVisionProgramNumber);
 
 END_IF
 
@@ -1256,6 +1256,7 @@ fbVision.Update(
 	//camera
 	bTriggerRequest					=>		bVisionTriggerRequest,
 	bChangeProgramRequest			=>		bVisionChangeProgramRequest,
+	bGetResultsRequest				=>	bVisionGetResultsRequest,
 	bRequestResetResults				=>		bVisionResetResultsRequest,
 	bAcknowledgeResults				=> bVisionAcknowledgeResultsRquest,
 	nProgramNumber			=>		nVisionProgramNumber
