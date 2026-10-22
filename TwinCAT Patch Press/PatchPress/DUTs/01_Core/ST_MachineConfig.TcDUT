@@ -4,6 +4,7 @@
     <Declaration><![CDATA[TYPE ST_MachineConfig :
 STRUCT
     tInitialiseTimeout       : TIME := T#20S;
+	tHeaterDwellTimeout      : TIME := T#10M;
     tStoppingTimeout         : TIME := T#15S;
     tIndexTimeout            : TIME := T#10S;
     tIndexRotateDelay        : TIME := T#500MS;

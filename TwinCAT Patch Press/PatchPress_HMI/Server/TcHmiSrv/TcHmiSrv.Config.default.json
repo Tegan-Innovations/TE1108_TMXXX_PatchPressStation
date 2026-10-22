@@ -5341,6 +5341,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_Config.stMachine.tHeaterDwellTimeout": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Config::stMachine::tHeaterDwellTimeout",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/TIME"
+                    },
+                    {
+                        "propertyOrder": 2
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -7887,6 +7904,26 @@
             "DOMAIN": "ADS",
             "DYNAMIC": true,
             "MAPPING": "PLC1::GVL_HMI::bLogoutRequest",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.bUnlockDoorPopupRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::bUnlockDoorPopupRequest",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/BOOL"
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.bUnlockDoorVisible": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::bUnlockDoorVisible",
             "SCHEMA": {
                 "$ref": "tchmi:general#/definitions/BOOL"
             },
@@ -17434,6 +17471,7 @@
                 "ADS.PLC1.GVL_Config.stMachine.aNestEnabled.1": 3,
                 "ADS.PLC1.GVL_Config.stMachine.aNestEnabled.2": 3,
                 "ADS.PLC1.GVL_Config.stMachine.aNestEnabled.3": 3,
+                "ADS.PLC1.GVL_Config.stMachine.tHeaterDwellTimeout": 3,
                 "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1": 3,
                 "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch10": 3,
                 "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch11": 3,
@@ -17575,6 +17613,8 @@
                 "ADS.PLC1.GVL_HMI.bIvekSettingsLaunchError": 3,
                 "ADS.PLC1.GVL_HMI.bIvekSettingsLaunchPending": 3,
                 "ADS.PLC1.GVL_HMI.bLogoutRequest": 3,
+                "ADS.PLC1.GVL_HMI.bUnlockDoorPopupRequest": 3,
+                "ADS.PLC1.GVL_HMI.bUnlockDoorVisible": 3,
                 "ADS.PLC1.GVL_HMI.i_bHMIIndexerManualEnable": 3,
                 "ADS.PLC1.GVL_HMI.sApplication": 3,
                 "ADS.PLC1.GVL_HMI.sHMIServer": 3,

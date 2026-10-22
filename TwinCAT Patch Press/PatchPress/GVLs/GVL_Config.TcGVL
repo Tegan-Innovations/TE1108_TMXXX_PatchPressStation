@@ -17,6 +17,8 @@ VAR_GLOBAL PERSISTENT RETAIN
         bRequireRejectConfirm := TRUE
     );
     aNestEnabled : ARRAY[1..4] OF BOOL := [TRUE, TRUE, TRUE, TRUE];
+	rMainDoorHotTemperatureLimitC : REAL := 40.0;
+	
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

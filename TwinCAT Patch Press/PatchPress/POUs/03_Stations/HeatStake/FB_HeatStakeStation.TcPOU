@@ -58,12 +58,13 @@ VAR
 
     stProcessSettingsInternal : ST_HeatStakeProcessSettings;
 
-    bHeadLockRequestInternal : BOOL;
-    bHeadUnlockRequestInternal : BOOL;
-    bHeadDownRequestInternal : BOOL;
-    bHeadUpRequestInternal : BOOL;
-    rPressureCommandBarInternal : LREAL := 0.03;
-    bContactDwellActiveInternal : BOOL;
+    bHeadLockRequestInternal 			: BOOL;
+    bHeadUnlockRequestInternal 			: BOOL;
+    bHeadDownRequestInternal 			: BOOL;
+    bHeadUpRequestInternal 				: BOOL;
+    rPressureCommandBarInternal 		: LREAL := 0.03;
+    bContactDwellActiveInternal 		: BOOL;
+	bHeadDownStartedInternal 			: BOOL := FALSE;
 
     stResultInternal : ST_ProcessResult;
 END_VAR]]></Declaration>
@@ -292,14 +293,21 @@ ELSE
                         usiStepInternal := 30;
                     END_IF
 
-                30:
-                    rPressureCommandBarInternal := stProcessSettingsInternal.rDownPressureBar;
-                    bHeadUnlockRequestInternal := TRUE;
-                    bHeadDownRequestInternal := NOT bHeadDownSensorInternal;
-                    sDiagnosticInternal := 'Heat stake: head down - waiting for DOWN feedback';
-                    IF bHeadDownSensorInternal THEN
-                        usiStepInternal := 40;
-                    END_IF
+				30:
+					rPressureCommandBarInternal := stProcessSettingsInternal.rDownPressureBar;
+					bHeadUnlockRequestInternal := TRUE;
+					bHeadDownRequestInternal := NOT bHeadDownSensorInternal;
+				
+					// Latch the beginning of the physical HeatStake process.
+					IF bHeadDownRequestInternal THEN
+						bHeadDownStartedInternal := TRUE;
+					END_IF;
+				
+					sDiagnosticInternal := 'Heat stake: head down - waiting for DOWN feedback';
+				
+					IF bHeadDownSensorInternal THEN
+						usiStepInternal := 40;
+					END_IF
 
                 40:
                     rPressureCommandBarInternal := stProcessSettingsInternal.rDownPressureBar;
@@ -622,6 +630,8 @@ THEN
     stResultInternal.bPassed := FALSE;
     stResultInternal.eCode := E_ProcessResultCode.None;
     stResultInternal.sDetail := '';
+	// New cycle: clear previous head-down history.
+	bHeadDownStartedInternal := FALSE;
 
     eStateInternal := E_PatchStationState.Processing;
     usiStepInternal := 10;
@@ -682,21 +692,22 @@ VAR_OUTPUT
     bHeadDownTimeoutFault  : BOOL;
     bHeadUpTimeoutFault    : BOOL;
     bHeadSensorConflictFault : BOOL;
+	bHeadDownStarted : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
-bEnableInternal := bEnable;
-bCommissionedInternal := bCommissioned;
-bSafetyOkInternal := bSafetyOk;
-bSupervisionEnableInternal := bSupervisionEnable;
-bManualModeInternal := bManualMode;
-bSupportRetractedInternal := bSupportRetracted;
-bSupportExtendedInternal := bSupportExtended;
-bHeadUpSensorInternal := bHeadUpSensor;
-bHeadDownSensorInternal := bHeadDownSensor;
-tSupportMoveTimeout := tSupportTimeout;
-tHeadMoveTimeoutInternal := tHeadMoveTimeout;
-stProcessSettingsInternal := stProcessSettings;
+bEnableInternal 				:= bEnable;
+bCommissionedInternal 			:= bCommissioned;
+bSafetyOkInternal 				:= bSafetyOk;
+bSupervisionEnableInternal 		:= bSupervisionEnable;
+bManualModeInternal 			:= bManualMode;
+bSupportRetractedInternal 		:= bSupportRetracted;
+bSupportExtendedInternal 		:= bSupportExtended;
+bHeadUpSensorInternal 			:= bHeadUpSensor;
+bHeadDownSensorInternal 		:= bHeadDownSensor;
+tSupportMoveTimeout 			:= tSupportTimeout;
+tHeadMoveTimeoutInternal 		:= tHeadMoveTimeout;
+stProcessSettingsInternal 		:= stProcessSettings;
 
 IF bReset THEN
     RequestReset();
@@ -704,28 +715,32 @@ END_IF
 
 Cyclic();
 
-stStatus.eState := eStateInternal;
-stStatus.bCommissioned := bCommissionedInternal;
-stStatus.bHome := bHomeInternal;
-stStatus.bReady := bReadyInternal;
-stStatus.bBusy := bBusyInternal;
-stStatus.bComplete := bCompleteInternal;
-stStatus.bFault := bFaultInternal;
-stStatus.eSupportFault := eSupportFaultInternal;
-stStatus.sDiagnostic := sDiagnosticInternal;
+stStatus.eState 			:= eStateInternal;
+stStatus.bCommissioned 		:= bCommissionedInternal;
+stStatus.bHome 				:= bHomeInternal;
+stStatus.bReady 			:= bReadyInternal;
+stStatus.bBusy 				:= bBusyInternal;
+stStatus.bComplete 			:= bCompleteInternal;
+stStatus.bFault 			:= bFaultInternal;
+stStatus.eSupportFault 		:= eSupportFaultInternal;
+stStatus.sDiagnostic 		:= sDiagnosticInternal;
 
-bSupportExtendRequest := bSupportExtendRequestInternal;
-bSupportRetractRequest := bSupportRetractRequestInternal;
-bHeadLockRequest := bHeadLockRequestInternal;
-bHeadUnlockRequest := bHeadUnlockRequestInternal;
-bHeadDownRequest := bHeadDownRequestInternal;
-bHeadUpRequest := bHeadUpRequestInternal;
-rPressureCommandBar := rPressureCommandBarInternal;
-bContactDwellActive := bContactDwellActiveInternal;
-usiSequenceStep := usiStepInternal;
-bHeadDownTimeoutFault := bHeadDownTimeoutFaultInternal;
-bHeadUpTimeoutFault := bHeadUpTimeoutFaultInternal;
-bHeadSensorConflictFault := bHeadSensorConflictFaultInternal;
+bSupportExtendRequest 		:= bSupportExtendRequestInternal;
+bSupportRetractRequest 		:= bSupportRetractRequestInternal;
+bHeadLockRequest 			:= bHeadLockRequestInternal;
+bHeadUnlockRequest 			:= bHeadUnlockRequestInternal;
+bHeadDownRequest 			:= bHeadDownRequestInternal;
+bHeadUpRequest 				:= bHeadUpRequestInternal;
+rPressureCommandBar 		:= rPressureCommandBarInternal;
+bContactDwellActive 		:= bContactDwellActiveInternal;
+usiSequenceStep 			:= usiStepInternal;
+bHeadDownStarted 			:= bHeadDownStartedInternal;
+bHeadDownTimeoutFault 		:= bHeadDownTimeoutFaultInternal;
+bHeadUpTimeoutFault 		:= bHeadUpTimeoutFaultInternal;
+bHeadSensorConflictFault 	:= bHeadSensorConflictFaultInternal;
+
+
+
 ]]></ST>
       </Implementation>
     </Method>

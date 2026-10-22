@@ -13,7 +13,8 @@ TYPE E_MachineState :
     Initialising := 4,
     ReadyToStart := 5,
     AutoCycle    := 6,
-    Manual       := 7
+    Manual       := 7,
+	Dwell        := 8
 );
 END_TYPE]]></Declaration>
   </DUT>

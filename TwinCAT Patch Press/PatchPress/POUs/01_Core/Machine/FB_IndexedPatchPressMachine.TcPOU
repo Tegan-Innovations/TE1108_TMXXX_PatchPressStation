@@ -43,30 +43,38 @@ VAR
     // Required to know which physical parts were actually being processed if
     // Safety is lost, because Update() immediately disables the station when
     // Safety_OK goes FALSE.
-    bPatchDispenseProcessingBeforeUpdate : BOOL;
-    bHeatStakeProcessingBeforeUpdate : BOOL;
-    bVisionProcessingBeforeUpdate : BOOL;
+    bPatchDispenseProcessingBeforeUpdate 	: BOOL;
+    bHeatStakeProcessingBeforeUpdate 		: BOOL;
+    bVisionProcessingBeforeUpdate 			: BOOL;
+	bHeatStakeHeadDownStarted 				: BOOL;
 
     // Machine-state transition tracking for one-shot product disposition.
-    ePreviousMachineState : E_MachineState := E_MachineState.PowerUp;
-    stProcessFaultResult : ST_ProcessResult;
+    ePreviousMachineState 					: E_MachineState := E_MachineState.PowerUp;
+    stProcessFaultResult 					: ST_ProcessResult;
 
-    bAllRequiredStationsReady : BOOL;
-    bAllRequiredStationsComplete : BOOL;
-    bAnyStationInProcess : BOOL;
-    bCycleResultsStored : BOOL;
+    bAllRequiredStationsReady 				: BOOL;
+    bAllRequiredStationsComplete 			: BOOL;
+    bAnyStationInProcess 					: BOOL;
+    bCycleResultsStored 					: BOOL;
 
-    stPermissives : ST_MachinePermissives;
-    tonInitialising : TON;
-    tonStopping : TON;
-    bInitialisationTimeoutFault : BOOL;
-    bStoppingTimeoutFault 		: BOOL;
-    bAutoCycleAllowed 			: BOOL;
-    sAutoCycleBlockReason 		: STRING(160);
-    bIndexMoveAccepted 			: BOOL;
-    bDoorLockOutput 			: BOOL;
-    rtManualIndexMove 			: R_TRIG;
-	rtReprocessIndexAttempt 	: R_TRIG;
+    stPermissives 							: ST_MachinePermissives;
+    tonInitialising 						: TON;
+    tonStopping 							: TON;
+	tonHeaterDwell 							: TON;
+	
+	
+	bHeaterDwellTimeoutFault 				: BOOL := FALSE;
+    bInitialisationTimeoutFault 			: BOOL;
+    bStoppingTimeoutFault 					: BOOL;
+    bAutoCycleAllowed 						: BOOL;
+    sAutoCycleBlockReason 					: STRING(160);
+    bIndexMoveAccepted 						: BOOL;
+    bDoorLockOutput 						: BOOL;
+	bMainDoorUnlockAcknowledged 			: BOOL := FALSE;
+	bMainDoorHotLockRequired 				: BOOL := FALSE;
+	
+    rtManualIndexMove 						: R_TRIG;
+	rtReprocessIndexAttempt 				: R_TRIG;
 
     bProcessStartStations       : BOOL;
     bProcessStopStations        : BOOL;
@@ -99,44 +107,45 @@ VAR
     bRejectChutePopupReopenPending  : BOOL;
 	bReprocessPopupAcknowledged 	: BOOL := FALSE;
 	bReprocessAcknowledgePending 	: BOOL := FALSE;
+	bHeaterDwellRequestLatched 		: BOOL := FALSE;
 
     // Manual controlled-stop tracking.
     bManualSupportTargetUpAtRejectStop : BOOL;
     bManualRejectStopReady             : BOOL;
 
-    bStation1SupportExtendRequest  : BOOL;
-    bStation1SupportRetractRequest : BOOL;
-    bStation2SupportExtendRequest  : BOOL;
-    bStation2SupportRetractRequest : BOOL;
+    bStation1SupportExtendRequest  	: BOOL;
+    bStation1SupportRetractRequest 	: BOOL;
+    bStation2SupportExtendRequest  	: BOOL;
+    bStation2SupportRetractRequest 	: BOOL;
 
-    bHeatStakeHeadLockRequest : BOOL;
-    bHeatStakeHeadUnlockRequest : BOOL;
-    bHeatStakeHeadDownRequest : BOOL;
-    bHeatStakeHeadUpRequest : BOOL;
-    rHeatStakePressureCommandBar : LREAL;
-    iHeatStakePressureRaw : INT;
-    rHeatStakePressureScaledBar : LREAL;
-    bHeatStakeContactDwellActive : BOOL;
-    usiHeatStakeSequenceStep : USINT;
+    bHeatStakeHeadLockRequest 		: BOOL;
+    bHeatStakeHeadUnlockRequest 	: BOOL;
+    bHeatStakeHeadDownRequest 		: BOOL;
+    bHeatStakeHeadUpRequest 		: BOOL;
+    rHeatStakePressureCommandBar 	: LREAL;
+    iHeatStakePressureRaw 			: INT;
+    rHeatStakePressureScaledBar 	: LREAL;
+    bHeatStakeContactDwellActive 	: BOOL;
+    usiHeatStakeSequenceStep 		: USINT;
 
     // Heat Stake Manual Mode
-    rtHeatStakeManualStakePatch : R_TRIG;
-    rtHeatStakeManualUnlock     : R_TRIG;
-    rtHeatStakeManualLock       : R_TRIG;
-    rtHeatStakeManualHeadDown   : R_TRIG;
-    rtHeatStakeManualHeadUp     : R_TRIG;
-    rtHeatStakeInitialising     : R_TRIG;
+    rtHeatStakeManualStakePatch 	: R_TRIG;
+    rtHeatStakeManualUnlock     	: R_TRIG;
+    rtHeatStakeManualLock       	: R_TRIG;
+    rtHeatStakeManualHeadDown   	: R_TRIG;
+    rtHeatStakeManualHeadUp     	: R_TRIG;
+    rtHeatStakeInitialising     	: R_TRIG;
 
-    tonHeatStakeManualAction     : TON;
-    usiHeatStakeManualActionStep : USINT := 0;
-    bHeatStakeManualHeadUnlocked : BOOL := FALSE;
+    tonHeatStakeManualAction     	: TON;
+    usiHeatStakeManualActionStep 	: USINT := 0;
+    bHeatStakeManualHeadUnlocked 	: BOOL := FALSE;
     bHeatStakeManualStakeCycleActive : BOOL := FALSE;
 
-    bHeatStakeStationHeadDownTimeoutFault : BOOL;
-    bHeatStakeStationHeadUpTimeoutFault : BOOL;
-    bHeatStakeStationHeadSensorConflictFault : BOOL;
-    bHeatStakeManualHeadDownTimeoutFault : BOOL;
-    bHeatStakeManualHeadUpTimeoutFault : BOOL;
+    bHeatStakeStationHeadDownTimeoutFault 		: BOOL;
+    bHeatStakeStationHeadUpTimeoutFault 		: BOOL;
+    bHeatStakeStationHeadSensorConflictFault 	: BOOL;
+    bHeatStakeManualHeadDownTimeoutFault 		: BOOL;
+    bHeatStakeManualHeadUpTimeoutFault 			: BOOL;
 
     bHeatStakeManualEnableAllowed   : BOOL;
     bHeatStakeManualStakeAllowed    : BOOL;
@@ -146,6 +155,7 @@ VAR
     bHeatStakeManualHeadUpAllowed   : BOOL;
     bHeatStakeManualSupportAllowed  : BOOL;
     bHeatStakeManualActionBusy      : BOOL;
+	
 	// Vision Manual Mode
 	bVisionSupportAllowed 			: BOOL;
 	tpVisionManualHorizontalBack  	: TP;
@@ -170,11 +180,11 @@ VAR
 	bVisionManualRotate180Active 			: BOOL;
 
     // Manual Heat Stake tooling-position tracking uses physical sensors.
-    bHeatStakeManualHomePosition     : BOOL;
-    bHeatStakeManualOutOfHome        : BOOL;
+    bHeatStakeManualHomePosition     		: BOOL;
+    bHeatStakeManualOutOfHome        		: BOOL;
 
-    bStation3SupportExtendRequest  : BOOL;
-    bStation3SupportRetractRequest : BOOL;
+    bStation3SupportExtendRequest  			: BOOL;
+    bStation3SupportRetractRequest 			: BOOL;
     bVisionHorizontalBackRequest  : BOOL;
     bVisionHorizontalFrontRequest : BOOL;
     bVisionVerticalUpRequest      : BOOL;
@@ -249,6 +259,9 @@ VAR
 	btest								: ARRAY [1..10] OF BOOL;
 	ntest								: UDINT;
 	
+	sHeaterMinimum 						: STRING(32);
+	sHeaterCurrent 						: STRING(32);
+	
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -287,6 +300,33 @@ END_VAR]]></Declaration>
 IF NOT stInputs.bMainDoorClosed THEN
     bAirSupplyLatched := FALSE;
 END_IF
+
+
+	
+	// =====================================================
+	// HEATER DWELL TIMEOUT SUPERVISION
+	// =====================================================
+	// Timer runs only while the machine is in Dwell.
+	// Leaving Dwell automatically resets the timer.
+	
+	tonHeaterDwell(
+		IN := (eMachineState = E_MachineState.Dwell),
+		PT := stConfig.tHeaterDwellTimeout
+	);
+	
+	// Latch the timeout fault until machine Reset.
+	IF tonHeaterDwell.Q THEN
+		bHeaterDwellTimeoutFault := TRUE;
+	END_IF
+	
+	// Clear the latched Heater Dwell timeout fault
+	// when the operator requests Reset from Fault.
+	
+	IF stCommand.bReset
+		AND (eMachineState = E_MachineState.Fault)
+	THEN
+		bHeaterDwellTimeoutFault := FALSE;
+	END_IF
 
 // One-scan internal request. A PLC machine fault sets this TRUE below;
 // TP converts it into a deterministic TwinSAFE Run/Stop drop pulse.
@@ -366,7 +406,8 @@ bAirAndDoorEnable :=
     (eMachineState = E_MachineState.Initialising)
     OR (eMachineState = E_MachineState.ReadyToStart)
     OR (eMachineState = E_MachineState.AutoCycle)
-    OR (eMachineState = E_MachineState.Manual);
+    OR (eMachineState = E_MachineState.Manual)
+	OR (eMachineState = E_MachineState.Dwell);
 
 // 500 ms operator indication blink, matching the validated Silicone core.
 tonLedBlink(IN := NOT tonLedBlink.Q, PT := T#500MS);
@@ -379,6 +420,7 @@ END_IF
 fbHeatStakeTemperature.Cyclic(
     bEnable :=
         (eMachineState = E_MachineState.ReadyToStart)
+		OR (eMachineState = E_MachineState.Dwell)
         OR (eMachineState = E_MachineState.AutoCycle)
         OR (
             (eMachineState = E_MachineState.Manual)
@@ -397,6 +439,36 @@ fbHeatStakeTemperature.Cyclic(
     uiPwm2Raw => stOutputsInternal.uiHeatStakePwm2Raw,
     stStatus => stHeatStakeTemperatureStatus
 );
+
+
+	// =====================================================
+	// HEATER LOW TEMPERATURE - DWELL REQUEST
+	// =====================================================
+	// Latch the request when temperature drops during AutoCycle.
+	// The current station processes must finish before entering Dwell.
+	
+	IF (eMachineState = E_MachineState.AutoCycle)
+		AND NOT stHeatStakeTemperatureStatus.bIndexTemperatureReady
+		AND NOT stHeatStakeTemperatureStatus.bFault
+	THEN
+		bHeaterDwellRequestLatched := TRUE;
+	END_IF
+	
+	// =====================================================
+	// HEATER DWELL - REQUEST RESET
+	// =====================================================
+	// Preserve the request while AutoCycle is completing
+	// the current production cycle.
+	//
+	// Clear it if the machine leaves the automatic
+	// production sequence through Stop or Fault.
+	
+	IF (eMachineState = E_MachineState.Stopping)
+		OR (eMachineState = E_MachineState.Stopped)
+		OR (eMachineState = E_MachineState.Fault)
+	THEN
+		bHeaterDwellRequestLatched := FALSE;
+	END_IF
 
 //Camera
 //---------------------------------------------------------------------------------------------------
@@ -621,6 +693,7 @@ fbHeatStake.Update(
     bContactDwellActive => bHeatStakeContactDwellActive,
     usiSequenceStep => usiHeatStakeSequenceStep,
     bHeadDownTimeoutFault => bHeatStakeStationHeadDownTimeoutFault,
+	bHeadDownStarted => bHeatStakeHeadDownStarted,
     bHeadUpTimeoutFault => bHeatStakeStationHeadUpTimeoutFault,
     bHeadSensorConflictFault => bHeatStakeStationHeadSensorConflictFault
 );
@@ -1066,6 +1139,7 @@ fbHeatStakePressureRegulator.Cyclic(
     bEnable :=
         (eMachineState = E_MachineState.Initialising)
         OR (eMachineState = E_MachineState.ReadyToStart)
+		OR (eMachineState = E_MachineState.Dwell)
         OR (eMachineState = E_MachineState.AutoCycle)
         OR (
             (eMachineState = E_MachineState.Manual)
@@ -2242,7 +2316,16 @@ stPermissives.bIndexMoveAllowed :=
     stPermissives.bSafetyIndexPermissive
     AND stPermissives.bStationsIndexPermissive;
 	
-fbCommissioningGuard.Cyclic(bDispenseCommissioned := bPatchDispenseCommissioned, bHeatStakeCommissioned := bHeatStakeCommissioned, bVisionCommissioned := bVisionCommissioned, bCoreCommissioningMode := bCoreCommissioningMode, bCoreReady := ((eMachineState = E_MachineState.ReadyToStart) OR (eMachineState = E_MachineState.AutoCycle)), bAutoCycleAllowed => bAutoCycleAllowed, sBlockReason => sAutoCycleBlockReason);
+fbCommissioningGuard.Cyclic(bDispenseCommissioned := bPatchDispenseCommissioned, 
+bHeatStakeCommissioned := bHeatStakeCommissioned, 
+bVisionCommissioned := bVisionCommissioned,
+bCoreCommissioningMode := bCoreCommissioningMode, 
+bCoreReady := ((eMachineState = E_MachineState.ReadyToStart) 
+				OR (eMachineState = E_MachineState.Dwell)
+				OR (eMachineState = E_MachineState.AutoCycle)), 
+bAutoCycleAllowed => bAutoCycleAllowed, 
+sBlockReason => sAutoCycleBlockReason);
+
 stPermissives.bAutoCycleAllowed := bAutoCycleAllowed;
 
 fbProcessCycle.Cyclic(
@@ -2258,6 +2341,7 @@ fbProcessCycle.Cyclic(
     bIndexLocked := stInputs.bIndexLocked,
     bIndexBusy := stIndexStatus.bBusy,
     bIndexFaulted := fbIndex.IsFaulted(),
+	bHeaterDwellPending := bHeaterDwellRequestLatched,
     bStationsIndexPermissive := stPermissives.bStationsIndexPermissive,
     bOperatorIndexPermissive := stPermissives.bOperatorIndexPermissive,
     bTemperatureIndexPermissive := stHeatStakeTemperatureStatus.bIndexTemperatureReady,
@@ -2357,6 +2441,7 @@ IF bOutHMI AND (
     OR (eMachineState = E_MachineState.ReadyToStart)
     OR (eMachineState = E_MachineState.AutoCycle)
     OR (eMachineState = E_MachineState.Manual)
+	OR (eMachineState = E_MachineState.Dwell)
 ) THEN
     bSafetyDropRequest := TRUE;
 END_IF
@@ -2373,6 +2458,7 @@ IF bLogoutHMI AND (
     OR (eMachineState = E_MachineState.ReadyToStart)
     OR (eMachineState = E_MachineState.AutoCycle)
     OR (eMachineState = E_MachineState.Manual)
+	OR (eMachineState = E_MachineState.Dwell)
 ) THEN
     GVL_HMI.bLogoutFaultActive := TRUE;
     bSafetyDropRequest := TRUE;
@@ -2541,12 +2627,64 @@ E_MachineState.ReadyToStart:
     THEN
         eMachineState := E_MachineState.Manual;
     ELSIF stCommand.bStart AND bAutoCycleAllowed AND fbMainDoorLock.IsReadyForAutomatic() THEN
+		  IF stHeatStakeTemperatureStatus.bIndexTemperatureReady THEN
+				// Heater is ready: start automatic operation.
+				eMachineState := E_MachineState.AutoCycle;
+			ELSE
+				// Heater is below the operating temperature:
+				// wait in Dwell before starting automatic operation.
+				eMachineState := E_MachineState.Dwell;
+			END_IF
+	END_IF
+	
+	
+E_MachineState.Dwell:
+
+    // Keep pneumatic supply enabled while waiting for heater temperature.
+    stOutputsInternal.bAirSupplyEnable :=
+        bAirSupplyLatched AND stInputs.bMainDoorClosed;
+
+    // Stop has priority over temperature recovery.
+    IF bRejectChuteStopRequestLatched
+        OR stCommand.bStop
+        OR stInputs.bEventCycleStopRequest
+    THEN
+        eMachineState := E_MachineState.Stopping;
+
+    ELSIF stHeatStakeTemperatureStatus.bIndexTemperatureReady
+        AND bAutoCycleAllowed
+        AND fbMainDoorLock.IsReadyForAutomatic()
+        AND stInputs.stSafety.bSafetyOk
+    THEN
+        // Automatically resume AutoCycle when the heater is ready.
         eMachineState := E_MachineState.AutoCycle;
     END_IF
+	
 
 E_MachineState.AutoCycle:
     stOutputsInternal.bAirSupplyEnable :=
         bAirSupplyLatched AND stInputs.bMainDoorClosed;
+		
+		// =====================================================
+		// HEATER DWELL - CONTROLLED TRANSITION
+		// =====================================================
+		// Wait until the current production cycle has finished,
+		// all stations are idle and the index is stationary.
+		
+		IF bHeaterDwellRequestLatched
+			AND NOT bAutoCycleStopRequestLatched
+			AND (eProcessCycleState = E_CycleState.WaitingForProcessCycleTrigger)
+			AND NOT bAnyStationInProcess
+			AND NOT stIndexStatus.bBusy
+			AND stInputs.bIndexReady
+			AND stInputs.bIndexLocked
+			AND stPermissives.bStationsIndexPermissive
+			AND NOT bProcessStartStations
+			AND NOT bProcessRequestIndex
+		THEN
+			bHeaterDwellRequestLatched := FALSE;
+			eMachineState := E_MachineState.Dwell;
+		END_IF
 
     // Stop Request is controlled, but ONLY an active process at one of the
     // three process stations is allowed to delay leaving AutoCycle.
@@ -2655,35 +2793,81 @@ END_IF
 
 fbIndex.Cyclic(bEnable := (eMachineState <> E_MachineState.PowerUp) AND (eMachineState <> E_MachineState.Fault), bReset := stCommand.bReset, bAutomaticMode := (eMachineState = E_MachineState.AutoCycle), bManualMode := (eMachineState = E_MachineState.Manual), bMovePermissive := stPermissives.bIndexMoveAllowed, bSafetyMotionPermitted := stInputs.stSafety.bMotionSafetyPermitted, bTwoHandsSafe := stInputs.bTwoHandsSafe, bStationsHome := stPermissives.bStationsHome, bProcessToolingRetracted := stPermissives.bStationsIndexPermissive, bTableReady := stInputs.bIndexReady, bTableLocked := stInputs.bIndexLocked, bCompletedSensor := stInputs.bIndexCompletedSensor, bSupportExtended := TRUE, bSupportRetracted := TRUE, eCurrentPosition := stInputs.eIndexPosition, tRotateDelay := stConfig.tIndexRotateDelay, tStopDelay := stConfig.tIndexStopDelay, tSupportTimeout := stConfig.tIndexSupportTimeout, tMovementTimeout := stConfig.tIndexTimeout, tTwoHandHold := stConfig.tTwoHandHold, tTwoHandRecoveryTimeout := stConfig.tTwoHandRecoveryTimeout, bRotatePortA => stOutputsInternal.bIndexRotatePortA, bStopPortB => stOutputsInternal.bIndexStopPortB, bSupportExtendRequest => stOutputsInternal.bIndexSupportExtend, bSupportRetractRequest => stOutputsInternal.bIndexSupportRetract);
 stIndexStatus := fbIndex.GetStatus();
-fbMainDoorLock.Cyclic(
-    bEnableAutomatic := bAirAndDoorEnable,
-    bManualEnable := FALSE,
-    bManualLockRequest := FALSE,
-    bManualUnlockRequest := FALSE,
 
-    bStopRequest :=
-        (eMachineState = E_MachineState.Fault)
-        OR (eMachineState = E_MachineState.Stopping)
-        OR (eMachineState = E_MachineState.Stopped),
 
-    bResetRequest := stCommand.bReset,
 
-    bDoorClosed := stInputs.bMainDoorClosed,
-    bDoorLocked := stInputs.bMainDoorLocked,
-    bIndexBusy := stIndexStatus.bBusy,
-    bProcessSafePosition := TRUE,
-    tLockTimeout := stConfig.tDoorLockTimeout,
-    tUnlockTimeout := stConfig.tDoorUnlockTimeout,
-    bDoorUnsafe := stInputs.bMainDoorUnsafe,
-    bLockOutput => bDoorLockOutput
-);
+///////////////////////////////////////////////////////////////////
 
-stMainDoorStatus := fbMainDoorLock.GetStatus();
 
-// Exact Silicone Station strategy:
-// the standard PLC requests the door lock directly from the machine state.
-// TwinSAFE validates the conditions and controls the physical AZM300 lock.
-stOutputsInternal.bMainDoorLockRequest := bAirAndDoorEnable;
+ // =====================================================
+ // MAIN DOOR - HOT TEMPERATURE PROTECTION
+ // =====================================================
+
+ // Reset acknowledgement when leaving Stopped.
+ IF eMachineState <> E_MachineState.Stopped THEN
+     bMainDoorUnlockAcknowledged := FALSE;
+
+ // Accept acknowledgement only in Stopped.
+ ELSIF GVL_HMI.stCommands.bManualMainDoorUnlock THEN
+     bMainDoorUnlockAcknowledged := TRUE;
+ END_IF;
+
+ // Consume HMI command.
+ GVL_HMI.stCommands.bManualMainDoorUnlock := FALSE;
+
+ // Keep door locked in Stopped while heaters are hot,
+ // until operator acknowledges.
+ bMainDoorHotLockRequired :=
+     (eMachineState = E_MachineState.Stopped)
+     AND NOT bMainDoorUnlockAcknowledged
+     AND (
+         (stHeatStakeTemperatureStatus.rHeater1TemperatureC >
+             GVL_Config.rMainDoorHotTemperatureLimitC)
+         OR
+         (stHeatStakeTemperatureStatus.rHeater2TemperatureC >
+             GVL_Config.rMainDoorHotTemperatureLimitC)
+     );
+
+ // =====================================================
+ // MAIN DOOR SUPERVISION
+ // =====================================================
+
+ fbMainDoorLock.Cyclic(
+     bEnableAutomatic := bAirAndDoorEnable,
+     bManualEnable := FALSE,
+     bManualLockRequest := FALSE,
+     bManualUnlockRequest := FALSE,
+
+     bStopRequest :=
+         (eMachineState = E_MachineState.Fault)
+         OR (eMachineState = E_MachineState.Stopping)
+         OR (
+             (eMachineState = E_MachineState.Stopped)
+             AND NOT bMainDoorHotLockRequired
+         ),
+
+     bResetRequest := stCommand.bReset,
+     bDoorClosed := stInputs.bMainDoorClosed,
+     bDoorLocked := stInputs.bMainDoorLocked,
+     bIndexBusy := stIndexStatus.bBusy,
+     bProcessSafePosition := TRUE,
+     tLockTimeout := stConfig.tDoorLockTimeout,
+     tUnlockTimeout := stConfig.tDoorUnlockTimeout,
+     bDoorUnsafe := stInputs.bMainDoorUnsafe,
+     bLockOutput => bDoorLockOutput
+ );
+
+ stMainDoorStatus := fbMainDoorLock.GetStatus();
+
+ // =====================================================
+ // PHYSICAL DOOR LOCK REQUEST
+ // =====================================================
+
+ stOutputsInternal.bMainDoorLockRequest :=
+     bAirAndDoorEnable
+     OR bMainDoorHotLockRequired;
+
+	///////////////////////////////
 
 // Re-check after component cyclic execution so a fault detected in this scan
 // drops TwinSAFE immediately rather than waiting for the following PLC scan.
@@ -2702,6 +2886,7 @@ IF (
     OR stHeatStakeTemperatureStatus.bFault
     OR bInitialisationTimeoutFault
     OR bStoppingTimeoutFault
+	OR bHeaterDwellTimeoutFault
 THEN
     bSafetyDropRequest := TRUE;
     eMachineState := E_MachineState.Fault;
@@ -2776,37 +2961,60 @@ THEN
 	
 	END_IF
 
-    // =====================================================
-    // HEAT STAKE INTERRUPTED
-    // =====================================================
-    // Patch result is preserved.
-    // Heat Stake becomes Fail and Vision becomes NotTested.
-
-    IF stHeatStakeNest.bPartPresent
-        AND (
-            bHeatStakeProcessingBeforeUpdate
-            OR (bProcessStartStations AND bHeatStakeRequired)
-        )
-    THEN
-
-        stProcessFaultResult.sDetail :=
-            'Heat Stake aborted by machine fault during process';
-
-        fbNestManager.StoreHeatStakeResultAtPosition(
-            ePosition := stConfig.eHeatStakePosition,
-            stResult := stProcessFaultResult
-        );
-
-        fbNestManager.MarkVisionNotTestedAtPosition(
-            stConfig.eHeatStakePosition
-        );
-
-        fbNestManager.FinaliseResultAtPosition(
-            stConfig.eHeatStakePosition
-        );
-
-    END_IF
-
+   	// =====================================================
+	// HEAT STAKE INTERRUPTED
+	// =====================================================
+	// Before head-down: Reprocess.
+	// After head-down: Reject.
+	// Preserve the completed Patch Dispense result.
+	
+	IF stHeatStakeNest.bPartPresent
+		AND bHeatStakeRequired
+	THEN
+	
+		stProcessFaultResult.bValid := TRUE;
+		stProcessFaultResult.bPassed := FALSE;
+		stProcessFaultResult.eCode := E_ProcessResultCode.Aborted;
+		stProcessFaultResult.udiFaultCode := 0;
+		stProcessFaultResult.udiAlertCode := 0;
+	
+		IF bHeatStakeHeadDownStarted THEN
+	
+			// Physical process started: Reject.
+			stProcessFaultResult.sDetail :=
+				'Heat Stake interrupted after head-down - Reject';
+	
+			fbNestManager.StoreHeatStakeResultAtPosition(
+				ePosition := stConfig.eHeatStakePosition,
+				stResult := stProcessFaultResult
+			);
+	
+			fbNestManager.MarkVisionNotTestedAtPosition(
+				stConfig.eHeatStakePosition
+			);
+	
+			fbNestManager.FinaliseResultAtPosition(
+				stConfig.eHeatStakePosition
+			);
+	
+		ELSE
+	
+			// Physical process not started: Reprocess.
+			stProcessFaultResult.sDetail :=
+				'Heat Stake interrupted before head-down - Reprocess';
+	
+			fbNestManager.StoreHeatStakeResultAtPosition(
+				ePosition := stConfig.eHeatStakePosition,
+				stResult := stProcessFaultResult
+			);
+	
+			fbNestManager.MarkReprocessAtPosition(
+				ePosition := stConfig.eHeatStakePosition
+			);
+	
+		END_IF
+	
+	END_IF
 
     // =====================================================
     // VISION INTERRUPTED
@@ -2982,6 +3190,9 @@ stStatus.aNest := aNestSnapshot;
 stStatus.aNestStatistics := fbNestManager.GetAllNestStatistics();
 stStatus.sAutoCycleBlockReason := sAutoCycleBlockReason;
 stStatus.sOperatorMessage := stOperatorStatus.sMessage;
+stStatus.bHeaterDwellTimeoutFault := bHeaterDwellTimeoutFault;
+
+
 // =====================================================
 // VISION MANUAL MODE - HMI STATUS
 // =====================================================
@@ -3055,6 +3266,20 @@ CASE eMachineState OF
         ELSE
             stStatus.sMachineMessage := sAutoCycleBlockReason;
         END_IF
+    E_MachineState.Dwell:
+
+		
+// Convert live temperature values to text.
+sHeaterMinimum := LREAL_TO_STRING(
+    GVL_MASTER.stStatus.stHeatStakeTemperature.rLowLimitC
+);
+
+sHeaterCurrent := LREAL_TO_STRING(
+    GVL_MASTER.stStatus.stHeatStakeTemperature.rOverTempTemperatureC
+);
+
+        stStatus.sMachineMessage := 
+			CONCAT(CONCAT(CONCAT(CONCAT(' Heater Temp below Limit: ',sHeaterMinimum),' °C | Current Temp: '),sHeaterCurrent),' °C ') ;
 
     E_MachineState.AutoCycle:
         // Operator message priority:

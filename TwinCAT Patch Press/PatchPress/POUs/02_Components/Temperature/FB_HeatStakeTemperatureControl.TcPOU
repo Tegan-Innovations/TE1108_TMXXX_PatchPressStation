@@ -389,7 +389,6 @@ stStatus.bFault :=
     bHighTemperatureInternal
     OR bDiscrepancyInternal
     OR bOverTemperatureInternal
-    OR tonLowTemperatureFault.Q
     OR fbPid1.bError
     OR fbPid2.bError;
 
