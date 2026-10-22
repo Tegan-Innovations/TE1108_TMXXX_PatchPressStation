@@ -111,8 +111,12 @@ VAR
 
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-bTriggerRequestInternal					:= tonTakingPictureWHileRotating.Q OR usiStepInternal = 10 OR usiStepInternal = 110;
+        <ST><![CDATA[// Modified by Thays - TEMPORARY: disable Keyence triggers during mechanical commissioning.
+// bTriggerRequestInternal					:= tonTakingPictureWHileRotating.Q OR usiStepInternal = 10 OR usiStepInternal = 110;
+bTriggerRequestInternal := FALSE;
+bGetResultsRequestInternal := FALSE;
+bAcknowledgeResultsInternal := FALSE;
+bChangeProgramRequestInternal := FALSE;
 tonCameraTriggerDelay[1](PT := T#500MS);
 tonCameraTriggerDelay[2](PT := T#500MS);
 tonTakingPictureWHileRotating(PT := tTakingPictureWHileRotating);
@@ -294,6 +298,8 @@ ELSE
 			//   Nest DOWN, vertical UP, rotation 0 deg, grip OPEN,
 			//   vertical limit OFF, horizontal slide BACK.
 
+            // Modified by Thays - TEMPORARY: camera program 0 selection disabled for mechanical commissioning.
+            (*
 			//Leaving camera with the right program to performance first test--------------------------
 			
 			IF nCurrentProgramNumberInternal<> 0 THEN
@@ -308,6 +314,7 @@ ELSE
 			END_IF
 			
 
+            *)
 			//-------------------------------------------------------------------------------------------
             IF usiStepInternal = 0 THEN
 
@@ -421,7 +428,9 @@ ELSE
                     bGripOpenRequestInternal := NOT bGripOpenedInternal;
                     bRotate0RequestInternal := NOT bRotate0Internal;
 
-                    bStepTargetReached := bHomeInternal AND (nCurrentProgramNumberInternal = 0);
+                    // Modified by Thays - TEMPORARY: verify mechanical HOME without requiring Keyence program 0.
+                    // bStepTargetReached := bHomeInternal AND (nCurrentProgramNumberInternal = 0);
+                    bStepTargetReached := bHomeInternal;
 
                     sDiagnosticInternal := 'Vision homing: verifying HOME';
 					
@@ -534,6 +543,8 @@ ELSE
                 // STEP 10 - CAMERA PLACEHOLDER - FIRST INSPECTION 
                 // ------------------------------------------------------------
 				10:
+                    // Modified by Thays - TEMPORARY: Keyence inspection 1 disabled; commissioning only.
+                    (*
 					
 					
 					IF bCameraResultsReadyInternal THEN
@@ -566,7 +577,9 @@ ELSE
 							
 					END_IF
 						
-					sDiagnosticInternal := 'Vision: Camera first inspection ';
+					                    *)
+                    bStepTargetReached := TRUE; // Modified by Thays - no camera inspection result.
+                    sDiagnosticInternal := 'Vision: Camera first inspection ';
 					
 
                 // ------------------------------------------------------------
@@ -792,7 +805,8 @@ ELSE
 
                 100: // FIX: was 80; support retract now uses Step 80.
 
-					tonTakingPictureWHileRotating.IN := TRUE;
+					// Modified by Thays - TEMPORARY: disable camera trigger during rotation.
+                    // tonTakingPictureWHileRotating.IN := TRUE;
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
@@ -803,6 +817,8 @@ ELSE
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate180RequestInternal := NOT bRotate180Internal;
 
+                    // Modified by Thays - TEMPORARY: skip Keyence program 1/result/program 2 handshake.
+                    (*
 					//Camera
 					IF nCurrentProgramNumberInternal = 1 THEN
 					
@@ -844,7 +860,11 @@ ELSE
 					
 					bStepTargetReached := tonDelayInspectionPlaceHolder.Q;
 					
-					sDiagnosticInternal := 'Vision: rotate 180, Camera second Inspection - holding 1 s';
+					                    *)
+                    // Modified by Thays - retain physical 180-degree confirmation and existing hold timer.
+                    tonDelayInspectionPlaceHolder.IN := bRotate180Internal AND NOT bRotate0Internal;
+                    bStepTargetReached := bRotate180Internal AND NOT bRotate0Internal AND tonDelayInspectionPlaceHolder.Q;
+                    sDiagnosticInternal := 'Vision: rotate 180, Camera second Inspection - holding 1 s';
 				
                 // FIX CAMERA PREPARATION - STEP 95: SECOND INSPECTION (PROGRAM 1)
                 // TODO: select program 1, trigger and await fresh result;
@@ -860,6 +880,8 @@ ELSE
 					tonDelayInspectionPlaceHolder.IN		:= FALSE;
 					tonTakingPictureWHileRotating.IN := FALSE;
 				
+                    // Modified by Thays - TEMPORARY: skip Keyence program 2/result/program 0 handshake.
+                    (*
 					IF nCurrentProgramNumberInternal = 2 THEN
 					
 					IF bCameraResultsReadyInternal THEN
@@ -893,6 +915,9 @@ ELSE
 							
 					END_IF
 				
+                    *)
+                    bStepTargetReached := TRUE; // Modified by Thays - no camera inspection result.
+
                 // ------------------------------------------------------------
                 // STEP 120 - ROTATE BACK TO 0
                 // FIX: keep support DOWN until rotation is confirmed at 0 deg.
@@ -1064,8 +1089,9 @@ ELSE
                 // ------------------------------------------------------------                
 				180:
                    
-				   	nSetProgramNumberInternal			:= 0;
-					bChangeProgramRequestInternal		:= TRUE;
+                    // Modified by Thays - TEMPORARY: no Keyence program change at step 180.
+                    // nSetProgramNumberInternal := 0;
+                    // bChangeProgramRequestInternal := TRUE;
                     bStepTargetReached := TRUE;
                        
 				190:
