@@ -39,6 +39,8 @@ VAR
     bHeatStakeRequired : BOOL;
     bVisionRequired : BOOL;
 	
+	bPatchHomeVerticalUpRequest : BOOL := FALSE;
+	
 	// Patch Dispensing Manual Mode
 	bPatchManualEnableAllowed : BOOL;
 	bPatchManualSupportAllowed : BOOL;
@@ -285,6 +287,9 @@ VAR
 	
 	bPatchVerticalUpAllowed   : BOOL;
 	bPatchVerticalDownAllowed : BOOL;
+	
+	tonPatchHomeUpOutputVerify : TON;
+	bPatchHomeUpOutputVerified : BOOL := FALSE;
 	
 END_VAR]]></Declaration>
     <Implementation>
@@ -764,9 +769,11 @@ fbPatchDispense.Update(
         bStation1SupportExtendRequest,
 
     bSupportRetractRequest =>
-        bStation1SupportRetractRequest
-);
+        bStation1SupportRetractRequest,
 
+    bVerticalUpRequest =>
+        bPatchHomeVerticalUpRequest
+);
 // =====================================================
 // PATCH DISPENSING - MANUAL VERTICAL
 // =====================================================
@@ -2463,7 +2470,26 @@ END_IF;
 // =====================================================
 // Both directions can never be energised together.
 
-IF bPatchManualAllowed THEN
+// =====================================================
+// PATCH DISPENSING - VERTICAL OUTPUTS
+// HOME during Initialising / Manual Mode
+// =====================================================
+
+// HOME has exclusive ownership during Initialising.
+// Manual commands are accepted only in Manual Mode.
+
+IF (eMachineState = E_MachineState.Initialising)
+    AND stInputs.stSafety.bSafetyOk
+    AND GVL_Safety.bAirSupplySafe
+    AND bPatchDispenseCommissioned
+THEN
+
+    stOutputsInternal.bPatchVerticalUp :=
+        bPatchHomeVerticalUpRequest;
+
+    stOutputsInternal.bPatchVerticalDown := FALSE;
+
+ELSIF bPatchManualAllowed THEN
 
     stOutputsInternal.bPatchVerticalUp :=
         tpPatchManualVerticalUp.Q
@@ -2782,21 +2808,16 @@ E_MachineState.Stopped:
     END_IF
 
 E_MachineState.Initialising:
-    // System Initialising is the ONLY machine state allowed to establish a
-    // new pneumatic-supply latch.
+    // Only Initialising may establish the pneumatic-supply latch.
     IF stInputs.bMainDoorClosed THEN
         bAirSupplyLatched := TRUE;
     END_IF
 
-    stOutputsInternal.bAirSupplyEnable :=
-        bAirSupplyLatched AND stInputs.bMainDoorClosed;
-
+    stOutputsInternal.bAirSupplyEnable := bAirSupplyLatched AND stInputs.bMainDoorClosed;
     tonStopping(IN := FALSE);
 
-    // Initialising is complete only when the common machine permissives are
-    // valid AND every commissioned station that owns pneumatic home tooling has
-    // actually confirmed its home position. In particular, Vision must finish
-    // its deterministic homing sequence before ReadyToStart is entered.
+    // All commissioned stations must complete their HOME sequences.
+    // Patch HOME: support DOWN feedback followed by vertical UP pulse.
     tonInitialising(
         IN := NOT (
             stPermissives.bInitialisationAllowed
@@ -2807,11 +2828,13 @@ E_MachineState.Initialising:
             AND NOT bHeatStakeManualHeadDownTimeoutFault
             AND NOT bHeatStakeStationHeadSensorConflictFault
             AND ((NOT bVisionCommissioned) OR fbVision.IsReady())
+            AND ((NOT bPatchDispenseCommissioned) OR fbPatchDispense.IsHome())
         ),
         PT := stConfig.tInitialiseTimeout
     );
 
     bInitialisationTimeoutFault := tonInitialising.Q;
+
     IF bInitialisationTimeoutFault THEN
         bSafetyDropRequest := TRUE;
         eMachineState := E_MachineState.Fault;
@@ -2823,6 +2846,7 @@ E_MachineState.Initialising:
         AND NOT bHeatStakeManualHeadDownTimeoutFault
         AND NOT bHeatStakeStationHeadSensorConflictFault
         AND ((NOT bVisionCommissioned) OR fbVision.IsReady())
+        AND ((NOT bPatchDispenseCommissioned) OR fbPatchDispense.IsHome())
     THEN
         tonInitialising(IN := FALSE);
         eMachineState := E_MachineState.ReadyToStart;

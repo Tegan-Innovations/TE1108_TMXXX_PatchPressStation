@@ -9,6 +9,7 @@ VAR
 	bHomePulseCompletedInternal 		: BOOL := FALSE;
 	tpHomeSupportRetract        		: TP;
 	bHomePulseResetPendingInternal 		: BOOL := FALSE;
+	bVerticalUpRequestInternal : BOOL := FALSE;
     // Simulation result selector for commissioning / software test.
     // FALSE = simulated process PASS (default)
     // TRUE  = simulated process FAIL
@@ -48,6 +49,14 @@ VAR
     tonProcessSimulation 				: TON;
     tProcessSimulation   				: TIME := T#3S;
     stResultInternal 					: ST_ProcessResult;
+	
+		// HOME sequence control
+	usiHomeStepInternal : USINT := 0;
+	bHomeExecutionAllowedInternal : BOOL := FALSE;
+	
+	// HOME timers
+	tonHomeSupportRetract : TON;
+	tonHomeVerticalUp : TON;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -57,88 +66,37 @@ END_VAR]]></Declaration>
 VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
-// Temporary commissioning sequence:
+        <ST><![CDATA[// Temporary commissioning sequence:
 // Ready/retracted -> extend -> 3 s simulated process -> retract -> Complete.
 
 bSupportExtendRequestInternal := FALSE;
 bSupportRetractRequestInternal := FALSE;
 bFaultInternal := FALSE;
-
+bVerticalUpRequestInternal := FALSE;
 
 
 // ---------------------------------------------------------
-// Station HOME - mandatory support retract pulse
+// PATCH DISPENSING HOME - permission and timer reset
 // ---------------------------------------------------------
-// The support uses a bistable pneumatic valve.
-// Every HOME request requires a 300 ms retract pulse,
-// even if the retracted sensor is already TRUE.
-//
-// The TP must receive IN := FALSE before a new pulse.
-// If Safety or homing permission is lost, the current
-// attempt is invalidated and restarted when permitted.
-//
-// FUTURE IMPLEMENTATION:
-// Add the remaining actuators and their HOME feedbacks.
-// Do not confirm complete station HOME until all required
-// feedbacks have been validated.
+// HOME runs only during Initialising with Safety and air available.
+// TON timers reset immediately if the sequence is interrupted.
+// Step 0: idle; 10: retract pulse; 20: sensor confirmation;
+// 30: vertical UP pulse; 40: complete.
 
-IF bHomeRequestInternal THEN
+bHomeExecutionAllowedInternal := bHomeRequestInternal AND bSafetyOkInternal
+    AND bHomingAllowedInternal AND bEnableInternal AND bCommissionedInternal
+    AND NOT bManualModeInternal AND NOT bStopRequestInternal
+    AND (eStateInternal <> E_PatchStationState.Fault) AND NOT bSimulatedFault;
 
-    IF NOT bSafetyOkInternal
-        OR NOT bHomingAllowedInternal
-        OR NOT bEnableInternal
-        OR NOT bCommissionedInternal
-        OR bManualModeInternal
-        OR bStopRequestInternal
-    THEN
-        // Invalidate interrupted HOME attempt.
-        bHomePulseStartedInternal := FALSE;
-        bHomePulseCompletedInternal := FALSE;
-        bHomeConfirmedInternal := FALSE;
-        bHomePulseResetPendingInternal := TRUE;
-
-    ELSIF bHomePulseResetPendingInternal THEN
-        // Hold TP input FALSE for this PLC cycle.
-        bHomePulseStartedInternal := FALSE;
-        bHomePulseResetPendingInternal := FALSE;
-
-    ELSIF NOT bHomePulseStartedInternal
-        AND NOT bHomePulseCompletedInternal
-    THEN
-        // Start a new mandatory retract pulse.
-        bHomePulseStartedInternal := TRUE;
-    END_IF
-
+IF bHomeRequestInternal AND NOT bHomeExecutionAllowedInternal THEN
+    usiHomeStepInternal := 0;
+    bHomeConfirmedInternal := FALSE;
 END_IF
 
-tpHomeSupportRetract(
-    IN := bHomeRequestInternal
-        AND bHomePulseStartedInternal
-        AND NOT bHomePulseCompletedInternal
-        AND bSafetyOkInternal
-        AND bHomingAllowedInternal
-        AND bEnableInternal
-        AND bCommissionedInternal
-        AND NOT bManualModeInternal
-        AND NOT bStopRequestInternal,
-    PT := T#300MS
-);
-
-IF bHomeRequestInternal
-    AND bHomePulseStartedInternal
-    AND NOT tpHomeSupportRetract.Q
-    AND bSafetyOkInternal
-    AND bHomingAllowedInternal
-    AND bEnableInternal
-    AND bCommissionedInternal
-    AND NOT bManualModeInternal
-    AND NOT bStopRequestInternal
-THEN
-    bHomePulseCompletedInternal := TRUE;
-END_IF
-
-
+// Both timers are called on every PLC scan, including when disabled.
+tonHomeSupportRetract(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 10), PT := T#300MS);
+tonHomeVerticalUp(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 30)
+    AND bSupportRetractedInternal AND NOT bSupportExtendedInternal, PT := T#1S);
 
 // Explicit station-fault simulation for alarm/fault-flow testing.
 // This is intentionally different from bSimulatedFail:
@@ -464,91 +422,78 @@ END_IF
 
 
 // ---------------------------------------------------------
-// Station HOME - invalidate confirmation
+// PATCH DISPENSING HOME - output priority and sequence
 // ---------------------------------------------------------
-// HOME confirmation must be cleared whenever the support
-// leaves its confirmed HOME position.
-//
-// FUTURE IMPLEMENTATION:
-// Add the remaining station actuator feedbacks here.
-// A new HOME sequence is required after leaving HOME.
+// The support valve is bistable: always send a 300 ms retract pulse.
+// Confirm support DOWN using both sensors before moving vertical UP.
+// Vertical UP has no position sensor; its 1 s pulse is time-confirmed only.
+// HOME takes ownership of support commands during Initialising.
 
-IF NOT bSupportRetractedInternal
-    OR bSupportExtendedInternal
-    OR (eStateInternal = E_PatchStationState.Fault)
-    OR NOT bSafetyOkInternal
-THEN
+IF NOT bSupportRetractedInternal OR bSupportExtendedInternal
+    OR (eStateInternal = E_PatchStationState.Fault) OR NOT bSafetyOkInternal THEN
     bHomeConfirmedInternal := FALSE;
 END_IF
-// ---------------------------------------------------------
-// Station HOME - output priority and confirmation
-// ---------------------------------------------------------
-// HOME has priority over normal station commands.
-// Never energise both coils simultaneously.
-//
-// FUTURE IMPLEMENTATION:
-// Add the remaining station actuators and their feedbacks.
-// HOME confirmation must eventually validate all required
-// actuators, not only the nest support.
 
 IF bHomeRequestInternal THEN
-
     bSupportExtendRequestInternal := FALSE;
     bSupportRetractRequestInternal := FALSE;
 
-    IF bSafetyOkInternal
-        AND bHomingAllowedInternal
-        AND bEnableInternal
-        AND bCommissionedInternal
-        AND NOT bManualModeInternal
-        AND NOT bStopRequestInternal
-        AND (eStateInternal <> E_PatchStationState.Fault)
-		AND NOT bSimulatedFault
-    THEN
-        bSupportRetractRequestInternal := tpHomeSupportRetract.Q;
+    IF bHomeExecutionAllowedInternal THEN
+        CASE usiHomeStepInternal OF
+            0: // Start a new HOME attempt.
+                usiHomeStepInternal := 10;
+                sDiagnosticInternal := 'Patch HOME: support retract pulse';
 
-        IF bHomePulseCompletedInternal
-            AND bSupportRetractedInternal
-            AND NOT bSupportExtendedInternal
-        THEN
-            bHomeConfirmedInternal := TRUE;
-            bHomeRequestInternal := FALSE;
-        END_IF
+            10: // Bistable support DOWN valve: 300 ms pulse.
+                bSupportRetractRequestInternal := NOT tonHomeSupportRetract.Q;
+                IF tonHomeSupportRetract.Q THEN
+                    usiHomeStepInternal := 20;
+                END_IF
+
+            20: // Wait for valid support DOWN feedback.
+                sDiagnosticInternal := 'Patch HOME: waiting for support DOWN';
+                IF bSupportRetractedInternal AND NOT bSupportExtendedInternal THEN
+                    usiHomeStepInternal := 30;
+                END_IF
+
+            30: // Vertical UP: continuous 1 s command, without sensor feedback.
+                sDiagnosticInternal := 'Patch HOME: vertical UP';
+                bVerticalUpRequestInternal := NOT tonHomeVerticalUp.Q;
+                IF NOT bSupportRetractedInternal OR bSupportExtendedInternal THEN
+                    bVerticalUpRequestInternal := FALSE;
+                    usiHomeStepInternal := 0;
+                    bHomeConfirmedInternal := FALSE;
+                ELSIF tonHomeVerticalUp.Q THEN
+                    bVerticalUpRequestInternal := FALSE;
+                    usiHomeStepInternal := 40;
+                END_IF
+
+            40: // All available HOME checks completed.
+                bHomeConfirmedInternal := TRUE;
+                bHomeRequestInternal := FALSE;
+                usiHomeStepInternal := 0;
+                sDiagnosticInternal := 'Patch HOME: completed';
+
+            ELSE
+                usiHomeStepInternal := 0;
+        END_CASE
     END_IF
-
 END_IF
 
-
 // ---------------------------------------------------------
-// Final support output safety interlock
+// Final station output safety interlock
 // ---------------------------------------------------------
-// Never energise the support valve coils without Safety
-// and pneumatic permission.
-//
-// This protection applies to HOME, Manual and AutoCycle.
-// It does not replace the machine-level TwinSAFE interlocks.
-//
-// FUTURE IMPLEMENTATION:
-// Apply the same safety requirements to additional
-// station actuators when their outputs are integrated.
-
-IF NOT bSafetyOkInternal
-    OR (eStateInternal = E_PatchStationState.Fault)
-THEN
+// Applies to HOME, Manual and AutoCycle; TwinSAFE remains authoritative.
+IF NOT bSafetyOkInternal OR (eStateInternal = E_PatchStationState.Fault) THEN
     bSupportExtendRequestInternal := FALSE;
     bSupportRetractRequestInternal := FALSE;
+    bVerticalUpRequestInternal := FALSE;
 END_IF
-// ---------------------------------------------------------
-// Station HOME status
-// ---------------------------------------------------------
-// HOME is confirmed only after the mandatory retract pulse
-// has completed and the available support sensors are valid.
-//
-// FUTURE IMPLEMENTATION:
-// Include the vertical cylinder and any additional actuators.
-// Their HOME feedbacks must be validated before confirming
-// the complete station HOME.
 
+// ---------------------------------------------------------
+// Station HOME and process status
+// ---------------------------------------------------------
+// Vertical HOME is confirmed by the completed pulse, not a position sensor.
 bHomeInternal :=
     bHomeConfirmedInternal
     AND bSupportRetractedInternal
@@ -556,7 +501,8 @@ bHomeInternal :=
     AND (eStateInternal <> E_PatchStationState.Fault);
 bReadyInternal := (eStateInternal = E_PatchStationState.Ready) AND bSupportRetractedInternal;
 bBusyInternal := (eStateInternal = E_PatchStationState.Processing)
-    OR ((eStateInternal = E_PatchStationState.Homing) AND NOT bSupportRetractedInternal);
+    OR ((eStateInternal = E_PatchStationState.Homing) AND NOT bSupportRetractedInternal)
+    OR bHomeRequestInternal;
 bCompleteInternal := (eStateInternal = E_PatchStationState.Complete);
 bFaultInternal := (eStateInternal = E_PatchStationState.Fault);
 ]]></ST>
@@ -576,21 +522,31 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Request a new station HOME sequence.
-// Physical movements are executed cyclically in Cyclic().
+        <ST><![CDATA[// Request a new Patch Dispensing HOME sequence.
+// The sequence is executed in Cyclic() during Initialising.
 //
-// Every new HOME request requires a new retract pulse,
-// even if the support retracted sensor is already TRUE.
+// Step 10: Support DOWN - mandatory 300 ms valve pulse.
+// Step 20: Wait for support retracted feedback.
+// Step 30: Vertical UP - 1 second pulse.
+// Step 40: Confirm HOME completion.
 //
-// FUTURE IMPLEMENTATION:
-// Add the remaining station actuators and their HOME feedbacks.
+// A new request always restarts the complete HOME sequence,
+// even when the support is already retracted.
 
+bHomeRequestInternal := TRUE;
+bHomeConfirmedInternal := FALSE;
+bHomeInternal := FALSE;
+
+// Reset HOME sequence.
+usiHomeStepInternal := 0;
+bHomeExecutionAllowedInternal := FALSE;
+
+// Clear movement requests.
+bVerticalUpRequestInternal := FALSE;
+
+// Reset legacy HOME pulse flags.
 bHomePulseStartedInternal := FALSE;
 bHomePulseCompletedInternal := FALSE;
-
-// Force TP input FALSE for one PLC cycle before
-// starting a new mandatory 300 ms retract pulse.
-// This guarantees a new rising edge for every HOME request.
 bHomePulseResetPendingInternal := TRUE;]]></ST>
       </Implementation>
     </Method>
@@ -761,6 +717,7 @@ VAR_OUTPUT
     stStatus               : ST_PatchStageStatus;
     bSupportExtendRequest  : BOOL;
     bSupportRetractRequest : BOOL;
+	bVerticalUpRequest 		: BOOL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
@@ -793,6 +750,7 @@ stStatus.sDiagnostic := sDiagnosticInternal;
 
 bSupportExtendRequest := bSupportExtendRequestInternal;
 bSupportRetractRequest := bSupportRetractRequestInternal;
+bVerticalUpRequest := bVerticalUpRequestInternal;
 ]]></ST>
       </Implementation>
     </Method>

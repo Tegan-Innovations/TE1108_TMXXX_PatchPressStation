@@ -18,7 +18,7 @@ STRUCT
     tDoorLockTimeout         : TIME := T#10S;
     tDoorUnlockTimeout       : TIME := T#10S;
     tOperatorIdleTimeout     : TIME := T#30S;
-	tpPatchAirBlowTimer		 : TIME := T#500MS;
+	tpPatchAirBlowTimer		 : TIME := T#10S;
     eOperatorPosition        : E_TablePosition := E_TablePosition.Position1;
     ePatchDispensePosition   : E_TablePosition := E_TablePosition.Position2;
     eHeatStakePosition       : E_TablePosition := E_TablePosition.Position3;

@@ -1715,6 +1715,7 @@ VAR_OUTPUT
 	bRequestResetResults	: BOOL;
 	nProgramNumber			: UDINT;
 	bAcknowledgeResults		: BOOL;
+
 	
 	
 END_VAR]]></Declaration>
