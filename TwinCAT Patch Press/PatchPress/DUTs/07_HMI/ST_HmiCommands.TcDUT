@@ -21,6 +21,24 @@ STRUCT
     stHeatStakeTemperatureSettings : ST_HeatStakeTemperatureSettings;
     bApplyHeatStakeTemperatureSettings : BOOL;
     stHeatStakeProcessSettings : ST_HeatStakeProcessSettings;
+	
+	// =====================================================
+	// Patch Dispensing Manual Mode
+	// =====================================================
+	
+	bPatchManualEnable              : BOOL;
+	
+	bPatchSupportExtendRequest      : BOOL;
+	bPatchSupportRetractRequest     : BOOL;
+	
+	bPatchVerticalUpRequest         : BOOL;
+	bPatchVerticalDownRequest       : BOOL;
+	
+	bPatchDispenseRequest           : BOOL;
+	bPatchAirBlowRequest            : BOOL;
+	
+	bPatchManualHomeRequest         : BOOL;
+	bPatchManualRunSequence         : BOOL;
 
     // Heat Stake Manual Mode
     bHeatStakeManualEnable        : BOOL;

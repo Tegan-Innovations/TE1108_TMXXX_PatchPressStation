@@ -260,17 +260,25 @@ GVL_EtherCAT.stFestoModule3_VABX.bCoil7 := GVL_IO.stOutputs.bVisionGripOpen;
  BOX 1 | Festo VABX EtherCAT manifold - Module 4 | Heat Stake Head
 ======================================================================================================================
 *)
-// Module4 coils 0/1 are used by the Vision rotary gripper.
-// Coil0 = Grip rotation 0 deg / Pick
-// Coil1 = Grip rotation 180 deg / Place
+// Mapping confirmed from the commissioned GVL_EtherCAT / manifold layout.
+// Coil0 = Vision gripper rotation 0° / PICK
+// Coil1 = Vision gripper rotation 180° / PLACE
+// Coil2 = Patch dispenser AIR
+// Coil3 = Heat Stake head UNLOCK
+// Coil4 = Heat Stake head DOWN
+// Coil5 = Heat Stake head UP
+// Coil6 = Patch vertical support DOWN
+// Coil7 = Patch vertical support UP
+
 GVL_EtherCAT.stFestoModule4_VABX.bCoil0 := GVL_IO.stOutputs.bVisionRotate0;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil1 := GVL_IO.stOutputs.bVisionRotate180;
 
-// Validated Heat Stake head pneumatic mapping - preserved unchanged.
-//GVL_EtherCAT.stFestoModule4_VABX.bCoil2 := GVL_IO.stOutputs.bHeatStakeHeadLock;
+GVL_EtherCAT.stFestoModule4_VABX.bCoil2 := GVL_IO.stOutputs.bPatchDispenserAir;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil3 := GVL_IO.stOutputs.bHeatStakeHeadUnlock;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil4 := GVL_IO.stOutputs.bHeatStakeHeadDown;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil5 := GVL_IO.stOutputs.bHeatStakeHeadUp;
+GVL_EtherCAT.stFestoModule4_VABX.bCoil6 := GVL_IO.stOutputs.bPatchVerticalDown;
+GVL_EtherCAT.stFestoModule4_VABX.bCoil7 := GVL_IO.stOutputs.bPatchVerticalUp;
 
 (*
 ======================================================================================================================

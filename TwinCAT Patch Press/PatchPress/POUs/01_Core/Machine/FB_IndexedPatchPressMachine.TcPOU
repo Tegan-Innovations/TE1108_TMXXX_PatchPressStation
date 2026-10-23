@@ -38,6 +38,12 @@ VAR
     bPatchDispenseRequired : BOOL;
     bHeatStakeRequired : BOOL;
     bVisionRequired : BOOL;
+	
+	// Patch Dispensing Manual Mode
+	bPatchManualEnableAllowed : BOOL;
+	bPatchManualSupportAllowed : BOOL;
+	bPatchManualVerticalAllowed : BOOL;
+	bPatchManualAirAllowed : BOOL;
 
     // Snapshot taken before the station Update() calls.
     // Required to know which physical parts were actually being processed if
@@ -127,6 +133,12 @@ VAR
     rHeatStakePressureScaledBar 	: LREAL;
     bHeatStakeContactDwellActive 	: BOOL;
     usiHeatStakeSequenceStep 		: USINT;
+	
+	rtPatchSupportExtend 			: R_TRIG;
+	rtPatchSupportRetract 			: R_TRIG;
+	bPatchSupportExtendDesired 		: BOOL := FALSE;
+	bPatchManualAllowed 			: BOOL;
+
 
     // Heat Stake Manual Mode
     rtHeatStakeManualStakePatch 	: R_TRIG;
@@ -261,6 +273,15 @@ VAR
 	
 	sHeaterMinimum 						: STRING(32);
 	sHeaterCurrent 						: STRING(32);
+	
+	// =====================================================
+	// PATCH DISPENSING - MANUAL VERTICAL
+	// =====================================================
+	tpPatchManualVerticalUp   : TP;
+	tpPatchManualVerticalDown : TP;
+	
+	bPatchVerticalUpAllowed   : BOOL;
+	bPatchVerticalDownAllowed : BOOL;
 	
 END_VAR]]></Declaration>
     <Implementation>
@@ -611,8 +632,13 @@ IF stCommand.bReset OR bProcessCycleCompletePulse THEN
     fbVision.RequestReset();
 END_IF
 
-IF bProcessStopStations THEN
+IF bProcessStopStations
+    OR (eMachineState = E_MachineState.Stopping)
+THEN
     fbPatchDispense.RequestStop();
+END_IF
+
+IF bProcessStopStations THEN
     fbHeatStake.RequestStop();
     fbVision.RequestStop();
 END_IF
@@ -639,6 +665,31 @@ IF bProcessStartStations THEN
     END_IF
 END_IF
 
+rtPatchSupportExtend(
+    CLK := stCommand.bPatchSupportExtendRequest
+);
+
+rtPatchSupportRetract(
+    CLK := stCommand.bPatchSupportRetractRequest
+);
+
+bPatchManualAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND stCommand.bPatchManualEnable
+    AND stInputs.stSafety.bSafetyOk
+    AND GVL_Safety.bAirSupplySafe
+    AND NOT bRejectChuteStopRequestLatched
+    AND bPatchDispenseCommissioned;
+
+IF bPatchManualAllowed THEN
+    // Toggle TRUE = Extend
+    // Toggle FALSE = Retract
+    bPatchSupportExtendDesired :=
+        stCommand.bPatchSupportExtendRequest;
+ELSE
+    bPatchSupportExtendDesired := FALSE;
+END_IF
+
 fbPatchDispense.Update(
     bEnable :=
         (
@@ -646,20 +697,80 @@ fbPatchDispense.Update(
             AND GVL_Safety.bAirSupplySafe
         )
         OR (eMachineState = E_MachineState.ReadyToStart)
-        OR (eMachineState = E_MachineState.AutoCycle),
+        OR (eMachineState = E_MachineState.AutoCycle)
+        OR (
+            (eMachineState = E_MachineState.Manual)
+            AND stCommand.bPatchManualEnable
+            AND stInputs.stSafety.bSafetyOk
+            AND GVL_Safety.bAirSupplySafe
+            AND NOT bRejectChuteStopRequestLatched
+            AND bPatchDispenseCommissioned
+        ),
+
+    bManualMode :=
+        (eMachineState = E_MachineState.Manual),
+
+    bManualSupportExtendDesired :=
+        bPatchSupportExtendDesired,
+
     bCommissioned := bPatchDispenseCommissioned,
-    bSafetyOk := stInputs.stSafety.bSafetyOk,
-    bSupervisionEnable := (eMachineState = E_MachineState.ReadyToStart)
+
+    bSafetyOk :=
+        stInputs.stSafety.bSafetyOk
+        AND GVL_Safety.bAirSupplySafe,
+
+    bHomingAllowed :=
+        (eMachineState = E_MachineState.Initialising)
+        AND GVL_Safety.bAirSupplySafe
+        AND stInputs.stSafety.bSafetyOk,
+
+    bSupervisionEnable :=
+        (eMachineState = E_MachineState.ReadyToStart)
         OR (eMachineState = E_MachineState.AutoCycle)
         OR (eMachineState = E_MachineState.Manual),
+
     bReset := stCommand.bReset,
-    bSupportRetracted := stInputs.bStation1SupportRetracted,
-    bSupportExtended := stInputs.bStation1SupportExtended,
-    tSupportTimeout := stConfig.tStationSupportTimeout,
+
+    bSupportRetracted :=
+        stInputs.bStation1SupportRetracted,
+
+    bSupportExtended :=
+        stInputs.bStation1SupportExtended,
+
+    tSupportTimeout :=
+        stConfig.tStationSupportTimeout,
+
     stStatus => stPatchDispenseStatus,
-    bSupportExtendRequest => bStation1SupportExtendRequest,
-    bSupportRetractRequest => bStation1SupportRetractRequest
+
+    bSupportExtendRequest =>
+        bStation1SupportExtendRequest,
+
+    bSupportRetractRequest =>
+        bStation1SupportRetractRequest
 );
+
+// =====================================================
+// PATCH DISPENSING - MANUAL VERTICAL
+// =====================================================
+// HMI commands are one-scan requests.
+// Same timed-pulse principle as Vision Horizontal.
+//
+// TODO: Replace provisional timed movement with
+// physical position feedback when sensors are installed.
+
+tpPatchManualVerticalUp(
+    IN := stCommand.bPatchVerticalUpRequest
+          AND bPatchVerticalUpAllowed,
+    PT := T#1S
+);
+
+tpPatchManualVerticalDown(
+    IN := stCommand.bPatchVerticalDownRequest
+          AND bPatchVerticalDownAllowed,
+    PT := T#1S
+);
+
+
 
 fbHeatStake.Update(
     bEnable :=
@@ -782,6 +893,40 @@ bHeatStakeManualSupportAllowed :=
     AND NOT fbHeatStake.IsBusy()
     AND NOT bHeatStakeManualActionBusy;
 	
+	
+	
+// =====================================================
+// PATCH DISPENSING MANUAL MODE - PERMISSIVES
+// =====================================================
+
+// General Patch manual enable.
+bPatchManualEnableAllowed :=
+    (eMachineState = E_MachineState.Manual)
+    AND stInputs.stSafety.bSafetyOk
+    AND GVL_Safety.bAirSupplySafe
+    AND NOT bRejectChuteStopRequestLatched
+    AND bPatchDispenseCommissioned;
+
+bPatchManualSupportAllowed :=
+    bPatchManualEnableAllowed
+    AND stCommand.bPatchManualEnable;
+	
+	
+// =====================================================
+// PATCH DISPENSING - MANUAL VERTICAL PERMISSIVES
+// =====================================================
+bPatchVerticalUpAllowed :=
+    bPatchManualEnableAllowed
+    AND stCommand.bPatchManualEnable
+    AND NOT stCommand.bPatchVerticalDownRequest;
+
+bPatchVerticalDownAllowed :=
+    bPatchManualEnableAllowed
+    AND stCommand.bPatchManualEnable
+    AND NOT stCommand.bPatchVerticalUpRequest;
+
+// TODO: Add physical position and mechanical clearance
+// interlocks when Patch Vertical sensors are installed.
 // =====================================================
 // VISION MANUAL MODE - PERMISSIVES
 // =====================================================
@@ -2253,6 +2398,9 @@ THEN
 
 END_IF
 
+
+
+
 stOutputsInternal.bStation1SupportExtend := bStation1SupportExtendRequest;
 stOutputsInternal.bStation1SupportRetract := bStation1SupportRetractRequest;
 stOutputsInternal.bStation2SupportExtend := bStation2SupportExtendRequest;
@@ -2275,6 +2423,33 @@ stOutputsInternal.bHeatStakeHeadDown := bHeatStakeHeadDownRequest;
 stOutputsInternal.bHeatStakeHeadUp := bHeatStakeHeadUpRequest;
 stOutputsInternal.iHeatStakePressureRaw := iHeatStakePressureRaw;
 stPermissives.bAirSupplyReady := GVL_Safety.bAirSupplySafe;
+
+// =====================================================
+// PATCH DISPENSING - MANUAL VERTICAL OUTPUTS
+// =====================================================
+// Both directions can never be energised together.
+
+IF bPatchManualAllowed THEN
+
+    stOutputsInternal.bPatchVerticalUp :=
+        tpPatchManualVerticalUp.Q
+        AND NOT tpPatchManualVerticalDown.Q;
+
+    stOutputsInternal.bPatchVerticalDown :=
+        tpPatchManualVerticalDown.Q
+        AND NOT tpPatchManualVerticalUp.Q;
+
+ELSE
+
+    stOutputsInternal.bPatchVerticalUp := FALSE;
+    stOutputsInternal.bPatchVerticalDown := FALSE;
+
+END_IF;
+
+// TODO: Stop requests on confirmed UP/DOWN feedback
+// when the physical sensors are installed.
+
+
 // Same criterion used by the validated Silicone Station:
 // the machine waits until the door supervisor confirms automatic readiness.
 stPermissives.bDoorInitialisationReady :=
@@ -2530,9 +2705,17 @@ E_MachineState.Stopping:
     IF bStoppingTimeoutFault THEN
         bSafetyDropRequest := TRUE;
         eMachineState := E_MachineState.Fault;
-    ELSIF NOT stIndexStatus.bBusy THEN
-        eMachineState := E_MachineState.Stopped;
-    END_IF
+	ELSIF NOT stIndexStatus.bBusy
+		AND (
+			NOT GVL_Safety.bAirSupplySafe
+			OR (
+				stInputs.bStation1SupportRetracted
+				AND NOT stInputs.bStation1SupportExtended
+			)
+		)
+	THEN
+		eMachineState := E_MachineState.Stopped;
+	END_IF
 
 E_MachineState.Stopped:
     bAutoCycleStopRequestLatched := FALSE;

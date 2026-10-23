@@ -55,6 +55,10 @@ STRUCT
     bRejectChuteStopRequest 			: BOOL;
     bRejectChuteResetBlocked 			: BOOL;
     sRejectChutePopupMessage 			: STRING(255);
+	
+	// Patch Dispensing Station - Nest Support
+	bPatchSupportRetracted 				: BOOL;
+	bPatchSupportExtended  				: BOOL;
 
     // Heat Stake head cylinder diagnostics.
     bHeatStakeHeadUp 					: BOOL;

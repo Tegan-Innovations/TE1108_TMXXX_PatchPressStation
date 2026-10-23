@@ -8562,6 +8562,75 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchManualEnable": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchManualEnable",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "=====================================================\r\n Patch Dispensing Manual Mode\r\n =====================================================",
+                        "propertyOrder": 15
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchSupportExtendRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchSupportExtendRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 16
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchVerticalDownRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchVerticalDownRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 19
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchVerticalUpRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchVerticalUpRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 18
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.bReprocessPopupAcknowledge": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -11924,6 +11993,41 @@
                     },
                     {
                         "propertyOrder": 37
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bPatchSupportExtended": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bPatchSupportExtended",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 50
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bPatchSupportRetracted": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bPatchSupportRetracted",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "comment": "Patch Dispensing Station - Nest Support",
+                        "propertyOrder": 49
                     }
                 ]
             },
@@ -17659,6 +17763,10 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bManualRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bNestCylindersManualEnable": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bOperatorLight": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchManualEnable": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchSupportExtendRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchVerticalDownRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchVerticalUpRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReprocessPopupAcknowledge": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReservoir1Degass": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReservoir1Select": 3,
@@ -17858,6 +17966,8 @@
                 "ADS.PLC1.GVL_HMI.stStatus.bNest2Blocked": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bNest3Blocked": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bNest4Blocked": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bPatchSupportExtended": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.bPatchSupportRetracted": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bPbupMagnetPresent": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bReady": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.bRejectChutePartPresent": 3,

@@ -72,6 +72,19 @@ STRUCT
     diHeatStakeTc2Raw              : DINT;
     diHeatStakeTc3Raw              : DINT;
 	
+	// =====================================================
+	// PATCH DISPENSING - VERTICAL POSITION FEEDBACK
+	// =====================================================
+	
+	// TODO [PATCH VERTICAL FEEDBACK]
+	// Physical position sensors are not installed yet.
+	// Map these variables to the EtherCAT inputs when installed.
+	// Enable position confirmation and related interlocks
+	// only after validating the physical sensors.
+	
+	bPatchVerticalUpSensor   : BOOL;
+	bPatchVerticalDownSensor : BOOL;
+	
 	//camera
 	bTrigger				: BOOL;
 	bChangeProgram			: BOOL;

@@ -29,8 +29,7 @@ GVL_HMI.stStatus.bTwoHandsSafe := GVL_MASTER.stInputs.bTwoHandsSafe;
 // This is intentionally NOT derived from nest tracking/result state.
 // It follows the real sensor immediately whenever the operator places/removes
 // a part in the nest currently located at the operator position.
-GVL_HMI.stStatus.bLoadingStationEaglePresent :=
-    GVL_IO.stInputs.bLoadingStationEaglePresent;
+GVL_HMI.stStatus.bLoadingStationEaglePresent :=GVL_IO.stInputs.bLoadingStationEaglePresent;
 GVL_HMI.stStatus.bRejectChutePartPresent := GVL_MASTER.stInputs.bRejectChutePartPresent;
 GVL_HMI.stStatus.bHeatStakeEaglePresent := GVL_MASTER.stInputs.bHeatStakeEaglePresent;
 GVL_HMI.stStatus.bHeatStakePatchPresent := GVL_MASTER.stInputs.bHeatStakePatchPresent;
@@ -55,27 +54,23 @@ GVL_HMI.stStatus.bRightFlapSafe := GVL_MASTER.stInputs.stSafety.bRightFlapSafe;
 GVL_HMI.stStatus.bEnableSettings := GVL_MASTER.stStatus.bEnableSetting;
 GVL_HMI.stStatus.bAllStationsCommissioned := GVL_MASTER.stStatus.bAllStationsCommissioned;
 GVL_HMI.stStatus.bAutoCycleAllowed := GVL_MASTER.stStatus.bAutoCycleAllowed;
+GVL_HMI.stStatus.bPatchSupportRetracted :=GVL_MASTER.stInputs.bStation1SupportRetracted;
+GVL_HMI.stStatus.bPatchSupportExtended :=GVL_MASTER.stInputs.bStation1SupportExtended;
+
 
 GVL_HMI.stStatus.bNest1Blocked := NOT GVL_Persistent.aNestEnabled[1];
 GVL_HMI.stStatus.bNest2Blocked := NOT GVL_Persistent.aNestEnabled[2];
 GVL_HMI.stStatus.bNest3Blocked := NOT GVL_Persistent.aNestEnabled[3];
 GVL_HMI.stStatus.bNest4Blocked := NOT GVL_Persistent.aNestEnabled[4];
 
-GVL_HMI.stStatus.bDisabledNestPartIndexBlocked :=
-    GVL_MASTER.stStatus.bDisabledNestPartIndexBlocked;
-GVL_HMI.stStatus.bDisabledNestPartPopupRequest :=
-    GVL_MASTER.stStatus.bDisabledNestPartPopupRequest;
-GVL_HMI.stStatus.uiDisabledNestPartPopupNestId :=
-    GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId;
+GVL_HMI.stStatus.bDisabledNestPartIndexBlocked := GVL_MASTER.stStatus.bDisabledNestPartIndexBlocked;
+GVL_HMI.stStatus.bDisabledNestPartPopupRequest :=GVL_MASTER.stStatus.bDisabledNestPartPopupRequest;
+GVL_HMI.stStatus.uiDisabledNestPartPopupNestId :=GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId;
 
-GVL_HMI.stStatus.bRejectChuteFullLatched :=
-    GVL_MASTER.stStatus.bRejectChuteFullLatched;
-GVL_HMI.stStatus.bRejectChutePopupRequest :=
-    GVL_MASTER.stStatus.bRejectChutePopupRequest;
-GVL_HMI.stStatus.bRejectChuteStopRequest :=
-    GVL_MASTER.stStatus.bRejectChuteStopRequest;
-GVL_HMI.stStatus.bRejectChuteResetBlocked :=
-    GVL_MASTER.stStatus.bRejectChuteResetBlocked;
+GVL_HMI.stStatus.bRejectChuteFullLatched :=GVL_MASTER.stStatus.bRejectChuteFullLatched;
+GVL_HMI.stStatus.bRejectChutePopupRequest :=GVL_MASTER.stStatus.bRejectChutePopupRequest;
+GVL_HMI.stStatus.bRejectChuteStopRequest :=GVL_MASTER.stStatus.bRejectChuteStopRequest;
+GVL_HMI.stStatus.bRejectChuteResetBlocked :=GVL_MASTER.stStatus.bRejectChuteResetBlocked;
 
 GVL_HMI.stStatus.sRejectChutePopupMessage :=
     'Reject chute is full. Empty the reject chute and press Acknowledge.';

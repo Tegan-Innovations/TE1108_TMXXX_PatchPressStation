@@ -19,6 +19,10 @@ STRUCT
     bStation2SupportRetract            : BOOL;
     bStation3SupportExtend             : BOOL;
     bStation3SupportRetract            : BOOL;
+	// Patch Dispensing
+	bPatchDispenserAir 					: BOOL;
+	bPatchVerticalDown 					: BOOL;
+	bPatchVerticalUp   					: BOOL;
 
 
     // Vision Station / Flipping tooling

@@ -36,6 +36,9 @@ GVL_IO.stOutputs.bHeatStakeHeadUnlock := GVL_MASTER.stOutputs.bHeatStakeHeadUnlo
 GVL_IO.stOutputs.bHeatStakeHeadDown := GVL_MASTER.stOutputs.bHeatStakeHeadDown;
 GVL_IO.stOutputs.bHeatStakeHeadUp := GVL_MASTER.stOutputs.bHeatStakeHeadUp;
 GVL_IO.stOutputs.iHeatStakePressureRaw := GVL_MASTER.stOutputs.iHeatStakePressureRaw;
+GVL_IO.stOutputs.bPatchDispenserAir := GVL_MASTER.stOutputs.bPatchDispenserAir;
+GVL_IO.stOutputs.bPatchVerticalDown := GVL_MASTER.stOutputs.bPatchVerticalDown;
+GVL_IO.stOutputs.bPatchVerticalUp := GVL_MASTER.stOutputs.bPatchVerticalUp;
 
 GVL_IO.stOutputs.bLedStart := GVL_MASTER.stOutputs.bLedStart;
 GVL_IO.stOutputs.bLedReset := GVL_MASTER.stOutputs.bLedReset;

@@ -12,12 +12,15 @@ VAR
     // product PASS/FAIL above. Reset will only recover after this is FALSE.
     bSimulatedFault            : BOOL := FALSE;
 
-    bEnableInternal           : BOOL;
-    bCommissionedInternal     : BOOL;
-    bSafetyOkInternal         : BOOL;
-    bSupervisionEnableInternal : BOOL;
-    bSupportRetractedInternal : BOOL;
-    bSupportExtendedInternal  : BOOL;
+    bEnableInternal           			: BOOL;
+	bManualModeInternal 				: BOOL;
+	bManualSupportExtendDesiredInternal : BOOL;
+    bCommissionedInternal     			: BOOL;
+    bSafetyOkInternal         			: BOOL;
+    bSupervisionEnableInternal 			: BOOL;
+    bSupportRetractedInternal 			: BOOL;
+    bSupportExtendedInternal  			: BOOL;
+	bHomingAllowedInternal 				: BOOL;
 
     eStateInternal      : E_PatchStationState := E_PatchStationState.Disabled;
     usiStepInternal     : USINT := 0;
@@ -103,8 +106,28 @@ THEN
 END_IF
 
 IF bFaultInternal THEN
-    // Keep outputs de-energised. Recovery requires Reset after the sensor
-    // condition has been corrected.
+    // Keep outputs de-energised.
+
+ELSIF NOT bSafetyOkInternal THEN
+    tonProcessSimulation(IN := FALSE);
+    eStateInternal := E_PatchStationState.Disabled;
+    usiStepInternal := 0;
+    sDiagnosticInternal := 'Patch: disabled by Safety';
+
+ELSIF bStopRequestInternal AND bManualModeInternal THEN
+    tonProcessSimulation(IN := FALSE);
+    eStateInternal := E_PatchStationState.Disabled;
+    usiStepInternal := 0;
+    bStopRequestInternal := FALSE;
+    sDiagnosticInternal := 'Patch: manual stop';
+
+
+// ELSIF bStopRequestInternal AND NOT bHomingAllowedInternal THEN
+//     tonProcessSimulation(IN := FALSE);
+//     eStateInternal := E_PatchStationState.Disabled;
+//     usiStepInternal := 0;
+//     bStopRequestInternal := FALSE;
+//     sDiagnosticInternal := 'Patch: stop - movement inhibited';
 
 ELSIF bStopRequestInternal THEN
     tonProcessSimulation(IN := FALSE);
@@ -134,15 +157,50 @@ ELSIF NOT bSafetyOkInternal THEN
     eStateInternal := E_PatchStationState.Disabled;
     usiStepInternal := 0;
     sDiagnosticInternal := 'Patch dispense: disabled by Safety';
+	
+	ELSIF bManualModeInternal THEN
+    tonProcessSimulation(IN := FALSE);
+    usiStepInternal := 0;
+
+    IF bEnableInternal
+        AND bSafetyOkInternal
+        AND bCommissionedInternal
+        AND NOT bStopRequestInternal
+    THEN
+        eStateInternal := E_PatchStationState.Ready;
+
+        IF bManualSupportExtendDesiredInternal THEN
+            bSupportExtendRequestInternal :=
+                NOT bSupportExtendedInternal;
+            bSupportRetractRequestInternal := FALSE;
+            sDiagnosticInternal := 'Patch: manual support extend';
+        ELSE
+            bSupportExtendRequestInternal := FALSE;
+            bSupportRetractRequestInternal :=
+                NOT bSupportRetractedInternal;
+            sDiagnosticInternal := 'Patch: manual support retract';
+        END_IF
+    ELSE
+        eStateInternal := E_PatchStationState.Disabled;
+        sDiagnosticInternal := 'Patch: manual movement disabled';
+    END_IF
 
 ELSIF NOT bEnableInternal THEN
     tonProcessSimulation(IN := FALSE);
+    usiStepInternal := 0;
 
-    IF bSupportRetractedInternal THEN
+    IF NOT bHomingAllowedInternal THEN
+        // Station disabled while in an operational state.
+        // Do not initiate automatic movement.
         eStateInternal := E_PatchStationState.Disabled;
-        usiStepInternal := 0;
+        sDiagnosticInternal := 'Patch dispense: disabled - movement inhibited';
+
+    ELSIF bSupportRetractedInternal THEN
+        eStateInternal := E_PatchStationState.Disabled;
         sDiagnosticInternal := 'Patch dispense: disabled - support retracted';
+
     ELSE
+        // Existing recovery behaviour outside supervised states.
         eStateInternal := E_PatchStationState.Homing;
         usiStepInternal := 30;
         bSupportRetractRequestInternal := TRUE;
@@ -242,6 +300,8 @@ ELSE
 
     END_CASE
 END_IF
+
+
 
 // ---------------------------------------------------------
 // Support-cylinder feedback supervision
@@ -466,6 +526,9 @@ VAR_INPUT
     bSupportRetracted : BOOL;
     bSupportExtended  : BOOL;
     tSupportTimeout   : TIME;
+	bManualMode 		: BOOL;
+	bManualSupportExtendDesired : BOOL;
+	bHomingAllowed : BOOL;
 END_VAR
 VAR_OUTPUT
     stStatus               : ST_PatchStageStatus;
@@ -475,6 +538,8 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 bEnableInternal := bEnable;
+bManualModeInternal := bManualMode;
+bManualSupportExtendDesiredInternal := bManualSupportExtendDesired;
 bCommissionedInternal := bCommissioned;
 bSafetyOkInternal := bSafetyOk;
 bSupervisionEnableInternal := bSupervisionEnable;

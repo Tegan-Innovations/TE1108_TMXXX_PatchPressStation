@@ -18,6 +18,29 @@ STRUCT
     // Operator/nest light request from HMI.
     bOperatorLight        : BOOL;
 	
+	
+	// =====================================================
+	// Patch Dispensing Manual Mode
+	// Modified by Thays
+	// =====================================================
+	
+	bPatchManualEnable                : BOOL;
+
+	bPatchSupportExtendRequest        : BOOL;
+	bPatchSupportRetractRequest       : BOOL;
+
+	bPatchVerticalUpRequest           : BOOL;
+	bPatchVerticalDownRequest         : BOOL;
+
+	bPatchDispenseRequest             : BOOL;
+
+	bPatchAirBlowRequest              : BOOL;
+
+	bPatchManualHomeRequest           : BOOL;
+	bPatchManualRunSequence           : BOOL;
+	
+
+		
 	// =====================================================
 	// Vision Manual Mode
 	// =====================================================
@@ -41,7 +64,10 @@ STRUCT
 	bVisionManualRunSequence 		   : BOOL;
 	bVisionManualHomeRequest 		   : BOOL;
 	
+	// =====================================================
     // Heat Stake Manual Mode
+	// =====================================================
+
     bHeatStakeManualEnable        : BOOL;
     bHeatStakeManualStakePatch    : BOOL;
     bHeatStakeManualUnlock        : BOOL;
