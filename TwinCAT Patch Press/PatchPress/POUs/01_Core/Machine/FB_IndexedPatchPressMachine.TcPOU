@@ -67,6 +67,7 @@ VAR
     tonInitialising 						: TON;
     tonStopping 							: TON;
 	tonHeaterDwell 							: TON;
+
 	
 	
 	bHeaterDwellTimeoutFault 				: BOOL := FALSE;
@@ -81,26 +82,27 @@ VAR
 	
     rtManualIndexMove 						: R_TRIG;
 	rtReprocessIndexAttempt 				: R_TRIG;
+	rtMachineInitialising 					: R_TRIG;
 
-    bProcessStartStations       : BOOL;
-    bProcessStopStations        : BOOL;
-    bProcessRequestIndex        : BOOL;
-    bProcessCycleActive         : BOOL;
-    bProcessCycleCompletePulse  : BOOL;
-    bProcessCycleFault          : BOOL;
-    bProcessCycleTimeoutFault   : BOOL;
-    bProcessStopPending         : BOOL;
-    bProcessAutomaticStopRequest : BOOL;
-    bAutoCycleStopRequestLatched : BOOL;
-    eProcessCycleState          : E_CycleState;
-    bDisabledNestIndexAttempt   : BOOL;
+    bProcessStartStations       			: BOOL;
+    bProcessStopStations        			: BOOL;
+    bProcessRequestIndex        			: BOOL;
+    bProcessCycleActive         			: BOOL;
+    bProcessCycleCompletePulse  			: BOOL;
+    bProcessCycleFault          			: BOOL;
+    bProcessCycleTimeoutFault   			: BOOL;
+    bProcessStopPending         			: BOOL;
+    bProcessAutomaticStopRequest 			: BOOL;
+    bAutoCycleStopRequestLatched 			: BOOL;
+    eProcessCycleState          			: E_CycleState;
+    bDisabledNestIndexAttempt   			: BOOL;
 
-    aNestSnapshot               : ARRAY[1..4] OF ST_Nest;
-    bDisabledNestPartPresent    : BOOL;
-    uiDisabledNestPartNestId    : UINT;
-    bDisabledNestPartPopupRequest : BOOL;
-    uiDisabledNestPartPopupNestId : UINT;
-    iNestCheck                  : INT;
+    aNestSnapshot               			: ARRAY[1..4] OF ST_Nest;
+    bDisabledNestPartPresent    			: BOOL;
+    uiDisabledNestPartNestId    			: UINT;
+    bDisabledNestPartPopupRequest 			: BOOL;
+    uiDisabledNestPartPopupNestId 			: UINT;
+    iNestCheck                  			: INT;
 
     // Reject chute full supervision / controlled stop.
     tonRejectChuteFull              : TON;
@@ -689,6 +691,21 @@ IF bPatchManualAllowed THEN
         stCommand.bPatchSupportExtendRequest;
 ELSE
     bPatchSupportExtendDesired := FALSE;
+END_IF
+
+// Detect machine Initialising entry.
+// HOME requests are issued once per Initialising sequence.
+
+rtMachineInitialising(
+    CLK := (eMachineState = E_MachineState.Initialising)
+);
+
+IF rtMachineInitialising.Q THEN
+    fbPatchDispense.Home();
+
+    // FUTURE IMPLEMENTATION:
+    // fbHeatStake.Home();
+    // fbVision.Home();
 END_IF
 
 fbPatchDispense.Update(

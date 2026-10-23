@@ -158,7 +158,28 @@
         <div id="TcHmiTextblock_PatchAirActive" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="53" data-tchmi-left-unit="px" data-tchmi-top="77" data-tchmi-top-unit="px" data-tchmi-width="61" data-tchmi-width-unit="px" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-text="Air Active" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
         </div>
         <div id="TcHmiButton_PatchAirBlow" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="35" data-tchmi-left-unit="px" data-tchmi-top="158" data-tchmi-top-unit="px" data-tchmi-width="280" data-tchmi-width-unit="px" data-tchmi-height="60" data-tchmi-height-unit="px" data-tchmi-text="Air Blow Pulse" data-tchmi-text-font-size="16" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.stCommands.bPatchManualEnable%/s%">
-        </div>
+        
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stCommands.bPatchAirBlowRequest%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]
+</script>
+</div>
         <div id="TcHmiTextblock_PatchAirWarning" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="15" data-tchmi-left-unit="px" data-tchmi-top="230" data-tchmi-top-unit="px" data-tchmi-width="322" data-tchmi-width-unit="px" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-text="Pulse duration controlled by PLC" data-tchmi-text-font-size="12" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center">
         </div>
     <div id="TcHmiTextblock_PatchStationImage_1743" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="76" data-tchmi-top-unit="px" data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-text="Patch Station Image" data-tchmi-text-font-size="100" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-size-unit="%">

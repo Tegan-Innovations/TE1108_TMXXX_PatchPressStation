@@ -3,14 +3,20 @@
   <POU Name="FB_PatchDispenseStation" Id="{307a15f9-be92-4a17-837f-7db7d76c6090}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_PatchDispenseStation IMPLEMENTS I_ProcessEquipment
 VAR
+	bHomeRequestInternal   				: BOOL := FALSE;
+	bHomeConfirmedInternal 				: BOOL := FALSE;
+	bHomePulseStartedInternal   		: BOOL := FALSE;
+	bHomePulseCompletedInternal 		: BOOL := FALSE;
+	tpHomeSupportRetract        		: TP;
+	bHomePulseResetPendingInternal 		: BOOL := FALSE;
     // Simulation result selector for commissioning / software test.
     // FALSE = simulated process PASS (default)
     // TRUE  = simulated process FAIL
-    bSimulatedFail             : BOOL := FALSE;
+    bSimulatedFail             			: BOOL := FALSE;
 
     // Simulates a MACHINE/STATION fault, independently from simulated
     // product PASS/FAIL above. Reset will only recover after this is FALSE.
-    bSimulatedFault            : BOOL := FALSE;
+    bSimulatedFault            			: BOOL := FALSE;
 
     bEnableInternal           			: BOOL;
 	bManualModeInternal 				: BOOL;
@@ -21,30 +27,27 @@ VAR
     bSupportRetractedInternal 			: BOOL;
     bSupportExtendedInternal  			: BOOL;
 	bHomingAllowedInternal 				: BOOL;
-
-    eStateInternal      : E_PatchStationState := E_PatchStationState.Disabled;
-    usiStepInternal     : USINT := 0;
-    bHomeInternal       : BOOL;
-    bReadyInternal      : BOOL;
-    bBusyInternal       : BOOL;
-    bCompleteInternal   : BOOL;
-    bFaultInternal      : BOOL;
-    sDiagnosticInternal : STRING(120);
-
-    bSupportExtendRequestInternal  : BOOL;
-    bSupportRetractRequestInternal : BOOL;
-    bStopRequestInternal           : BOOL;
-
-    eSupportFaultInternal : E_SupportCylinderFault := E_SupportCylinderFault.None;
-
-    tonSupportExtendTimeout  : TON;
-    tonSupportRetractTimeout : TON;
-    tSupportMoveTimeout      : TIME := T#5S;
-
-    tonProcessSimulation : TON;
-    tProcessSimulation   : TIME := T#3S;
-
-    stResultInternal : ST_ProcessResult;
+	
+    eStateInternal      				: E_PatchStationState := E_PatchStationState.Disabled;
+    usiStepInternal     				: USINT := 0;
+    bHomeInternal       				: BOOL;
+    bReadyInternal      				: BOOL;
+    bBusyInternal       				: BOOL;
+    bCompleteInternal   				: BOOL;
+    bFaultInternal      				: BOOL;
+    sDiagnosticInternal 				: STRING(120);
+    bSupportExtendRequestInternal  		: BOOL;
+    bSupportRetractRequestInternal 		: BOOL;
+    bStopRequestInternal           		: BOOL;
+	
+    eSupportFaultInternal 				: E_SupportCylinderFault := E_SupportCylinderFault.None;
+    tonSupportExtendTimeout  			: TON;
+    tonSupportRetractTimeout 			: TON;
+	
+    tSupportMoveTimeout      			: TIME := T#5S;
+    tonProcessSimulation 				: TON;
+    tProcessSimulation   				: TIME := T#3S;
+    stResultInternal 					: ST_ProcessResult;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -61,6 +64,81 @@ END_VAR]]></Declaration>
 bSupportExtendRequestInternal := FALSE;
 bSupportRetractRequestInternal := FALSE;
 bFaultInternal := FALSE;
+
+
+
+// ---------------------------------------------------------
+// Station HOME - mandatory support retract pulse
+// ---------------------------------------------------------
+// The support uses a bistable pneumatic valve.
+// Every HOME request requires a 300 ms retract pulse,
+// even if the retracted sensor is already TRUE.
+//
+// The TP must receive IN := FALSE before a new pulse.
+// If Safety or homing permission is lost, the current
+// attempt is invalidated and restarted when permitted.
+//
+// FUTURE IMPLEMENTATION:
+// Add the remaining actuators and their HOME feedbacks.
+// Do not confirm complete station HOME until all required
+// feedbacks have been validated.
+
+IF bHomeRequestInternal THEN
+
+    IF NOT bSafetyOkInternal
+        OR NOT bHomingAllowedInternal
+        OR NOT bEnableInternal
+        OR NOT bCommissionedInternal
+        OR bManualModeInternal
+        OR bStopRequestInternal
+    THEN
+        // Invalidate interrupted HOME attempt.
+        bHomePulseStartedInternal := FALSE;
+        bHomePulseCompletedInternal := FALSE;
+        bHomeConfirmedInternal := FALSE;
+        bHomePulseResetPendingInternal := TRUE;
+
+    ELSIF bHomePulseResetPendingInternal THEN
+        // Hold TP input FALSE for this PLC cycle.
+        bHomePulseStartedInternal := FALSE;
+        bHomePulseResetPendingInternal := FALSE;
+
+    ELSIF NOT bHomePulseStartedInternal
+        AND NOT bHomePulseCompletedInternal
+    THEN
+        // Start a new mandatory retract pulse.
+        bHomePulseStartedInternal := TRUE;
+    END_IF
+
+END_IF
+
+tpHomeSupportRetract(
+    IN := bHomeRequestInternal
+        AND bHomePulseStartedInternal
+        AND NOT bHomePulseCompletedInternal
+        AND bSafetyOkInternal
+        AND bHomingAllowedInternal
+        AND bEnableInternal
+        AND bCommissionedInternal
+        AND NOT bManualModeInternal
+        AND NOT bStopRequestInternal,
+    PT := T#300MS
+);
+
+IF bHomeRequestInternal
+    AND bHomePulseStartedInternal
+    AND NOT tpHomeSupportRetract.Q
+    AND bSafetyOkInternal
+    AND bHomingAllowedInternal
+    AND bEnableInternal
+    AND bCommissionedInternal
+    AND NOT bManualModeInternal
+    AND NOT bStopRequestInternal
+THEN
+    bHomePulseCompletedInternal := TRUE;
+END_IF
+
+
 
 // Explicit station-fault simulation for alarm/fault-flow testing.
 // This is intentionally different from bSimulatedFail:
@@ -189,41 +267,56 @@ ELSIF NOT bEnableInternal THEN
     tonProcessSimulation(IN := FALSE);
     usiStepInternal := 0;
 
-    IF NOT bHomingAllowedInternal THEN
-        // Station disabled while in an operational state.
-        // Do not initiate automatic movement.
-        eStateInternal := E_PatchStationState.Disabled;
-        sDiagnosticInternal := 'Patch dispense: disabled - movement inhibited';
-
-    ELSIF bSupportRetractedInternal THEN
-        eStateInternal := E_PatchStationState.Disabled;
-        sDiagnosticInternal := 'Patch dispense: disabled - support retracted';
-
-    ELSE
-        // Existing recovery behaviour outside supervised states.
-        eStateInternal := E_PatchStationState.Homing;
-        usiStepInternal := 30;
-        bSupportRetractRequestInternal := TRUE;
-        sDiagnosticInternal := 'Patch dispense: disabled - retracting support';
-    END_IF
+    eStateInternal := E_PatchStationState.Disabled;
+    sDiagnosticInternal := 'Patch dispense: disabled';
 
 ELSE
+	
+
+
+
+
     CASE eStateInternal OF
 
         E_PatchStationState.Disabled,
         E_PatchStationState.Homing:
             tonProcessSimulation(IN := FALSE);
+			
+			// During an explicit HOME request, the mandatory retract
+			// pulse must finish before the station becomes Ready.
+			//
+			// FUTURE IMPLEMENTATION:
+			// Add all remaining actuator HOME feedbacks here.
 
-            IF bSupportRetractedInternal THEN
+			IF bSupportRetractedInternal
+				AND NOT bSupportExtendedInternal
+				AND (NOT bHomeRequestInternal OR bHomeConfirmedInternal)
+			THEN
                 eStateInternal := E_PatchStationState.Ready;
                 usiStepInternal := 0;
                 sDiagnosticInternal := 'Patch dispense: ready';
-            ELSE
-                eStateInternal := E_PatchStationState.Homing;
-                usiStepInternal := 30;
-                bSupportRetractRequestInternal := TRUE;
-                sDiagnosticInternal := 'Patch dispense: retracting support to home';
-            END_IF
+			ELSE
+				eStateInternal := E_PatchStationState.Homing;
+				usiStepInternal := 30;
+			
+				// Explicit HOME requests use the mandatory 300 ms
+				// retract pulse managed by tpHomeSupportRetract.
+				//
+				// Do not hold the bistable valve coil energised
+				// while waiting for the support HOME feedback.
+				//
+				// FUTURE IMPLEMENTATION:
+				// Additional actuator feedbacks must also be checked
+				// before confirming the complete station HOME.
+			
+				IF NOT bHomeRequestInternal THEN
+					// Preserve existing recovery behaviour outside
+					// the explicit HOME sequence.
+					bSupportRetractRequestInternal := TRUE;
+				END_IF
+			
+				sDiagnosticInternal := 'Patch dispense: retracting support to home';
+			END_IF
 
         E_PatchStationState.Ready:
             tonProcessSimulation(IN := FALSE);
@@ -369,7 +462,98 @@ ELSIF tonSupportRetractTimeout.Q THEN
     sDiagnosticInternal := 'Patch dispense: support DOWN feedback timeout';
 END_IF
 
-bHomeInternal := bSupportRetractedInternal;
+
+// ---------------------------------------------------------
+// Station HOME - invalidate confirmation
+// ---------------------------------------------------------
+// HOME confirmation must be cleared whenever the support
+// leaves its confirmed HOME position.
+//
+// FUTURE IMPLEMENTATION:
+// Add the remaining station actuator feedbacks here.
+// A new HOME sequence is required after leaving HOME.
+
+IF NOT bSupportRetractedInternal
+    OR bSupportExtendedInternal
+    OR (eStateInternal = E_PatchStationState.Fault)
+    OR NOT bSafetyOkInternal
+THEN
+    bHomeConfirmedInternal := FALSE;
+END_IF
+// ---------------------------------------------------------
+// Station HOME - output priority and confirmation
+// ---------------------------------------------------------
+// HOME has priority over normal station commands.
+// Never energise both coils simultaneously.
+//
+// FUTURE IMPLEMENTATION:
+// Add the remaining station actuators and their feedbacks.
+// HOME confirmation must eventually validate all required
+// actuators, not only the nest support.
+
+IF bHomeRequestInternal THEN
+
+    bSupportExtendRequestInternal := FALSE;
+    bSupportRetractRequestInternal := FALSE;
+
+    IF bSafetyOkInternal
+        AND bHomingAllowedInternal
+        AND bEnableInternal
+        AND bCommissionedInternal
+        AND NOT bManualModeInternal
+        AND NOT bStopRequestInternal
+        AND (eStateInternal <> E_PatchStationState.Fault)
+		AND NOT bSimulatedFault
+    THEN
+        bSupportRetractRequestInternal := tpHomeSupportRetract.Q;
+
+        IF bHomePulseCompletedInternal
+            AND bSupportRetractedInternal
+            AND NOT bSupportExtendedInternal
+        THEN
+            bHomeConfirmedInternal := TRUE;
+            bHomeRequestInternal := FALSE;
+        END_IF
+    END_IF
+
+END_IF
+
+
+// ---------------------------------------------------------
+// Final support output safety interlock
+// ---------------------------------------------------------
+// Never energise the support valve coils without Safety
+// and pneumatic permission.
+//
+// This protection applies to HOME, Manual and AutoCycle.
+// It does not replace the machine-level TwinSAFE interlocks.
+//
+// FUTURE IMPLEMENTATION:
+// Apply the same safety requirements to additional
+// station actuators when their outputs are integrated.
+
+IF NOT bSafetyOkInternal
+    OR (eStateInternal = E_PatchStationState.Fault)
+THEN
+    bSupportExtendRequestInternal := FALSE;
+    bSupportRetractRequestInternal := FALSE;
+END_IF
+// ---------------------------------------------------------
+// Station HOME status
+// ---------------------------------------------------------
+// HOME is confirmed only after the mandatory retract pulse
+// has completed and the available support sensors are valid.
+//
+// FUTURE IMPLEMENTATION:
+// Include the vertical cylinder and any additional actuators.
+// Their HOME feedbacks must be validated before confirming
+// the complete station HOME.
+
+bHomeInternal :=
+    bHomeConfirmedInternal
+    AND bSupportRetractedInternal
+    AND NOT bSupportExtendedInternal
+    AND (eStateInternal <> E_PatchStationState.Fault);
 bReadyInternal := (eStateInternal = E_PatchStationState.Ready) AND bSupportRetractedInternal;
 bBusyInternal := (eStateInternal = E_PatchStationState.Processing)
     OR ((eStateInternal = E_PatchStationState.Homing) AND NOT bSupportRetractedInternal);
@@ -384,6 +568,30 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[GetResult := stResultInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Home" Id="{a98cb97a-e8d1-4d1a-aebd-f94068da51f6}">
+      <Declaration><![CDATA[METHOD PUBLIC Home
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Request a new station HOME sequence.
+// Physical movements are executed cyclically in Cyclic().
+//
+// Every new HOME request requires a new retract pulse,
+// even if the support retracted sensor is already TRUE.
+//
+// FUTURE IMPLEMENTATION:
+// Add the remaining station actuators and their HOME feedbacks.
+
+bHomePulseStartedInternal := FALSE;
+bHomePulseCompletedInternal := FALSE;
+
+// Force TP input FALSE for one PLC cycle before
+// starting a new mandatory 300 ms retract pulse.
+// This guarantees a new rising edge for every HOME request.
+bHomePulseResetPendingInternal := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Initialise" Id="{743255a3-43ef-4139-b99e-67a8da015efe}">
@@ -437,6 +645,25 @@ VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IsFaulted := bFaultInternal;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IsHome" Id="{8f750aa1-e0db-4cfc-b383-81a631f39cb6}">
+      <Declaration><![CDATA[METHOD IsHome : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// TRUE only after the requested HOME sequence is completed
+// and the available support feedbacks are valid.
+//
+// FUTURE IMPLEMENTATION:
+// Include all remaining station HOME feedbacks.
+
+IsHome :=
+    bHomeConfirmedInternal
+    AND bSupportRetractedInternal
+    AND NOT bSupportExtendedInternal
+    AND NOT bFaultInternal;]]></ST>
       </Implementation>
     </Method>
     <Method Name="IsReady" Id="{b47de1d3-46cd-40ee-afff-fef3adf2adda}">
@@ -542,6 +769,7 @@ bManualModeInternal := bManualMode;
 bManualSupportExtendDesiredInternal := bManualSupportExtendDesired;
 bCommissionedInternal := bCommissioned;
 bSafetyOkInternal := bSafetyOk;
+bHomingAllowedInternal := bHomingAllowed;
 bSupervisionEnableInternal := bSupervisionEnable;
 bSupportRetractedInternal := bSupportRetracted;
 bSupportExtendedInternal := bSupportExtended;
