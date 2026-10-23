@@ -272,7 +272,6 @@ GVL_EtherCAT.stFestoModule3_VABX.bCoil7 := GVL_IO.stOutputs.bVisionGripOpen;
 
 GVL_EtherCAT.stFestoModule4_VABX.bCoil0 := GVL_IO.stOutputs.bVisionRotate0;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil1 := GVL_IO.stOutputs.bVisionRotate180;
-
 GVL_EtherCAT.stFestoModule4_VABX.bCoil2 := GVL_IO.stOutputs.bPatchDispenserAir;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil3 := GVL_IO.stOutputs.bHeatStakeHeadUnlock;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil4 := GVL_IO.stOutputs.bHeatStakeHeadDown;

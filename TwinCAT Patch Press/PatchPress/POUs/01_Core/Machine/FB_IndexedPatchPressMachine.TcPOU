@@ -138,6 +138,7 @@ VAR
 	rtPatchSupportRetract 			: R_TRIG;
 	bPatchSupportExtendDesired 		: BOOL := FALSE;
 	bPatchManualAllowed 			: BOOL;
+	tpPatchAirBlow 					: TP;
 
 
     // Heat Stake Manual Mode
@@ -924,6 +925,14 @@ bPatchVerticalDownAllowed :=
     bPatchManualEnableAllowed
     AND stCommand.bPatchManualEnable
     AND NOT stCommand.bPatchVerticalUpRequest;
+	
+
+tpPatchAirBlow(
+    IN := stCommand.bPatchAirBlowRequest
+          AND bPatchManualEnableAllowed
+          AND stCommand.bPatchManualEnable,
+    PT := stconfig.tpPatchAirBlowTimer
+);
 
 // TODO: Add physical position and mechanical clearance
 // interlocks when Patch Vertical sensors are installed.
@@ -2423,6 +2432,14 @@ stOutputsInternal.bHeatStakeHeadDown := bHeatStakeHeadDownRequest;
 stOutputsInternal.bHeatStakeHeadUp := bHeatStakeHeadUpRequest;
 stOutputsInternal.iHeatStakePressureRaw := iHeatStakePressureRaw;
 stPermissives.bAirSupplyReady := GVL_Safety.bAirSupplySafe;
+
+
+// =====================================================
+// PATCH DISPENSING - MANUAL AIR BLOW OUTPUT
+// =====================================================
+IF eMachineState = E_MachineState.Manual THEN
+    stOutputsInternal.bPatchDispenserAir := tpPatchAirBlow.Q AND bPatchManualAllowed;
+END_IF;
 
 // =====================================================
 // PATCH DISPENSING - MANUAL VERTICAL OUTPUTS

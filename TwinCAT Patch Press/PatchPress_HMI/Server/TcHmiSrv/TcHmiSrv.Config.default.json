@@ -8562,6 +8562,23 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchAirBlowRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchAirBlowRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.bPatchManualEnable": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -17763,6 +17780,7 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bManualRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bNestCylindersManualEnable": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bOperatorLight": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchAirBlowRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bPatchManualEnable": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bPatchSupportExtendRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bPatchVerticalDownRequest": 3,

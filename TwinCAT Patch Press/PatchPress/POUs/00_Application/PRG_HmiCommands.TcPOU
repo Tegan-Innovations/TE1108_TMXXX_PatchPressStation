@@ -165,8 +165,9 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
 	GVL_MASTER.stCommand.bPatchManualRunSequence :=GVL_HMI.stCommands.bPatchManualRunSequence;
 	
 // 	// PATCH VERTICAL - CONSUME MOMENTARY HMI REQUESTS
-	GVL_HMI.stCommands.bPatchVerticalUpRequest := FALSE;
-	GVL_HMI.stCommands.bPatchVerticalDownRequest := FALSE;
+	GVL_HMI.stCommands.bPatchVerticalUpRequest 				:= FALSE;
+	GVL_HMI.stCommands.bPatchVerticalDownRequest 			:= FALSE;
+	GVL_HMI.stCommands.bPatchAirBlowRequest 				:= FALSE;
 
     // =====================================================
     // HEAT STAKE MANUAL CONTROLS
@@ -188,11 +189,11 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
 	// Run complete Vision sequence
 	GVL_MASTER.stCommand.bVisionManualRunSequence :=GVL_HMI.stCommands.bVisionManualRunSequence;
 	// Consume momentary request
-	GVL_HMI.stCommands.bVisionManualRunSequence := FALSE;
+	GVL_HMI.stCommands.bVisionManualRunSequence 			:= FALSE;
 	// Vision - Home Position
 	GVL_MASTER.stCommand.bVisionManualHomeRequest :=GVL_HMI.stCommands.bVisionManualHomeRequest;
 	// Consume HMI command as a one-scan pulse.
-	GVL_HMI.stCommands.bVisionManualHomeRequest := FALSE;
+	GVL_HMI.stCommands.bVisionManualHomeRequest 			:= FALSE;
     // Horizontal
     GVL_MASTER.stCommand.bVisionHorizontalBackRequest :=GVL_HMI.stCommands.bVisionHorizontalBackRequest;
     GVL_MASTER.stCommand.bVisionHorizontalFrontRequest :=GVL_HMI.stCommands.bVisionHorizontalFrontRequest;
@@ -202,9 +203,9 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
     GVL_MASTER.stCommand.bVisionVerticalFullDownRequest :=GVL_HMI.stCommands.bVisionVerticalFullDownRequest;
 		
 		// Consume momentary HMI requests.
-	GVL_HMI.stCommands.bVisionVerticalUpRequest := FALSE;
-	GVL_HMI.stCommands.bVisionVerticalIntermediateRequest := FALSE;
-	GVL_HMI.stCommands.bVisionVerticalFullDownRequest := FALSE;
+	GVL_HMI.stCommands.bVisionVerticalUpRequest 			:= FALSE;
+	GVL_HMI.stCommands.bVisionVerticalIntermediateRequest	:= FALSE;
+	GVL_HMI.stCommands.bVisionVerticalFullDownRequest 		:= FALSE;
 
     // Gripper
     GVL_MASTER.stCommand.bVisionGripOpenRequest :=
@@ -215,8 +216,8 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
 		
 	// VISION MANUAL - CONSUME GRIP COMMANDS
 	
-	GVL_HMI.stCommands.bVisionGripOpenRequest := FALSE;
-	GVL_HMI.stCommands.bVisionGripCloseRequest := FALSE;
+	GVL_HMI.stCommands.bVisionGripOpenRequest 				:= FALSE;
+	GVL_HMI.stCommands.bVisionGripCloseRequest 				:= FALSE;
 
     // Rotation
     GVL_MASTER.stCommand.bVisionRotate0Request :=
@@ -228,8 +229,8 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
 	// Consume momentary rotation commands after transferring them.
 	// GVL_MASTER sees TRUE for this PLC scan only.
 	
-	GVL_HMI.stCommands.bVisionRotate0Request := FALSE;
-	GVL_HMI.stCommands.bVisionRotate180Request := FALSE;
+	GVL_HMI.stCommands.bVisionRotate0Request 				:= FALSE;
+	GVL_HMI.stCommands.bVisionRotate180Request 				:= FALSE;
 
     // Support
     GVL_MASTER.stCommand.bVisionSupportExtendRequest :=
@@ -245,9 +246,9 @@ ELSE
     // immediately when Manual Mode is exited.
 
     // Index
-    GVL_HMI.stCommands.bIndexerManualEnable := FALSE;
-    GVL_HMI.stCommands.bManualIndexForward := FALSE;
-    GVL_HMI.stCommands.bManualIndexHome := FALSE;
+    GVL_HMI.stCommands.bIndexerManualEnable 				:= FALSE;
+    GVL_HMI.stCommands.bManualIndexForward 					:= FALSE;
+    GVL_HMI.stCommands.bManualIndexHome 					:= FALSE;
     //GVL_HMI.stCommands.bManualMainDoorUnlock := FALSE;
 
 
@@ -255,67 +256,61 @@ ELSE
 	// PATCH DISPENSING - RESET HMI MANUAL COMMANDS
 	// =====================================================
 	
-	GVL_HMI.stCommands.bPatchManualEnable := FALSE;
-	GVL_HMI.stCommands.bPatchSupportExtendRequest := FALSE;
-	GVL_HMI.stCommands.bPatchSupportRetractRequest := FALSE;
-	
-	GVL_HMI.stCommands.bPatchVerticalUpRequest := FALSE;
-	GVL_HMI.stCommands.bPatchVerticalDownRequest := FALSE;
-	
-	GVL_HMI.stCommands.bPatchDispenseRequest := FALSE;
-	GVL_HMI.stCommands.bPatchAirBlowRequest := FALSE;
-	GVL_HMI.stCommands.bPatchManualHomeRequest := FALSE;
-	GVL_HMI.stCommands.bPatchManualRunSequence := FALSE;
+	GVL_HMI.stCommands.bPatchManualEnable 					:= FALSE;
+	GVL_HMI.stCommands.bPatchSupportExtendRequest 			:= FALSE;
+	GVL_HMI.stCommands.bPatchSupportRetractRequest 			:= FALSE;
+	GVL_HMI.stCommands.bPatchVerticalUpRequest 				:= FALSE;
+	GVL_HMI.stCommands.bPatchVerticalDownRequest 			:= FALSE;
+	GVL_HMI.stCommands.bPatchDispenseRequest				:= FALSE;
+	GVL_HMI.stCommands.bPatchAirBlowRequest 				:= FALSE;
+	GVL_HMI.stCommands.bPatchManualHomeRequest 				:= FALSE;
+	GVL_HMI.stCommands.bPatchManualRunSequence 				:= FALSE;
 
 
     // Heat Stake
-    GVL_HMI.stCommands.bHeatStakeManualEnable := FALSE;
-    GVL_HMI.stCommands.bHeatStakeManualStakePatch := FALSE;
-    GVL_HMI.stCommands.bHeatStakeManualUnlock := FALSE;
-    GVL_HMI.stCommands.bHeatStakeManualLock := FALSE;
-    GVL_HMI.stCommands.bHeatStakeManualHeadDown := FALSE;
-    GVL_HMI.stCommands.bHeatStakeManualHeadUp := FALSE;
-    GVL_HMI.stCommands.bHeatStakeManualSupportUp := FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualEnable 				:= FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualStakePatch 			:= FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualUnlock 				:= FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualLock 				:= FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualHeadDown 			:= FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualHeadUp 				:= FALSE;
+    GVL_HMI.stCommands.bHeatStakeManualSupportUp 			:= FALSE;
 
     // Vision
-	GVL_HMI.stCommands.bVisionManualEnable := FALSE;
-	GVL_HMI.stCommands.bVisionManualRunSequence := FALSE;
-	
-	GVL_HMI.stCommands.bVisionHorizontalBackRequest := FALSE;
-	GVL_HMI.stCommands.bVisionHorizontalFrontRequest := FALSE;;
-
-    GVL_HMI.stCommands.bVisionHorizontalBackRequest := FALSE;
-    GVL_HMI.stCommands.bVisionHorizontalFrontRequest := FALSE;
-
-    GVL_HMI.stCommands.bVisionVerticalUpRequest := FALSE;
-    GVL_HMI.stCommands.bVisionVerticalIntermediateRequest := FALSE;
-    GVL_HMI.stCommands.bVisionVerticalFullDownRequest := FALSE;
-
-    GVL_HMI.stCommands.bVisionGripOpenRequest := FALSE;
-    GVL_HMI.stCommands.bVisionGripCloseRequest := FALSE;
+	GVL_HMI.stCommands.bVisionManualEnable 					:= FALSE;
+	GVL_HMI.stCommands.bVisionManualRunSequence 			:= FALSE;
+	GVL_HMI.stCommands.bVisionHorizontalBackRequest 		:= FALSE;
+	GVL_HMI.stCommands.bVisionHorizontalFrontRequest 		:= FALSE;;
+    GVL_HMI.stCommands.bVisionHorizontalBackRequest 		:= FALSE;
+    GVL_HMI.stCommands.bVisionHorizontalFrontRequest 		:= FALSE;
+    GVL_HMI.stCommands.bVisionVerticalUpRequest 			:= FALSE;
+    GVL_HMI.stCommands.bVisionVerticalIntermediateRequest 	:= FALSE;
+    GVL_HMI.stCommands.bVisionVerticalFullDownRequest 		:= FALSE;
+    GVL_HMI.stCommands.bVisionGripOpenRequest 				:= FALSE;
+    GVL_HMI.stCommands.bVisionGripCloseRequest 				:= FALSE;
 	
 	// =====================================================
 	// PATCH DISPENSING - RESET PLC MANUAL COMMANDS
 	// =====================================================
 	
-	GVL_MASTER.stCommand.bPatchManualEnable := FALSE;
-	GVL_MASTER.stCommand.bPatchSupportExtendRequest := FALSE;
-	GVL_MASTER.stCommand.bPatchSupportRetractRequest := FALSE;
+	GVL_MASTER.stCommand.bPatchManualEnable 				:= FALSE;
+	GVL_MASTER.stCommand.bPatchSupportExtendRequest 		:= FALSE;
+	GVL_MASTER.stCommand.bPatchSupportRetractRequest 		:= FALSE;
 	
-	GVL_MASTER.stCommand.bPatchVerticalUpRequest := FALSE;
-	GVL_MASTER.stCommand.bPatchVerticalDownRequest := FALSE;
+	GVL_MASTER.stCommand.bPatchVerticalUpRequest 			:= FALSE;
+	GVL_MASTER.stCommand.bPatchVerticalDownRequest 			:= FALSE;
 	
-	GVL_MASTER.stCommand.bPatchDispenseRequest := FALSE;
-	GVL_MASTER.stCommand.bPatchAirBlowRequest := FALSE;
-	GVL_MASTER.stCommand.bPatchManualHomeRequest := FALSE;
-	GVL_MASTER.stCommand.bPatchManualRunSequence := FALSE;
+	GVL_MASTER.stCommand.bPatchDispenseRequest 				:= FALSE;
+	GVL_MASTER.stCommand.bPatchAirBlowRequest 				:= FALSE;
+	GVL_MASTER.stCommand.bPatchManualHomeRequest 			:= FALSE;
+	GVL_MASTER.stCommand.bPatchManualRunSequence 			:= FALSE;
 
-    GVL_HMI.stCommands.bVisionRotate0Request := FALSE;
-    GVL_HMI.stCommands.bVisionRotate180Request := FALSE;
+    GVL_HMI.stCommands.bVisionRotate0Request 				:= FALSE;
+    GVL_HMI.stCommands.bVisionRotate180Request 				:= FALSE;
 
-    GVL_HMI.stCommands.bVisionSupportExtendRequest := FALSE;
-	GVL_HMI.stCommands.bVisionManualHomeRequest := FALSE;
-	GVL_MASTER.stCommand.bVisionManualHomeRequest := FALSE;
+    GVL_HMI.stCommands.bVisionSupportExtendRequest 			:= FALSE;
+	GVL_HMI.stCommands.bVisionManualHomeRequest 			:= FALSE;
+	GVL_MASTER.stCommand.bVisionManualHomeRequest 			:= FALSE;
 
 
     // =====================================================
@@ -323,38 +318,33 @@ ELSE
     // =====================================================
 
     // Index
-    GVL_MASTER.stCommand.bIndexerManualEnable := FALSE;
-    GVL_MASTER.stCommand.bManualIndexForward := FALSE;
-    GVL_MASTER.stCommand.bManualIndexHome := FALSE;
-    GVL_MASTER.stCommand.bManualMainDoorUnlock := FALSE;
-	GVL_MASTER.stCommand.bManualMainDoorUnlock := FALSE;
+    GVL_MASTER.stCommand.bIndexerManualEnable 				:= FALSE;
+    GVL_MASTER.stCommand.bManualIndexForward 				:= FALSE;
+    GVL_MASTER.stCommand.bManualIndexHome 					:= FALSE;
+    GVL_MASTER.stCommand.bManualMainDoorUnlock 				:= FALSE;
+	GVL_MASTER.stCommand.bManualMainDoorUnlock 				:= FALSE;
 
     // Heat Stake
-    GVL_MASTER.stCommand.bHeatStakeManualEnable := FALSE;
-    GVL_MASTER.stCommand.bHeatStakeManualStakePatch := FALSE;
-    GVL_MASTER.stCommand.bHeatStakeManualUnlock := FALSE;
-    GVL_MASTER.stCommand.bHeatStakeManualLock := FALSE;
-    GVL_MASTER.stCommand.bHeatStakeManualHeadDown := FALSE;
-    GVL_MASTER.stCommand.bHeatStakeManualHeadUp := FALSE;
-    GVL_MASTER.stCommand.bHeatStakeManualSupportUp := FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualEnable 			:= FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualStakePatch 		:= FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualUnlock 			:= FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualLock 				:= FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualHeadDown 			:= FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualHeadUp 			:= FALSE;
+    GVL_MASTER.stCommand.bHeatStakeManualSupportUp 			:= FALSE;
 
     // Vision
-    GVL_MASTER.stCommand.bVisionManualEnable := FALSE;
-
-    GVL_MASTER.stCommand.bVisionHorizontalBackRequest := FALSE;
-    GVL_MASTER.stCommand.bVisionHorizontalFrontRequest := FALSE;
-
-    GVL_MASTER.stCommand.bVisionVerticalUpRequest := FALSE;
+    GVL_MASTER.stCommand.bVisionManualEnable 				:= FALSE;
+    GVL_MASTER.stCommand.bVisionHorizontalBackRequest 		:= FALSE;
+    GVL_MASTER.stCommand.bVisionHorizontalFrontRequest 		:= FALSE;
+    GVL_MASTER.stCommand.bVisionVerticalUpRequest 			:= FALSE;
     GVL_MASTER.stCommand.bVisionVerticalIntermediateRequest := FALSE;
-    GVL_MASTER.stCommand.bVisionVerticalFullDownRequest := FALSE;
-
-    GVL_MASTER.stCommand.bVisionGripOpenRequest := FALSE;
-    GVL_MASTER.stCommand.bVisionGripCloseRequest := FALSE;
-
-    GVL_MASTER.stCommand.bVisionRotate0Request := FALSE;
-    GVL_MASTER.stCommand.bVisionRotate180Request := FALSE;
-
-    GVL_MASTER.stCommand.bVisionSupportExtendRequest := FALSE;
+    GVL_MASTER.stCommand.bVisionVerticalFullDownRequest 	:= FALSE;
+    GVL_MASTER.stCommand.bVisionGripOpenRequest 			:= FALSE;
+    GVL_MASTER.stCommand.bVisionGripCloseRequest 			:= FALSE;
+    GVL_MASTER.stCommand.bVisionRotate0Request 				:= FALSE;
+    GVL_MASTER.stCommand.bVisionRotate180Request 			:= FALSE;
+    GVL_MASTER.stCommand.bVisionSupportExtendRequest 		:= FALSE;
 
 END_IF
 
