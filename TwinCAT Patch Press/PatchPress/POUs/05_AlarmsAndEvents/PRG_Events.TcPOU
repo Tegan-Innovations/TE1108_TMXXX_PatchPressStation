@@ -3,6 +3,7 @@
   <POU Name="PRG_Events" Id="{d91f2867-40c6-48eb-9107-f41ea1d35528}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_Events
 VAR
+    aWarningEvents : ARRAY[0..4, 0..100] OF BOOL;
 // 	sHeaterMinimum : STRING(32);
 // 	sHeaterCurrent : STRING(32);
     fbEventsManager : FB_EventsManager;
@@ -329,6 +330,78 @@ GVL_MASTER.stStationEvents[3].aEvents[24].sSolution :='Check heaters, thermocoup
 // -----------------------------------------------------------------------------
 // Run_Status FALSE cannot distinguish Setup from an unavailable camera.
 // Keep this visible until RUN returns; Reset must not hide an active condition.
+
+// Camera evaluation errors reject the product without a machine fault.
+GVL_MASTER.stStationEvents[3].aEvents[26].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[26].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[26].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[26].bPersistentMessage := FALSE;
+aWarningEvents[3, 26] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[26].bEventFlag :=
+    (PRG_Main.fbMachine.fbVSCamera.aInspectionError0[1] <> 0)
+    OR (PRG_Main.fbMachine.fbVSCamera.aInspectionError1[1] <> 0);
+GVL_MASTER.stStationEvents[3].aEvents[26].bEventText := 'Vision image 1: inspection FAIL';
+// Preserve error details while the warning awaits Reset, even after a new piece.
+IF GVL_MASTER.stStationEvents[3].aEvents[26].bEventFlag THEN
+    GVL_MASTER.stStationEvents[3].aEvents[26].sSolution := CONCAT('Camera Error0=', UDINT_TO_STRING(PRG_Main.fbMachine.fbVSCamera.aInspectionError0[1]));
+    GVL_MASTER.stStationEvents[3].aEvents[26].sSolution := CONCAT(GVL_MASTER.stStationEvents[3].aEvents[26].sSolution, ' Error1=');
+    GVL_MASTER.stStationEvents[3].aEvents[26].sSolution := CONCAT(GVL_MASTER.stStationEvents[3].aEvents[26].sSolution, UDINT_TO_STRING(PRG_Main.fbMachine.fbVSCamera.aInspectionError1[1]));
+END_IF
+
+GVL_MASTER.stStationEvents[3].aEvents[27].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[27].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[27].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[27].bPersistentMessage := FALSE;
+aWarningEvents[3, 27] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[27].bEventFlag :=
+    (PRG_Main.fbMachine.fbVSCamera.aInspectionError0[2] <> 0)
+    OR (PRG_Main.fbMachine.fbVSCamera.aInspectionError1[2] <> 0);
+GVL_MASTER.stStationEvents[3].aEvents[27].bEventText := 'Vision image 2: inspection FAIL';
+// Preserve error details while the warning awaits Reset, even after a new piece.
+IF GVL_MASTER.stStationEvents[3].aEvents[27].bEventFlag THEN
+    GVL_MASTER.stStationEvents[3].aEvents[27].sSolution := CONCAT('Camera Error0=', UDINT_TO_STRING(PRG_Main.fbMachine.fbVSCamera.aInspectionError0[2]));
+    GVL_MASTER.stStationEvents[3].aEvents[27].sSolution := CONCAT(GVL_MASTER.stStationEvents[3].aEvents[27].sSolution, ' Error1=');
+    GVL_MASTER.stStationEvents[3].aEvents[27].sSolution := CONCAT(GVL_MASTER.stStationEvents[3].aEvents[27].sSolution, UDINT_TO_STRING(PRG_Main.fbMachine.fbVSCamera.aInspectionError1[2]));
+END_IF
+
+GVL_MASTER.stStationEvents[3].aEvents[28].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[28].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[28].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[28].bPersistentMessage := FALSE;
+aWarningEvents[3, 28] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[28].bEventFlag :=
+    (PRG_Main.fbMachine.fbVSCamera.aInspectionError0[3] <> 0)
+    OR (PRG_Main.fbMachine.fbVSCamera.aInspectionError1[3] <> 0);
+GVL_MASTER.stStationEvents[3].aEvents[28].bEventText := 'Vision image 3: inspection FAIL';
+// Preserve error details while the warning awaits Reset, even after a new piece.
+IF GVL_MASTER.stStationEvents[3].aEvents[28].bEventFlag THEN
+    GVL_MASTER.stStationEvents[3].aEvents[28].sSolution := CONCAT('Camera Error0=', UDINT_TO_STRING(PRG_Main.fbMachine.fbVSCamera.aInspectionError0[3]));
+    GVL_MASTER.stStationEvents[3].aEvents[28].sSolution := CONCAT(GVL_MASTER.stStationEvents[3].aEvents[28].sSolution, ' Error1=');
+    GVL_MASTER.stStationEvents[3].aEvents[28].sSolution := CONCAT(GVL_MASTER.stStationEvents[3].aEvents[28].sSolution, UDINT_TO_STRING(PRG_Main.fbMachine.fbVSCamera.aInspectionError1[3]));
+END_IF
+
+GVL_MASTER.stStationEvents[3].aEvents[29].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[29].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[29].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[29].bPersistentMessage := FALSE;
+aWarningEvents[3, 29] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[29].bEventFlag :=
+    (PRG_Main.fbMachine.fbVSCamera.aInspectionError0[4] <> 0)
+    OR (PRG_Main.fbMachine.fbVSCamera.aInspectionError1[4] <> 0);
+GVL_MASTER.stStationEvents[3].aEvents[29].bEventText := 'Vision image 4: inspection FAIL';
+// Preserve error details while the warning awaits Reset, even after a new piece.
+IF GVL_MASTER.stStationEvents[3].aEvents[29].bEventFlag THEN
+    GVL_MASTER.stStationEvents[3].aEvents[29].sSolution := CONCAT('Camera Error0=', UDINT_TO_STRING(PRG_Main.fbMachine.fbVSCamera.aInspectionError0[4]));
+    GVL_MASTER.stStationEvents[3].aEvents[29].sSolution := CONCAT(GVL_MASTER.stStationEvents[3].aEvents[29].sSolution, ' Error1=');
+    GVL_MASTER.stStationEvents[3].aEvents[29].sSolution := CONCAT(GVL_MASTER.stStationEvents[3].aEvents[29].sSolution, UDINT_TO_STRING(PRG_Main.fbMachine.fbVSCamera.aInspectionError1[4]));
+END_IF
+
+// Recovery failure is an equipment problem, not an accepted product verdict.
+GVL_MASTER.stStationEvents[3].aEvents[30].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[30].bEventFlag := PRG_Main.fbMachine.fbVSCamera.bRecoveryFailed;
+GVL_MASTER.stStationEvents[3].aEvents[30].bEventText := 'Vision camera recovery failed after inspection error';
+GVL_MASTER.stStationEvents[3].aEvents[30].sSolution := 'Check camera RUN, error codes and trigger readiness; restore camera and reset machine.';
+
 GVL_MASTER.stStationEvents[3].aEvents[25].bFault := FALSE;
 GVL_MASTER.stStationEvents[3].aEvents[25].bCycleStopRequest := FALSE;
 GVL_MASTER.stStationEvents[3].aEvents[25].bMessage := TRUE;
@@ -485,7 +558,8 @@ GVL_MASTER.stStationEvents[1].aEvents[0].bEventText := GVL_MASTER.stStatus.sAuto
 GVL_MASTER.stStationEvents[1].aEvents[0].sSolution := 'Commission Patch Dispense, Heat Stake and Vision stations';
 
 
-fbEventsManager(	bPulse := TRUE, 
+fbEventsManager(	aWarningEvents := aWarningEvents,
+                    bPulse := TRUE,
 					bDataWritedInCSV := FALSE, 
 					nArraySize := 4, 
 					bMachineMessage := GVL_MASTER.stStatus.sMachineMessage, 

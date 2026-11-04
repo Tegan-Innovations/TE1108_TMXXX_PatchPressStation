@@ -502,7 +502,12 @@ fbHeatStakeTemperature.Cyclic(
 
 //Camera
 //---------------------------------------------------------------------------------------------------
-fbVSCamera(stCameraIO := GVL_EtherCAT.stVSKeyenceCamera);
+fbVSCamera(
+    stCameraIO := GVL_EtherCAT.stVSKeyenceCamera,
+    udiError0Code := GVL_EtherCAT.udiVisionError0Code,
+    udiError1Code := GVL_EtherCAT.udiVisionError1Code,
+    bResetRequest := stCommand.bReset
+);
 bVisionGetCurrentProgram := fbVSCamera.GetCurrentProgram();
 
 // Reset the accumulated payload before sampling any result in the new cycle.

@@ -13083,6 +13083,8 @@ Submodule Info: Writes data to VS
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bReset" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[1]^Reset"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bResultAck" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Result_Ack"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bTrigger" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[0]^Trigger"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.udiVisionError0Code" VarB="API^Term 3 (Assignable Status)^Subterm 5 (Assignable Status)^Inputs^Error0 Code"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.udiVisionError1Code" VarB="API^Term 3 (Assignable Status)^Subterm 5 (Assignable Status)^Inputs^Error1 Code"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

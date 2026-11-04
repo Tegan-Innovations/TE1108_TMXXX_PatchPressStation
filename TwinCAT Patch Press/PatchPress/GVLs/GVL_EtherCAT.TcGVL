@@ -33,6 +33,9 @@ VAR_GLOBAL
 	
 	stVSKeyenceCamera	: ST_VS_Keyence_Camera;
 	
+    // PROFINET Assignable Status, appended separately to preserve camera DUT.
+    udiVisionError0Code AT %I* : UDINT;
+    udiVisionError1Code AT %I* : UDINT;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

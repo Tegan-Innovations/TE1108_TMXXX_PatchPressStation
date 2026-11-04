@@ -3,6 +3,21 @@
   <POU Name="FB_VSCamera" Id="{328e316d-dc5d-43ae-96a6-2d990b1fabfb}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_VSCamera
 
+VAR_INPUT
+    // Separate mapped status words; existing camera DUT/layout is preserved.
+    udiError0Code : UDINT;
+    udiError1Code : UDINT;
+    bResetRequest : BOOL;
+END_VAR
+
+VAR_OUTPUT
+    aInspectionError0 : ARRAY[1..4] OF UDINT;
+    aInspectionError1 : ARRAY[1..4] OF UDINT;
+    bInspectionErrorLatched : BOOL;
+    bRecoveryFailed : BOOL;
+    sInspectionDiagnostic : STRING(120);
+END_VAR
+
 VAR_IN_OUT
 	
 	stCameraIO				: ST_VS_Keyence_Camera;
@@ -27,6 +42,18 @@ VAR
     nResultProgram : UDINT;
     uiCapturedInspection : UINT;
 END_VAR
+
+VAR
+    bRecoverInspection : BOOL;
+    bInspectionFailureForTrigger : BOOL;
+    bKnownInspectionError : BOOL;
+    bClearError0 : BOOL;
+    bClearError1 : BOOL;
+    udiRecoveryError0 : UDINT;
+    udiRecoveryError1 : UDINT;
+    tonInspectionRecovery : TON;
+    uiErrorIndex : UINT;
+END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -41,6 +68,70 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Cyclic := FALSE;
+stCameraIO.abErrorClear[1] := FALSE;
+stCameraIO.abErrorClear[2] := FALSE;
+tonInspectionRecovery(
+    IN := (bRecoverInspection OR (usiTriggerHandshake = 35)) AND bTriggerRequestActive,
+    PT := T#2S
+);
+
+IF bResetRequest THEN
+    bRecoverInspection := FALSE;
+    bRecoveryFailed := FALSE;
+    tonInspectionRecovery(IN := FALSE);
+    RETURN;
+END_IF
+
+IF usiTriggerHandshake = 35 THEN
+    // Never clear an unidentified error. Use the same bounded recovery budget.
+    IF NOT stCameraIO.bRunStatus
+        OR (stCameraIO.bCurrentProgramNumber <> nTriggerProgram)
+        OR tonInspectionRecovery.Q
+    THEN
+        bRecoveryFailed := TRUE;
+        usiTriggerHandshake := 30;
+        sTriggerDiagnostic := 'Camera: capture error code unavailable/unsupported - check PLC error-code mapping';
+    END_IF
+    RETURN;
+END_IF
+
+IF bRecoverInspection THEN
+    // Stop clearing on mode/program loss, a changed error, or recovery timeout.
+    IF NOT stCameraIO.bRunStatus
+        OR (stCameraIO.bCurrentProgramNumber <> nResultProgram)
+        OR (stCameraIO.abError[1]
+            AND (NOT bClearError0 OR (udiError0Code <> udiRecoveryError0)))
+        OR (stCameraIO.abError[2]
+            AND (NOT bClearError1 OR (udiError1Code <> udiRecoveryError1)))
+        OR tonInspectionRecovery.Q
+    THEN
+        bRecoverInspection := FALSE;
+        bRecoveryFailed := TRUE;
+        usiTriggerHandshake := 30;
+        sTriggerDiagnostic := 'Camera: inspection error recovery failed - intervention required';
+    ELSE
+        // One bounded clear operation; no reset, retrigger or program override.
+        stCameraIO.abErrorClear[1] := bClearError0 AND stCameraIO.abError[1];
+        stCameraIO.abErrorClear[2] := bClearError1 AND stCameraIO.abError[2];
+        IF stCameraIO.bResultsReady THEN
+            stCameraIO.bResultAck := TRUE;
+        END_IF
+        IF NOT stCameraIO.abError[1] AND NOT stCameraIO.abError[2]
+            AND NOT stCameraIO.bResultsReady
+            AND NOT stCameraIO.bTriggerAcknowledge
+            AND stCameraIO.bTriggerReady
+        THEN
+            bRecoverInspection := FALSE;
+            bResultAccepted := TRUE;
+            usiTriggerHandshake := 20;
+            sTriggerDiagnostic := 'Camera: recovered - failed inspection ready for PLC consumption';
+        END_IF
+    END_IF
+    RETURN;
+END_IF
+
+IF bRecoveryFailed THEN RETURN; END_IF
+
 // Capture payload in the same scan that observes an accepted result.
 // The pending snapshot survives a falling raw Result Ready until PLC consumption.
 IF stCameraIO.bResultsReady
@@ -213,6 +304,16 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF bResetResults THEN
     stCapturedVisionResults := stEmptyVisionResults;
+    FOR uiErrorIndex := 1 TO 4 DO
+        aInspectionError0[uiErrorIndex] := 0;
+        aInspectionError1[uiErrorIndex] := 0;
+    END_FOR
+    bInspectionErrorLatched := FALSE;
+    sInspectionDiagnostic := '';
+    bRecoverInspection := FALSE;
+    bRecoveryFailed := FALSE;
+    bInspectionFailureForTrigger := FALSE;
+    tonInspectionRecovery(IN := FALSE);
     bResultPending := FALSE;
     bResultAccepted := FALSE;
     bResultRead := FALSE;
@@ -367,11 +468,93 @@ END_VAR]]></Declaration>
         <ST><![CDATA[RequestTrigger := FALSE;
 bTriggerRequestActive := bEnable;
 
+IF bResetRequest THEN
+    stCameraIO.bTrigger := FALSE;
+    usiTriggerHandshake := 0;
+    bRecoverInspection := FALSE;
+    bRecoveryFailed := FALSE;
+    bInspectionFailureForTrigger := FALSE;
+    RETURN;
+END_IF
+
 IF NOT bEnable THEN
+    bRecoverInspection := FALSE;
+    bInspectionFailureForTrigger := FALSE;
     stCameraIO.bTrigger := FALSE;
     usiTriggerHandshake := 0;
     bResultCapturedForTrigger := FALSE;
     sTriggerDiagnostic := 'Camera: no trigger request';
+    RETURN;
+END_IF
+
+// Only a new, identified tool-evaluation error from our accepted capture
+// may become product FAIL. A pre-existing/unknown error is never auto-cleared.
+bKnownInspectionError :=
+    (stCameraIO.abError[1] OR stCameraIO.abError[2])
+    AND (NOT stCameraIO.abError[1]
+        OR (udiError0Code = 10130) OR (udiError0Code = 40008))
+    AND (NOT stCameraIO.abError[2]
+        OR (udiError1Code = 10130) OR (udiError1Code = 40008));
+
+// Error status and assignable error code may be observed in different scans.
+// Preserve an acknowledged capture while its numeric error is identified.
+IF NOT bRecoverInspection AND NOT bRecoveryFailed
+    AND NOT bInspectionFailureForTrigger
+    AND ((usiTriggerHandshake = 20)
+        OR ((usiTriggerHandshake = 10) AND stCameraIO.bTriggerAcknowledge))
+    AND stCameraIO.bRunStatus
+    AND (stCameraIO.bCurrentProgramNumber = nTriggerProgram)
+    AND (nTriggerProgram <= 3)
+    AND NOT bResultRead
+    AND (stCameraIO.abError[1] OR stCameraIO.abError[2])
+    AND NOT bKnownInspectionError
+THEN
+    usiTriggerHandshake := 35;
+    bResultAccepted := FALSE;
+    stCameraIO.bTrigger := FALSE;
+    sTriggerDiagnostic := 'Camera: acknowledged capture error - waiting for numeric error code';
+END_IF
+
+IF NOT bRecoverInspection AND NOT bRecoveryFailed
+    AND NOT bInspectionFailureForTrigger
+    AND ((usiTriggerHandshake = 20) OR (usiTriggerHandshake = 35)
+        OR ((usiTriggerHandshake = 10) AND stCameraIO.bTriggerAcknowledge))
+    AND stCameraIO.bRunStatus
+    AND (stCameraIO.bCurrentProgramNumber = nTriggerProgram)
+    AND (nTriggerProgram <= 3)
+    AND NOT bResultRead
+    AND bKnownInspectionError
+THEN
+    uiCapturedInspection := UDINT_TO_UINT(nTriggerProgram) + 1;
+    udiRecoveryError0 := 0;
+    udiRecoveryError1 := 0;
+    bClearError0 := stCameraIO.abError[1];
+    bClearError1 := stCameraIO.abError[2];
+    IF bClearError0 THEN udiRecoveryError0 := udiError0Code; END_IF
+    IF bClearError1 THEN udiRecoveryError1 := udiError1Code; END_IF
+    aInspectionError0[uiCapturedInspection] := udiRecoveryError0;
+    aInspectionError1[uiCapturedInspection] := udiRecoveryError1;
+    bInspectionErrorLatched := TRUE;
+    sInspectionDiagnostic := CONCAT('Vision image ', UINT_TO_STRING(uiCapturedInspection));
+    sInspectionDiagnostic := CONCAT(sInspectionDiagnostic, ' / program ');
+    sInspectionDiagnostic := CONCAT(sInspectionDiagnostic, UDINT_TO_STRING(nTriggerProgram));
+    sInspectionDiagnostic := CONCAT(sInspectionDiagnostic, ': evaluation error - product FAIL');
+
+    // Retain earlier verdicts; never parse OCR/tool bits from an invalid image.
+    stCapturedVisionResults.aInspectionCompleted[uiCapturedInspection] := TRUE;
+    stCapturedVisionResults.aInspectionPassed[uiCapturedInspection] := FALSE;
+    nResultProgram := nTriggerProgram;
+    bResultPending := TRUE;
+    bResultAccepted := FALSE;
+    bResultRead := FALSE;
+    bResultCapturedForTrigger := TRUE;
+    bInspectionFailureForTrigger := TRUE;
+    bRecoverInspection := TRUE;
+    usiTriggerHandshake := 40;
+END_IF
+
+IF bRecoverInspection OR bRecoveryFailed OR (usiTriggerHandshake = 35) THEN
+    stCameraIO.bTrigger := FALSE;
     RETURN;
 END_IF
 

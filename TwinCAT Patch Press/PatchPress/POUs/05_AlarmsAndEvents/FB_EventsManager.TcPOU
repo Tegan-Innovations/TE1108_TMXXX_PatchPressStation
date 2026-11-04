@@ -3,6 +3,8 @@
   <POU Name="FB_EventsManager" Id="{9ecba55d-bb6b-489e-b76b-d005a96f9d84}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_EventsManager
 VAR_INPUT
+    // Presentation-only warning classification; does not request Fault/Stop.
+    aWarningEvents : ARRAY[0..4, 0..100] OF BOOL;
 	bPulse					: BOOL;
 	bDataWritedInCSV		: BOOL;
 	nArraySize				: DINT;
@@ -18,6 +20,7 @@ VAR_OUTPUT
 	astEventsHistory		: ARRAY[0..200] OF ST_EventsHistory;
 END_VAR
 VAR
+    aWarningConditionSeen : ARRAY[0..4, 0..100] OF BOOL;
 	i								: ARRAY [0..1] OF DINT;
 	j								: ARRAY [0..1] OF DINT;
 	m								: ARRAY [0..3] OF DINT;
@@ -340,6 +343,42 @@ IF bPulse THEN
             //
             // bActive is not used as an operator-reset latch for Messages.
             // =================================================================
+
+            // Resettable warnings use the existing Alert icon (abType=2).
+            // The raw condition rearms history; bActive retains display until Reset.
+            // Acknowledging a held condition must not re-create the warning.
+            ELSIF aWarningEvents[k[0], k[1]] THEN
+
+                IF stStationEvents[k[0]].aEvents[k[1]].bEventFlag
+                    AND NOT aWarningConditionSeen[k[0], k[1]]
+                THEN
+                    FOR n := 200 TO 1 BY -1 DO
+                        astEventsHistory[n] := astEventsHistory[n - 1];
+                    END_FOR
+                    astEventsHistory[0].sEventTex :=
+                        stStationEvents[k[0]].aEvents[k[1]].bEventTextHMI;
+                    astEventsHistory[0].sType := 'Warning';
+                    astEventsHistory[0].abType := 2;
+                    astEventsHistory[0].sDate := sSystemDate;
+                    astEventsHistory[0].sTime := sSystemTime;
+                    stStationEvents[k[0]].aEvents[k[1]].bActive := TRUE;
+                END_IF
+
+                aWarningConditionSeen[k[0], k[1]] :=
+                    stStationEvents[k[0]].aEvents[k[1]].bEventFlag;
+                IF bResetFaults THEN
+                    stStationEvents[k[0]].aEvents[k[1]].bActive := FALSE;
+                END_IF
+
+                IF stStationEvents[k[0]].aEvents[k[1]].bActive AND (l < 50) THEN
+                    l := l + 1;
+                    astActiveEvents[l].sEventTex :=
+                        stStationEvents[k[0]].aEvents[k[1]].bEventTextHMI;
+                    astActiveEvents[l].sType := 'Warning';
+                    astActiveEvents[l].abType := 2;
+                    astActiveEvents[l].sSolution :=
+                        stStationEvents[k[0]].aEvents[k[1]].sSolution;
+                END_IF
 
             ELSIF stStationEvents[k[0]].aEvents[k[1]].bMessage THEN
 
