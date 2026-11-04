@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_PatchFeedManager" Id="{63bac0a0-ffe9-42a5-88d8-57a1b9d5c832}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PatchFeedManager
+VAR_OUTPUT
+    stStatus : ST_PatchFeedStatus;
+END_VAR
+VAR
+    fbDriveMotor : FB_PatchFeedAxis;
+    fbPatchFeedRoll : FB_PatchFeedAxis;
+    fbWasteRoll : FB_PatchFeedAxis;
+    bWasteRun : BOOL;
+    bPatchFeedRun : BOOL;
+    bFaultLatched : BOOL;
+    udiFaultId : UDINT;
+    bResetPending : BOOL;
+    tonWasteRun : TON;
+    tonPatchFeedRun : TON;
+    tonReset : TON;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{0f9a309c-47dc-4569-8586-67d4afbe2f66}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bPermit : BOOL;
+    bSafetyOk : BOOL;
+    bReset : BOOL;
+    bMiddleDown : BOOL;
+    bMiddleUp : BOOL;
+    bTopDown : BOOL;
+    bTopUp : BOOL;
+    bPatchFeedStart : BOOL; // Term19 Input14
+    bPatchFeedStop : BOOL; // Term19 Input13; stop has priority
+    stSettings : ST_PatchFeedSettings;
+END_VAR
+VAR_IN_OUT
+    stDriveMotor : ST_Axis;
+    stPatchFeedRoll : ST_Axis;
+    stWasteRoll : ST_Axis;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// A run latch bridges the gap between DOWN and UP rocker sensors.
+IF bReset THEN
+    bFaultLatched := FALSE;
+    udiFaultId := 0;
+    bResetPending := stDriveMotor.bError OR stPatchFeedRoll.bError OR stWasteRoll.bError;
+END_IF
+IF NOT bPermit OR NOT bSafetyOk OR NOT stSettings.bWasteRollConfigured
+    OR bFaultLatched OR bResetPending OR bReset THEN
+    bWasteRun := FALSE;
+ELSIF bMiddleDown OR bTopDown THEN
+    bWasteRun := TRUE;
+ELSIF NOT bMiddleDown AND NOT bTopDown AND (bMiddleUp OR bTopUp) THEN
+    bWasteRun := FALSE;
+END_IF
+
+// M2 has its own demand latch. Stop wins if Input13 and Input14 overlap.
+IF NOT bPermit OR NOT bSafetyOk OR bFaultLatched OR bResetPending OR bReset
+    OR bPatchFeedStop THEN
+    bPatchFeedRun := FALSE;
+ELSIF bPatchFeedStart THEN
+    bPatchFeedRun := TRUE;
+END_IF
+
+// M1 remains monitor-only until its sensor policy is specified.
+fbDriveMotor.Cyclic(stAxis := stDriveMotor, bControlRequest := FALSE,
+    bSafetyOk := bSafetyOk, bRunVelocity := FALSE, bReset := bReset,
+    lrVelocity := stSettings.lrDriveMotorVelocity, eDirection := MC_Positive_Direction,
+    stSettings := stSettings);
+fbPatchFeedRoll.Cyclic(stAxis := stPatchFeedRoll,
+    bControlRequest := bPermit AND bSafetyOk AND NOT bFaultLatched
+        AND NOT bResetPending AND NOT bReset AND NOT fbDriveMotor.bFault AND NOT stWasteRoll.bError,
+    bSafetyOk := bSafetyOk, bRunVelocity := bPatchFeedRun, bReset := bReset,
+    lrVelocity := stSettings.lrPatchFeedRollVelocity, eDirection := MC_Positive_Direction,
+    stSettings := stSettings);
+// Do not start M3 when a peer axis has just reported a fault.
+IF NOT bResetPending AND NOT bReset AND (fbDriveMotor.bFault OR fbPatchFeedRoll.bFault) THEN
+    bFaultLatched := TRUE;
+    IF fbDriveMotor.bFault THEN udiFaultId := fbDriveMotor.udiErrorId;
+    ELSE udiFaultId := fbPatchFeedRoll.udiErrorId; END_IF
+END_IF
+fbWasteRoll.Cyclic(stAxis := stWasteRoll,
+    bControlRequest := bPermit AND bSafetyOk AND stSettings.bWasteRollConfigured
+        AND NOT bFaultLatched AND NOT bResetPending AND NOT bReset,
+    bSafetyOk := bSafetyOk, bRunVelocity := bWasteRun, bReset := bReset,
+    lrVelocity := stSettings.lrWasteRollVelocity, eDirection := stSettings.eWasteRollDirection,
+    stSettings := stSettings);
+
+tonWasteRun(IN := bWasteRun AND stWasteRoll.bOperational,
+    PT := stSettings.tWasteRollRunTimeout);
+tonPatchFeedRun(IN := bPatchFeedRun AND stPatchFeedRoll.bOperational,
+    PT := stSettings.tPatchFeedRollRunTimeout);
+tonReset(IN := bResetPending, PT := stSettings.tPowerTimeout);
+IF bResetPending THEN
+    IF NOT fbDriveMotor.bFault AND NOT fbPatchFeedRoll.bFault AND NOT fbWasteRoll.bFault
+        AND NOT fbDriveMotor.bResetBusy AND NOT fbPatchFeedRoll.bResetBusy AND NOT fbWasteRoll.bResetBusy THEN
+        bResetPending := FALSE;
+    ELSIF tonReset.Q THEN
+        bResetPending := FALSE;
+        bFaultLatched := TRUE;
+        udiFaultId := 1102; // Operator reset did not complete.
+    END_IF
+ELSIF fbDriveMotor.bFault OR fbPatchFeedRoll.bFault OR fbWasteRoll.bFault OR tonWasteRun.Q OR tonPatchFeedRun.Q THEN
+    bFaultLatched := TRUE;
+    IF tonPatchFeedRun.Q THEN udiFaultId := 1103;
+    ELSIF tonWasteRun.Q THEN udiFaultId := 1101;
+    ELSIF fbDriveMotor.bFault THEN udiFaultId := fbDriveMotor.udiErrorId;
+    ELSIF fbPatchFeedRoll.bFault THEN udiFaultId := fbPatchFeedRoll.udiErrorId;
+    ELSE udiFaultId := fbWasteRoll.udiErrorId; END_IF
+END_IF
+IF bFaultLatched THEN
+    bWasteRun := FALSE;
+    bPatchFeedRun := FALSE;
+END_IF
+
+stStatus.bPermitted := bPermit AND bSafetyOk;
+stStatus.bConfigured := stSettings.bWasteRollConfigured;
+stStatus.bWasteRollDemand := bWasteRun;
+stStatus.bPatchFeedRollDemand := bPatchFeedRun;
+stStatus.bBusy := fbWasteRoll.bBusy OR fbPatchFeedRoll.bBusy OR bResetPending;
+stStatus.bResetPending := bResetPending;
+stStatus.bFault := bFaultLatched;
+stStatus.udiErrorId := udiFaultId;
+IF NOT stSettings.bWasteRollConfigured THEN
+    stStatus.sDiagnostic := 'Patch feeding: confirm Waste Roll direction, scale and dynamics';
+ELSIF bFaultLatched THEN
+    IF udiFaultId = 1103 THEN
+        stStatus.sDiagnostic := 'M2 Patch Feed Roll: Input13 not reached - run timeout';
+    ELSE
+        stStatus.sDiagnostic := 'Patch feeding: axis fault or rocker timeout - check motor diagnostics';
+    END_IF
+ELSIF bResetPending THEN
+    stStatus.sDiagnostic := 'Patch feeding: operator reset pending';
+ELSIF NOT stStatus.bPermitted THEN
+    stStatus.sDiagnostic := 'Patch feeding: inactive - waiting for operating permissives';
+ELSIF bPatchFeedRun THEN
+    stStatus.sDiagnostic := 'Patch feeding: M2 feeding toward Input13';
+ELSIF bWasteRun THEN
+    stStatus.sDiagnostic := 'Patch feeding: Waste Roll adjusting rocker position';
+ELSE
+    stStatus.sDiagnostic := 'Patch feeding: M2/M3 ready; M1 sensor rules pending';
+END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

@@ -220,8 +220,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bReady%/s%",
     "actions": [
@@ -294,8 +293,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -365,8 +363,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bBusy%/s%",
     "actions": [
@@ -439,8 +436,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -510,8 +506,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bFault%/s%",
     "actions": [
@@ -584,8 +579,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -974,8 +968,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bControlEnabled%/s%",
     "actions": [
@@ -1048,8 +1041,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -1112,8 +1104,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bHeating%/s%",
     "actions": [
@@ -1186,8 +1177,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -1250,8 +1240,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bAtTemperature%/s%",
     "actions": [
@@ -1324,8 +1313,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -1388,8 +1376,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bFault%/s%",
     "actions": [
@@ -1462,8 +1449,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -1526,8 +1512,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bIndexTemperatureReady%/s%",
     "actions": [
@@ -1600,8 +1585,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"

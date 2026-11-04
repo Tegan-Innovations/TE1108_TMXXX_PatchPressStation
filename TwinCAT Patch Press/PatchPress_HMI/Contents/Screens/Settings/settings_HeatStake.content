@@ -1,24 +1,13 @@
-<div id="HeatStakeSettings" data-tchmi-type="TcHmi.Controls.System.TcHmiContent"
- data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480"
- data-tchmi-zindex="5">
+<div id="HeatStakeSettings" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480" data-tchmi-zindex="5">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "None"
 }
-</script><div id="HeatStakeSettings_Header" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="8" data-tchmi-top-unit="px"
- data-tchmi-width="1040" data-tchmi-width-unit="px" data-tchmi-height="34" data-tchmi-height-unit="px"
- data-tchmi-text="HEAT STAKE - TEMPERATURE SETTINGS | DIAGNOSTICS"
- data-tchmi-text-font-size="22" data-tchmi-text-font-weight="Bold"
- data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="33"></div>
+</script><div id="HeatStakeSettings_Header" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="8" data-tchmi-top-unit="px" data-tchmi-width="1040" data-tchmi-width-unit="px" data-tchmi-height="34" data-tchmi-height-unit="px" data-tchmi-text="HEAT STAKE - TEMPERATURE SETTINGS | DIAGNOSTICS" data-tchmi-text-font-size="22" data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="33"></div>
 
 
 
-<div id="Panel_PIDSettings" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer"
- data-tchmi-left="370" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px"
- data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="410" data-tchmi-height-unit="px"
- data-tchmi-zindex="9" data-tchmi-is-enabled="True">
+<div id="Panel_PIDSettings" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-left="370" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-height="410" data-tchmi-height-unit="px" data-tchmi-zindex="9" data-tchmi-is-enabled="True">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {"left":2,"right":2,"top":2,"bottom":2,"leftUnit":"px","rightUnit":"px","topUnit":"px","bottomUnit":"px"}
 </script>
@@ -42,18 +31,8 @@
   "color": "None"
 }
 </script>
-<div id="Panel_PIDSettings_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="3" data-tchmi-left-unit="px" data-tchmi-top="6" data-tchmi-top-unit="px"
- data-tchmi-width="290" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px"
- data-tchmi-text="PID / OUTPUT SETTINGS" data-tchmi-text-font-size="18"
- data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Center"
- data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
-<div id="Lbl_PID_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Kp" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
+<div id="Panel_PIDSettings_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="3" data-tchmi-left-unit="px" data-tchmi-top="6" data-tchmi-top-unit="px" data-tchmi-width="290" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-text="PID / OUTPUT SETTINGS" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_PID_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Kp" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
 <div id="Num_PID_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px" data-tchmi-width="95" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-decimal-digits="2" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-horizontal-alignment="Center" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rKp|BindingMode=TwoWay%/s%" data-tchmi-zindex="29" data-tchmi-min-value="0.0" data-tchmi-max-value="20.0" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
@@ -66,18 +45,8 @@
 ]
 </script>
 </div>
-<div id="Lbl_Tn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="79" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Tn" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
-<div id="Time_Tn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput"
- data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="79" data-tchmi-top-unit="px"
- data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTn|BindingMode=TwoWay%/s%"
- data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True"
- data-tchmi-zindex="29" data-tchmi-value-font-size="16">
+<div id="Lbl_Tn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="79" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Tn" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
+<div id="Time_Tn" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="79" data-tchmi-top-unit="px" data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTn|BindingMode=TwoWay%/s%" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-zindex="29" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
   {"accessright":"operate","group":"Administrator","permission":"Allow"},
@@ -89,18 +58,8 @@
 ]
 </script>
 </div>
-<div id="Lbl_Tv" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="113" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Tv" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
-<div id="Time_Tv" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput"
- data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="113" data-tchmi-top-unit="px"
- data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTv|BindingMode=TwoWay%/s%"
- data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True"
- data-tchmi-zindex="29" data-tchmi-value-font-size="16">
+<div id="Lbl_Tv" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="113" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Tv" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
+<div id="Time_Tv" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="113" data-tchmi-top-unit="px" data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTv|BindingMode=TwoWay%/s%" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-zindex="29" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
   {"accessright":"operate","group":"Administrator","permission":"Allow"},
@@ -112,18 +71,8 @@
 ]
 </script>
 </div>
-<div id="Lbl_Td" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="147" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Td" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
-<div id="Time_Td" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput"
- data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="147" data-tchmi-top-unit="px"
- data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTd|BindingMode=TwoWay%/s%"
- data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True"
- data-tchmi-zindex="29" data-tchmi-value-font-size="16">
+<div id="Lbl_Td" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="147" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Td" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
+<div id="Time_Td" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="147" data-tchmi-top-unit="px" data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tTd|BindingMode=TwoWay%/s%" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-zindex="29" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
   {"accessright":"operate","group":"Administrator","permission":"Allow"},
@@ -135,18 +84,8 @@
 ]
 </script>
 </div>
-<div id="Lbl_CtrlCycle" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="181" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Controller Cycle" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
-<div id="Time_CtrlCycle" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput"
- data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="181" data-tchmi-top-unit="px"
- data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tControllerCycle|BindingMode=TwoWay%/s%"
- data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True"
- data-tchmi-zindex="29" data-tchmi-value-font-size="16">
+<div id="Lbl_CtrlCycle" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="181" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Controller Cycle" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
+<div id="Time_CtrlCycle" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTimespanInput" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="181" data-tchmi-top-unit="px" data-tchmi-width="115" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.tControllerCycle|BindingMode=TwoWay%/s%" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-zindex="29" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
   {"accessright":"operate","group":"Administrator","permission":"Allow"},
@@ -158,12 +97,7 @@
 ]
 </script>
 </div>
-<div id="Lbl_OutMin" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="229" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Output Min" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
+<div id="Lbl_OutMin" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="229" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Output Min" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
 <div id="Num_OutMin" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="229" data-tchmi-top-unit="px" data-tchmi-width="95" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-decimal-digits="1" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-horizontal-alignment="Center" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMinPercent|BindingMode=TwoWay%/s%" data-tchmi-zindex="29" data-tchmi-min-value="0" data-tchmi-max-value="100" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
@@ -176,18 +110,8 @@
 ]
 </script>
 </div>
-<div id="Unit_OutMin" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="250" data-tchmi-left-unit="px" data-tchmi-top="229" data-tchmi-top-unit="px"
- data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="%" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_OutMax" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="263" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Output Max" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
+<div id="Unit_OutMin" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="250" data-tchmi-left-unit="px" data-tchmi-top="229" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="%" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_OutMax" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="263" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Output Max" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
 <div id="Num_OutMax" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="150" data-tchmi-left-unit="px" data-tchmi-top="263" data-tchmi-top-unit="px" data-tchmi-width="95" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-decimal-digits="1" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-horizontal-alignment="Center" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stCommands.stHeatStakeTemperatureSettings.rOutputMaxPercent|BindingMode=TwoWay%/s%" data-tchmi-zindex="29" data-tchmi-min-value="0" data-tchmi-max-value="100" data-tchmi-value-font-size="16">
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
@@ -200,30 +124,10 @@
 ]
 </script>
 </div>
-<div id="Unit_OutMax" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="250" data-tchmi-left-unit="px" data-tchmi-top="263" data-tchmi-top-unit="px"
- data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="%" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_SafeLimit" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="308" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Safe OT Limit" data-tchmi-text-font-weight="Bold"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
-<div id="Unit_SafeLimit" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="250" data-tchmi-left-unit="px" data-tchmi-top="308" data-tchmi-top-unit="px"
- data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="°C" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_SafeLimitNote" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="338" data-tchmi-top-unit="px"
- data-tchmi-width="266" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="TwinSAFE fixed - not editable" data-tchmi-text-font-size="13" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
+<div id="Unit_OutMax" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="250" data-tchmi-left-unit="px" data-tchmi-top="263" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="%" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_SafeLimit" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="308" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Safe OT Limit" data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24" data-tchmi-text-font-size="15"></div>
+<div id="Unit_SafeLimit" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="250" data-tchmi-left-unit="px" data-tchmi-top="308" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="°C" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_SafeLimitNote" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="14" data-tchmi-left-unit="px" data-tchmi-top="338" data-tchmi-top-unit="px" data-tchmi-width="266" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="TwinSAFE fixed - not editable" data-tchmi-text-font-size="13" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
 <div id="TcHmiRectangle_108" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="400" data-tchmi-height-unit="px" data-tchmi-left="3" data-tchmi-left-unit="px" data-tchmi-top="3" data-tchmi-top-unit="px" data-tchmi-width="290" data-tchmi-width-unit="px" data-tchmi-zindex="3">
 <script data-tchmi-target-attribute="data-tchmi-stroke-color" type="application/json">
 {
@@ -292,10 +196,7 @@
 </div>
 </div>
 
-<div id="Panel_LiveStatus" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer"
- data-tchmi-left="690" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px"
- data-tchmi-width="370" data-tchmi-width-unit="px" data-tchmi-height="410" data-tchmi-height-unit="px"
- data-tchmi-zindex="9" data-tchmi-is-enabled="True">
+<div id="Panel_LiveStatus" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-left="690" data-tchmi-left-unit="px" data-tchmi-top="50" data-tchmi-top-unit="px" data-tchmi-width="370" data-tchmi-width-unit="px" data-tchmi-height="410" data-tchmi-height-unit="px" data-tchmi-zindex="9" data-tchmi-is-enabled="True">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {"left":2,"right":2,"top":2,"bottom":2,"leftUnit":"px","rightUnit":"px","topUnit":"px","bottomUnit":"px"}
 </script>
@@ -319,106 +220,26 @@
   "color": "None"
 }
 </script>
-<div id="Panel_LiveStatus_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="3" data-tchmi-left-unit="px" data-tchmi-top="6" data-tchmi-top-unit="px"
- data-tchmi-width="360" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px"
- data-tchmi-text="LIVE TEMPERATURE / STATUS" data-tchmi-text-font-size="18"
- data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Center"
- data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
-<div id="Lbl_Live_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px"
- data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="TC1 Heater 1" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Unit_Live_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px"
- data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="°C" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_Live_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px"
- data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="TC2 Heater 2" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Unit_Live_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px"
- data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="°C" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_Live_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px"
- data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="TC3 Head Temp" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Unit_Live_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px"
- data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="°C" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_Live_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px"
- data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Average" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Unit_Live_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px"
- data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="°C" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_Live_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="157" data-tchmi-top-unit="px"
- data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="TC Difference" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Unit_Live_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="157" data-tchmi-top-unit="px"
- data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="°C" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_Live_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="185" data-tchmi-top-unit="px"
- data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Heater 1 Output" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Unit_Live_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="185" data-tchmi-top-unit="px"
- data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="%" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Lbl_Live_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="213" data-tchmi-top-unit="px"
- data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Heater 2 Output" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Unit_Live_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="213" data-tchmi-top-unit="px"
- data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="%" data-tchmi-text-font-size="12"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Pos_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="49" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Panel_LiveStatus_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="3" data-tchmi-left-unit="px" data-tchmi-top="6" data-tchmi-top-unit="px" data-tchmi-width="360" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-text="LIVE TEMPERATURE / STATUS" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_Live_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="TC1 Heater 1" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Unit_Live_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px" data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="°C" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_Live_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="TC2 Heater 2" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Unit_Live_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="°C" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_Live_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="TC3 Head Temp" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Unit_Live_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px" data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="°C" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_Live_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Average" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Unit_Live_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px" data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="°C" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_Live_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="157" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="TC Difference" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Unit_Live_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="157" data-tchmi-top-unit="px" data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="°C" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_Live_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="185" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Heater 1 Output" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Unit_Live_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="185" data-tchmi-top-unit="px" data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="%" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Lbl_Live_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="13" data-tchmi-left-unit="px" data-tchmi-top="213" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Heater 2 Output" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Unit_Live_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="195" data-tchmi-left-unit="px" data-tchmi-top="213" data-tchmi-top-unit="px" data-tchmi-width="20" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="%" data-tchmi-text-font-size="12" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Pos_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="49" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bControlEnabled%/s%",
     "actions": [
@@ -481,25 +302,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Pos_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px"
- data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Control Enabled" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Pos_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="77" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Pos_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="45" data-tchmi-top-unit="px" data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Control Enabled" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Pos_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="77" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bHeating%/s%",
     "actions": [
@@ -562,25 +372,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Pos_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px"
- data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Heating" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Pos_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="105" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Pos_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="73" data-tchmi-top-unit="px" data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Heating" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Pos_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="105" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bAtTemperature%/s%",
     "actions": [
@@ -643,25 +442,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Pos_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px"
- data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="At Temperature" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Pos_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="133" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Pos_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="101" data-tchmi-top-unit="px" data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="At Temperature" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Pos_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="230" data-tchmi-left-unit="px" data-tchmi-top="133" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bIndexTemperatureReady%/s%",
     "actions": [
@@ -724,25 +512,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Pos_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px"
- data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Index Temp Ready" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Alarm_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Pos_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="252" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px" data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Index Temp Ready" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Alarm_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bLowTemperature%/s%",
     "actions": [
@@ -805,25 +582,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Alarm_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="252" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Low Temp" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Alarm_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="282" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Alarm_0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="252" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Low Temp" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Alarm_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="282" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bHighTemperature%/s%",
     "actions": [
@@ -886,25 +652,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Alarm_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="278" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="High Temp" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Alarm_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="308" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Alarm_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="278" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="High Temp" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Alarm_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="308" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bTemperatureDiscrepancy%/s%",
     "actions": [
@@ -967,25 +722,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Alarm_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="304" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="TC Discrepancy" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Alarm_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="334" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Alarm_2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="304" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="TC Discrepancy" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Alarm_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="334" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bOverTemperature%/s%",
     "actions": [
@@ -1048,25 +792,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Alarm_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="330" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Overtemperature" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Alarm_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="360" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Alarm_3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="330" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Overtemperature" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Alarm_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="360" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bLowTemperatureTimeout%/s%",
     "actions": [
@@ -1129,25 +862,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Alarm_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="356" data-tchmi-top-unit="px"
- data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Low Temp Timeout" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Alarm_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="208" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Alarm_4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="48" data-tchmi-left-unit="px" data-tchmi-top="356" data-tchmi-top-unit="px" data-tchmi-width="130" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Low Temp Timeout" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Alarm_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="208" data-tchmi-left-unit="px" data-tchmi-top="256" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bPid1Fault%/s%",
     "actions": [
@@ -1210,25 +932,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Alarm_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="232" data-tchmi-left-unit="px" data-tchmi-top="252" data-tchmi-top-unit="px"
- data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="PID 1 Fault" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Alarm_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="208" data-tchmi-left-unit="px" data-tchmi-top="282" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Alarm_5" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="232" data-tchmi-left-unit="px" data-tchmi-top="252" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="PID 1 Fault" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Alarm_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="208" data-tchmi-left-unit="px" data-tchmi-top="282" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bPid2Fault%/s%",
     "actions": [
@@ -1291,25 +1002,14 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Alarm_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="232" data-tchmi-left-unit="px" data-tchmi-top="278" data-tchmi-top-unit="px"
- data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="PID 2 Fault" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
-<div id="Led_Alarm_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle"
- data-tchmi-left="208" data-tchmi-left-unit="px" data-tchmi-top="308" data-tchmi-top-unit="px"
- data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px"
- data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1"
- data-tchmi-zindex="32">
+<div id="Lbl_Alarm_6" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="232" data-tchmi-left-unit="px" data-tchmi-top="278" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="PID 2 Fault" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
+<div id="Led_Alarm_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="208" data-tchmi-left-unit="px" data-tchmi-top="308" data-tchmi-top-unit="px" data-tchmi-width="18" data-tchmi-width-unit="px" data-tchmi-height="18" data-tchmi-height-unit="px" data-tchmi-radius-x="9" data-tchmi-radius-y="9" data-tchmi-stroke-thickness="1" data-tchmi-zindex="32">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStakeTemperature.bFault%/s%",
     "actions": [
@@ -1372,18 +1072,11 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
-<div id="Lbl_Alarm_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock"
- data-tchmi-left="232" data-tchmi-left-unit="px" data-tchmi-top="304" data-tchmi-top-unit="px"
- data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px"
- data-tchmi-text="Thermal Fault" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal"
- data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center"
- data-tchmi-zindex="24"></div>
+<div id="Lbl_Alarm_7" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="232" data-tchmi-left-unit="px" data-tchmi-top="304" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-text="Thermal Fault" data-tchmi-text-font-size="15" data-tchmi-text-font-weight="Normal" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="24"></div>
 <div id="HeatStake_ApplySettings" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="217" data-tchmi-left-unit="px" data-tchmi-top="349" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="44" data-tchmi-height-unit="px" data-tchmi-text="APPLY" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold" data-tchmi-zindex="34">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
     "actions": [
@@ -1411,8 +1104,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-access-config" type="application/json">
 [
   {"accessright":"operate","group":"Administrator","permission":"Allow"},
@@ -1988,8 +1680,7 @@
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsApplyAccepted%/s%",
     "actions": [
@@ -2052,8 +1743,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 </div>
@@ -2063,8 +1753,7 @@
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsWriteBusy%/s%",
     "actions": [
@@ -2127,8 +1816,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 </div>
@@ -2138,8 +1826,7 @@
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsApplyRejected%/s%",
     "actions": [
@@ -2202,8 +1889,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 </div>
@@ -2213,8 +1899,7 @@
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {"color":"rgba(95,95,95,1)"}
 </script>
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bHeatStakeSettingsWriteError%/s%",
     "actions": [
@@ -2277,8 +1962,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 </div>

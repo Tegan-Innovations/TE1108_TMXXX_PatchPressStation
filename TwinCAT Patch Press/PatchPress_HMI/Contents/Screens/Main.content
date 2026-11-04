@@ -68,8 +68,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bLoadingStationEaglePresent%/s%",
     "actions": [
@@ -152,8 +151,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
@@ -163,8 +161,7 @@
 </div>
 </div>
 <div id="TcHmiImage_Indexer" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="300" data-tchmi-height-unit="px" data-tchmi-left="77" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/PatchIndexTableV2.png" data-tchmi-top="80" data-tchmi-top-unit="px" data-tchmi-width="300" data-tchmi-width-unit="px" data-tchmi-zindex="55">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.uiPatchDispenseNestId%/s%",
     "actions": [
@@ -243,9 +240,9 @@
           "                var startAngle = window[angleKey];",
           "                var startNormalized = ((startAngle % 360) + 360) % 360;",
           "                // Use the shortest signed quarter-turn so the image",
-"                // follows the real index direction instead of taking",
-"                // the long 270-degree path.",
-"                var delta = ((targetNormalized - startNormalized + 540) % 360) - 180;",
+          "                // follows the real index direction instead of taking",
+          "                // the long 270-degree path.",
+          "                var delta = ((targetNormalized - startNormalized + 540) % 360) - 180;",
           "",
           "                if (delta === 0) {",
           "                    control.setTransform([",
@@ -302,13 +299,11 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="unlockdoor" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="315" data-tchmi-left-unit="px" data-tchmi-text="Unlock Door" data-tchmi-top="40" data-tchmi-top-unit="px" data-tchmi-width="100" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-zindex="57" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-size="120" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.stStatus::eMachineState%/s%===3%/f%">
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.bUnlockDoorVisible%/s%",
     "actions": [
@@ -383,8 +378,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiContainer_80" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="450" data-tchmi-height-unit="px" data-tchmi-left="20" data-tchmi-left-unit="px" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="410" data-tchmi-width-unit="px" data-tchmi-zindex="12" data-tchmi-is-enabled="False" data-tchmi-creator-visibility="Visible">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
@@ -647,8 +641,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPartPresent%/s%",
     "actions": [
@@ -731,8 +724,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
@@ -1245,8 +1237,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.0.ePatchDispenseStage%/s%",
     "actions": [
@@ -1344,8 +1335,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1500,8 +1490,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.0.eHeatStakeStage%/s%",
     "actions": [
@@ -1599,8 +1588,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1822,8 +1810,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.0.eVisionStage%/s%",
     "actions": [
@@ -1921,8 +1908,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -1947,8 +1933,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest1Blocked%/s%",
     "actions": [
@@ -2007,8 +1992,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 </div>
 <div id="NEST_2" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="320" data-tchmi-height-unit="px" data-tchmi-left="675" data-tchmi-left-unit="px" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-zindex="17" data-tchmi-is-enabled="True" data-tchmi-creator-visibility="Visible">
@@ -2519,8 +2503,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.1.ePatchDispenseStage%/s%",
     "actions": [
@@ -2618,8 +2601,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiContainer_110" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-left="-5" data-tchmi-left-unit="px" data-tchmi-top="-14" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="39" data-tchmi-creator-visibility="Collapsed">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
@@ -2770,8 +2752,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.1.eHeatStakeStage%/s%",
     "actions": [
@@ -2869,8 +2850,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
@@ -3106,8 +3086,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPartPresent%/s%",
     "actions": [
@@ -3190,8 +3169,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
@@ -3224,8 +3202,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.1.eVisionStage%/s%",
     "actions": [
@@ -3323,8 +3300,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 
 
@@ -3349,8 +3325,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest2Blocked%/s%",
     "actions": [
@@ -3409,8 +3384,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 </div>
 <div id="NEST_3" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="320" data-tchmi-height-unit="px" data-tchmi-left="895" data-tchmi-left-unit="px" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-zindex="17" data-tchmi-is-enabled="True" data-tchmi-creator-visibility="Visible">
@@ -3921,8 +3895,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.2.ePatchDispenseStage%/s%",
     "actions": [
@@ -4020,8 +3993,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiContainer_112" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-left="-5" data-tchmi-left-unit="px" data-tchmi-top="-14" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="39" data-tchmi-creator-visibility="Collapsed">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
@@ -4172,8 +4144,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.2.eHeatStakeStage%/s%",
     "actions": [
@@ -4271,8 +4242,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
@@ -4508,8 +4478,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPartPresent%/s%",
     "actions": [
@@ -4592,8 +4561,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
@@ -4632,8 +4600,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.2.eVisionStage%/s%",
     "actions": [
@@ -4731,8 +4698,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiRectangle_Disabled_Nest3" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="312" data-tchmi-height-unit="px" data-tchmi-left="2" data-tchmi-left-unit="px" data-tchmi-top="3" data-tchmi-top-unit="px" data-tchmi-width="203" data-tchmi-width-unit="px" data-tchmi-zindex="49" data-tchmi-visibility="Collapsed">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
@@ -4749,8 +4715,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest3Blocked%/s%",
     "actions": [
@@ -4809,8 +4774,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 </div>
 <div id="NEST_4" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="320" data-tchmi-height-unit="px" data-tchmi-left="1115" data-tchmi-left-unit="px" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-zindex="17" data-tchmi-is-enabled="True" data-tchmi-creator-visibility="Visible">
@@ -5321,8 +5285,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.3.ePatchDispenseStage%/s%",
     "actions": [
@@ -5420,8 +5383,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiContainer_114" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-left="-5" data-tchmi-left-unit="px" data-tchmi-top="-14" data-tchmi-top-unit="px" data-tchmi-width="210" data-tchmi-width-unit="px" data-tchmi-visibility="Visible" data-tchmi-zindex="39" data-tchmi-creator-visibility="Collapsed">
 <script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
@@ -5572,8 +5534,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.3.eHeatStakeStage%/s%",
     "actions": [
@@ -5671,8 +5632,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
@@ -5908,8 +5868,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPartPresent%/s%",
     "actions": [
@@ -5992,8 +5951,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
@@ -6032,8 +5990,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.aNest.3.eVisionStage%/s%",
     "actions": [
@@ -6131,8 +6088,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiRectangle_Disabled_Nest4" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-height="312" data-tchmi-height-unit="px" data-tchmi-left="2" data-tchmi-left-unit="px" data-tchmi-top="3" data-tchmi-top-unit="px" data-tchmi-width="203" data-tchmi-width-unit="px" data-tchmi-zindex="49" data-tchmi-visibility="Collapsed">
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
@@ -6149,8 +6105,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.bNest4Blocked%/s%",
     "actions": [
@@ -6209,8 +6164,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 </div>
 <div id="NEST_5" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="120" data-tchmi-height-unit="px" data-tchmi-left="455" data-tchmi-left-unit="px" data-tchmi-top="355" data-tchmi-top-unit="px" data-tchmi-width="870" data-tchmi-width-unit="px" data-tchmi-zindex="17" data-tchmi-is-enabled="True" data-tchmi-creator-visibility="Visible">
@@ -6272,8 +6226,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bReady%/s%",
     "actions": [
@@ -6346,8 +6299,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -6443,8 +6395,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bBusy%/s%",
     "actions": [
@@ -6517,8 +6468,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -6579,8 +6529,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stPatchDispense.bFault%/s%",
     "actions": [
@@ -6653,8 +6602,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -6734,8 +6682,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bReady%/s%",
     "actions": [
@@ -6808,8 +6755,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -6870,8 +6816,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bBusy%/s%",
     "actions": [
@@ -6944,8 +6889,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -7006,8 +6950,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stHeatStake.bFault%/s%",
     "actions": [
@@ -7080,8 +7023,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -7148,8 +7090,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bReady%/s%",
     "actions": [
@@ -7222,8 +7163,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -7284,8 +7224,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bBusy%/s%",
     "actions": [
@@ -7358,8 +7297,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"
@@ -7420,8 +7358,7 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.stVision.bFault%/s%",
     "actions": [
@@ -7494,8 +7431,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 <script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
 {
   "color": "rgba(74, 74, 74, 1)"

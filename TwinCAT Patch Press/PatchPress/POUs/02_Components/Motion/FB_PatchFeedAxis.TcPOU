@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_PatchFeedAxis" Id="{c0b5c79a-04bf-4776-a663-b374fab27f2a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_PatchFeedAxis
+VAR_OUTPUT
+    bReady : BOOL;
+    bBusy : BOOL;
+    bFault : BOOL;
+    bResetBusy : BOOL;
+    udiErrorId : UDINT;
+END_VAR
+VAR
+    fbPower : MC_Power;
+    fbVelocity : MC_MoveVelocity;
+    fbHalt : MC_Halt;
+    fbReset : MC_Reset;
+    // 0 monitor only, 10 power, 20 idle, 30 velocity, 40 halt, 50 disable.
+    usiState : USINT;
+    bHasControlled : BOOL;
+    bFaultLatched : BOOL;
+    bPowerRequest : BOOL;
+    bMoveExecute : BOOL;
+    bHaltExecute : BOOL;
+    lrCommandVelocity : LREAL;
+    eCommandDirection : MC_Direction;
+    tonPower : TON;
+    tonStop : TON;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Cyclic" Id="{e1ba3a41-ea4d-4b6b-88ba-dce3b8c20a1b}">
+      <Declaration><![CDATA[METHOD PUBLIC Cyclic
+VAR_INPUT
+    bControlRequest : BOOL;
+    bSafetyOk : BOOL;
+    bRunVelocity : BOOL;
+    bReset : BOOL;
+    lrVelocity : LREAL;
+    eDirection : MC_Direction;
+    stSettings : ST_PatchFeedSettings;
+END_VAR
+VAR_IN_OUT
+    stAxis : ST_Axis;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// One refresh and one owner of all PLCopen command FBs for this axis.
+bReady := FALSE;
+bBusy := FALSE;
+IF stAxis.Axis.NcToPlc.AxisId = 0 THEN
+    stAxis.bEnabled := FALSE;
+    stAxis.bOperational := FALSE;
+    stAxis.bStandstill := FALSE;
+    stAxis.bMoving := FALSE;
+    IF bControlRequest THEN
+        bFaultLatched := TRUE;
+        udiErrorId := 1001; // Axis interface not linked/available.
+    END_IF
+    bFault := bFaultLatched;
+    stAxis.bError := bFault;
+    stAxis.udiErrorId := udiErrorId;
+    RETURN;
+END_IF
+
+stAxis.Axis.ReadStatus();
+stAxis.lrActPosition := stAxis.Axis.NcToPlc.ActPos;
+stAxis.lrActVelocity := stAxis.Axis.NcToPlc.ActVelo;
+stAxis.lrActTorque := stAxis.Axis.NcToPlc.ActTorque;
+stAxis.bStandstill := stAxis.Axis.Status.StandStill;
+stAxis.bMoving := stAxis.Axis.Status.DiscreteMotion
+    OR stAxis.Axis.Status.ContinuousMotion OR stAxis.Axis.Status.Stopping;
+stAxis.bHomed := stAxis.Axis.Status.Homed;
+
+IF bReset AND NOT bRunVelocity THEN
+    bFaultLatched := FALSE;
+    udiErrorId := 0;
+END_IF
+// Explicit operator reset only, never an automatic reset/retry loop.
+fbReset(Axis := stAxis.Axis,
+    Execute := bReset AND NOT bRunVelocity
+        AND NOT stAxis.bMoving);
+bResetBusy := fbReset.Busy;
+
+IF (usiState = 0) AND bControlRequest AND bSafetyOk
+    AND NOT bFaultLatched AND NOT stAxis.Axis.Status.ErrorStop THEN
+    bHasControlled := TRUE;
+    usiState := 10;
+END_IF
+
+bPowerRequest := FALSE;
+bMoveExecute := FALSE;
+bHaltExecute := FALSE;
+tonPower(IN := (usiState = 10), PT := stSettings.tPowerTimeout);
+tonStop(IN := (usiState = 40), PT := stSettings.tStopTimeout);
+
+IF (usiState <> 0) AND (NOT bSafetyOk OR stAxis.Axis.Status.ErrorStop) THEN
+    // TwinSAFE owns safe torque removal; withdraw software enable on safety loss.
+    usiState := 50;
+END_IF
+IF tonPower.Q OR tonStop.Q THEN
+    bFaultLatched := TRUE;
+    IF tonPower.Q THEN udiErrorId := 1003; ELSE udiErrorId := 1004; END_IF
+    usiState := 50;
+END_IF
+
+CASE usiState OF
+    0: // Monitor only. Do not overwrite NC/Drive Manager enable during commissioning.
+        stAxis.bEnabled := stAxis.Axis.Status.Operational;
+        stAxis.bOperational := stAxis.Axis.Status.Operational;
+
+    10:
+        bPowerRequest := TRUE;
+        IF NOT bControlRequest OR bFaultLatched THEN
+            bPowerRequest := FALSE;
+            usiState := 50;
+        ELSIF fbPower.Status AND stAxis.bStandstill THEN
+            usiState := 20;
+        END_IF
+
+    20:
+        bPowerRequest := TRUE;
+        bReady := fbPower.Status AND stAxis.bStandstill;
+        IF NOT bControlRequest OR bFaultLatched THEN
+            usiState := 40;
+            bHaltExecute := TRUE;
+        ELSIF bRunVelocity AND bReady THEN
+            IF NOT (lrVelocity > 0.0)
+                OR ((eDirection <> MC_Positive_Direction) AND (eDirection <> MC_Negative_Direction)) THEN
+                bFaultLatched := TRUE;
+                udiErrorId := 1002;
+            ELSE
+                lrCommandVelocity := lrVelocity;
+                eCommandDirection := eDirection;
+                bMoveExecute := TRUE;
+                usiState := 30;
+            END_IF
+        END_IF
+
+    30:
+        bPowerRequest := TRUE;
+        bMoveExecute := TRUE;
+        IF NOT bRunVelocity OR NOT bControlRequest OR bFaultLatched THEN
+            bMoveExecute := FALSE;
+            bHaltExecute := TRUE;
+            usiState := 40;
+        END_IF
+
+    40: // Retain software power while performing the controlled ramp stop.
+        bPowerRequest := TRUE;
+        bHaltExecute := TRUE;
+        IF fbHalt.Done OR (stAxis.bStandstill AND NOT fbHalt.Busy AND NOT fbVelocity.Busy) THEN
+            bHaltExecute := FALSE;
+            IF bControlRequest AND NOT bFaultLatched THEN
+                usiState := 20;
+            ELSE
+                bPowerRequest := FALSE;
+                usiState := 50;
+            END_IF
+        END_IF
+
+    50:
+        IF stAxis.Axis.Status.Disabled OR stAxis.Axis.Status.ErrorStop THEN
+            usiState := 0;
+        END_IF
+END_CASE
+
+// No MC_Power/Move/Halt call in monitor-only mode, except the release scan.
+IF (usiState <> 0) OR fbPower.Status OR fbPower.Busy OR fbVelocity.Busy OR fbHalt.Busy
+    OR fbPower.Error OR fbVelocity.Error OR fbHalt.Error THEN
+
+    fbPower(Axis := stAxis.Axis, Enable := bPowerRequest,
+        Enable_Positive := bPowerRequest, Enable_Negative := bPowerRequest,
+        Override := 100.0, BufferMode := MC_Aborting);
+
+    fbVelocity(Axis := stAxis.Axis, Execute := bMoveExecute,
+        Velocity := lrCommandVelocity, Direction := eCommandDirection,
+        Acceleration := stSettings.lrAcceleration, Deceleration := stSettings.lrDeceleration,
+        Jerk := stSettings.lrJerk, BufferMode := MC_Aborting);
+
+    fbHalt(Axis := stAxis.Axis, Execute := bHaltExecute,
+        Deceleration := stSettings.lrDeceleration, Jerk := stSettings.lrJerk,
+        BufferMode := MC_Aborting);
+
+    stAxis.bEnabled := fbPower.Status;
+    stAxis.bOperational := fbPower.Status;
+END_IF
+
+IF fbPower.Error OR fbVelocity.Error OR fbHalt.Error OR fbReset.Error THEN
+    bFaultLatched := TRUE;
+    IF fbPower.Error THEN udiErrorId := fbPower.ErrorID;
+    ELSIF fbVelocity.Error THEN udiErrorId := fbVelocity.ErrorID;
+    ELSIF fbHalt.Error THEN udiErrorId := fbHalt.ErrorID;
+    ELSE udiErrorId := fbReset.ErrorID; END_IF
+END_IF
+IF stAxis.Axis.Status.ErrorStop THEN
+    udiErrorId := stAxis.Axis.NcToPlc.ErrorCode;
+END_IF
+bFault := bFaultLatched OR stAxis.Axis.Status.ErrorStop;
+bBusy := (usiState <> 0) AND ((usiState <> 20) OR stAxis.bMoving);
+stAxis.bError := bFault;
+stAxis.udiErrorId := udiErrorId;
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

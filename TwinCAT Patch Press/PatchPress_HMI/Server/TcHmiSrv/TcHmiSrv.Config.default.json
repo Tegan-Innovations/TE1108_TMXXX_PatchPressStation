@@ -1682,7 +1682,7 @@
                             },
                             {
                                 "comment": "Nest settings command buffer. Every change is persisted automatically.",
-                                "propertyOrder": 32
+                                "propertyOrder": 44
                             }
                         ]
                     },
@@ -1703,7 +1703,7 @@
                             },
                             {
                                 "comment": "Popup OK acknowledgement.",
-                                "propertyOrder": 33
+                                "propertyOrder": 45
                             }
                         ]
                     },
@@ -1713,8 +1713,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "comment": "Reject chute full popup acknowledgement.",
-                                "propertyOrder": 34
+                                "propertyOrder": 47
                             }
                         ]
                     },
@@ -1724,7 +1723,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 12
+                                "propertyOrder": 13
                             }
                         ]
                     },
@@ -1735,7 +1734,7 @@
                             },
                             {
                                 "comment": "Heat Stake Manual Mode",
-                                "propertyOrder": 14
+                                "propertyOrder": 24
                             }
                         ]
                     },
@@ -1745,7 +1744,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 18
+                                "propertyOrder": 28
                             }
                         ]
                     },
@@ -1755,7 +1754,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 19
+                                "propertyOrder": 29
                             }
                         ]
                     },
@@ -1765,7 +1764,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 17
+                                "propertyOrder": 27
                             }
                         ]
                     },
@@ -1775,7 +1774,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 15
+                                "propertyOrder": 25
                             }
                         ]
                     },
@@ -1785,7 +1784,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 20
+                                "propertyOrder": 30
                             }
                         ]
                     },
@@ -1795,7 +1794,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 16
+                                "propertyOrder": 26
                             }
                         ]
                     },
@@ -1856,7 +1855,108 @@
                             },
                             {
                                 "comment": "Main-screen operator/nest light toggle.\r\n Physical output: Term 9 EL2809 Ch6 (bNestLight).",
-                                "propertyOrder": 10
+                                "propertyOrder": 11
+                            }
+                        ]
+                    },
+                    "bPatchAirBlowRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 21
+                            }
+                        ]
+                    },
+                    "bPatchDispenseRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 20
+                            }
+                        ]
+                    },
+                    "bPatchManualEnable": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "comment": "=====================================================\r\n Patch Dispensing Manual Mode\r\n =====================================================",
+                                "propertyOrder": 15
+                            }
+                        ]
+                    },
+                    "bPatchManualHomeRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 22
+                            }
+                        ]
+                    },
+                    "bPatchManualRunSequence": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 23
+                            }
+                        ]
+                    },
+                    "bPatchSupportExtendRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 16
+                            }
+                        ]
+                    },
+                    "bPatchSupportRetractRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 17
+                            }
+                        ]
+                    },
+                    "bPatchVerticalDownRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 19
+                            }
+                        ]
+                    },
+                    "bPatchVerticalUpRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 18
+                            }
+                        ]
+                    },
+                    "bReprocessPopupAcknowledge": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 46
                             }
                         ]
                     },
@@ -1896,7 +1996,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 28
+                                "propertyOrder": 38
                             }
                         ]
                     },
@@ -1906,7 +2006,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 27
+                                "propertyOrder": 37
                             }
                         ]
                     },
@@ -1916,7 +2016,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 22
+                                "propertyOrder": 32
                             }
                         ]
                     },
@@ -1926,7 +2026,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 23
+                                "propertyOrder": 33
                             }
                         ]
                     },
@@ -1937,7 +2037,27 @@
                             },
                             {
                                 "comment": "=====================================================\r\n Vision Manual Mode\r\n =====================================================",
-                                "propertyOrder": 21
+                                "propertyOrder": 31
+                            }
+                        ]
+                    },
+                    "bVisionManualHomeRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 43
+                            }
+                        ]
+                    },
+                    "bVisionManualRunSequence": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 42
                             }
                         ]
                     },
@@ -1947,7 +2067,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 29
+                                "propertyOrder": 39
                             }
                         ]
                     },
@@ -1957,7 +2077,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 30
+                                "propertyOrder": 40
                             }
                         ]
                     },
@@ -1967,7 +2087,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 31
+                                "propertyOrder": 41
                             }
                         ]
                     },
@@ -1977,7 +2097,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 26
+                                "propertyOrder": 36
                             }
                         ]
                     },
@@ -1987,7 +2107,7 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 25
+                                "propertyOrder": 35
                             }
                         ]
                     },
@@ -1997,7 +2117,17 @@
                                 "$ref": "tchmi:general#/definitions/BOOL"
                             },
                             {
-                                "propertyOrder": 24
+                                "propertyOrder": 34
+                            }
+                        ]
+                    },
+                    "ePowerCmd": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:server#/definitions/ADS-PLC1.E_PLC_Power"
+                            },
+                            {
+                                "propertyOrder": 10
                             }
                         ]
                     },
@@ -2007,7 +2137,7 @@
                                 "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HeatStakeProcessSettings"
                             },
                             {
-                                "propertyOrder": 13
+                                "propertyOrder": 14
                             }
                         ]
                     },
@@ -2017,7 +2147,7 @@
                                 "$ref": "tchmi:server#/definitions/ADS-PLC1.ST_HeatStakeTemperatureSettings"
                             },
                             {
-                                "propertyOrder": 11
+                                "propertyOrder": 12
                             }
                         ]
                     },
@@ -2027,7 +2157,7 @@
                                 "$ref": "tchmi:general#/definitions/UINT"
                             },
                             {
-                                "propertyOrder": 35
+                                "propertyOrder": 48
                             }
                         ]
                     }
@@ -2042,10 +2172,20 @@
                     "bManualIndexForward",
                     "bManualIndexHome",
                     "bManualMainDoorUnlock",
+                    "ePowerCmd",
                     "bOperatorLight",
                     "stHeatStakeTemperatureSettings",
                     "bApplyHeatStakeTemperatureSettings",
                     "stHeatStakeProcessSettings",
+                    "bPatchManualEnable",
+                    "bPatchSupportExtendRequest",
+                    "bPatchSupportRetractRequest",
+                    "bPatchVerticalUpRequest",
+                    "bPatchVerticalDownRequest",
+                    "bPatchDispenseRequest",
+                    "bPatchAirBlowRequest",
+                    "bPatchManualHomeRequest",
+                    "bPatchManualRunSequence",
                     "bHeatStakeManualEnable",
                     "bHeatStakeManualStakePatch",
                     "bHeatStakeManualUnlock",
@@ -2064,8 +2204,11 @@
                     "bVisionRotate0Request",
                     "bVisionRotate180Request",
                     "bVisionSupportExtendRequest",
+                    "bVisionManualRunSequence",
+                    "bVisionManualHomeRequest",
                     "aNestEnabled",
                     "bAcknowledgeDisabledNestPartPopup",
+                    "bReprocessPopupAcknowledge",
                     "bAcknowledgeRejectChuteFull",
                     "uiResetStatisticsNestId"
                 ],
@@ -8088,7 +8231,7 @@
                     },
                     {
                         "comment": "Popup OK acknowledgement.",
-                        "propertyOrder": 14
+                        "propertyOrder": 45
                     }
                 ]
             },
@@ -8105,8 +8248,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "comment": "Reject chute full popup acknowledgement.",
-                        "propertyOrder": 23
+                        "propertyOrder": 47
                     }
                 ]
             },
@@ -8123,7 +8265,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 12
+                        "propertyOrder": 13
                     }
                 ]
             },
@@ -8228,7 +8370,7 @@
                     },
                     {
                         "comment": "Heat Stake Manual Mode",
-                        "propertyOrder": 14
+                        "propertyOrder": 24
                     }
                 ]
             },
@@ -8245,7 +8387,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 18
+                        "propertyOrder": 28
                     }
                 ]
             },
@@ -8262,7 +8404,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 19
+                        "propertyOrder": 29
                     }
                 ]
             },
@@ -8279,7 +8421,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 17
+                        "propertyOrder": 27
                     }
                 ]
             },
@@ -8296,7 +8438,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 15
+                        "propertyOrder": 25
                     }
                 ]
             },
@@ -8313,7 +8455,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 20
+                        "propertyOrder": 30
                     }
                 ]
             },
@@ -8330,7 +8472,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 16
+                        "propertyOrder": 26
                     }
                 ]
             },
@@ -8347,7 +8489,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 20
+                        "propertyOrder": 6
                     }
                 ]
             },
@@ -8556,7 +8698,7 @@
                     },
                     {
                         "comment": "Main-screen operator/nest light toggle.\r\n Physical output: Term 9 EL2809 Ch6 (bNestLight).",
-                        "propertyOrder": 10
+                        "propertyOrder": 11
                     }
                 ]
             },
@@ -8574,6 +8716,23 @@
                     },
                     {
                         "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchDispenseRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchDispenseRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 20
                     }
                 ]
             },
@@ -8597,6 +8756,40 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchManualHomeRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchManualHomeRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 22
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchManualRunSequence": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchManualRunSequence",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 23
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_HMI.stCommands.bPatchSupportExtendRequest": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -8609,6 +8802,23 @@
                     },
                     {
                         "propertyOrder": 16
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stCommands.bPatchSupportRetractRequest": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stCommands::bPatchSupportRetractRequest",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 17
                     }
                 ]
             },
@@ -8659,7 +8869,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 36
+                        "propertyOrder": 46
                     }
                 ]
             },
@@ -8901,7 +9111,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 28
+                        "propertyOrder": 38
                     }
                 ]
             },
@@ -8918,7 +9128,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 27
+                        "propertyOrder": 37
                     }
                 ]
             },
@@ -8935,7 +9145,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 22
+                        "propertyOrder": 32
                     }
                 ]
             },
@@ -8952,7 +9162,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 23
+                        "propertyOrder": 33
                     }
                 ]
             },
@@ -8970,7 +9180,7 @@
                     },
                     {
                         "comment": "=====================================================\r\n Vision Manual Mode\r\n =====================================================",
-                        "propertyOrder": 21
+                        "propertyOrder": 31
                     }
                 ]
             },
@@ -8987,7 +9197,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 33
+                        "propertyOrder": 43
                     }
                 ]
             },
@@ -9004,7 +9214,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 32
+                        "propertyOrder": 42
                     }
                 ]
             },
@@ -9021,7 +9231,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 29
+                        "propertyOrder": 39
                     }
                 ]
             },
@@ -9038,7 +9248,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 30
+                        "propertyOrder": 40
                     }
                 ]
             },
@@ -9055,7 +9265,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 21
+                        "propertyOrder": 41
                     }
                 ]
             },
@@ -9072,7 +9282,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 26
+                        "propertyOrder": 36
                     }
                 ]
             },
@@ -9089,7 +9299,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 25
+                        "propertyOrder": 35
                     }
                 ]
             },
@@ -9106,7 +9316,7 @@
                         "$ref": "tchmi:general#/definitions/BOOL"
                     },
                     {
-                        "propertyOrder": 24
+                        "propertyOrder": 34
                     }
                 ]
             },
@@ -17781,8 +17991,12 @@
                 "ADS.PLC1.GVL_HMI.stCommands.bNestCylindersManualEnable": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bOperatorLight": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bPatchAirBlowRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchDispenseRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bPatchManualEnable": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchManualHomeRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchManualRunSequence": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bPatchSupportExtendRequest": 3,
+                "ADS.PLC1.GVL_HMI.stCommands.bPatchSupportRetractRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bPatchVerticalDownRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bPatchVerticalUpRequest": 3,
                 "ADS.PLC1.GVL_HMI.stCommands.bReprocessPopupAcknowledge": 3,

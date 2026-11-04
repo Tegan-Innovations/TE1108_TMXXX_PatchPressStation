@@ -844,6 +844,9 @@
     <Content Include="Images\Project\nest_pos_4.PNG">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Images\Project\PatchDispense.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Images\Project\PatchIndexTable.png">
       <SubType>Content</SubType>
     </Content>

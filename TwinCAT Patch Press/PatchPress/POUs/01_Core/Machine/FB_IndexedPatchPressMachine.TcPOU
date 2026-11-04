@@ -3,6 +3,7 @@
   <POU Name="FB_IndexedPatchPressMachine" Id="{cd45b888-3938-49e7-a56e-6a78ef36b4a7}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_IndexedPatchPressMachine
 VAR
+    fbPatchFeedManager : FB_PatchFeedManager;
     fbIndex : FB_IndexTable4;
     fbMainDoorLock : FB_MainDoorLock;
     fbNestManager : FB_NestTableManager;
@@ -541,6 +542,30 @@ ELSE
     fbVSCamera.RequestResultsAck(bEnable := FALSE);
 END_IF
 //---------------------------------------------------------------------------------------------------
+
+// Patch feeding owns its axis commands; it does not own physical safety outputs.
+fbPatchFeedManager.Cyclic(
+    bPermit := bPatchDispenseCommissioned
+        AND ((eMachineState = E_MachineState.AutoCycle)
+            OR ((eMachineState = E_MachineState.Manual) AND stCommand.bPatchManualEnable))
+        AND stInputs.bMainDoorClosed AND GVL_Safety.bAirSupplySafe
+        AND NOT stCommand.bStop AND NOT stInputs.bEventFault
+        AND NOT stInputs.bEventCycleStopRequest
+        AND NOT bRejectChuteStopRequestLatched AND NOT bAutoCycleStopRequestLatched,
+    bSafetyOk := stInputs.stSafety.bMotionSafetyPermitted,
+    bReset := stCommand.bReset,
+    bMiddleDown := stInputs.bMiddleRockerDown,
+    bMiddleUp := stInputs.bMiddleRockerUp,
+    bTopDown := stInputs.bTopRockerDown,
+    bTopUp := stInputs.bTopRockerUp,
+    bPatchFeedStart := stInputs.bBottomRockerUp, // Term19 Input14
+    bPatchFeedStop := stInputs.bBottomRockerDown, // Term19 Input13
+    stSettings := GVL_Motion.stPatchFeedSettings,
+    stDriveMotor := GVL_Motion.AxisDriveMotor,
+    stPatchFeedRoll := GVL_Motion.AxisPatchFeedRollMotor,
+    stWasteRoll := GVL_Motion.AxisWasteRollMotor
+);
+GVL_Motion.stPatchFeedStatus := fbPatchFeedManager.stStatus;
 
 fbNestManager.Cyclic(
     bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked,
@@ -2779,12 +2804,13 @@ E_MachineState.Stopping:
         bAirSupplyLatched AND stInputs.bMainDoorClosed;
 
     tonInitialising(IN := FALSE);
-    tonStopping(IN := stIndexStatus.bBusy, PT := stConfig.tStoppingTimeout);
+    tonStopping(IN := stIndexStatus.bBusy OR fbPatchFeedManager.stStatus.bBusy, PT := stConfig.tStoppingTimeout);
     bStoppingTimeoutFault := tonStopping.Q;
     IF bStoppingTimeoutFault THEN
         bSafetyDropRequest := TRUE;
         eMachineState := E_MachineState.Fault;
 	ELSIF NOT stIndexStatus.bBusy
+        AND NOT fbPatchFeedManager.stStatus.bBusy
 		AND (
 			NOT GVL_Safety.bAirSupplySafe
 			OR (
@@ -3095,14 +3121,15 @@ stIndexStatus := fbIndex.GetStatus();
  // =====================================================
 
  fbMainDoorLock.Cyclic(
-     bEnableAutomatic := bAirAndDoorEnable,
+     bEnableAutomatic := bAirAndDoorEnable
+         OR ((eMachineState = E_MachineState.Stopping) AND fbPatchFeedManager.stStatus.bBusy),
      bManualEnable := FALSE,
      bManualLockRequest := FALSE,
      bManualUnlockRequest := FALSE,
 
      bStopRequest :=
          (eMachineState = E_MachineState.Fault)
-         OR (eMachineState = E_MachineState.Stopping)
+         OR ((eMachineState = E_MachineState.Stopping) AND NOT fbPatchFeedManager.stStatus.bBusy)
          OR (
              (eMachineState = E_MachineState.Stopped)
              AND NOT bMainDoorHotLockRequired
@@ -3112,7 +3139,7 @@ stIndexStatus := fbIndex.GetStatus();
      bDoorClosed := stInputs.bMainDoorClosed,
      bDoorLocked := stInputs.bMainDoorLocked,
      bIndexBusy := stIndexStatus.bBusy,
-     bProcessSafePosition := TRUE,
+     bProcessSafePosition := NOT fbPatchFeedManager.stStatus.bBusy,
      tLockTimeout := stConfig.tDoorLockTimeout,
      tUnlockTimeout := stConfig.tDoorUnlockTimeout,
      bDoorUnsafe := stInputs.bMainDoorUnsafe,
@@ -3127,6 +3154,7 @@ stIndexStatus := fbIndex.GetStatus();
 
  stOutputsInternal.bMainDoorLockRequest :=
      bAirAndDoorEnable
+     OR ((eMachineState = E_MachineState.Stopping) AND fbPatchFeedManager.stStatus.bBusy)
      OR bMainDoorHotLockRequired;
 
 	///////////////////////////////

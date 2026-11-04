@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_PatchFeedStatus" Id="{7dc67d44-8589-4f59-acf6-74dda7d36fdc}">
+    <Declaration><![CDATA[TYPE ST_PatchFeedStatus :
+STRUCT
+    bPermitted : BOOL;
+    bConfigured : BOOL;
+    bWasteRollDemand : BOOL;
+    bBusy : BOOL;
+    bFault : BOOL;
+    bResetPending : BOOL;
+    udiErrorId : UDINT;
+    sDiagnostic : STRING(160);
+    bPatchFeedRollDemand : BOOL;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

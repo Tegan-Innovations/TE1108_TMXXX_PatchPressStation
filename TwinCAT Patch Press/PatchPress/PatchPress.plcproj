@@ -111,6 +111,12 @@
     <Compile Include="DUTs\02_Components\Camera\ST_VisionResults.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\02_Components\Motion\ST_PatchFeedSettings.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\02_Components\Motion\ST_PatchFeedStatus.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\02_Components\Temperature\ST_HeatStakeTemperatureSettings.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -348,6 +354,9 @@
     <Compile Include="POUs\02_Components\Index\UINT_TO_E_TablePosition.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\02_Components\Motion\FB_PatchFeedAxis.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\02_Components\Pneumatics\FB_Support.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -367,6 +376,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\03_Stations\PatchDispense\FB_PatchDispenseStation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\03_Stations\PatchDispense\FB_PatchFeedManager.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\03_Stations\Vision\FB_VisionStation.TcPOU">
@@ -421,6 +433,7 @@
     <Folder Include="POUs\01_Core\CSV" />
     <Folder Include="POUs\01_Core\Process" />
     <Folder Include="POUs\02_Components" />
+    <Folder Include="POUs\02_Components\Motion" />
     <Folder Include="POUs\02_Components\VS Keyence Camera" />
     <Folder Include="POUs\02_Components\Pressure" />
     <Folder Include="POUs\02_Components\Temperature" />
@@ -465,6 +478,11 @@
     <None Include="PatchPress.tmc">
       <SubType>Content</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <LibraryReference Include="Tc2_MC2,3.3.72.0,Beckhoff Automation GmbH">
+      <Namespace>Tc2_MC2</Namespace>
+    </LibraryReference>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

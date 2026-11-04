@@ -558,6 +558,35 @@ GVL_MASTER.stStationEvents[1].aEvents[0].bEventText := GVL_MASTER.stStatus.sAuto
 GVL_MASTER.stStationEvents[1].aEvents[0].sSolution := 'Commission Patch Dispense, Heat Stake and Vision stations';
 
 
+
+// Patch feeding NC/PLCopen diagnostics, one event per motor.
+GVL_MASTER.stStationEvents[3].aEvents[31].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[31].bEventFlag :=
+    GVL_Motion.AxisDriveMotor.bError AND NOT GVL_Motion.stPatchFeedStatus.bResetPending;
+GVL_MASTER.stStationEvents[3].aEvents[31].bEventText := CONCAT('M1 Drive Motor: axis error ', UDINT_TO_STRING(GVL_Motion.AxisDriveMotor.udiErrorId));
+GVL_MASTER.stStationEvents[3].aEvents[31].sSolution := 'Check NC and drive diagnostics; correct cause before operator Reset.';
+
+GVL_MASTER.stStationEvents[3].aEvents[32].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[32].bEventFlag :=
+    GVL_Motion.AxisPatchFeedRollMotor.bError AND NOT GVL_Motion.stPatchFeedStatus.bResetPending;
+GVL_MASTER.stStationEvents[3].aEvents[32].bEventText := CONCAT('M2 Patch Feed Roll: axis error ', UDINT_TO_STRING(GVL_Motion.AxisPatchFeedRollMotor.udiErrorId));
+GVL_MASTER.stStationEvents[3].aEvents[32].sSolution := 'Check NC and drive diagnostics; correct cause before operator Reset.';
+
+GVL_MASTER.stStationEvents[3].aEvents[33].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[33].bEventFlag :=
+    GVL_Motion.AxisWasteRollMotor.bError AND NOT GVL_Motion.stPatchFeedStatus.bResetPending;
+GVL_MASTER.stStationEvents[3].aEvents[33].bEventText := CONCAT('M3 Waste Roll: axis error ', UDINT_TO_STRING(GVL_Motion.AxisWasteRollMotor.udiErrorId));
+GVL_MASTER.stStationEvents[3].aEvents[33].sSolution := 'Check NC and drive diagnostics; correct cause before operator Reset.';
+
+GVL_MASTER.stStationEvents[3].aEvents[34].bFault := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[34].bEventFlag :=
+    GVL_Motion.stPatchFeedStatus.bFault
+    AND NOT GVL_Motion.AxisDriveMotor.bError
+    AND NOT GVL_Motion.AxisPatchFeedRollMotor.bError
+    AND NOT GVL_Motion.AxisWasteRollMotor.bError;
+GVL_MASTER.stStationEvents[3].aEvents[34].bEventText := GVL_Motion.stPatchFeedStatus.sDiagnostic;
+GVL_MASTER.stStationEvents[3].aEvents[34].sSolution := 'Check rocker sensors and motion timeout; do not repeatedly retry a jammed web.';
+
 fbEventsManager(	aWarningEvents := aWarningEvents,
                     bPulse := TRUE,
 					bDataWritedInCSV := FALSE, 
