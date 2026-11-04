@@ -224,6 +224,7 @@ VAR
 	bVisionGetCurrentProgram		: UDINT;
 	
 	nVisionResults					: ST_VisionResults;
+    rtVisionCameraResultsReset : R_TRIG;
 	
 		
 		// Vision Manual Mode
@@ -501,44 +502,40 @@ fbHeatStakeTemperature.Cyclic(
 
 //Camera
 //---------------------------------------------------------------------------------------------------
-fbVSCamera( stCameraIO := GVL_EtherCAT.stVSKeyenceCamera);
+fbVSCamera(stCameraIO := GVL_EtherCAT.stVSKeyenceCamera);
+bVisionGetCurrentProgram := fbVSCamera.GetCurrentProgram();
 
+// Reset the accumulated payload before sampling any result in the new cycle.
+rtVisionCameraResultsReset(CLK := (stVisionStatus.eState = E_PatchStationState.Processing));
+IF bVisionResetResultsRequest OR rtVisionCameraResultsReset.Q THEN
+    fbVSCamera.GetResults(stVisionResults => nVisionResults, bResetResults := TRUE);
+END_IF
+
+// Apply previous-scan station commands, then sample ACK/result in this scan.
+fbVSCamera.RequestTrigger(bEnable := bVisionTriggerRequest);
+fbVSCamera.RequestChangeProgram(
+    bEnable := bVisionChangeProgramRequest,
+    nProgramNumber := nVisionProgramNumber
+);
+fbVSCamera.Cyclic();
 bVisionGetResultsReadyRequest := fbVSCamera.GetResultsReady();
-bVisionGetCurrentProgram		:= 	fbVSCamera.GetCurrentProgram();
 
-
-IF bVisionTriggerRequest THEN
-	
-	fbVSCamera.RequestTrigger(bEnable := TRUE);
-	
-ELSE fbVSCamera.RequestTrigger(bEnable := FALSE);
-
+IF bVisionGetResultsRequest
+    AND NOT bVisionResetResultsRequest
+    AND NOT rtVisionCameraResultsReset.Q THEN
+    fbVSCamera.GetResults(stVisionResults => nVisionResults, bResetResults := FALSE);
 END_IF
 
-IF bVisionChangeProgramRequest THEN
-	
-	fbVSCamera.RequestChangeProgram(bEnable := TRUE,nProgramNumber := nVisionProgramNumber);
-	
-ELSE fbVSCamera.RequestChangeProgram(bEnable := FALSE,nProgramNumber := nVisionProgramNumber);
-
+// Copy the latched payload before acknowledging/releasing it.
+IF bVisionAcknowledgeResultsRquest
+    AND bVisionGetResultsRequest
+    AND NOT bVisionResetResultsRequest
+    AND NOT rtVisionCameraResultsReset.Q THEN
+    fbVSCamera.RequestResultsAck(bEnable := TRUE);
+ELSE
+    fbVSCamera.RequestResultsAck(bEnable := FALSE);
 END_IF
-
-IF bVisionGetResultsRequest AND NOT bVisionResetResultsRequest THEN
-	
-	fbVSCamera.GetResults(stVisionResults => nVisionResults, bResetResults := FALSE);
-	
-ELSIF bVisionResetResultsRequest THEN 
-
-	fbVSCamera.GetResults( stVisionResults => nVisionResults, bResetResults := TRUE);
-
-END_IF
-IF bVisionGetResultsReadyRequest THEN
-	
-	fbVSCamera.RequestResultsAck(bEnable := TRUE);
-ELSE fbVSCamera.RequestResultsAck(bEnable := FALSE);
-END_IF
-					
-//---------------------------------------------------------------------------------------------------					
+//---------------------------------------------------------------------------------------------------
 
 fbNestManager.Cyclic(
     bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked,
@@ -649,6 +646,11 @@ END_IF
 IF bProcessStopStations THEN
     fbHeatStake.RequestStop();
     fbVision.RequestStop();
+END_IF
+
+// Do not apply a previous-scan automatic start after camera RUN is lost.
+IF NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus THEN
+    bProcessStartStations := FALSE;
 END_IF
 
 IF bProcessStartStations THEN
@@ -2562,6 +2564,13 @@ bCoreReady := ((eMachineState = E_MachineState.ReadyToStart)
 bAutoCycleAllowed => bAutoCycleAllowed, 
 sBlockReason => sAutoCycleBlockReason);
 
+// Camera RUN is an independent automatic-operation requirement.
+// Commissioning mode must not bypass this camera prerequisite.
+IF NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus THEN
+    bAutoCycleAllowed := FALSE;
+    sAutoCycleBlockReason := 'Vision camera not in RUN - select RUN in VS Creator';
+END_IF
+
 stPermissives.bAutoCycleAllowed := bAutoCycleAllowed;
 
 fbProcessCycle.Cyclic(
@@ -2570,7 +2579,8 @@ fbProcessCycle.Cyclic(
     bStopRequest :=
         stCommand.bStop
         OR stInputs.bEventCycleStopRequest
-        OR bRejectChuteStopRequestLatched,
+        OR bRejectChuteStopRequestLatched
+        OR NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus,
     bTwoHandsSafe := stInputs.bTwoHandsSafe,
     bSafetyOk := stInputs.stSafety.bSafetyOk,
     bIndexReady := stInputs.bIndexReady,
@@ -2618,6 +2628,7 @@ IF (eMachineState = E_MachineState.AutoCycle)
         OR stInputs.bEventCycleStopRequest
         OR bProcessAutomaticStopRequest
         OR bRejectChuteStopRequestLatched
+        OR NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
     )
 THEN
     bAutoCycleStopRequestLatched := TRUE;
@@ -2634,7 +2645,8 @@ IF stCommand.bAcknowledgeDisabledNestPartPopup THEN
     bDisabledNestPartPopupRequest := FALSE;
 END_IF
 
-IF bProcessRequestIndex THEN
+// Block only a NEW automatic index request; preserve in-progress motion permissives.
+IF bProcessRequestIndex AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus THEN
     bIndexMoveAccepted := fbIndex.RequestMove();
 END_IF
 
@@ -2680,6 +2692,8 @@ IF bOutHMI AND (
 	OR (eMachineState = E_MachineState.Dwell)
 ) THEN
     bSafetyDropRequest := TRUE;
+    // Preserve the trip reason through the existing HMI event/reset path.
+    GVL_HMI.bHmiLogoutAutoCycle := TRUE;
 END_IF
 
 // =========================================================
@@ -2890,6 +2904,7 @@ E_MachineState.Dwell:
     IF bRejectChuteStopRequestLatched
         OR stCommand.bStop
         OR stInputs.bEventCycleStopRequest
+        OR NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
     THEN
         eMachineState := E_MachineState.Stopping;
 

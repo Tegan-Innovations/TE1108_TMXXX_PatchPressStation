@@ -324,6 +324,24 @@ GVL_MASTER.stStationEvents[3].aEvents[24].bEventFlag :=GVL_MASTER.stStatus.bHeat
 GVL_MASTER.stStationEvents[3].aEvents[24].bEventText :='Dwell timeout - temperature did not recover';
 GVL_MASTER.stStationEvents[3].aEvents[24].sSolution :='Check heaters, thermocouples and temperature settings.';
 
+// -----------------------------------------------------------------------------
+// VISION CAMERA RUN STATUS - LIVE OPERATOR MESSAGE
+// -----------------------------------------------------------------------------
+// Run_Status FALSE cannot distinguish Setup from an unavailable camera.
+// Keep this visible until RUN returns; Reset must not hide an active condition.
+GVL_MASTER.stStationEvents[3].aEvents[25].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[25].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[25].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[25].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[25].bEventFlag :=
+    GVL_MASTER.stStatus.stVision.bCommissioned
+    AND NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus;
+GVL_MASTER.stStationEvents[3].aEvents[25].bEventText :=
+    'Vision camera not in RUN - Setup or camera unavailable';
+GVL_MASTER.stStationEvents[3].aEvents[25].sSolution :=
+    'Select RUN in VS Creator. If already in RUN, check camera power and EtherNet/IP communication.';
+
+
 
 GVL_MASTER.stStationEvents[3].aEvents[3].bFault := TRUE;
 GVL_MASTER.stStationEvents[3].aEvents[3].bEventFlag :=
@@ -368,8 +386,9 @@ GVL_MASTER.stStationEvents[3].aEvents[8].sSolution := 'Check support-cylinder UP
 
 GVL_MASTER.stStationEvents[0].aEvents[20].bFault := TRUE;
 GVL_MASTER.stStationEvents[0].aEvents[20].bEventFlag :=GVL_HMI.bHmiLogoutAutoCycle;
-GVL_MASTER.stStationEvents[0].aEvents[20].bEventText :='HMI logout detected during automatic cycle';
-GVL_MASTER.stStationEvents[0].aEvents[20].sSolution :='Reset the machine';
+GVL_MASTER.stStationEvents[0].aEvents[20].bEventText :='HMI communication lost or logout during operation';
+GVL_MASTER.stStationEvents[0].aEvents[20].sSolution :=
+    'Check HMI connection and heartbeat; log in and reset the machine';
 
 // =========================================================
 // EVENT 21 - HMI LOGOUT / NO USER LOGGED IN

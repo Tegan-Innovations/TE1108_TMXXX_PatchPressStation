@@ -8,6 +8,25 @@ VAR_IN_OUT
 	stCameraIO				: ST_VS_Keyence_Camera;
 
 END_VAR
+
+VAR
+    // 0 = waiting/rearm; 10 = trigger awaiting ACK; 20 = accepted; 30 = aborted.
+    usiTriggerHandshake : USINT;
+    bTriggerRequestActive : BOOL;
+    nTriggerProgram : UDINT;
+    bDrainStaleResult : BOOL;
+    sTriggerDiagnostic : STRING(120);
+END_VAR
+
+VAR
+    stCapturedVisionResults : ST_VisionResults;
+    bResultPending : BOOL;
+    bResultAccepted : BOOL;
+    bResultRead : BOOL;
+    bResultCapturedForTrigger : BOOL;
+    nResultProgram : UDINT;
+    uiCapturedInspection : UINT;
+END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -21,16 +40,89 @@ VAR
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[Cyclic := FALSE;
+// Capture payload in the same scan that observes an accepted result.
+// The pending snapshot survives a falling raw Result Ready until PLC consumption.
+IF stCameraIO.bResultsReady
+    AND ((usiTriggerHandshake = 10) OR (usiTriggerHandshake = 20))
+    AND NOT bResultCapturedForTrigger
+    AND NOT bResultPending
+    AND (stCameraIO.bCurrentProgramNumber = nTriggerProgram)
+    AND (stCameraIO.bCurrentProgramNumber <= 3)
+    AND stCameraIO.bRunStatus
+    AND NOT stCameraIO.abError[1]
+    AND NOT stCameraIO.abError[2]
+THEN
+stCapturedVisionResults.sDate 								:= GetDate();
+
+IF stCameraIO.bCurrentProgramNumber = 0 THEN
+	IF stCameraIO.bToolJudge[4] THEN
+		stCapturedVisionResults.nClickPartPresent[1]		:= 1;
+	ELSE stCapturedVisionResults.nClickPartPresent[1]		:= 2;
+	END_IF
+	IF stCameraIO.bToolJudge[2] THEN
+		stCapturedVisionResults.nBottomPatchok				:= 1;
+	ELSE stCapturedVisionResults.nBottomPatchok				:= 2;
+	END_IF
+	IF stCameraIO.bToolJudge[3] THEN
+		stCapturedVisionResults.nTopPatchok					:= 1;
+	ELSE stCapturedVisionResults.nTopPatchok				:= 2;
+	END_IF
 
 
+ELSIF stCameraIO.bCurrentProgramNumber = 1 THEN
+	stCapturedVisionResults.sPatchNumber[1] 				:= GetBatchNumber();
+
+ELSIF stCameraIO.bCurrentProgramNumber = 2 THEN
+	stCapturedVisionResults.sDate 							:= GetDate();
+	stCapturedVisionResults.sPatchNumber[2] 				:= GetBatchNumber();
+
+	IF stCameraIO.bToolJudge[6] THEN
+		stCapturedVisionResults.nClickPartPresent[2]		:= 1;
+	ELSE stCapturedVisionResults.nClickPartPresent[2]		:= 2;
+	END_IF
+	IF stCameraIO.bToolJudge[1] THEN
+		stCapturedVisionResults.nBluePartPresent			:= 1;
+	ELSE stCapturedVisionResults.nBluePartPresent			:= 2;
+	END_IF
+ELSIF stCameraIO.bCurrentProgramNumber = 3 THEN
+	IF stCameraIO.bToolJudge[1] THEN
+		stCapturedVisionResults.nPBUBOK						:= 1;
+	ELSE stCapturedVisionResults.nPBUBOK					:= 2;
+	END_IF
+	IF stCameraIO.bToolJudge[3] THEN
+		stCapturedVisionResults.nPBUBMagnetOK				:= 1;
+	ELSE stCapturedVisionResults.nPBUBMagnetOK					:= 2;
+	END_IF
+
+END_IF
 
 
+    uiCapturedInspection := UDINT_TO_UINT(stCameraIO.bCurrentProgramNumber) + 1;
+    // A transported result may still have an invalid/ambiguous judgment.
+    stCapturedVisionResults.aInspectionCompleted[uiCapturedInspection] :=
+        stCameraIO.bGeneralPass XOR stCameraIO.bGeneralFail;
+    stCapturedVisionResults.aInspectionPassed[uiCapturedInspection] :=
+        stCameraIO.bGeneralPass AND NOT stCameraIO.bGeneralFail;
+    nResultProgram := stCameraIO.bCurrentProgramNumber;
+    bResultPending := TRUE;
+    bResultAccepted := (usiTriggerHandshake = 20);
+    bResultRead := FALSE;
+    bResultCapturedForTrigger := TRUE;
+    Cyclic := TRUE;
+END_IF
 
-
-					
-
-			]]></ST>
+// ACK may be observed after a one-scan Result Ready pulse has already ended.
+IF bResultPending
+    AND (usiTriggerHandshake = 20)
+    AND (stCameraIO.bCurrentProgramNumber = nResultProgram)
+    AND stCameraIO.bRunStatus
+    AND NOT stCameraIO.abError[1]
+    AND NOT stCameraIO.abError[2]
+THEN
+    bResultAccepted := TRUE;
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="GetBatchNumber" Id="{04ffd5fb-1fed-4b6a-a133-5e444dfe15b1}">
@@ -112,64 +204,29 @@ VAR_INPUT
  
 END_VAR
 VAR
-
- 
+    stEmptyVisionResults : ST_VisionResults;
+    nInspection : INT;
 END_VAR
 VAR_OUTPUT
 	stVisionResults				: ST_VisionResults;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[stVisionResults.sDate 								:= GetDate();
- 
-IF stCameraIO.bCurrentProgramNumber = 0 AND NOT bResetResults THEN
-	IF stCameraIO.bToolJudge[4] THEN
-		stVisionResults.nClickPartPresent[1]		:= 1;
-	ELSE stVisionResults.nClickPartPresent[1]		:= 2;
-	END_IF
-	IF stCameraIO.bToolJudge[2] THEN
-		stVisionResults.nBottomPatchok				:= 1;
-	ELSE stVisionResults.nBottomPatchok				:= 2;
-	END_IF
-	IF stCameraIO.bToolJudge[3] THEN
-		stVisionResults.nTopPatchok					:= 1;
-	ELSE stVisionResults.nTopPatchok				:= 2;
-	END_IF
+        <ST><![CDATA[IF bResetResults THEN
+    stCapturedVisionResults := stEmptyVisionResults;
+    bResultPending := FALSE;
+    bResultAccepted := FALSE;
+    bResultRead := FALSE;
+    bResultCapturedForTrigger := FALSE;
+    nResultProgram := 0;
+END_IF
 
- 
-ELSIF stCameraIO.bCurrentProgramNumber = 1 AND NOT bResetResults THEN
-	stVisionResults.sPatchNumber[1] 				:= GetBatchNumber();
- 
-ELSIF stCameraIO.bCurrentProgramNumber = 2 AND NOT bResetResults THEN
-	stVisionResults.sDate 							:= GetDate();
-	stVisionResults.sPatchNumber[2] 				:= GetBatchNumber();
- 
-	IF stCameraIO.bToolJudge[6] THEN
-		stVisionResults.nClickPartPresent[2]		:= 1;
-	ELSE stVisionResults.nClickPartPresent[2]		:= 2;
-	END_IF
-	IF stCameraIO.bToolJudge[1] THEN
-		stVisionResults.nBluePartPresent			:= 1;
-	ELSE stVisionResults.nBluePartPresent			:= 2;
-	END_IF
-ELSIF stCameraIO.bCurrentProgramNumber = 3 AND NOT bResetResults THEN
-	IF stCameraIO.bToolJudge[0] THEN
-		stVisionResults.nPBUBOK						:= 1;
-	ELSE stVisionResults.nPBUBOK					:= 2;
-	END_IF
- 
-ELSIF bResetResults THEN
-	stVisionResults.sPatchNumber[1]					:= '';
-	stVisionResults.sPatchNumber[2]					:= '';
-	stVisionResults.sDate							:= '';
-	stVisionResults.nBluePartPresent				:= 0;
-	stVisionResults.nClickPartPresent[1]			:= 0;
-	stVisionResults.nClickPartPresent[2]			:= 0;
-	stVisionResults.nBottomPatchok					:= 0;
-	stVisionResults.nTopPatchok						:= 0;
-	stVisionResults.nPBUBOK							:= 0;
-	bResetResults									:= FALSE;
- 
-END_IF]]></ST>
+// Return the snapshot, never re-read live camera data after Result Ready falls.
+stVisionResults := stCapturedVisionResults;
+GetResults := bResultPending;
+IF bResultPending THEN
+    bResultRead := TRUE;
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="GetResultsReady" Id="{9cbb4362-1746-498c-9239-edc22e263276}">
@@ -183,7 +240,14 @@ VAR_OUTPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[GetResultsReady					:= stCameraIO.bResultsReady;
+        <ST><![CDATA[// Latched data readiness, not the duration of the raw Result Ready signal.
+GetResultsReady :=
+    bResultPending
+    AND bResultAccepted
+    AND (stCameraIO.bCurrentProgramNumber = nResultProgram)
+    AND stCameraIO.bRunStatus
+    AND NOT stCameraIO.abError[1]
+    AND NOT stCameraIO.abError[2];
 ]]></ST>
       </Implementation>
     </Method>
@@ -264,13 +328,31 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF bEnable THEN
-	
-	stCameraIO.bResultAck			:= TRUE;
+        <ST><![CDATA[// A result left over before any trigger in the new request is stale.
+// Drain it without reading/counting it as the new piece's inspection.
+bDrainStaleResult :=
+    bTriggerRequestActive
+    AND (usiTriggerHandshake = 0)
+    AND NOT bResultPending
+    AND stCameraIO.bResultsReady;
 
-ELSE stCameraIO.bResultAck			:= FALSE;
-	
-END_IF]]></ST>
+IF bEnable OR bDrainStaleResult THEN
+    stCameraIO.bResultAck := TRUE;
+    IF bDrainStaleResult THEN
+        sTriggerDiagnostic := 'Camera: clearing stale result before new trigger';
+    END_IF
+ELSIF NOT stCameraIO.bResultsReady THEN
+    // Hold ACK until the camera has actually withdrawn Result Ready.
+    stCameraIO.bResultAck := FALSE;
+END_IF
+
+// Release the software latch only after GetResults delivered the snapshot.
+IF bEnable AND bResultPending AND bResultRead THEN
+    bResultPending := FALSE;
+    bResultAccepted := FALSE;
+    bResultRead := FALSE;
+END_IF
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequestTrigger" Id="{bee14638-6b9a-45ce-b2ef-ffa8ac3627c8}">
@@ -282,14 +364,94 @@ VAR_INPUT
 
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF bEnable THEN
-	
-	stCameraIO.bTrigger			:= TRUE;
+        <ST><![CDATA[RequestTrigger := FALSE;
+bTriggerRequestActive := bEnable;
 
-ELSE stCameraIO.bTrigger			:= FALSE;
-	
+IF NOT bEnable THEN
+    stCameraIO.bTrigger := FALSE;
+    usiTriggerHandshake := 0;
+    bResultCapturedForTrigger := FALSE;
+    sTriggerDiagnostic := 'Camera: no trigger request';
+    RETURN;
 END_IF
 
+CASE usiTriggerHandshake OF
+    0:
+        // Guarantee a low output scan even after an online change or interruption.
+        IF stCameraIO.bTrigger THEN
+            stCameraIO.bTrigger := FALSE;
+            sTriggerDiagnostic := 'Camera: rearming trigger output';
+        ELSIF NOT stCameraIO.bRunStatus THEN
+            sTriggerDiagnostic := 'Camera: waiting for Run';
+        ELSIF stCameraIO.abError[1] OR stCameraIO.abError[2] THEN
+            sTriggerDiagnostic := 'Camera: error active - trigger inhibited';
+        ELSIF bResultPending THEN
+            sTriggerDiagnostic := 'Camera: waiting for PLC to consume captured result';
+        ELSIF stCameraIO.bResultsReady OR stCameraIO.bResultAck THEN
+            sTriggerDiagnostic := 'Camera: waiting for previous result handshake to clear';
+        ELSIF stCameraIO.bProgramLoadExecute THEN
+            sTriggerDiagnostic := 'Camera: waiting for program load request to clear';
+        ELSIF stCameraIO.bTriggerAcknowledge THEN
+            sTriggerDiagnostic := 'Camera: waiting for previous Trigger ACK to clear';
+        ELSIF NOT stCameraIO.bTriggerReady THEN
+            sTriggerDiagnostic := 'Camera: waiting for Trigger Ready';
+        ELSE
+            nTriggerProgram := stCameraIO.bCurrentProgramNumber;
+            stCameraIO.bTrigger := TRUE;
+            usiTriggerHandshake := 10;
+            sTriggerDiagnostic := 'Camera: trigger sent - waiting for Trigger ACK';
+        END_IF
+
+    10:
+        IF NOT stCameraIO.bRunStatus
+            OR stCameraIO.abError[1] OR stCameraIO.abError[2]
+            OR (stCameraIO.bCurrentProgramNumber <> nTriggerProgram)
+        THEN
+            stCameraIO.bTrigger := FALSE;
+            usiTriggerHandshake := 30;
+            bResultAccepted := FALSE;
+            sTriggerDiagnostic := 'Camera: trigger aborted by Run/error/program change';
+        ELSIF stCameraIO.bTriggerAcknowledge THEN
+            stCameraIO.bTrigger := FALSE;
+            usiTriggerHandshake := 20;
+            RequestTrigger := TRUE;
+            sTriggerDiagnostic := 'Camera: trigger accepted - waiting for result';
+        ELSE
+            // The request is held until the camera acknowledges it.
+            stCameraIO.bTrigger := TRUE;
+            sTriggerDiagnostic := 'Camera: trigger sent - waiting for Trigger ACK';
+        END_IF
+
+    20:
+        // A sustained station request must not cause repeated captures.
+        stCameraIO.bTrigger := FALSE;
+        IF NOT stCameraIO.bRunStatus
+            OR stCameraIO.abError[1] OR stCameraIO.abError[2]
+            OR (stCameraIO.bCurrentProgramNumber <> nTriggerProgram)
+        THEN
+            usiTriggerHandshake := 30;
+            bResultAccepted := FALSE;
+            sTriggerDiagnostic := 'Camera: accepted capture invalidated by Run/error/program change';
+        ELSE
+            RequestTrigger := TRUE;
+            IF bResultPending THEN
+                sTriggerDiagnostic := 'Camera: captured result waiting for PLC read';
+            ELSIF stCameraIO.bResultsReady THEN
+                sTriggerDiagnostic := 'Camera: result available for accepted trigger';
+            ELSE
+                sTriggerDiagnostic := 'Camera: trigger accepted - waiting for result';
+            END_IF
+        END_IF
+
+    30:
+        // Do not retry an aborted capture until the station rearms its request.
+        stCameraIO.bTrigger := FALSE;
+
+    ELSE
+        stCameraIO.bTrigger := FALSE;
+        usiTriggerHandshake := 0;
+        sTriggerDiagnostic := 'Camera: invalid trigger handshake - rearming';
+END_CASE
 ]]></ST>
       </Implementation>
     </Method>

@@ -3,9 +3,9 @@
   <POU Name="FB_VisionStation" Id="{da682161-7fdb-47e3-b49b-f4968c8b1f16}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_VisionStation IMPLEMENTS I_ProcessEquipment
 VAR
-    // Commissioning result selectors retained until camera integration exists.
-    // FALSE = process PASS (default)
-    // TRUE  = simulated product FAIL
+    // Commissioning FAIL/fault injection; a real camera FAIL cannot be overridden.
+    // FALSE = use the real camera verdicts (default)
+    // TRUE  = inject FAIL after valid camera evaluation
     bSimulatedFail              : BOOL := FALSE;
     bSimulatedFault             : BOOL := FALSE;
 
@@ -85,17 +85,19 @@ VAR
     tSupportMoveTimeout         : TIME := T#5S;
     tToolingSensorConflict      : TIME := T#300MS;
 	tIntermediatePosition 		: TIME := T#200MS;
-	tTakingPictureWHileRotating	: TIME := T#600MS;
+	tTakingPictureWHileRotating	: TIME := T#1100MS; // +500 ms; pneumatic timing requires commissioning.
 	tDelayInspectionPlaceHolder	: TIME;
 
     bStepTargetReached          : BOOL;
     bToolingSensorConflict      : BOOL;
 	
 	rTrigger						: R_TRIG;
+	tonCamera110Rearm             : TON;
 	tonCameraTriggerDelay			: ARRAY [1..2] OF TON;
 	tonTakingPictureWHileRotating	: TON;
 	tonDelayInspectionPlaceHolder	: TON;
 
+    stEmptyVisionResults        : ST_VisionResults;
     stResultInternal            : ST_ProcessResult;
 END_VAR]]></Declaration>
     <Implementation>
@@ -111,9 +113,25 @@ VAR
 
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Modified by Thays - TEMPORARY: disable Keyence triggers during mechanical commissioning.
-// bTriggerRequestInternal					:= tonTakingPictureWHileRotating.Q OR usiStepInternal = 10 OR usiStepInternal = 110;
-bTriggerRequestInternal := FALSE;
+        <ST><![CDATA[// Rearm inspection 2 after entry and confirmed program selection.
+tonCamera110Rearm(
+    IN := (eStateInternal = E_PatchStationState.Processing)
+        AND (usiStepInternal = 110)
+        AND (nCurrentProgramNumberInternal = 2)
+        AND NOT tonCameraTriggerDelay[1].IN
+        AND NOT tonCameraTriggerDelay[2].IN,
+    PT := T#500MS
+);
+
+bTriggerRequestInternal :=
+    (eStateInternal = E_PatchStationState.Processing)
+    AND (
+        ((usiStepInternal = 100) AND (nCurrentProgramNumberInternal = 1)
+            AND tonTakingPictureWHileRotating.Q)
+        OR ((usiStepInternal = 10) AND (nCurrentProgramNumberInternal = 0))
+        OR ((usiStepInternal = 110) AND tonCamera110Rearm.Q)
+        OR ((usiStepInternal = 180) AND (nCurrentProgramNumberInternal = 3))
+    );
 bGetResultsRequestInternal := FALSE;
 bAcknowledgeResultsInternal := FALSE;
 bChangeProgramRequestInternal := FALSE;
@@ -129,9 +147,9 @@ tonDelayInspectionPlaceHolder(PT := tDelayInspectionPlaceHolder);
  //   Nest DOWN, grip 0 deg, grip OPEN, vertical UP,
  //   vertical limit OFF, horizontal slide BACK.
  //
- // Process (ACTIVE mechanical steps + RESERVED camera steps):
+ // Process (active mechanical steps and camera inspections):
  //
- //   10  1st Vision Inspection - Program 0          // TODO: Patch welding and click part quality
+ //   10  1st Vision Inspection - Program 0
  //   20  Nest UP and open grippers
  //   30  Vertical FULL DOWN - pick
  //   40  Grip CLOSE
@@ -140,16 +158,16 @@ tonDelayInspectionPlaceHolder(PT := tDelayInspectionPlaceHolder);
  //   70  Vertical INTERMEDIATE
  //   80  Vertical UP before flip
  //   90  Nest DOWN before flip                       // FIX: separated from Step 70
- //   100  Rotate 180 and hold 1 s
- //   110  2nd Vision Inspection - Program 1          // TODO: Batch number
+ //   100  Rotate 180; timed Program 1 capture and result acquisition
+ //   110  3rd Vision Inspection - Program 2
  //  120  Rotate back to 0                            // FIX: nest remains DOWN
  //  130  Nest UP after rotation                      // FIX: separated from Step 100
- //  140  3rd Vision Inspection - Program 2          // TODO: Batch number, date, click part and blue part
- //  150  4th Vision Inspection - Program 3          // TODO: PBUB quality
- //  160  Vertical INTERMEDIATE - replace part
- //  170  Grip OPEN
- //  180  Vertical UP
- //  190  Return tooling to HOME, then Complete
+ //  140  Vertical INTERMEDIATE - replace part
+ //  150  Grip OPEN - release part
+ //  160  Vertical UP after release
+ //  170  Return tooling HOME
+ //  180  4th Vision Inspection - Program 3
+ //  190  Aggregate four camera verdicts, then Complete
 
 
 // ============================================================================
@@ -298,8 +316,8 @@ ELSE
 			//   Nest DOWN, vertical UP, rotation 0 deg, grip OPEN,
 			//   vertical limit OFF, horizontal slide BACK.
 
-            // Modified by Thays - TEMPORARY: camera program 0 selection disabled for mechanical commissioning.
-            (*
+            // Request program 0 during homing; mechanical Ready still does not confirm camera Ready.
+            
 			//Leaving camera with the right program to performance first test--------------------------
 			
 			IF nCurrentProgramNumberInternal<> 0 THEN
@@ -314,7 +332,7 @@ ELSE
 			END_IF
 			
 
-            *)
+            
 			//-------------------------------------------------------------------------------------------
             IF usiStepInternal = 0 THEN
 
@@ -503,6 +521,13 @@ ELSE
 
         E_PatchStationState.Ready:
 
+            // Reset can enter Ready directly when tooling is already home.
+            // Restore the camera independently of the mechanical homing path.
+            IF nCurrentProgramNumberInternal <> 0 THEN
+                nSetProgramNumberInternal := 0;
+                bChangeProgramRequestInternal := TRUE;
+            END_IF
+
             tonStepDelay(IN := FALSE);
             tonRotate180Hold(IN := FALSE);
             tonMoveTimeout(IN := FALSE);
@@ -536,18 +561,32 @@ ELSE
 
         E_PatchStationState.Processing:
 
+            // Each scan must prove completion of the active step.
+            bStepTargetReached := FALSE;
+
             CASE usiStepInternal OF
 
 
 				// ------------------------------------------------------------
-                // STEP 10 - CAMERA PLACEHOLDER - FIRST INSPECTION 
+                // STEP 10 - CAMERA PROGRAM 0 - FIRST INSPECTION
                 // ------------------------------------------------------------
 				10:
-                    // Modified by Thays - TEMPORARY: Keyence inspection 1 disabled; commissioning only.
-                    (*
+                    // Acquire program 0, then confirm the change to program 1.
+                    // Recover an interrupted cycle before accepting the first result.
+                    // Once acquisition/program-1 change starts, do not request 0 again.
+                    IF (nCurrentProgramNumberInternal <> 0)
+                        AND NOT tonCameraTriggerDelay[1].IN
+                        AND NOT tonCameraTriggerDelay[2].IN
+                    THEN
+                        nSetProgramNumberInternal := 0;
+                        bChangeProgramRequestInternal := TRUE;
+                    END_IF
+
+                    
 					
 					
-					IF bCameraResultsReadyInternal THEN
+					IF (nCurrentProgramNumberInternal = 0)
+                        AND bCameraResultsReadyInternal AND NOT tonCameraTriggerDelay[2].IN THEN
 						
 						bGetResultsRequestInternal			:= TRUE;
 						bAcknowledgeResultsInternal			:= TRUE;
@@ -567,18 +606,21 @@ ELSE
 							
 							
 					END_IF
-					IF tonCameraTriggerDelay[2].Q THEN
+					// Hold program selection until the camera reports the requested program.
+                    IF tonCameraTriggerDelay[2].IN THEN
+                        nSetProgramNumberInternal := 1;
+                        bChangeProgramRequestInternal := (nCurrentProgramNumberInternal <> 1);
+                    END_IF
+                    IF tonCameraTriggerDelay[2].Q AND (nCurrentProgramNumberInternal = 1) THEN
 							
 							
 							bChangeProgramRequestInternal		:= FALSE;
 							bStepTargetReached					:= TRUE;
-							tonCameraTriggerDelay[2].IN			:= FALSE;
+                            // Keep delay 2 complete until this step advances.
 							
 							
 					END_IF
 						
-					                    *)
-                    bStepTargetReached := TRUE; // Modified by Thays - no camera inspection result.
                     sDiagnosticInternal := 'Vision: Camera first inspection ';
 					
 
@@ -803,10 +845,10 @@ ELSE
                 // STEP 100 - ROTATE 180 AND HOLD
                 // ------------------------------------------------------------
 
-                100: // FIX: was 80; support retract now uses Step 80.
+                100: // Support retraction was confirmed in step 90.
 
-					// Modified by Thays - TEMPORARY: disable camera trigger during rotation.
-                    // tonTakingPictureWHileRotating.IN := TRUE;
+					// Capture program 1 after the configured delay from entry into step 100.
+                    tonTakingPictureWHileRotating.IN := TRUE;
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
@@ -817,12 +859,12 @@ ELSE
                     bGripCloseRequestInternal := NOT bGripClosedInternal;
                     bRotate180RequestInternal := NOT bRotate180Internal;
 
-                    // Modified by Thays - TEMPORARY: skip Keyence program 1/result/program 2 handshake.
-                    (*
+                    // Acquire program 1 before requesting program 2.
+                    
 					//Camera
 					IF nCurrentProgramNumberInternal = 1 THEN
 					
-					IF bCameraResultsReadyInternal THEN
+					IF bCameraResultsReadyInternal AND NOT tonCameraTriggerDelay[2].IN THEN
 						
 						bGetResultsRequestInternal			:= TRUE;
 						bAcknowledgeResultsInternal			:= TRUE;
@@ -844,11 +886,16 @@ ELSE
 							
 							
 					END_IF
-					IF tonCameraTriggerDelay[2].Q THEN
+					// Hold program selection until the camera reports the requested program.
+                    IF tonCameraTriggerDelay[2].IN THEN
+                        nSetProgramNumberInternal := 2;
+                        bChangeProgramRequestInternal := (nCurrentProgramNumberInternal <> 2);
+                    END_IF
+                    IF tonCameraTriggerDelay[2].Q AND (nCurrentProgramNumberInternal = 2) THEN
 							
 							
 							bChangeProgramRequestInternal		:= FALSE;
-							tonCameraTriggerDelay[2].IN			:= FALSE;
+
 							
 							
 					END_IF
@@ -858,33 +905,30 @@ ELSE
 						
 					END_IF
 					
-					bStepTargetReached := tonDelayInspectionPlaceHolder.Q;
+					bStepTargetReached := tonDelayInspectionPlaceHolder.Q
+                        AND (nCurrentProgramNumberInternal = 2);
 					
-					                    *)
-                    // Modified by Thays - retain physical 180-degree confirmation and existing hold timer.
-                    tonDelayInspectionPlaceHolder.IN := bRotate180Internal AND NOT bRotate0Internal;
-                    bStepTargetReached := bRotate180Internal AND NOT bRotate0Internal AND tonDelayInspectionPlaceHolder.Q;
-                    sDiagnosticInternal := 'Vision: rotate 180, Camera second Inspection - holding 1 s';
+					                    
+                    // Equipment review pending: the physical 180-degree target below remains inactive.
+                    //tonDelayInspectionPlaceHolder.IN := bRotate180Internal AND NOT bRotate0Internal;
+                    //bStepTargetReached := bRotate180Internal AND NOT bRotate0Internal AND tonDelayInspectionPlaceHolder.Q;
+                    sDiagnosticInternal := 'Vision: rotate 180, timed camera program 1 inspection';
 				
-                // FIX CAMERA PREPARATION - STEP 95: SECOND INSPECTION (PROGRAM 1)
-                // TODO: select program 1, trigger and await fresh result;
-                // TODO: inspect batch number at 180 deg, store PASS/FAIL;
-                // TODO: handle camera timeout and avoid repeated triggers.
-                // NOTE: bypass only; hold safe 180-deg inspection position.
+                // Pending: accepted-trigger/fresh-result handshake and supervised visual inspection recovery.
         
 				// ------------------------------------------------------------
-                // STEP 110 - CAMERA PLACEHOLDER - THIRD INSPECTION
+                // STEP 110 - CAMERA PROGRAM 2 - THIRD INSPECTION
                 // ------------------------------------------------------------
 				
 				110:
 					tonDelayInspectionPlaceHolder.IN		:= FALSE;
 					tonTakingPictureWHileRotating.IN := FALSE;
 				
-                    // Modified by Thays - TEMPORARY: skip Keyence program 2/result/program 0 handshake.
-                    (*
+                    // Acquire program 2 before requesting program 3.
+                    
 					IF nCurrentProgramNumberInternal = 2 THEN
 					
-					IF bCameraResultsReadyInternal THEN
+					IF bCameraResultsReadyInternal AND NOT tonCameraTriggerDelay[2].IN THEN
 						
 						bGetResultsRequestInternal			:= TRUE;
 						bAcknowledgeResultsInternal			:= TRUE;
@@ -898,25 +942,30 @@ ELSE
 							
 							bGetResultsRequestInternal			:= FALSE;
 							bAcknowledgeResultsInternal			:= FALSE;
-							nSetProgramNumberInternal			:= 0;
+							nSetProgramNumberInternal			:= 3;
 							bChangeProgramRequestInternal		:= TRUE;
 							tonCameraTriggerDelay[2].IN			:= TRUE;
 							tonCameraTriggerDelay[1].IN			:= FALSE;
 							
 							
 					END_IF
-					IF tonCameraTriggerDelay[2].Q THEN
+					// Hold program selection until the camera reports the requested program.
+                    IF tonCameraTriggerDelay[2].IN THEN
+                        nSetProgramNumberInternal := 3;
+                        bChangeProgramRequestInternal := (nCurrentProgramNumberInternal <> 3);
+                    END_IF
+                    IF tonCameraTriggerDelay[2].Q AND (nCurrentProgramNumberInternal = 3) THEN
 							
 							
 							bChangeProgramRequestInternal		:= FALSE;
 							bStepTargetReached					:= TRUE;
-							tonCameraTriggerDelay[2].IN			:= FALSE;
+                            // Keep delay 2 complete until this step advances.
 							
 							
 					END_IF
 				
-                    *)
-                    bStepTargetReached := TRUE; // Modified by Thays - no camera inspection result.
+                    
+                    //bStepTargetReached := TRUE; // Modified by Thays - no camera inspection result.
 
                 // ------------------------------------------------------------
                 // STEP 120 - ROTATE BACK TO 0
@@ -976,11 +1025,7 @@ ELSE
 
                     sDiagnosticInternal := 'Vision: nest support UP after rotate 0';
 
-                // FIX CAMERA PREPARATION - STEP 115: THIRD INSPECTION (PROGRAM 2)
-                // TODO: select program 2, trigger, await fresh result;
-                // TODO: inspect batch/date/blue part/click part and store result;
-                // TODO: implement timeout, FAIL handling and one-shot trigger.
-                // NOTE: bypass only; keep nest UP and tooling in position.
+                // Pending: accepted-trigger/fresh-result handshake and supervised visual inspection recovery.
 				
 
                 // ------------------------------------------------------------
@@ -1087,23 +1132,45 @@ ELSE
 				// ------------------------------------------------------------
                 // STEP 180 - CAMERA PBUB - FOURTH INSPECTION
                 // ------------------------------------------------------------                
-				180:
-                   
-                    // Modified by Thays - TEMPORARY: no Keyence program change at step 180.
-                    // nSetProgramNumberInternal := 0;
-                    // bChangeProgramRequestInternal := TRUE;
-                    bStepTargetReached := TRUE;
-                       
+                180:
+                    // Only program 3 may supply this inspection's result.
+                    IF (nCurrentProgramNumberInternal = 3)
+                        AND bCameraResultsReadyInternal
+                        AND NOT tonCameraTriggerDelay[2].IN
+                    THEN
+                        bGetResultsRequestInternal := TRUE;
+                        bAcknowledgeResultsInternal := TRUE;
+                        tonCameraTriggerDelay[1].IN := TRUE;
+                    END_IF
+
+                    // Finish the delay even after the camera returns to program 0.
+                    IF tonCameraTriggerDelay[1].Q THEN
+                        bGetResultsRequestInternal := FALSE;
+                        bAcknowledgeResultsInternal := FALSE;
+                        nSetProgramNumberInternal := 0;
+                        bChangeProgramRequestInternal := TRUE;
+                        tonCameraTriggerDelay[2].IN := TRUE;
+                        tonCameraTriggerDelay[1].IN := FALSE;
+                    END_IF
+
+                    // Hold program selection until the camera reports the requested program.
+                    IF tonCameraTriggerDelay[2].IN THEN
+                        nSetProgramNumberInternal := 0;
+                        bChangeProgramRequestInternal := (nCurrentProgramNumberInternal <> 0);
+                    END_IF
+                    IF tonCameraTriggerDelay[2].Q AND (nCurrentProgramNumberInternal = 0) THEN
+                        bChangeProgramRequestInternal := FALSE;
+                        bStepTargetReached := TRUE;
+                        // Keep delay 2 complete until this step advances.
+                    END_IF
+
+                    sDiagnosticInternal := 'Vision: Camera fourth inspection';
+
 				190:
 				
-					bChangeProgramRequestInternal		:= FALSE;
 					bStepTargetReached := TRUE;
 
-                // FIX CAMERA PREPARATION - STEP 117: FOURTH INSPECTION (PROGRAM 3)
-                // TODO: select program 3, trigger, await fresh result;
-                // TODO: inspect PBUB, store result separately from other cameras;
-                // TODO: handle FAIL/timeout before vertical intermediate.
-                // NOTE: bypass only; keep nest UP and tooling in position.
+                // Pending: accepted-trigger/fresh-result handshake and supervised visual inspection recovery.
 
                 ELSE
 
@@ -1145,14 +1212,14 @@ ELSE
                 eStateInternal := E_PatchStationState.Fault;
                 usiStepInternal := 0;
 
-                sDiagnosticInternal := 'Vision: tooling movement timeout';
+                sDiagnosticInternal := 'Vision: tooling movement or camera handshake timeout';
 
                 stResultInternal.bValid := TRUE;
                 stResultInternal.bPassed := FALSE;
                 stResultInternal.eCode := E_ProcessResultCode.Fail;
                 stResultInternal.udiFaultCode := 10;
                 stResultInternal.udiAlertCode := 0;
-                stResultInternal.sDetail := 'Vision tooling movement timeout';
+                stResultInternal.sDetail := sDiagnosticInternal;
 
 			(*
             ELSIF (usiStepInternal = 20) AND bStepTargetReached THEN
@@ -1169,37 +1236,50 @@ ELSE
                 tonMoveTimeout(IN := FALSE);
                 tonStepDelay(IN := FALSE);
 
-                // FIX CAMERA PREPARATION: explicit transitions for reserved steps.
-                // OLD: IF usiStepInternal < 150 THEN
-                // OLD:     usiStepInternal := usiStepInternal + 10;
-                // OLD: ELSE
+                // Advance through the active steps in increments of 10.
               
+                // The next step must start with fresh camera delays.
+                tonCameraTriggerDelay[1](IN := FALSE);
+                tonCameraTriggerDelay[2](IN := FALSE);
                 usiStepInternal := usiStepInternal + 10;
             ELSIF usiStepInternal = 190 THEN
 
-                    // FIX: camera inspection steps are currently commented; use commissioning
-                    // simulated PASS/FAIL selector as the process result.
-                    stResultInternal.bValid := TRUE;
+                    stResultInternal.CameraResults := nVisionResultsInternal;
                     stResultInternal.udiFaultCode := 0;
                     stResultInternal.udiAlertCode := 0;
+                    stResultInternal.bValid :=
+                        nVisionResultsInternal.aInspectionCompleted[1]
+                        AND nVisionResultsInternal.aInspectionCompleted[2]
+                        AND nVisionResultsInternal.aInspectionCompleted[3]
+                        AND nVisionResultsInternal.aInspectionCompleted[4];
 
-                    IF bSimulatedFail THEN
+                    IF stResultInternal.bValid THEN
+                        stResultInternal.bPassed :=
+                            nVisionResultsInternal.aInspectionPassed[1]
+                            AND nVisionResultsInternal.aInspectionPassed[2]
+                            AND nVisionResultsInternal.aInspectionPassed[3]
+                            AND nVisionResultsInternal.aInspectionPassed[4]
+                            AND NOT bSimulatedFail;
+                        stResultInternal.CameraResults.bGeneralPass := stResultInternal.bPassed;
+                        stResultInternal.CameraResults.bGeneralFail := NOT stResultInternal.bPassed;
 
-                        stResultInternal.bPassed := FALSE;
-                        stResultInternal.eCode := E_ProcessResultCode.Fail;
-                        stResultInternal.sDetail :=
-                            'Vision flipping complete - simulated FAIL';
-
+                        IF stResultInternal.bPassed THEN
+                            stResultInternal.eCode := E_ProcessResultCode.Pass;
+                            stResultInternal.sDetail := 'Vision: four camera inspections PASS';
+                        ELSE
+                            stResultInternal.eCode := E_ProcessResultCode.Fail;
+                            stResultInternal.sDetail := 'Vision: camera inspection FAIL or commissioning FAIL injection';
+                        END_IF
+                        eStateInternal := E_PatchStationState.Complete;
                     ELSE
-
-                        stResultInternal.bPassed := TRUE;
-                        stResultInternal.eCode := E_ProcessResultCode.Pass;
-                        stResultInternal.sDetail :=
-                            'Vision flipping complete - simulated PASS';
-
+                        // No valid automatic verdict: retain the existing fault workflow.
+                        stResultInternal.bPassed := FALSE;
+                        stResultInternal.eCode := E_ProcessResultCode.None;
+                        stResultInternal.udiFaultCode := 11;
+                        stResultInternal.sDetail := 'Vision: incomplete camera results - manual inspection required';
+                        sDiagnosticInternal := stResultInternal.sDetail;
+                        eStateInternal := E_PatchStationState.Fault;
                     END_IF
-
-                    eStateInternal := E_PatchStationState.Complete;
                     usiStepInternal := 0;
 
                 END_IF
@@ -1472,6 +1552,16 @@ ELSIF tonSupportRetractTimeout.Q THEN
 END_IF
 
 
+// Clear pending camera delays after completion, stop, disable or fault.
+IF eStateInternal <> E_PatchStationState.Processing THEN
+    tonCameraTriggerDelay[1](IN := FALSE);
+    tonCameraTriggerDelay[2](IN := FALSE);
+    tonCamera110Rearm(IN := FALSE);
+    tonTakingPictureWHileRotating(IN := FALSE);
+    tonDelayInspectionPlaceHolder(IN := FALSE);
+    bTriggerRequestInternal := FALSE;
+END_IF
+
 // ============================================================================
 // STATUS
 // ============================================================================
@@ -1540,6 +1630,8 @@ stResultInternal.eCode := E_ProcessResultCode.None;
 stResultInternal.udiFaultCode := 0;
 stResultInternal.udiAlertCode := 0;
 stResultInternal.sDetail := '';
+stResultInternal.CameraResults := stEmptyVisionResults;
+nVisionResultsInternal := stEmptyVisionResults;
 ]]></ST>
       </Implementation>
     </Method>
@@ -1596,6 +1688,8 @@ stResultInternal.eCode := E_ProcessResultCode.None;
 stResultInternal.udiFaultCode := 0;
 stResultInternal.udiAlertCode := 0;
 stResultInternal.sDetail := '';
+stResultInternal.CameraResults := stEmptyVisionResults;
+nVisionResultsInternal := stEmptyVisionResults;
 
 IF bEnableInternal AND bCommissionedInternal AND bSafetyOkInternal THEN
     IF bHomeInternal THEN
@@ -1645,6 +1739,8 @@ THEN
     stResultInternal.udiFaultCode := 0;
     stResultInternal.udiAlertCode := 0;
     stResultInternal.sDetail := '';
+    stResultInternal.CameraResults := stEmptyVisionResults;
+    nVisionResultsInternal := stEmptyVisionResults;
 
     eSupportFaultInternal := E_SupportCylinderFault.None;
     eStateInternal := E_PatchStationState.Processing;
@@ -1743,6 +1839,11 @@ bRotate180Internal := bRotate180;
 
 tSupportMoveTimeout := tSupportTimeout;
 
+// Camera inputs must be current when reset and Cyclic evaluate the handshake.
+nCurrentProgramNumberInternal	:= 		nCurrentProgramNumber;
+bCameraResultsReadyInternal		:= 		bResultsReady;
+nVisionResultsInternal			:= 	nVisionCameraResults;
+
 IF bReset THEN
     RequestReset();
 END_IF
@@ -1780,9 +1881,9 @@ bRequestResetResults			:=		bResetResultsRequestInternal;
 nProgramNumber 					:= 		nSetProgramNumberInternal;
 bAcknowledgeResults				:= 		bAcknowledgeResultsInternal;
 
-nCurrentProgramNumberInternal	:= 		nCurrentProgramNumber;
-bCameraResultsReadyInternal		:= 		bResultsReady;
-nVisionResultsInternal			:= 	nVisionCameraResults;]]></ST>
+
+
+]]></ST>
       </Implementation>
     </Method>
   </POU>
