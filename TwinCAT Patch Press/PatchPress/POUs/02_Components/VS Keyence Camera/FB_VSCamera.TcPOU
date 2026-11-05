@@ -555,6 +555,8 @@ END_IF
 
 IF bRecoverInspection OR bRecoveryFailed OR (usiTriggerHandshake = 35) THEN
     stCameraIO.bTrigger := FALSE;
+    // An acknowledged capture remains accepted during evaluation-error recovery.
+    RequestTrigger := (usiTriggerHandshake = 35) OR bResultCapturedForTrigger;
     RETURN;
 END_IF
 

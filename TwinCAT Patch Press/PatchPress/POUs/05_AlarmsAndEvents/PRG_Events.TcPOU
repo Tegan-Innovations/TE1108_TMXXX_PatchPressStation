@@ -135,7 +135,7 @@ GVL_MASTER.stStationEvents[3].aEvents[9].bFault := TRUE;
 GVL_MASTER.stStationEvents[3].aEvents[9].bEventFlag :=
     GVL_MASTER.stStatus.stPatchDispense.bFault
     AND (GVL_MASTER.stStatus.stPatchDispense.eSupportFault = E_SupportCylinderFault.None);
-GVL_MASTER.stStationEvents[3].aEvents[9].bEventText := 'Patch Dispense station fault';
+GVL_MASTER.stStationEvents[3].aEvents[9].bEventText := GVL_MASTER.stStatus.stPatchDispense.sDiagnostic;
 GVL_MASTER.stStationEvents[3].aEvents[9].sSolution :=
     'Check Patch Dispense station diagnostic, process equipment and simulation fault request';
 
@@ -587,6 +587,16 @@ GVL_MASTER.stStationEvents[3].aEvents[34].bEventFlag :=
 GVL_MASTER.stStationEvents[3].aEvents[34].bEventText := GVL_Motion.stPatchFeedStatus.sDiagnostic;
 GVL_MASTER.stStationEvents[3].aEvents[34].sSolution := 'Check rocker sensors and motion timeout; do not repeatedly retry a jammed web.';
 
+// Explicit commissioning indication; no fault is suppressed by this message.
+GVL_MASTER.stStationEvents[3].aEvents[35].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[35].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[35].bEventFlag :=
+    GVL_MASTER.stStatus.stPatchDispense.bCommissioned
+    AND NOT GVL_Motion.stPatchFeedSettings.bUsePatchVerticalFeedback;
+GVL_MASTER.stStationEvents[3].aEvents[35].bEventText := 'Patch vertical: TEMP timed mode';
+GVL_MASTER.stStationEvents[3].aEvents[35].sSolution :=
+    'No position feedback. Wire Input9/Input10, validate and restore feedback mode.';
+
 fbEventsManager(	aWarningEvents := aWarningEvents,
                     bPulse := TRUE,
 					bDataWritedInCSV := FALSE, 
@@ -610,7 +620,9 @@ GVL_HMI.sSystemTime := GVL_MASTER.sSystemTime;
 
 GVL_HMI.astActiveEvents := GVL_MASTER.astActiveEvents;
 GVL_HMI.astEventsHistory := GVL_Persistent.astEventsHistory;
-GVL_HMI.stEventsAssigment := GVL_MASTER.stEventsAssigment;]]></ST>
+GVL_HMI.stEventsAssigment := GVL_MASTER.stEventsAssigment;
+
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

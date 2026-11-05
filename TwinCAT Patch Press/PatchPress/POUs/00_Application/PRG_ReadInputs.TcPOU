@@ -4,7 +4,8 @@
     <Declaration><![CDATA[PROGRAM PRG_ReadInputs
 VAR
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[GVL_MASTER.stInputs.bStartButton := GVL_IO.stInputs.bStartButton;
+    <Implementation>
+      <ST><![CDATA[GVL_MASTER.stInputs.bStartButton := GVL_IO.stInputs.bStartButton;
 GVL_MASTER.stInputs.bStopButton := GVL_IO.stInputs.bStopButton;
 GVL_MASTER.stInputs.bResetButton := GVL_IO.stInputs.bResetButton;
 GVL_MASTER.stInputs.bTwoHandsSafe := GVL_IO.stInputs.bTwoHandsSafe;
@@ -75,6 +76,9 @@ GVL_MASTER.stInputs.uiMainAirPressureRaw := GVL_IO.stInputs.uiMainAirPressureRaw
 GVL_MASTER.stInputs.uiPressureRegulatorActualRaw := GVL_IO.stInputs.uiPressureRegulatorActualRaw;
 GVL_MASTER.stInputs.diHeatStakeTc1Raw := GVL_IO.stInputs.diHeatStakeTc1Raw;
 GVL_MASTER.stInputs.diHeatStakeTc2Raw := GVL_IO.stInputs.diHeatStakeTc2Raw;
-GVL_MASTER.stInputs.diHeatStakeTc3Raw := GVL_IO.stInputs.diHeatStakeTc3Raw;]]></ST></Implementation>
+GVL_MASTER.stInputs.diHeatStakeTc3Raw := GVL_IO.stInputs.diHeatStakeTc3Raw;
+GVL_MASTER.stInputs.bPatchOpticalLeft := GVL_IO.stInputs.bPatchOpticalLeft;
+]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

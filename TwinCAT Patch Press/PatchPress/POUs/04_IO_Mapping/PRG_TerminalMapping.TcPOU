@@ -115,6 +115,9 @@ GVL_IO.stInputs.bRotaryGripperPlace180          := GVL_EtherCAT.stTerm8_EL1809.i
 ======================================================================================================================
 *)
 
+GVL_IO.stInputs.bPatchOpticalLeft := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6;
+// TEMPORARY: Input5 right optical sensor stuck TRUE until bracket repair.
+// bPatchOpticalRight := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5;
 GVL_IO.stInputs.bHeatStakeHeadUp   			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7;
 GVL_IO.stInputs.bHeatStakeHeadDown 			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8;
 GVL_IO.stInputs.bMembraneTransferRetracted 	:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9;

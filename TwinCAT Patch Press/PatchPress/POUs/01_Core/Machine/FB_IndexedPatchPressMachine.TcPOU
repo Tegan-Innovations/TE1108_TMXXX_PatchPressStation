@@ -4,6 +4,14 @@
     <Declaration><![CDATA[FUNCTION_BLOCK FB_IndexedPatchPressMachine
 VAR
     fbPatchFeedManager : FB_PatchFeedManager;
+    bPatchDriveRunRequest : BOOL;
+    bPatchSequenceAirRequest : BOOL;
+    bPatchSequenceDownRequest : BOOL;
+    bPatchHoldUpAllowed : BOOL;
+    bPatchStartAllowed : BOOL;
+    bPatchVerticalIndexReady : BOOL;
+    bPatchVerticalUpCommandPrevious : BOOL;
+    bPatchVerticalDownCommandPrevious : BOOL;
     fbIndex : FB_IndexTable4;
     fbMainDoorLock : FB_MainDoorLock;
     fbNestManager : FB_NestTableManager;
@@ -13,6 +21,15 @@ VAR
     fbHeatStakeTemperature : FB_HeatStakeTemperatureControl;
     fbHeatStakePressureRegulator : FB_VeabPressureRegulator;
     fbVision : FB_VisionStation;
+    tonVisionRotate0Confirm : TON;
+    tonVisionRotate180Confirm : TON;
+    tVisionRotaryConfirm : TIME := T#1S;
+    bVisionRotate0Confirmed : BOOL;
+    bVisionRotate180Confirmed : BOOL;
+    bVisionRotate0CommandPrevious : BOOL;
+    bVisionRotate180CommandPrevious : BOOL;
+    bVisionTriggerAccepted : BOOL;
+    bVisionRotatingCaptureAccepted : BOOL;
 	fbVSCamera : FB_VSCamera;
     fbProcessCycle : FB_ProcessCycle;
     fbCommissioningGuard : FB_PatchPressCommissioningGuard;
@@ -322,6 +339,20 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[ResetCyclicOutputs();
 
+// Shared endpoint interpretation for automatic, HOME, Manual and HMI.
+tonVisionRotate0Confirm(IN := bVisionCommissioned AND stInputs.stSafety.bSafetyOk
+    AND GVL_Safety.bAirSupplySafe AND NOT stCommand.bReset
+    AND stInputs.bRotaryGripperPick0 AND NOT stInputs.bRotaryGripperPlace180
+    AND NOT bVisionRotate180CommandPrevious
+    AND (bVisionRotate0CommandPrevious OR bVisionRotate0Confirmed), PT := tVisionRotaryConfirm);
+tonVisionRotate180Confirm(IN := bVisionCommissioned AND stInputs.stSafety.bSafetyOk
+    AND GVL_Safety.bAirSupplySafe AND NOT stCommand.bReset
+    AND stInputs.bRotaryGripperPlace180 AND NOT stInputs.bRotaryGripperPick0
+    AND NOT bVisionRotate0CommandPrevious, PT := tVisionRotaryConfirm);
+bVisionRotate0Confirmed := tonVisionRotate0Confirm.Q;
+bVisionRotate180Confirmed := tonVisionRotate180Confirm.Q;
+
+
 // Air-memory rule:
 // - only Initialising may set bAirSupplyLatched TRUE;
 // - an open main door always clears it immediately;
@@ -518,7 +549,17 @@ IF bVisionResetResultsRequest OR rtVisionCameraResultsReset.Q THEN
 END_IF
 
 // Apply previous-scan station commands, then sample ACK/result in this scan.
-fbVSCamera.RequestTrigger(bEnable := bVisionTriggerRequest);
+// Close an unacknowledged moving-picture request at the physical 180 end sensor.
+IF NOT bVisionTriggerRequest THEN bVisionRotatingCaptureAccepted := FALSE; END_IF
+bVisionTriggerAccepted := fbVSCamera.RequestTrigger(
+    bEnable := bVisionTriggerRequest
+        AND ((GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber <> 1)
+            OR NOT stInputs.bRotaryGripperPlace180
+            OR bVisionRotatingCaptureAccepted
+            OR GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge));
+IF bVisionTriggerAccepted AND (GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber = 1) THEN
+    bVisionRotatingCaptureAccepted := TRUE;
+END_IF
 fbVSCamera.RequestChangeProgram(
     bEnable := bVisionChangeProgramRequest,
     nProgramNumber := nVisionProgramNumber
@@ -545,6 +586,13 @@ END_IF
 
 // Patch feeding owns its axis commands; it does not own physical safety outputs.
 fbPatchFeedManager.Cyclic(
+    bDrivePermit := bPatchDispenseCommissioned AND stInputs.bMainDoorClosed
+        AND GVL_Safety.bAirSupplySafe AND NOT stInputs.bEventFault
+        AND ((eMachineState = E_MachineState.AutoCycle)
+            OR ((eMachineState = E_MachineState.Manual)
+                AND (stCommand.bPatchManualEnable OR fbPatchDispense.IsBusy()))
+            OR (eMachineState = E_MachineState.Stopping)),
+    bDriveRunRequest := bPatchDriveRunRequest,
     bPermit := bPatchDispenseCommissioned
         AND ((eMachineState = E_MachineState.AutoCycle)
             OR ((eMachineState = E_MachineState.Manual) AND stCommand.bPatchManualEnable))
@@ -660,6 +708,15 @@ bVisionProcessingBeforeUpdate := fbVision.IsBusy();
 
 fbOperatorStation.Cyclic(bAutomaticActive := (eMachineState = E_MachineState.AutoCycle), bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked, stOperatorNest := stOperatorNest, bPartPresent := stInputs.bLoadingStationEaglePresent, bRejectChutePartPresent := stInputs.bRejectChutePartPresent, bRequireRejectConfirm := stConfig.bRequireRejectConfirm, bAllowEmptyNestIndex := stConfig.bAllowEmptyNestIndex);
 stOperatorStatus := fbOperatorStation.GetStatus();
+bPatchStartAllowed := stInputs.bIndexReady AND stInputs.bIndexLocked
+    AND NOT stIndexStatus.bBusy AND NOT stCommand.bStop AND NOT stCommand.bReset
+    AND NOT stCommand.bManualIndexForward AND NOT stInputs.bEventFault
+    AND NOT stInputs.bEventCycleStopRequest AND NOT bRejectChuteStopRequestLatched
+    AND NOT bAutoCycleStopRequestLatched AND NOT bProcessRequestIndex
+    AND NOT tpPatchManualVerticalUp.Q AND NOT tpPatchManualVerticalDown.Q
+    AND NOT stCommand.bPatchVerticalUpRequest AND NOT stCommand.bPatchVerticalDownRequest
+    AND NOT stCommand.bPatchSupportExtendRequest AND NOT stCommand.bPatchSupportRetractRequest;
+
 // Apply the ProcessCycle commands generated on the previous scan.
 IF stCommand.bReset OR bProcessCycleCompletePulse THEN
     fbPatchDispense.RequestReset();
@@ -667,9 +724,10 @@ IF stCommand.bReset OR bProcessCycleCompletePulse THEN
     fbVision.RequestReset();
 END_IF
 
-IF bProcessStopStations
-    OR (eMachineState = E_MachineState.Stopping)
-THEN
+IF (bProcessStopStations OR (eMachineState = E_MachineState.Stopping)
+        OR ((eMachineState = E_MachineState.Manual)
+            AND (stCommand.bStop OR NOT stCommand.bPatchManualEnable OR bRejectChuteStopRequestLatched)))
+    AND fbPatchDispense.IsBusy() THEN
     fbPatchDispense.RequestStop();
 END_IF
 
@@ -687,7 +745,7 @@ IF bProcessStartStations THEN
     bCycleResultsStored := FALSE;
 
     IF bPatchDispenseRequired THEN
-        fbPatchDispense.RequestStart();
+        IF bPatchStartAllowed THEN fbPatchDispense.RequestStart(); END_IF
     ELSE
         fbNestManager.MarkPatchDispenseNotTestedAtPosition(stConfig.ePatchDispensePosition);
     END_IF
@@ -746,6 +804,30 @@ IF rtMachineInitialising.Q THEN
 END_IF
 
 fbPatchDispense.Update(
+    bRunSequenceRequest := stCommand.bPatchManualRunSequence,
+    bFeedOnlyRequest := stCommand.bPatchDispenseRequest,
+    bStartPermitted := bPatchStartAllowed,
+    bHoldUpRequired := bPatchDispenseCommissioned
+        AND ((eMachineState = E_MachineState.AutoCycle)
+            OR ((eMachineState = E_MachineState.Manual)
+                AND (stCommand.bIndexerManualEnable OR stIndexStatus.bBusy))
+            OR ((eMachineState = E_MachineState.Stopping) AND stIndexStatus.bBusy)),
+    bPatchOpticalLeft := stInputs.bPatchOpticalLeft,
+    // TEMP: physical feedback is selected only when wiring is commissioned.
+    bUseVerticalFeedback := GVL_Motion.stPatchFeedSettings.bUsePatchVerticalFeedback,
+    tVerticalMoveTime := GVL_Motion.stPatchFeedSettings.tPatchVerticalMoveTime,
+    bVerticalUpCommand := bPatchVerticalUpCommandPrevious,
+    bVerticalDownCommand := bPatchVerticalDownCommandPrevious,
+    bVerticalIndexReady => bPatchVerticalIndexReady,
+    bVerticalUp := stInputs.bMembraneTransferRetracted,
+    bVerticalDown := stInputs.bMembraneTransferExtended,
+    bDriveStandstill := GVL_Motion.AxisDriveMotor.bStandstill,
+    bDriveBusy := fbPatchFeedManager.stStatus.bDriveBusy,
+    bDriveMoving := GVL_Motion.AxisDriveMotor.bMoving,
+    bDriveFault := GVL_Motion.AxisDriveMotor.bError,
+    bDriveRunRequest => bPatchDriveRunRequest,
+    bAirBlowRequest => bPatchSequenceAirRequest,
+    bVerticalDownRequest => bPatchSequenceDownRequest,
     bEnable :=
         (
             (eMachineState = E_MachineState.Initialising)
@@ -806,6 +888,8 @@ fbPatchDispense.Update(
     bVerticalUpRequest =>
         bPatchHomeVerticalUpRequest
 );
+GVL_HMI.stCommands.bPatchManualRunSequence := FALSE;
+GVL_HMI.stCommands.bPatchDispenseRequest := FALSE;
 // =====================================================
 // PATCH DISPENSING - MANUAL VERTICAL
 // =====================================================
@@ -816,14 +900,16 @@ fbPatchDispense.Update(
 // physical position feedback when sensors are installed.
 
 tpPatchManualVerticalUp(
-    IN := stCommand.bPatchVerticalUpRequest
-          AND bPatchVerticalUpAllowed,
+    IN := stCommand.bPatchVerticalUpRequest AND bPatchManualAllowed
+          AND NOT fbPatchDispense.IsBusy() AND NOT stIndexStatus.bBusy
+          AND NOT stCommand.bPatchVerticalDownRequest,
     PT := T#1S
 );
 
 tpPatchManualVerticalDown(
-    IN := stCommand.bPatchVerticalDownRequest
-          AND bPatchVerticalDownAllowed,
+    IN := stCommand.bPatchVerticalDownRequest AND bPatchManualAllowed
+          AND NOT fbPatchDispense.IsBusy() AND NOT stIndexStatus.bBusy
+          AND NOT stCommand.bIndexerManualEnable AND NOT stCommand.bPatchVerticalUpRequest,
     PT := T#1S
 );
 
@@ -986,7 +1072,7 @@ bPatchVerticalDownAllowed :=
 tpPatchAirBlow(
     IN := stCommand.bPatchAirBlowRequest
           AND bPatchManualEnableAllowed
-          AND stCommand.bPatchManualEnable,
+          AND stCommand.bPatchManualEnable AND NOT fbPatchDispense.IsBusy(),
     PT := stconfig.tpPatchAirBlowTimer
 );
 
@@ -1076,7 +1162,7 @@ bVisionManualRunSequenceAllowed :=
     AND stInputs.bVerticalMiniSlideRetracted
     AND stInputs.bIntermediateModuleRetracted
     AND stInputs.bRotaryGripperOpened
-    AND stInputs.bRotaryGripperPick0;	
+    AND bVisionRotate0Confirmed;
 	
 	
 	// =====================================================
@@ -1442,8 +1528,11 @@ fbVision.Update(
     bLimitOn := stInputs.bIntermediateModuleExtended,
     bGripOpened := stInputs.bRotaryGripperOpened,
     bGripClosed := stInputs.bRotaryGripperClosed,
-    bRotate0 := stInputs.bRotaryGripperPick0,
-    bRotate180 := stInputs.bRotaryGripperPlace180,
+    bRotate0 := bVisionRotate0Confirmed,
+    bRotate180 := bVisionRotate180Confirmed,
+    bRotate0Raw := stInputs.bRotaryGripperPick0,
+    bRotate180Raw := stInputs.bRotaryGripperPlace180,
+    bCameraTriggerAccepted := bVisionTriggerAccepted,
 	
     tSupportTimeout := stConfig.tStationSupportTimeout,
 	nCurrentProgramNumber	:= bVisionGetCurrentProgram,
@@ -1860,7 +1949,7 @@ THEN
 			bVisionRotate0Request := TRUE;
 			bVisionRotate180Request := FALSE;
 		
-			IF stInputs.bRotaryGripperPick0 THEN
+			IF bVisionRotate0Confirmed THEN
 				bVisionRotate0Request := FALSE;
 				bVisionManualRotate0Active := FALSE;
 			END_IF
@@ -1870,7 +1959,7 @@ THEN
 			bVisionRotate0Request := FALSE;
 			bVisionRotate180Request := TRUE;
 		
-			IF stInputs.bRotaryGripperPlace180 THEN
+			IF bVisionRotate180Confirmed THEN
 				bVisionRotate180Request := FALSE;
 				bVisionManualRotate180Active := FALSE;
 			END_IF
@@ -2490,57 +2579,33 @@ stOutputsInternal.iHeatStakePressureRaw := iHeatStakePressureRaw;
 stPermissives.bAirSupplyReady := GVL_Safety.bAirSupplySafe;
 
 
-// =====================================================
-// PATCH DISPENSING - MANUAL AIR BLOW OUTPUT
-// =====================================================
-IF eMachineState = E_MachineState.Manual THEN
-    stOutputsInternal.bPatchDispenserAir := tpPatchAirBlow.Q AND bPatchManualAllowed;
-END_IF;
-
-// =====================================================
-// PATCH DISPENSING - MANUAL VERTICAL OUTPUTS
-// =====================================================
-// Both directions can never be energised together.
-
-// =====================================================
-// PATCH DISPENSING - VERTICAL OUTPUTS
-// HOME during Initialising / Manual Mode
-// =====================================================
-
-// HOME has exclusive ownership during Initialising.
-// Manual commands are accepted only in Manual Mode.
-
-IF (eMachineState = E_MachineState.Initialising)
-    AND stInputs.stSafety.bSafetyOk
-    AND GVL_Safety.bAirSupplySafe
-    AND bPatchDispenseCommissioned
-THEN
-
-    stOutputsInternal.bPatchVerticalUp :=
-        bPatchHomeVerticalUpRequest;
-
-    stOutputsInternal.bPatchVerticalDown := FALSE;
-
-ELSIF bPatchManualAllowed THEN
-
-    stOutputsInternal.bPatchVerticalUp :=
-        tpPatchManualVerticalUp.Q
-        AND NOT tpPatchManualVerticalDown.Q;
-
-    stOutputsInternal.bPatchVerticalDown :=
-        tpPatchManualVerticalDown.Q
-        AND NOT tpPatchManualVerticalUp.Q;
-
-ELSE
-
-    stOutputsInternal.bPatchVerticalUp := FALSE;
-    stOutputsInternal.bPatchVerticalDown := FALSE;
-
-END_IF;
-
-// TODO: Stop requests on confirmed UP/DOWN feedback
-// when the physical sensors are installed.
-
+// Patch actuator ownership: HOME/sequence, individual Manual actions, then index hold-UP.
+bPatchHoldUpAllowed := bPatchDispenseCommissioned AND stInputs.stSafety.bSafetyOk
+    AND stInputs.bMainDoorClosed AND GVL_Safety.bAirSupplySafe
+    AND ((eMachineState = E_MachineState.AutoCycle)
+        OR ((eMachineState = E_MachineState.Manual)
+            AND (stCommand.bIndexerManualEnable OR stIndexStatus.bBusy))
+        OR ((eMachineState = E_MachineState.Stopping) AND stIndexStatus.bBusy));
+stOutputsInternal.bPatchVerticalUp := FALSE;
+stOutputsInternal.bPatchVerticalDown := FALSE;
+stOutputsInternal.bPatchDispenserAir := FALSE;
+IF stInputs.stSafety.bSafetyOk AND stInputs.bMainDoorClosed
+    AND GVL_Safety.bAirSupplySafe AND bPatchDispenseCommissioned THEN
+    IF fbPatchDispense.IsBusy() OR (eMachineState = E_MachineState.Initialising) THEN
+        stOutputsInternal.bPatchVerticalDown := bPatchSequenceDownRequest;
+        stOutputsInternal.bPatchVerticalUp := bPatchHomeVerticalUpRequest
+            AND NOT bPatchSequenceDownRequest;
+        stOutputsInternal.bPatchDispenserAir := bPatchSequenceAirRequest;
+    ELSIF bPatchManualAllowed THEN
+        stOutputsInternal.bPatchVerticalDown := tpPatchManualVerticalDown.Q
+            AND NOT tpPatchManualVerticalUp.Q AND NOT stCommand.bIndexerManualEnable;
+        stOutputsInternal.bPatchVerticalUp := (tpPatchManualVerticalUp.Q OR bPatchHoldUpAllowed)
+            AND NOT stOutputsInternal.bPatchVerticalDown;
+        stOutputsInternal.bPatchDispenserAir := tpPatchAirBlow.Q;
+    ELSE
+        stOutputsInternal.bPatchVerticalUp := bPatchHoldUpAllowed;
+    END_IF
+END_IF
 
 // Same criterion used by the validated Silicone Station:
 // the machine waits until the door supervisor confirms automatic readiness.
@@ -2570,7 +2635,13 @@ stPermissives.bOperatorIndexPermissive :=
     stOperatorStatus.bIndexPermissive
     AND NOT bReprocessAcknowledgePending;
 
-stPermissives.bStationsIndexPermissive := stPermissives.bStationsHome;
+stPermissives.bStationsIndexPermissive := stPermissives.bStationsHome
+    AND bPatchVerticalIndexReady
+    AND (GVL_Motion.stPatchFeedSettings.bUsePatchVerticalFeedback
+        OR stOutputsInternal.bPatchVerticalUp)
+    AND NOT fbPatchDispense.IsBusy() AND NOT fbPatchFeedManager.stStatus.bDriveBusy
+    AND NOT tpPatchManualVerticalDown.Q AND NOT tpPatchManualVerticalUp.Q
+    AND NOT stOutputsInternal.bPatchVerticalDown;
 // IMPORTANT:
 // The operator exchange permissive is a START permissive only.
 // Once the table starts moving, FB_OperatorStation intentionally leaves
@@ -3505,8 +3576,8 @@ stStatus.bVisionHome :=
     AND NOT stInputs.bIntermediateModuleExtended
     AND stInputs.bRotaryGripperOpened
     AND NOT stInputs.bRotaryGripperClosed
-    AND stInputs.bRotaryGripperPick0
-    AND NOT stInputs.bRotaryGripperPlace180;
+    AND bVisionRotate0Confirmed
+    AND NOT bVisionRotate180Confirmed;
 	
 
 
@@ -3535,8 +3606,8 @@ stStatus.bVisionVerticalDown := stInputs.bVerticalMiniSlideExtended;
 stStatus.bVisionGripOpen := stInputs.bRotaryGripperOpened;
 stStatus.bVisionGripClosed := stInputs.bRotaryGripperClosed;
 
-stStatus.bVisionRotate0 := stInputs.bRotaryGripperPick0;
-stStatus.bVisionRotate180 := stInputs.bRotaryGripperPlace180;
+stStatus.bVisionRotate0 := bVisionRotate0Confirmed;
+stStatus.bVisionRotate180 := bVisionRotate180Confirmed;
 
 stStatus.bVisionSupportExtended := stInputs.bStation3SupportExtended;
 stStatus.bVisionSupportRetracted := stInputs.bStation3SupportRetracted;
@@ -3629,6 +3700,14 @@ END_IF
 // Must be the final machine-state assignment in Cyclic.
 // Used on the next scan to detect one-shot transitions into Fault.
 ePreviousMachineState := eMachineState;
+
+// Track FINAL published outputs, after all machine fault/output overrides.
+bPatchVerticalUpCommandPrevious := stOutputs.bPatchVerticalUp;
+bPatchVerticalDownCommandPrevious := stOutputs.bPatchVerticalDown;
+
+// Track final commands after all fault/output overrides.
+bVisionRotate0CommandPrevious := stOutputs.bVisionRotate0;
+bVisionRotate180CommandPrevious := stOutputs.bVisionRotate180;
 ]]></ST>
       </Implementation>
     </Method>

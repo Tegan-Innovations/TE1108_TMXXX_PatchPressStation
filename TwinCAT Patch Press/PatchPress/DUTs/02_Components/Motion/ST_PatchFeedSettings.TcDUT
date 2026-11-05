@@ -18,6 +18,9 @@ STRUCT
     // Initial engineering watchdog; validate against the real web mechanism.
     tWasteRollRunTimeout : TIME := T#30S;
     tPatchFeedRollRunTimeout : TIME := T#30S;
+    // TEMPORARY commissioning: restore TRUE after wiring Term19 Input9/Input10.
+    bUsePatchVerticalFeedback : BOOL := FALSE;
+    tPatchVerticalMoveTime : TIME := T#1S;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

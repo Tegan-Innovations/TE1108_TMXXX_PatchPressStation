@@ -136,9 +136,9 @@ print('PASS sensor hysteresis, mode/stop loss, no stale demand resume, watchdog 
 # Caller/ownership and controlled-stop integration checks use real saved source.
 raw=E.parse(plc/'POUs/03_Stations/PatchDispense/FB_PatchFeedManager.TcPOU')
 raw=next(x.findtext('Implementation/ST') for x in raw.findall('.//Method') if x.get('Name')=='Cyclic')
-for name in ('fbDriveMotor',):
-    call=raw.split(name+'.Cyclic(',1)[1].split(');',1)[0]
-    assert 'bControlRequest := FALSE' in call and 'bRunVelocity := FALSE' in call
+call=raw.split('fbDriveMotor.Cyclic(',1)[1].split(');',1)[0]
+assert 'bControlRequest := bDrivePermit' in call and 'bRunVelocity := bDriveRunRequest AND bDrivePermit' in call
+assert 'eDirection := MC_Negative_Direction' in call
 call=raw.split('fbPatchFeedRoll.Cyclic(',1)[1].split(');',1)[0]
 assert 'eDirection := MC_Positive_Direction' in call and 'bRunVelocity := bPatchFeedRun' in call
 v=initial(manager)
@@ -182,4 +182,4 @@ assert 'bPatchFeedStart := stInputs.bBottomRockerUp' in machine
 assert 'bPatchFeedStop := stInputs.bBottomRockerDown' in machine
 settings=E.parse(plc/'DUTs/02_Components/Motion/ST_PatchFeedSettings.TcDUT').findtext('.//Declaration')
 assert 'lrPatchFeedRollVelocity : LREAL := 10.0;' in settings
-print('PASS single manager call, M1 monitor-only, M2 mapped channels/10 mm/s, Manual enable/Stop gates, stopping wait and lock retention')
+print('PASS single manager call, M1 explicit dispense demand/negative direction, M2 mapped channels/10 mm/s, Manual/Stop gates and lock retention')

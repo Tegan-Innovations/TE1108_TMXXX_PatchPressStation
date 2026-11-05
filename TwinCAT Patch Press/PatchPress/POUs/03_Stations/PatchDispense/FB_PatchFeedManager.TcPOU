@@ -25,6 +25,8 @@ END_VAR]]></Declaration>
       <Declaration><![CDATA[METHOD PUBLIC Cyclic
 VAR_INPUT
     bPermit : BOOL;
+    bDrivePermit : BOOL;
+    bDriveRunRequest : BOOL;
     bSafetyOk : BOOL;
     bReset : BOOL;
     bMiddleDown : BOOL;
@@ -64,10 +66,12 @@ ELSIF bPatchFeedStart THEN
     bPatchFeedRun := TRUE;
 END_IF
 
-// M1 remains monitor-only until its sensor policy is specified.
-fbDriveMotor.Cyclic(stAxis := stDriveMotor, bControlRequest := FALSE,
-    bSafetyOk := bSafetyOk, bRunVelocity := FALSE, bReset := bReset,
-    lrVelocity := stSettings.lrDriveMotorVelocity, eDirection := MC_Positive_Direction,
+// M1 motion belongs to the manager; its demand belongs to the dispense station.
+fbDriveMotor.Cyclic(stAxis := stDriveMotor,
+    bControlRequest := bDrivePermit AND NOT bFaultLatched
+        AND NOT bResetPending AND NOT bReset AND NOT stPatchFeedRoll.bError AND NOT stWasteRoll.bError,
+    bSafetyOk := bSafetyOk, bRunVelocity := bDriveRunRequest AND bDrivePermit, bReset := bReset,
+    lrVelocity := stSettings.lrDriveMotorVelocity, eDirection := MC_Negative_Direction,
     stSettings := stSettings);
 fbPatchFeedRoll.Cyclic(stAxis := stPatchFeedRoll,
     bControlRequest := bPermit AND bSafetyOk AND NOT bFaultLatched
@@ -119,7 +123,9 @@ stStatus.bPermitted := bPermit AND bSafetyOk;
 stStatus.bConfigured := stSettings.bWasteRollConfigured;
 stStatus.bWasteRollDemand := bWasteRun;
 stStatus.bPatchFeedRollDemand := bPatchFeedRun;
-stStatus.bBusy := fbWasteRoll.bBusy OR fbPatchFeedRoll.bBusy OR bResetPending;
+stStatus.bDriveBusy := fbDriveMotor.bBusy;
+stStatus.bDriveRunDemand := bDrivePermit AND bDriveRunRequest AND NOT bFaultLatched;
+stStatus.bBusy := fbDriveMotor.bBusy OR fbWasteRoll.bBusy OR fbPatchFeedRoll.bBusy OR bResetPending;
 stStatus.bResetPending := bResetPending;
 stStatus.bFault := bFaultLatched;
 stStatus.udiErrorId := udiFaultId;
@@ -140,7 +146,7 @@ ELSIF bPatchFeedRun THEN
 ELSIF bWasteRun THEN
     stStatus.sDiagnostic := 'Patch feeding: Waste Roll adjusting rocker position';
 ELSE
-    stStatus.sDiagnostic := 'Patch feeding: M2/M3 ready; M1 sensor rules pending';
+    stStatus.sDiagnostic := 'Patch feeding: motors ready; M1 waits for dispense';
 END_IF
 ]]></ST>
       </Implementation>

@@ -11,6 +11,7 @@ STRUCT
 	nBottomPatchok				: INT;//0: NO RESULT, 1: PASS, 2: FAIL
 	nTopPatchok					: INT;//0: NO RESULT, 1: PASS, 2: FAIL
 	nPBUBOK						: INT;//0: NO RESULT, 1: PASS, 2: FAIL
+	nPBUBMagnetOK				: INT;//0: NO RESULT, 1: PASS, 2: FAIL
 	
 	bGeneralPass				: BOOL;
 	bGeneralFail				: BOOL;

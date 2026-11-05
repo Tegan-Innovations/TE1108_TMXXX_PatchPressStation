@@ -76,11 +76,11 @@ STRUCT
 	// PATCH DISPENSING - VERTICAL POSITION FEEDBACK
 	// =====================================================
 	
-	// TODO [PATCH VERTICAL FEEDBACK]
-	// Physical position sensors are not installed yet.
-	// Map these variables to the EtherCAT inputs when installed.
-	// Enable position confirmation and related interlocks
-	// only after validating the physical sensors.
+	// PATCH VERTICAL FEEDBACK - legacy field names
+	// Legacy placeholders retained for compatibility; actual feedback is
+	// bMembraneTransferRetracted / Extended (Term19 Input9 / Input10).
+	// The dispense station and index interlocks now use that mapped feedback.
+	// These legacy fields are not used as position confirmation.
 	
 	bPatchVerticalUpSensor   : BOOL;
 	bPatchVerticalDownSensor : BOOL;
@@ -93,6 +93,8 @@ STRUCT
 	bGoToRun				: BOOL;
 	bResultsAcknowledge		: BOOL;
 	
+    bPatchOpticalLeft : BOOL; // Term19 Input6, consistent patch detection
+    // Input5 right optical sensor temporarily excluded: bracket under repair.
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

@@ -12,6 +12,8 @@ STRUCT
     udiErrorId : UDINT;
     sDiagnostic : STRING(160);
     bPatchFeedRollDemand : BOOL;
+    bDriveBusy : BOOL;
+    bDriveRunDemand : BOOL;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

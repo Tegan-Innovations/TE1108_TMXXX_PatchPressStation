@@ -29,6 +29,20 @@ VAR
     bGripClosedInternal         : BOOL;
     bRotate0Internal            : BOOL;
     bRotate180Internal          : BOOL;
+    bRotate0RawInternal : BOOL;
+    bRotate180RawInternal : BOOL;
+    bCameraTriggerAcceptedInternal : BOOL;
+    rtRotate0Raw : R_TRIG;
+    tonFlipDeparture : TON;
+    tFlipDepartureFilter : TIME := T#20MS;
+    bFlipCaptureActive : BOOL;
+    bFlipCaptureActivePrevious : BOOL;
+    bFlipStart0Confirmed : BOOL;
+    bFlipLeft0 : BOOL;
+    bFlip90Seen : BOOL;
+    bFlipTriggerLatched : BOOL;
+    bFlipCaptureAccepted : BOOL;
+    bFlipCaptureWindowMissed : BOOL;
 	// Vision / Camera
 	
 
@@ -85,7 +99,7 @@ VAR
     tSupportMoveTimeout         : TIME := T#5S;
     tToolingSensorConflict      : TIME := T#300MS;
 	tIntermediatePosition 		: TIME := T#200MS;
-	tTakingPictureWHileRotating	: TIME := T#1100MS; // +500 ms; pneumatic timing requires commissioning.
+	tTakingPictureWHileRotating	: TIME := T#100MS; // Delay AFTER the latched 90-degree marker; commission for the desired image.
 	tDelayInspectionPlaceHolder	: TIME;
 
     bStepTargetReached          : BOOL;
@@ -113,7 +127,51 @@ VAR
 
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Rearm inspection 2 after entry and confirmed program selection.
+        <ST><![CDATA[// Marker tracking uses raw feedback; endpoint qualification is independent.
+rtRotate0Raw(CLK := bRotate0RawInternal);
+bFlipCaptureActive := bEnableInternal AND bCommissionedInternal AND bSafetyOkInternal
+    AND NOT bStopRequestInternal
+    AND (eStateInternal = E_PatchStationState.Processing) AND (usiStepInternal = 100);
+IF NOT bFlipCaptureActive THEN
+    bFlipStart0Confirmed := FALSE;
+    bFlipLeft0 := FALSE;
+    bFlip90Seen := FALSE;
+    bFlipTriggerLatched := FALSE;
+    bFlipCaptureAccepted := FALSE;
+    bFlipCaptureWindowMissed := FALSE;
+ELSIF NOT bFlipCaptureActivePrevious THEN
+    bFlipStart0Confirmed := bRotate0Internal AND NOT bRotate180RawInternal;
+    bFlipLeft0 := FALSE;
+    bFlip90Seen := FALSE;
+    bFlipTriggerLatched := FALSE;
+    bFlipCaptureAccepted := FALSE;
+    bFlipCaptureWindowMissed := NOT bFlipStart0Confirmed;
+END_IF
+tonFlipDeparture(IN := bFlipCaptureActive AND bFlipStart0Confirmed AND NOT bFlipLeft0
+    AND NOT bRotate0RawInternal AND NOT bRotate180RawInternal, PT := tFlipDepartureFilter);
+IF tonFlipDeparture.Q THEN bFlipLeft0 := TRUE; END_IF
+IF bFlipCaptureActive AND bFlipLeft0 AND rtRotate0Raw.Q
+    AND NOT bFlip90Seen AND NOT bRotate180RawInternal THEN
+    bFlip90Seen := TRUE;
+END_IF
+tonTakingPictureWHileRotating(IN := bFlipCaptureActive AND bFlip90Seen,
+    PT := tTakingPictureWHileRotating);
+IF bFlipCaptureActive THEN
+    IF bFlipTriggerLatched AND bCameraTriggerAcceptedInternal THEN bFlipCaptureAccepted := TRUE; END_IF
+    IF bRotate180RawInternal AND NOT bFlipCaptureAccepted THEN
+        bFlipCaptureWindowMissed := TRUE;
+    ELSIF tonTakingPictureWHileRotating.Q AND NOT bFlipTriggerLatched
+        AND NOT bFlipCaptureWindowMissed THEN
+        IF nCurrentProgramNumberInternal = 1 THEN
+            bFlipTriggerLatched := TRUE;
+        ELSE
+            bFlipCaptureWindowMissed := TRUE;
+        END_IF
+    END_IF
+END_IF
+bFlipCaptureActivePrevious := bFlipCaptureActive;
+
+// Rearm inspection 2 after entry and confirmed program selection.
 tonCamera110Rearm(
     IN := (eStateInternal = E_PatchStationState.Processing)
         AND (usiStepInternal = 110)
@@ -127,7 +185,7 @@ bTriggerRequestInternal :=
     (eStateInternal = E_PatchStationState.Processing)
     AND (
         ((usiStepInternal = 100) AND (nCurrentProgramNumberInternal = 1)
-            AND tonTakingPictureWHileRotating.Q)
+            AND bFlipTriggerLatched AND NOT bFlipCaptureWindowMissed)
         OR ((usiStepInternal = 10) AND (nCurrentProgramNumberInternal = 0))
         OR ((usiStepInternal = 110) AND tonCamera110Rearm.Q)
         OR ((usiStepInternal = 180) AND (nCurrentProgramNumberInternal = 3))
@@ -137,7 +195,6 @@ bAcknowledgeResultsInternal := FALSE;
 bChangeProgramRequestInternal := FALSE;
 tonCameraTriggerDelay[1](PT := T#500MS);
 tonCameraTriggerDelay[2](PT := T#500MS);
-tonTakingPictureWHileRotating(PT := tTakingPictureWHileRotating);
 tonDelayInspectionPlaceHolder(PT := tDelayInspectionPlaceHolder);
 
  // ============================================================================
@@ -222,7 +279,7 @@ bToolingSensorConflict :=
     OR (bVerticalUpInternal AND bVerticalDownInternal)
     OR (bLimitOffInternal AND bLimitOnInternal)
     OR (bGripOpenedInternal AND bGripClosedInternal)
-    OR (bRotate0Internal AND bRotate180Internal);
+    OR (bRotate0RawInternal AND bRotate180RawInternal);
 
 // End-position sensors can overlap briefly during pneumatic transitions.
 // Only treat contradictory feedback as a real fault when it persists.
@@ -244,6 +301,18 @@ IF bEnableInternal AND bSimulatedFault THEN
     usiStepInternal := 0;
     sDiagnosticInternal := 'Vision: simulated station fault';
 
+
+ELSIF bFlipCaptureWindowMissed THEN
+    eStateInternal := E_PatchStationState.Fault;
+    usiStepInternal := 0;
+    bTriggerRequestInternal := FALSE;
+    sDiagnosticInternal := 'Vision: rotation reference or moving-image window missed';
+    stResultInternal.bValid := TRUE;
+    stResultInternal.bPassed := FALSE;
+    stResultInternal.eCode := E_ProcessResultCode.Fail;
+    stResultInternal.udiFaultCode := 12;
+    stResultInternal.udiAlertCode := 0;
+    stResultInternal.sDetail := sDiagnosticInternal;
 
 ELSIF tonToolingSensorConflict.Q THEN
 
@@ -837,7 +906,8 @@ ELSE
 
                     bStepTargetReached :=
                         bSupportRetractedInternal
-                        AND NOT bSupportExtendedInternal;
+                        AND NOT bSupportExtendedInternal
+                        AND bRotate0Internal AND NOT bRotate180Internal;
 
                     sDiagnosticInternal := 'Vision: nest support DOWN before flip';
 
@@ -847,8 +917,7 @@ ELSE
 
                 100: // Support retraction was confirmed in step 90.
 
-					// Capture program 1 after the configured delay from entry into step 100.
-                    tonTakingPictureWHileRotating.IN := TRUE;
+					// Program 1 trigger now follows the first valid 90-degree marker.
                     bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
                     bHorizontalFrontRequestInternal := NOT bHorizontalFrontInternal;
                     bVerticalUpRequestInternal := NOT bVerticalUpInternal;
@@ -899,20 +968,17 @@ ELSE
 							
 							
 					END_IF
-					IF tonDelayInspectionPlaceHolder.Q THEN
-						
-						tonTakingPictureWHileRotating.IN	:= FALSE; 
-						
-					END_IF
+					// The moving-image delay is not restarted by the program-change placeholder.
 					
 					bStepTargetReached := tonDelayInspectionPlaceHolder.Q
-                        AND (nCurrentProgramNumberInternal = 2);
+                        AND (nCurrentProgramNumberInternal = 2)
+                        AND bRotate180Internal AND NOT bRotate0Internal;
 					
 					                    
-                    // Equipment review pending: the physical 180-degree target below remains inactive.
+                    // Physical 180 completion is now qualified above before inspection 3.
                     //tonDelayInspectionPlaceHolder.IN := bRotate180Internal AND NOT bRotate0Internal;
                     //bStepTargetReached := bRotate180Internal AND NOT bRotate0Internal AND tonDelayInspectionPlaceHolder.Q;
-                    sDiagnosticInternal := 'Vision: rotate 180, timed camera program 1 inspection';
+                    sDiagnosticInternal := 'Vision: rotate 180, marker-based image 2';
 				
                 // Pending: accepted-trigger/fresh-result handshake and supervised visual inspection recovery.
         
@@ -922,8 +988,7 @@ ELSE
 				
 				110:
 					tonDelayInspectionPlaceHolder.IN		:= FALSE;
-					tonTakingPictureWHileRotating.IN := FALSE;
-				
+
                     // Acquire program 2 before requesting program 3.
                     
 					IF nCurrentProgramNumberInternal = 2 THEN
@@ -1321,7 +1386,11 @@ ELSE
             tonRotate180Hold(IN := FALSE);
             tonMoveTimeout(IN := FALSE);
 
-            sDiagnosticInternal := 'Vision: fault';
+            IF stResultInternal.udiFaultCode = 12 THEN
+                sDiagnosticInternal := stResultInternal.sDetail;
+            ELSE
+                sDiagnosticInternal := 'Vision: fault';
+            END_IF
 
 
         ELSE
@@ -1592,7 +1661,16 @@ END_VAR]]></Declaration>
     <Method Name="Initialise" Id="{b60352d8-fc31-480d-8c87-753db464b955}">
       <Declaration><![CDATA[METHOD PUBLIC Initialise]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[bFlipCaptureActivePrevious := FALSE;
+bFlipStart0Confirmed := FALSE;
+bFlipLeft0 := FALSE;
+bFlip90Seen := FALSE;
+bFlipTriggerLatched := FALSE;
+bFlipCaptureAccepted := FALSE;
+bFlipCaptureWindowMissed := FALSE;
+tonFlipDeparture(IN := FALSE);
+tonTakingPictureWHileRotating(IN := FALSE);
+
 tonStepDelay(IN := FALSE);
 tonRotate180Hold(IN := FALSE);
 tonMoveTimeout(IN := FALSE);
@@ -1672,7 +1750,16 @@ END_VAR]]></Declaration>
 VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[bFlipCaptureActivePrevious := FALSE;
+bFlipStart0Confirmed := FALSE;
+bFlipLeft0 := FALSE;
+bFlip90Seen := FALSE;
+bFlipTriggerLatched := FALSE;
+bFlipCaptureAccepted := FALSE;
+bFlipCaptureWindowMissed := FALSE;
+tonFlipDeparture(IN := FALSE);
+tonTakingPictureWHileRotating(IN := FALSE);
+
 tonStepDelay(IN := FALSE);
 tonRotate180Hold(IN := FALSE);
 tonMoveTimeout(IN := FALSE);
@@ -1733,6 +1820,16 @@ IF bEnableInternal
     AND bReadyInternal
     AND bHomeInternal
 THEN
+bFlipCaptureActivePrevious := FALSE;
+bFlipStart0Confirmed := FALSE;
+bFlipLeft0 := FALSE;
+bFlip90Seen := FALSE;
+bFlipTriggerLatched := FALSE;
+bFlipCaptureAccepted := FALSE;
+bFlipCaptureWindowMissed := FALSE;
+tonFlipDeparture(IN := FALSE);
+tonTakingPictureWHileRotating(IN := FALSE);
+
     stResultInternal.bValid := FALSE;
     stResultInternal.bPassed := FALSE;
     stResultInternal.eCode := E_ProcessResultCode.None;
@@ -1780,6 +1877,9 @@ VAR_INPUT
     bGripClosed         : BOOL;
     bRotate0            : BOOL;
     bRotate180          : BOOL;
+    bRotate0Raw : BOOL;
+    bRotate180Raw : BOOL;
+    bCameraTriggerAccepted : BOOL;
 	
 	//CAMERA
 	nCurrentProgramNumber: UDINT;
@@ -1836,6 +1936,9 @@ bGripOpenedInternal := bGripOpened;
 bGripClosedInternal := bGripClosed;
 bRotate0Internal := bRotate0;
 bRotate180Internal := bRotate180;
+bRotate0RawInternal := bRotate0Raw;
+bRotate180RawInternal := bRotate180Raw;
+bCameraTriggerAcceptedInternal := bCameraTriggerAccepted;
 
 tSupportMoveTimeout := tSupportTimeout;
 

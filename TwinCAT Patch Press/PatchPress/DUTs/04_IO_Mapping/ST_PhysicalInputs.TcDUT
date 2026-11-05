@@ -72,6 +72,8 @@ STRUCT
     bMainDoorUnsafe : BOOL;
     bMainDoorDiagnosticOk : BOOL;
     bTwoHandsSafe : BOOL;
+    bPatchOpticalLeft : BOOL; // Term19 Input6, consistent patch detection
+    // Input5 right optical sensor temporarily excluded: bracket under repair.
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>
