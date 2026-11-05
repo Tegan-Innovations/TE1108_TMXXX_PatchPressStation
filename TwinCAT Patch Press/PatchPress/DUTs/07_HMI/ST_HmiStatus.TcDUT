@@ -151,6 +151,7 @@ STRUCT
     sAutoCycleBlockReason     			: STRING(160);
 	
 	
+    bLoadingStationPbupPresent : BOOL; // Operator PBUP sensor; provisional Term19 Input1
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

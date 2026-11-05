@@ -597,6 +597,28 @@ GVL_MASTER.stStationEvents[3].aEvents[35].bEventText := 'Patch vertical: TEMP ti
 GVL_MASTER.stStationEvents[3].aEvents[35].sSolution :=
     'No position feedback. Wire Input9/Input10, validate and restore feedback mode.';
 
+// Missing load components are start-only warnings, never machine faults or cycle stops.
+aWarningEvents[1, 2] := TRUE;
+GVL_MASTER.stStationEvents[1].aEvents[2].bMessage := TRUE;
+GVL_MASTER.stStationEvents[1].aEvents[2].bEventFlag :=
+    GVL_MASTER.stStatus.stOperatorStation.bMissingPbupAlert;
+GVL_MASTER.stStationEvents[1].aEvents[2].bEventText := 'Operator nest: PBUP missing';
+GVL_MASTER.stStationEvents[1].aEvents[2].sSolution :=
+    'Load the PBUP or remove the product. Release both hands before trying again.';
+IF NOT GVL_MASTER.stStationEvents[1].aEvents[2].bEventFlag THEN
+    GVL_MASTER.stStationEvents[1].aEvents[2].bActive := FALSE;
+END_IF
+aWarningEvents[1, 3] := TRUE;
+GVL_MASTER.stStationEvents[1].aEvents[3].bMessage := TRUE;
+GVL_MASTER.stStationEvents[1].aEvents[3].bEventFlag :=
+    GVL_MASTER.stStatus.stOperatorStation.bMissingProductAlert;
+GVL_MASTER.stStationEvents[1].aEvents[3].bEventText := 'Operator nest: product missing';
+GVL_MASTER.stStationEvents[1].aEvents[3].sSolution :=
+    'Load the product or remove the PBUP. Release both hands before trying again.';
+IF NOT GVL_MASTER.stStationEvents[1].aEvents[3].bEventFlag THEN
+    GVL_MASTER.stStationEvents[1].aEvents[3].bActive := FALSE;
+END_IF
+
 fbEventsManager(	aWarningEvents := aWarningEvents,
                     bPulse := TRUE,
 					bDataWritedInCSV := FALSE, 

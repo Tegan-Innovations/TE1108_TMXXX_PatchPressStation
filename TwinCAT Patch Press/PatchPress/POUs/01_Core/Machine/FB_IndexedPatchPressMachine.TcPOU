@@ -16,6 +16,7 @@ VAR
     fbMainDoorLock : FB_MainDoorLock;
     fbNestManager : FB_NestTableManager;
     fbOperatorStation : FB_OperatorStation;
+    bOperatorLoadValid : BOOL;
     fbPatchDispense : FB_PatchDispenseStation;
     fbHeatStake : FB_HeatStakeStation;
     fbHeatStakeTemperature : FB_HeatStakeTemperatureControl;
@@ -615,11 +616,20 @@ fbPatchFeedManager.Cyclic(
 );
 GVL_Motion.stPatchFeedStatus := fbPatchFeedManager.stStatus;
 
+// Start-only load policy: two components, or an empty nest when configured.
+bOperatorLoadValid :=
+    (stInputs.bLoadingStationEaglePresent AND stInputs.bLoadingStationPbupPresent)
+    OR (NOT stInputs.bLoadingStationEaglePresent AND NOT stInputs.bLoadingStationPbupPresent
+        AND stConfig.bAllowEmptyNestIndex);
 fbNestManager.Cyclic(
-    bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked,
+    bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy,
     eIndexPosition := stInputs.eIndexPosition,
     eOperatorPosition := stConfig.eOperatorPosition,
     bPartPresent := stInputs.bLoadingStationEaglePresent,
+    bPbupPresent := stInputs.bLoadingStationPbupPresent,
+    bOperatorReloadPermitted := (eMachineState = E_MachineState.AutoCycle)
+        AND ((stOperatorStatus.eState = E_OperatorExchangeState.WaitingForPartLoading)
+            OR (stOperatorStatus.eState = E_OperatorExchangeState.ExchangeComplete)),
     aNestEnabled := stConfig.aNestEnabled
 );
 
@@ -665,7 +675,7 @@ uiDisabledNestPartNestId := 0;
 
 FOR iNestCheck := 1 TO 4 DO
     IF (NOT stConfig.aNestEnabled[iNestCheck])
-        AND aNestSnapshot[iNestCheck].bPartPresent
+        AND (aNestSnapshot[iNestCheck].bPartPresent OR aNestSnapshot[iNestCheck].bPbupPresent)
     THEN
         bDisabledNestPartPresent := TRUE;
 
@@ -684,16 +694,19 @@ END_FOR
 // from being processed by downstream stations.
 bPatchDispenseRequired :=
     stPatchDispenseNest.bPartPresent
+    AND stPatchDispenseNest.bLoadSetComplete
     AND (stPatchDispenseNest.ePatchDispenseStage = E_NestStageStatus.Waiting);
 
 bHeatStakeRequired :=
     stHeatStakeNest.bPartPresent
+    AND stHeatStakeNest.bLoadSetComplete
     AND (stHeatStakeNest.eDisposition <> E_PartDisposition.Reprocess)
     AND (stHeatStakeNest.ePatchDispenseStage = E_NestStageStatus.Complete)
     AND (stHeatStakeNest.eHeatStakeStage = E_NestStageStatus.Waiting);
 
 bVisionRequired :=
     stVisionNest.bPartPresent
+    AND stVisionNest.bLoadSetComplete
     AND (stVisionNest.eDisposition <> E_PartDisposition.Reprocess)
     AND (stVisionNest.ePatchDispenseStage = E_NestStageStatus.Complete)
     AND (stVisionNest.eHeatStakeStage = E_NestStageStatus.Complete)
@@ -706,7 +719,9 @@ bPatchDispenseProcessingBeforeUpdate := fbPatchDispense.IsBusy();
 bHeatStakeProcessingBeforeUpdate := fbHeatStake.IsBusy();
 bVisionProcessingBeforeUpdate := fbVision.IsBusy();
 
-fbOperatorStation.Cyclic(bAutomaticActive := (eMachineState = E_MachineState.AutoCycle), bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked, stOperatorNest := stOperatorNest, bPartPresent := stInputs.bLoadingStationEaglePresent, bRejectChutePartPresent := stInputs.bRejectChutePartPresent, bRequireRejectConfirm := stConfig.bRequireRejectConfirm, bAllowEmptyNestIndex := stConfig.bAllowEmptyNestIndex);
+fbOperatorStation.Cyclic(bAutomaticActive := (eMachineState = E_MachineState.AutoCycle), bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy, stOperatorNest := stOperatorNest, bPartPresent := stInputs.bLoadingStationEaglePresent,
+    bPbupPresent := stInputs.bLoadingStationPbupPresent, bTwoHandsSafe := stInputs.bTwoHandsSafe,
+    bResetRequest := stCommand.bReset, bRejectChutePartPresent := stInputs.bRejectChutePartPresent, bRequireRejectConfirm := stConfig.bRequireRejectConfirm, bAllowEmptyNestIndex := stConfig.bAllowEmptyNestIndex);
 stOperatorStatus := fbOperatorStation.GetStatus();
 bPatchStartAllowed := stInputs.bIndexReady AND stInputs.bIndexLocked
     AND NOT stIndexStatus.bBusy AND NOT stCommand.bStop AND NOT stCommand.bReset
@@ -2544,6 +2559,7 @@ IF stOperatorStatus.bExchangeComplete
         OR (stOperatorNest.eDisposition = E_PartDisposition.Reprocess)
     )
     AND NOT stInputs.bLoadingStationEaglePresent
+    AND NOT stInputs.bLoadingStationPbupPresent
 THEN
 
     fbNestManager.ClearOperatorNest(
@@ -2633,6 +2649,7 @@ stPermissives.bSafetyIndexPermissive := stInputs.stSafety.bMotionSafetyPermitted
 
 stPermissives.bOperatorIndexPermissive :=
     stOperatorStatus.bIndexPermissive
+    AND bOperatorLoadValid
     AND NOT bReprocessAcknowledgePending;
 
 stPermissives.bStationsIndexPermissive := stPermissives.bStationsHome
@@ -2747,7 +2764,10 @@ IF stCommand.bAcknowledgeDisabledNestPartPopup THEN
 END_IF
 
 // Block only a NEW automatic index request; preserve in-progress motion permissives.
-IF bProcessRequestIndex AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus THEN
+IF bProcessRequestIndex AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
+    AND bOperatorLoadValid AND stPermissives.bOperatorIndexPermissive
+    AND stInputs.bTwoHandsSafe AND stInputs.bIndexReady AND stInputs.bIndexLocked
+    AND NOT stIndexStatus.bBusy AND (stInputs.eIndexPosition <> E_TablePosition.Unknown) THEN
     bIndexMoveAccepted := fbIndex.RequestMove();
 END_IF
 

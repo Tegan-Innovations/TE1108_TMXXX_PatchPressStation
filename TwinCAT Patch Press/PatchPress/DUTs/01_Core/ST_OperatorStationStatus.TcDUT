@@ -18,6 +18,12 @@ STRUCT
     bResultValid            : BOOL;
     bResultPassed           : BOOL;
     sMessage                : STRING(255);
+    bPbupPresent : BOOL;
+    bLoadSetComplete : BOOL;
+    bMissingPbup : BOOL;
+    bMissingProduct : BOOL;
+    bMissingPbupAlert : BOOL;
+    bMissingProductAlert : BOOL;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

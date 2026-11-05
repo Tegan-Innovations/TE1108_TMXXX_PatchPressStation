@@ -78,6 +78,7 @@ GVL_MASTER.stInputs.diHeatStakeTc1Raw := GVL_IO.stInputs.diHeatStakeTc1Raw;
 GVL_MASTER.stInputs.diHeatStakeTc2Raw := GVL_IO.stInputs.diHeatStakeTc2Raw;
 GVL_MASTER.stInputs.diHeatStakeTc3Raw := GVL_IO.stInputs.diHeatStakeTc3Raw;
 GVL_MASTER.stInputs.bPatchOpticalLeft := GVL_IO.stInputs.bPatchOpticalLeft;
+GVL_MASTER.stInputs.bLoadingStationPbupPresent := GVL_IO.stInputs.bLoadingStationPbupPresent;
 ]]></ST>
     </Implementation>
   </POU>

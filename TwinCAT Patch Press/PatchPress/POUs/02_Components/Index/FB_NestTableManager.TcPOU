@@ -24,6 +24,8 @@ VAR_INPUT ePosition : E_TablePosition; END_VAR]]></Declaration>
         <ST><![CDATA[uiMethodNestId := GetNestIdAtPosition(ePosition);
 
 IF uiMethodNestId >= 1 AND uiMethodNestId <= 4 THEN
+    aNestInternal[uiMethodNestId].bPbupPresent := FALSE;
+    aNestInternal[uiMethodNestId].bLoadSetComplete := FALSE;
     aNestInternal[uiMethodNestId].bProcessRequired := FALSE;
     aNestInternal[uiMethodNestId].bProcessComplete := FALSE;
     aNestInternal[uiMethodNestId].eDisposition := E_PartDisposition.None;
@@ -58,8 +60,14 @@ VAR_INPUT
     eIndexPosition : E_TablePosition;
     eOperatorPosition : E_TablePosition;
     bPartPresent : BOOL;
+    bPbupPresent : BOOL;
+    bOperatorReloadPermitted : BOOL;
     aNestEnabled : ARRAY[1..4] OF BOOL;
-END_VAR]]></Declaration>
+END_VAR
+VAR
+    bOperatorRecordProtected : BOOL;
+END_VAR
+]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF NOT bInitialised THEN
     FOR i := 1 TO 4 DO
@@ -68,7 +76,12 @@ END_VAR]]></Declaration>
     END_FOR
     bInitialised := TRUE;
 END_IF
-FOR i := 1 TO 4 DO aNestInternal[i].bEnabled := aNestEnabled[i]; END_FOR
+FOR i := 1 TO 4 DO
+    aNestInternal[i].bEnabled := aNestEnabled[i];
+    // Pulse semantics do not depend on whether the index is moving.
+    aNestInternal[i].bPartLoadedPulse := FALSE;
+    aNestInternal[i].bPartRemovedPulse := FALSE;
+END_FOR
 IF bIndexStable AND (eIndexPosition <> E_TablePosition.Unknown) THEN
     CASE eIndexPosition OF
         E_TablePosition.Position1:
@@ -98,8 +111,12 @@ IF bIndexStable AND (eIndexPosition <> E_TablePosition.Unknown) THEN
         aNestInternal[i].bPartRemovedPulse := FALSE;
     END_FOR
     uiNest := aPositionToNest[TO_UINT(eOperatorPosition)];
-    aNestInternal[uiNest].bPartLoadedPulse :=
-        bPartPresent AND NOT aNestInternal[uiNest].bPreviousPartPresent;
+    // Preserve a completed/reprocess product while its operator/reject exchange is pending.
+    bOperatorRecordProtected := aNestInternal[uiNest].stResult.bValid
+        OR (aNestInternal[uiNest].eDisposition = E_PartDisposition.Reprocess);
+    aNestInternal[uiNest].bPartLoadedPulse := bPartPresent
+        AND ((NOT bOperatorRecordProtected AND NOT aNestInternal[uiNest].bPreviousPartPresent)
+            OR (bOperatorRecordProtected AND bOperatorReloadPermitted));
 
     aNestInternal[uiNest].bPartRemovedPulse :=
         NOT bPartPresent AND aNestInternal[uiNest].bPreviousPartPresent;
@@ -131,6 +148,13 @@ IF bIndexStable AND (eIndexPosition <> E_TablePosition.Unknown) THEN
         aNestInternal[uiNest].bStatisticsCounted := FALSE;
     END_IF
 
+    // Raw PBUP pocket presence is current at Operator, frozen while the nest travels.
+    aNestInternal[uiNest].bPbupPresent := bPbupPresent;
+    // A PBUP assembled at Vision may no longer occupy its original pocket.
+    // Do not overwrite the paired-load history of a returned processed product.
+    IF NOT bOperatorRecordProtected OR aNestInternal[uiNest].bPartLoadedPulse THEN
+        aNestInternal[uiNest].bLoadSetComplete := bPartPresent AND bPbupPresent;
+    END_IF
     aNestInternal[uiNest].bPreviousPartPresent := bPartPresent;
     aNestInternal[uiNest].bPartPresent := bPartPresent;
 END_IF]]></ST>

@@ -30,6 +30,7 @@ GVL_HMI.stStatus.bTwoHandsSafe := GVL_MASTER.stInputs.bTwoHandsSafe;
 // It follows the real sensor immediately whenever the operator places/removes
 // a part in the nest currently located at the operator position.
 GVL_HMI.stStatus.bLoadingStationEaglePresent :=GVL_IO.stInputs.bLoadingStationEaglePresent;
+GVL_HMI.stStatus.bLoadingStationPbupPresent := GVL_IO.stInputs.bLoadingStationPbupPresent;
 GVL_HMI.stStatus.bRejectChutePartPresent := GVL_MASTER.stInputs.bRejectChutePartPresent;
 GVL_HMI.stStatus.bHeatStakeEaglePresent := GVL_MASTER.stInputs.bHeatStakeEaglePresent;
 GVL_HMI.stStatus.bHeatStakePatchPresent := GVL_MASTER.stInputs.bHeatStakePatchPresent;

@@ -3412,6 +3412,16 @@
                                 "propertyOrder": 92
                             }
                         ]
+                    },
+                    "bLoadingStationPbupPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 109
+                            }
+                        ]
                     }
                 },
                 "required": [
@@ -3522,7 +3532,8 @@
                     "aNest",
                     "sMachineMessage",
                     "sOperatorMessage",
-                    "sAutoCycleBlockReason"
+                    "sAutoCycleBlockReason",
+                    "bLoadingStationPbupPresent"
                 ],
                 "type": "object"
             },
@@ -3728,6 +3739,26 @@
                                 "propertyOrder": 15
                             }
                         ]
+                    },
+                    "bPbupPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 21
+                            }
+                        ]
+                    },
+                    "bLoadSetComplete": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 22
+                            }
+                        ]
                     }
                 },
                 "required": [
@@ -3750,7 +3781,9 @@
                     "eHeatStakeStage",
                     "eVisionStage",
                     "stResult",
-                    "bStatisticsCounted"
+                    "bStatisticsCounted",
+                    "bPbupPresent",
+                    "bLoadSetComplete"
                 ],
                 "type": "object"
             },
@@ -3969,6 +4002,66 @@
                                 "propertyOrder": 15
                             }
                         ]
+                    },
+                    "bPbupPresent": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 16
+                            }
+                        ]
+                    },
+                    "bLoadSetComplete": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 17
+                            }
+                        ]
+                    },
+                    "bMissingPbup": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 18
+                            }
+                        ]
+                    },
+                    "bMissingProduct": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 19
+                            }
+                        ]
+                    },
+                    "bMissingPbupAlert": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 20
+                            }
+                        ]
+                    },
+                    "bMissingProductAlert": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/BOOL"
+                            },
+                            {
+                                "propertyOrder": 21
+                            }
+                        ]
                     }
                 },
                 "required": [
@@ -3986,7 +4079,13 @@
                     "bRejectChutePartPresent",
                     "bResultValid",
                     "bResultPassed",
-                    "sMessage"
+                    "sMessage",
+                    "bPbupPresent",
+                    "bLoadSetComplete",
+                    "bMissingPbup",
+                    "bMissingProduct",
+                    "bMissingPbupAlert",
+                    "bMissingProductAlert"
                 ],
                 "type": "object"
             },
@@ -17475,6 +17574,261 @@
             },
             "SUBSYMBOL_MAPPING": "",
             "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.bLoadingStationPbupPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bLoadingStationPbupPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 109
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPbupPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::bPbupPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bLoadSetComplete": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[0]::bLoadSetComplete",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 22
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPbupPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::bPbupPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bLoadSetComplete": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[1]::bLoadSetComplete",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 22
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPbupPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::bPbupPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bLoadSetComplete": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[2]::bLoadSetComplete",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 22
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPbupPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::bPbupPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bLoadSetComplete": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::aNest[3]::bLoadSetComplete",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 22
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bPbupPresent": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stOperatorStation::bPbupPresent",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 16
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bLoadSetComplete": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stOperatorStation::bLoadSetComplete",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 17
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingPbup": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stOperatorStation::bMissingPbup",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 18
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingProduct": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stOperatorStation::bMissingProduct",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 19
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingPbupAlert": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stOperatorStation::bMissingPbupAlert",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 20
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingProductAlert": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::stOperatorStation::bMissingProductAlert",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 21
+                    }
+                ]
+            },
+            "USEMAPPING": true
         }
     },
     "SYMBOL_COMPLEXITY_LIMIT": 100,
@@ -18376,7 +18730,22 @@
                 "Unsubscribe": 3,
                 "UnsubscribeEvents": 3,
                 "UpdateEventsSubscription": 3,
-                "UserSelectType": 1
+                "UserSelectType": 1,
+                "ADS.PLC1.GVL_HMI.stStatus.bLoadingStationPbupPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bPbupPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.0.bLoadSetComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bPbupPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.1.bLoadSetComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bPbupPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.2.bLoadSetComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bPbupPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.aNest.3.bLoadSetComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bPbupPresent": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bLoadSetComplete": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingPbup": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingProduct": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingPbupAlert": 3,
+                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingProductAlert": 3
             }
         }
     },

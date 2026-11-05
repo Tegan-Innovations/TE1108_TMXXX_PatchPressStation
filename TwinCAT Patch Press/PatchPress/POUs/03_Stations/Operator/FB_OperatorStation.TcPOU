@@ -15,6 +15,12 @@ VAR
     bRejectEdgeAccepted       : BOOL;
     bPreviousRejectSensor     : BOOL;
     bRejectPulse              : BOOL;
+    rtIndexAttempt : R_TRIG;
+    bIndexAttemptActive : BOOL;
+    bLoadSetComplete : BOOL;
+    bLoadSetEmpty : BOOL;
+    bMissingPbupAlert : BOOL;
+    bMissingProductAlert : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -26,12 +32,32 @@ VAR_INPUT
     bIndexStable              : BOOL;
     stOperatorNest            : ST_Nest;
     bPartPresent              : BOOL;
+    bPbupPresent : BOOL;
+    bTwoHandsSafe : BOOL;
+    bResetRequest : BOOL;
     bRejectChutePartPresent   : BOOL;
     bRequireRejectConfirm     : BOOL;
     bAllowEmptyNestIndex      : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[// Product and PBUP form one load set; retain the legacy product/reject semantics.
+bLoadSetComplete := bPartPresent AND bPbupPresent;
+bLoadSetEmpty := NOT bPartPresent AND NOT bPbupPresent;
+rtIndexAttempt(CLK := bTwoHandsSafe);
+IF NOT bAutomaticActive OR NOT bTwoHandsSafe OR NOT bIndexStable OR bResetRequest THEN
+    bIndexAttemptActive := FALSE;
+ELSIF rtIndexAttempt.Q THEN
+    bIndexAttemptActive := TRUE;
+END_IF
+IF NOT bAutomaticActive OR bResetRequest OR NOT (bPartPresent XOR bPbupPresent) THEN
+    bMissingPbupAlert := FALSE;
+    bMissingProductAlert := FALSE;
+ELSIF bIndexAttemptActive THEN
+    bMissingPbupAlert := bPartPresent AND NOT bPbupPresent;
+    bMissingProductAlert := bPbupPresent AND NOT bPartPresent;
+END_IF
+
+
 bRejectPulse :=
     bRejectChutePartPresent
     AND NOT bPreviousRejectSensor;
@@ -176,43 +202,49 @@ ELSE
             END_IF
 
         E_OperatorExchangeState.WaitingForPartLoading:
-
-            IF bAllowEmptyNestIndex THEN
-
-                IF bPartPresent THEN
-                    eInstruction := E_OperatorInstruction.ReadyToIndex;
-                    sMessage := 'New part loaded - press two-hand buttons to index';
-                ELSE
-                    eInstruction := E_OperatorInstruction.ReadyToIndexEmpty;
-                    sMessage := 'Load new part or continue with empty nest';
-                END_IF
-
+            bExchangeComplete := FALSE;
+            eInstruction := E_OperatorInstruction.LoadPart;
+            IF bLoadSetComplete THEN
+                eInstruction := E_OperatorInstruction.ReadyToIndex;
+                sMessage := 'Product and PBUP loaded - press two-hand buttons to index';
                 bExchangeComplete := TRUE;
                 eState := E_OperatorExchangeState.ExchangeComplete;
-
+            ELSIF bLoadSetEmpty AND bAllowEmptyNestIndex THEN
+                eInstruction := E_OperatorInstruction.ReadyToIndexEmpty;
+                sMessage := 'Load product and PBUP or continue with empty nest';
+                bExchangeComplete := TRUE;
+                eState := E_OperatorExchangeState.ExchangeComplete;
+            ELSIF bPartPresent THEN
+                sMessage := 'PBUP missing - load PBUP or remove product';
+            ELSIF bPbupPresent THEN
+                sMessage := 'Product missing - load product or remove PBUP';
             ELSE
-                eInstruction := E_OperatorInstruction.LoadPart;
-                sMessage := 'Load new part into operator nest';
-
-                IF bPartPresent THEN
-                    bExchangeComplete := TRUE;
-                    eState := E_OperatorExchangeState.ExchangeComplete;
-                END_IF
+                sMessage := 'Load product and PBUP into operator nest';
             END_IF
 
         E_OperatorExchangeState.ExchangeComplete:
-
-            IF bPartPresent THEN
-                eInstruction := E_OperatorInstruction.ReadyToIndex;
-            ELSE
-                eInstruction := E_OperatorInstruction.ReadyToIndexEmpty;
-            END_IF
-
-            sMessage := 'Operator exchange complete - press two-hand buttons to index';
-            bExchangeComplete := TRUE;
-
+            // Never use a latched exchange completion to permit a later partial load.
             IF NOT bIndexStable THEN
                 eState := E_OperatorExchangeState.WaitingForTableIndexComplete;
+            ELSIF bLoadSetComplete THEN
+                bExchangeComplete := TRUE;
+                eInstruction := E_OperatorInstruction.ReadyToIndex;
+                sMessage := 'Product and PBUP loaded - press two-hand buttons to index';
+            ELSIF bLoadSetEmpty AND bAllowEmptyNestIndex THEN
+                bExchangeComplete := TRUE;
+                eInstruction := E_OperatorInstruction.ReadyToIndexEmpty;
+                sMessage := 'Empty nest - press two-hand buttons to index';
+            ELSE
+                bExchangeComplete := FALSE;
+                eState := E_OperatorExchangeState.WaitingForPartLoading;
+                eInstruction := E_OperatorInstruction.LoadPart;
+                IF bPartPresent THEN
+                    sMessage := 'PBUP missing - load PBUP or remove product';
+                ELSIF bPbupPresent THEN
+                    sMessage := 'Product missing - load product or remove PBUP';
+                ELSE
+                    sMessage := 'Load product and PBUP into operator nest';
+                END_IF
             END_IF
 
         E_OperatorExchangeState.WaitingForTableIndexComplete:
@@ -243,7 +275,8 @@ stStatusInternal.bExchangeComplete := bExchangeComplete;
 
 stStatusInternal.bIndexPermissive :=
     bExchangeComplete
-    AND eState = E_OperatorExchangeState.ExchangeComplete;
+    AND eState = E_OperatorExchangeState.ExchangeComplete
+    AND (bLoadSetComplete OR (bLoadSetEmpty AND bAllowEmptyNestIndex));
 
 stStatusInternal.bPartRemovedConfirmed := bPartRemovedConfirmed;
 stStatusInternal.bRejectConfirmed := bRejectConfirmed;
@@ -278,6 +311,13 @@ stStatusInternal.sMessage := sMessage;
 
 
 
+
+stStatusInternal.bPbupPresent := bPbupPresent;
+stStatusInternal.bLoadSetComplete := bLoadSetComplete;
+stStatusInternal.bMissingPbup := bPartPresent AND NOT bPbupPresent;
+stStatusInternal.bMissingProduct := bPbupPresent AND NOT bPartPresent;
+stStatusInternal.bMissingPbupAlert := bMissingPbupAlert;
+stStatusInternal.bMissingProductAlert := bMissingProductAlert;
 ]]></ST>
       </Implementation>
     </Method>

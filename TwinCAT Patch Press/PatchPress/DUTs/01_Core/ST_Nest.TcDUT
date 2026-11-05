@@ -25,6 +25,10 @@ STRUCT
 
     stResult                  : ST_ProcessResult;
     bStatisticsCounted        : BOOL;
+    // Live at Operator / last observed off Operator; bPartPresent remains PRODUCT only.
+    bPbupPresent : BOOL;
+    // Historical paired load for this product; not invalidated by PBUP assembly at Vision.
+    bLoadSetComplete : BOOL;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>
