@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <POU Name="FB_TerminalInfo" Id="{2f0066fa-e070-41a6-b676-7ec2d5910635}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_TerminalInfo
 VAR_INPUT
@@ -46,6 +46,8 @@ ELSIF  nTerminalState = 16#4000 THEN
    sTerminalState := 'Communication port C';
 ELSIF  nTerminalState = 16#8000 THEN 
    sTerminalState := 'Communication port D'; 	
+ELSE
+   sTerminalState := CONCAT('State ', UINT_TO_STRING(nTerminalState));
 END_IF
 
 IF nTerminalState = 8 THEN 

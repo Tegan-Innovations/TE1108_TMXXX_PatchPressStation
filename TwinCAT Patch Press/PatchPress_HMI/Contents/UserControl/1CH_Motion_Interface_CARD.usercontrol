@@ -1,0 +1,173 @@
+<div id="MotionCard" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControl" data-tchmi-width="1080" data-tchmi-height="480">
+<div id="TcHmiTextblock_867" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="218" data-tchmi-left-unit="px" data-tchmi-text="%pp%State_string%/pp%" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="823" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="30" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="1">
+</div><div id="TcHmiEllipse_26" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="50" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
+{
+  "left": 3,
+  "right": 3,
+  "top": 3,
+  "bottom": 3,
+  "leftUnit": "px",
+  "rightUnit": "px",
+  "topUnit": "px",
+  "bottomUnit": "px"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-border-style" type="application/json">
+{
+  "left": "None",
+  "right": "None",
+  "top": "None",
+  "bottom": "None"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-stroke-color" type="application/json">
+{
+  "color": "rgba(91, 91, 82, 1)"
+}
+</script>
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%pp%CardOperational%/pp%",
+    "actions": [
+      {
+        "objectType": "Condition",
+        "active": true,
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "symbolExpression": "%pp%CardOperational%/pp%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:general#/definitions/BOOL",
+                  "value": false
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::FillColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "angle": 110.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(255, 255, 255, 1)",
+                        "stop": "7.5%"
+                      },
+                      {
+                        "color": "rgba(255, 0, 0, 1)",
+                        "stop": "100%"
+                      }
+                    ]
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctx%owner::FillColor%/ctx%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/Color",
+                  "value": {
+                    "angle": 110.0,
+                    "stopPoints": [
+                      {
+                        "color": "rgba(255, 255, 255, 1)",
+                        "stop": "7.5%"
+                      },
+                      {
+                        "color": "rgba(0, 255, 9, 1)",
+                        "stop": "100%"
+                      }
+                    ]
+                  }
+                },
+                "asyncWait": true
+              }
+            ]
+          }
+        ],
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+
+
+
+
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-border-color" type="application/json">
+{
+  "color": "None"
+}
+</script>
+</div><div id="TcHmiImage_11" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="460" data-tchmi-height-unit="px" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="90" data-tchmi-width-unit="px" data-tchmi-src="%pp%Image%/pp%">
+</div><div id="MotionAxisName" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="65" data-tchmi-width="880" data-tchmi-height="30" data-tchmi-text="%pp%AxisName%/pp%" data-tchmi-text-font-size="20"></div>
+<div id="MotionLabelActualPosition" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="102" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Actual position (axis units)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueActualPosition" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="448" data-tchmi-top="102" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%ActualPosition%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelActualVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="139" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Actual velocity (axis units/s)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueActualVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="448" data-tchmi-top="139" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%ActualVelocity%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelActualTorque" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="176" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Actual torque (NC reported units)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueActualTorque" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="448" data-tchmi-top="176" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%ActualTorque%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelPositionDifference" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="213" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Position difference (axis units)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValuePositionDifference" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="448" data-tchmi-top="213" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%PositionDifference%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelSetPosition" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="250" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Set position (axis units)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueSetPosition" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="448" data-tchmi-top="250" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%SetPosition%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelSetVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="287" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Set velocity (axis units/s)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueSetVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="448" data-tchmi-top="287" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%SetVelocity%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelTargetPosition" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="324" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Target position (axis units)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueTargetPosition" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="448" data-tchmi-top="324" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%TargetPosition%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelAxisId" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="361" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="NC axis ID" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueAxisId" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="448" data-tchmi-top="361" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%AxisId%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="0" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelStandstill" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="398" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Application standstill" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueStandstill" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="448" data-tchmi-top="398" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-text="%f%%pp%Standstill%/pp% ? &#x27;TRUE&#x27; : &#x27;FALSE&#x27;%/f%" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionLabelNcErrorCode" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="102" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="NC axis error code (decimal)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueNcErrorCode" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="908" data-tchmi-top="102" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%NcErrorCode%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="0" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelAxisState" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="139" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="NC movement state" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueAxisState" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="908" data-tchmi-top="139" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%AxisState%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="0" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelHomingState" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="176" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="NC homing state" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueHomingState" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="908" data-tchmi-top="176" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%HomingState%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="0" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelAxisError" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="213" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Application axis error" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueAxisError" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="908" data-tchmi-top="213" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-text="%f%%pp%AxisError%/pp% ? &#x27;TRUE&#x27; : &#x27;FALSE&#x27;%/f%" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionLabelApplicationErrorId" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="250" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Application error ID (decimal)" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueApplicationErrorId" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="908" data-tchmi-top="250" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-value="%pp%ApplicationErrorId%/pp%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="0" data-tchmi-value-font-size="15"></div>
+<div id="MotionLabelEnabled" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="287" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Application enabled" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueEnabled" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="908" data-tchmi-top="287" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-text="%f%%pp%Enabled%/pp% ? &#x27;TRUE&#x27; : &#x27;FALSE&#x27;%/f%" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionLabelOperational" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="324" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Application operational" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueOperational" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="908" data-tchmi-top="324" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-text="%f%%pp%Operational%/pp% ? &#x27;TRUE&#x27; : &#x27;FALSE&#x27;%/f%" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionLabelHomed" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="361" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Application homed" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueHomed" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="908" data-tchmi-top="361" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-text="%f%%pp%Homed%/pp% ? &#x27;TRUE&#x27; : &#x27;FALSE&#x27;%/f%" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionLabelMoving" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="618" data-tchmi-top="398" data-tchmi-width="285" data-tchmi-height="30" data-tchmi-text="Application moving" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionValueMoving" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="908" data-tchmi-top="398" data-tchmi-width="145" data-tchmi-height="30" data-tchmi-text="%f%%pp%Moving%/pp% ? &#x27;TRUE&#x27; : &#x27;FALSE&#x27;%/f%" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="MotionUnits" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="158" data-tchmi-top="442" data-tchmi-width="895" data-tchmi-height="30" data-tchmi-text="NC units follow axis configuration; torque is not converted. Diagnostics only." data-tchmi-text-font-size="13"></div>
+</div>

@@ -17829,6 +17829,1882 @@
                 ]
             },
             "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm5_EL1918::iEL1918_Ch7",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm6_EL2904::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm7_EL1809::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm7_EL1809::iEL1809_Ch9",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm8_EL1809::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm12_EL9410::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm12_EL9410::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm13_EL2502::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm14_EL9576::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm14_EL9576::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm15_EL7201::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm15_EL7201::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm16_EL7201::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm16_EL7201::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm17_EL7201::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm17_EL7201::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm18_EL2904::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm18_EL2904::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch2",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch3",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch4",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch5",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch6",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch7",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch8",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch9",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch10",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch11",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch12",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch13",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch14",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch15",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm19_EL1809::iEL1809_Ch16",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::iEL4028_Ch1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::iEL4028_Ch2",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::iEL4028_Ch3",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::iEL4028_Ch4",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::iEL4028_Ch5",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::iEL4028_Ch6",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::iEL4028_Ch7",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL4028::iEL4028_Ch8",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/INT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm20_EL3314::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm20_EL3314::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm20_EL3314::iEL3314_Ch1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/DINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm20_EL3314::iEL3314_Ch2",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/DINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm20_EL3314::iEL3314_Ch3",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/DINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm20_EL3314::iEL3314_Ch4",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/DINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL6633::stTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stTerm21_EL6633::stTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoTerminalInfo::sTerminalInfo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/STRING"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoTerminalInfo::bTerminalOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil0": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule2_VABX::bCoil0",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil1": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule2_VABX::bCoil1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil2": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule2_VABX::bCoil2",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil3": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule2_VABX::bCoil3",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil4": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule2_VABX::bCoil4",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil5": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule2_VABX::bCoil5",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil6": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule2_VABX::bCoil6",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil7": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule2_VABX::bCoil7",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil0": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule3_VABX::bCoil0",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil1": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule3_VABX::bCoil1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil2": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule3_VABX::bCoil2",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil3": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule3_VABX::bCoil3",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil4": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule3_VABX::bCoil4",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil5": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule3_VABX::bCoil5",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil6": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule3_VABX::bCoil6",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil7": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule3_VABX::bCoil7",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil0": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule4_VABX::bCoil0",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil1": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule4_VABX::bCoil1",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil2": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule4_VABX::bCoil2",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil3": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule4_VABX::bCoil3",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil4": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule4_VABX::bCoil4",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil5": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule4_VABX::bCoil5",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil6": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule4_VABX::bCoil6",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil7": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_EtherCAT::stFestoModule4_VABX::bCoil7",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::ActPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActVelo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::ActVelo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActTorque": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::ActTorque",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.PosDiff": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::PosDiff",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::SetPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetVelo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::SetVelo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.TargetPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::TargetPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::AxisId",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.bStandstill": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::bStandstill",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ErrorCode": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::ErrorCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisState": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::AxisState",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.HomingState": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::Axis::NcToPlc::HomingState",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.bError": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::bError",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.udiErrorId": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::udiErrorId",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.bEnabled": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::bEnabled",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.bOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::bOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.bHomed": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::bHomed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisDriveMotor.bMoving": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisDriveMotor::bMoving",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::ActPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActVelo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::ActVelo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActTorque": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::ActTorque",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.PosDiff": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::PosDiff",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::SetPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetVelo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::SetVelo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.TargetPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::TargetPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisId": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::AxisId",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bStandstill": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::bStandstill",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ErrorCode": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::ErrorCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisState": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::AxisState",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.HomingState": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::Axis::NcToPlc::HomingState",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bError": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::bError",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.udiErrorId": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::udiErrorId",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bEnabled": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::bEnabled",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::bOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bHomed": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::bHomed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bMoving": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisPatchFeedRollMotor::bMoving",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::ActPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActVelo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::ActVelo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActTorque": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::ActTorque",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.PosDiff": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::PosDiff",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::SetPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetVelo": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::SetVelo",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.TargetPos": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::TargetPos",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/LREAL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisId": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::AxisId",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bStandstill": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::bStandstill",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ErrorCode": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::ErrorCode",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisState": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::AxisState",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.HomingState": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::Axis::NcToPlc::HomingState",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bError": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::bError",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::udiErrorId",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bEnabled": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::bEnabled",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bOperational": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::bOperational",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bHomed": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::bHomed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bMoving": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Motion::AxisWasteRollMotor::bMoving",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
         }
     },
     "SYMBOL_COMPLEXITY_LIMIT": 100,
@@ -17921,7 +19797,249 @@
                 "UnsubscribeEvents": 3,
                 "UpdateEventsSubscription": 3,
                 "Upload": 3,
-                "UserSelectType": 3
+                "UserSelectType": 3,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bMoving": 1
             }
         },
         "Engineer": {
@@ -18008,7 +20126,249 @@
                 "UnsubscribeEvents": 3,
                 "UpdateEventsSubscription": 3,
                 "Upload": 3,
-                "UserSelectType": 3
+                "UserSelectType": 3,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bMoving": 1
             }
         },
         "Operator": {
@@ -18095,7 +20455,249 @@
                 "UnsubscribeEvents": 3,
                 "UpdateEventsSubscription": 3,
                 "Upload": 3,
-                "UserSelectType": 3
+                "UserSelectType": 3,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bMoving": 1
             }
         },
         "__SystemAdministrators": {
@@ -18103,7 +20705,250 @@
             "FILEACCESS": 3,
             "FILES": {},
             "SYMBOLACCESS": 3,
-            "SYMBOLS": {}
+            "SYMBOLS": {
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bMoving": 1
+            }
         },
         "__SystemGuests": {
             "ENABLED": true,
@@ -18126,7 +20971,249 @@
                 "Logout": 3,
                 "SetLocale": 3,
                 "Unsubscribe": 3,
-                "UserSelectType": 1
+                "UserSelectType": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch10": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch9": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch10": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch13": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch14": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch15": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch16": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch9": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch10": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch11": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch12": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch13": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch14": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch15": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch16": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch9": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch10": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch11": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch12": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch13": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch14": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch15": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch16": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil0": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil0": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil7": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil0": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil1": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil2": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil3": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil4": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil5": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil6": 0,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil7": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActVelo": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActTorque": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.PosDiff": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetVelo": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.TargetPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bStandstill": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ErrorCode": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisState": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.HomingState": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bError": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.udiErrorId": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bEnabled": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bOperational": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bHomed": 0,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bMoving": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActVelo": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActTorque": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.PosDiff": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetVelo": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.TargetPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisId": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bStandstill": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ErrorCode": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisState": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.HomingState": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bError": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.udiErrorId": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bEnabled": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bOperational": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bHomed": 0,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bMoving": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActVelo": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActTorque": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.PosDiff": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetVelo": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.TargetPos": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisId": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bStandstill": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ErrorCode": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisState": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.HomingState": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bError": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bEnabled": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bOperational": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bHomed": 0,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bMoving": 0
             }
         },
         "__SystemMaintenanceUsers": {
@@ -18134,7 +21221,250 @@
             "FILEACCESS": 3,
             "FILES": {},
             "SYMBOLACCESS": 0,
-            "SYMBOLS": {}
+            "SYMBOLS": {
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bMoving": 1
+            }
         },
         "__SystemUsers": {
             "ENABLED": true,
@@ -18745,7 +22075,141 @@
                 "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingPbup": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingProduct": 3,
                 "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingPbupAlert": 3,
-                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingProductAlert": 3
+                "ADS.PLC1.GVL_HMI.stStatus.stOperatorStation.bMissingProductAlert": 3,
+                "ADS.PLC1.GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule2_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule3_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil0": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil1": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil2": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil3": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil4": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil5": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil6": 1,
+                "ADS.PLC1.GVL_EtherCAT.stFestoModule4_VABX.bCoil7": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisDriveMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisPatchFeedRollMotor.bMoving": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ActTorque": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.PosDiff": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.SetVelo": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.TargetPos": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bStandstill": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.ErrorCode": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.AxisState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc.HomingState": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bError": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bEnabled": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bOperational": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bHomed": 1,
+                "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.bMoving": 1
             }
         }
     },

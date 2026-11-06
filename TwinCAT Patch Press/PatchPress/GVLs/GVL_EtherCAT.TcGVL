@@ -36,6 +36,10 @@ VAR_GLOBAL
     // PROFINET Assignable Status, appended separately to preserve camera DUT.
     udiVisionError0Code AT %I* : UDINT;
     udiVisionError1Code AT %I* : UDINT;
+    // Diagnostics for the power terminals and the shared Festo coupler.
+    stTerm12_EL9410 : ST_EL9410;
+    stTerm14_EL9576 : ST_EL9576;
+    stFestoTerminalInfo : ST_Terminal_Info;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

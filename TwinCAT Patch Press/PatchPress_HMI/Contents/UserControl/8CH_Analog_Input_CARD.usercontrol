@@ -1,6 +1,6 @@
 <div id="IO_3" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControl" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480" data-tchmi-width-unit="px" data-tchmi-height-unit="px" data-tchmi-creator-viewport-width="500" data-tchmi-creator-viewport-height="500">
 
-<div id="TcHmiTextblock_868" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_1_InputOutputName%/pp%" data-tchmi-top="89" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_868" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_1_InputOutputName%/pp%" data-tchmi-top="106" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 1 ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -16,7 +16,7 @@
 </div>
 <div id="TcHmiTextblock_867" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="218" data-tchmi-left-unit="px" data-tchmi-text="%pp%State_string%/pp%" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="823" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="30" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="1">
 </div>
-<div id="TcHmiTextblock_866" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_2_InputOutputName%/pp%" data-tchmi-top="129" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_866" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_2_InputOutputName%/pp%" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 2 ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -30,7 +30,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_865" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_3_InputOutputName%/pp%" data-tchmi-top="169" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_865" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_3_InputOutputName%/pp%" data-tchmi-top="186" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 3 ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -44,7 +44,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_864" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_4_InputOutputName%/pp%" data-tchmi-top="209" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_864" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_4_InputOutputName%/pp%" data-tchmi-top="226" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 4 ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -58,7 +58,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_863" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_5_InputOutputName%/pp%" data-tchmi-top="249" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_863" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_5_InputOutputName%/pp%" data-tchmi-top="266" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 5 ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -72,7 +72,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_862" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_6_InputOutputName%/pp%" data-tchmi-top="289" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_862" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_6_InputOutputName%/pp%" data-tchmi-top="306" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 6 ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -86,7 +86,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_861" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_7_InputOutputName%/pp%" data-tchmi-top="329" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_861" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_7_InputOutputName%/pp%" data-tchmi-top="346" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 7 ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -100,7 +100,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_860" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_8_InputOutputName%/pp%" data-tchmi-top="369" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_860" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="158" data-tchmi-left-unit="px" data-tchmi-text="%pp%_8_InputOutputName%/pp%" data-tchmi-top="386" data-tchmi-top-unit="px" data-tchmi-width="350" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 8 ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -254,7 +254,7 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
-<div id="TcHmiTextblock_869" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-text="%pp%_1InputOutputSignal%/pp%" data-tchmi-top="106" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_869" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_1InputOutputSignal%/pp%" data-tchmi-top="106" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 1 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -280,7 +280,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_870" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-text="%pp%_2_InputOutputSignal%/pp%" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_870" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_2_InputOutputSignal%/pp%" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 2 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -306,7 +306,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_871" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-text="%pp%_3_InputOutputSignal%/pp%" data-tchmi-top="186" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_871" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_3_InputOutputSignal%/pp%" data-tchmi-top="186" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 3 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -332,7 +332,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_872" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-text="%pp%_4_InputOutputSignal%/pp%" data-tchmi-top="226" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_872" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_4_InputOutputSignal%/pp%" data-tchmi-top="226" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 4 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -358,7 +358,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_873" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-text="%pp%_5_InputOutputSignal%/pp%" data-tchmi-top="266" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_873" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_5_InputOutputSignal%/pp%" data-tchmi-top="266" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 5 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -384,7 +384,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_874" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-text="%pp%_6_InputOutputSignal%/pp%" data-tchmi-top="306" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_874" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_6_InputOutputSignal%/pp%" data-tchmi-top="306" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 6 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -410,7 +410,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_875" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-text="%pp%_7_InputOutputSignal%/pp%" data-tchmi-top="346" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_875" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_7_InputOutputSignal%/pp%" data-tchmi-top="346" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 7 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -436,7 +436,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_876" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-text="%pp%_8_InputOutputSignal%/pp%" data-tchmi-top="386" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_876" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_8_InputOutputSignal%/pp%" data-tchmi-top="386" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 8 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -462,7 +462,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_914" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="%pp%_1_ScaledValue%/pp%" data-tchmi-top="106" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_914" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_1_ScaledValue%/pp%" data-tchmi-top="106" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 1 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -488,7 +488,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_915" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="%pp%_2_ScaledValue%/pp%" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_915" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_2_ScaledValue%/pp%" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 2 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -514,7 +514,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_916" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="%pp%_3_ScaledValue%/pp%" data-tchmi-top="186" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_916" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_3_ScaledValue%/pp%" data-tchmi-top="186" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 3 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -540,7 +540,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_917" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="%pp%_4_ScaledValue%/pp%" data-tchmi-top="226" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_917" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_4_ScaledValue%/pp%" data-tchmi-top="226" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 4 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -566,7 +566,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_918" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="%pp%_5_ScaledValue%/pp%" data-tchmi-top="266" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_918" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_5_ScaledValue%/pp%" data-tchmi-top="266" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 5 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -592,7 +592,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_919" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="%pp%_6_ScaledValue%/pp%" data-tchmi-top="306" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_919" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_6_ScaledValue%/pp%" data-tchmi-top="306" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 6 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -618,7 +618,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_920" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="%pp%_7_ScaledValue%/pp%" data-tchmi-top="346" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_920" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_7_ScaledValue%/pp%" data-tchmi-top="346" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 7 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -644,7 +644,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_921" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="%pp%_8_ScaledValue%/pp%" data-tchmi-top="386" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiNumericInput_921" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_8_ScaledValue%/pp%" data-tchmi-top="386" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 8 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -684,7 +684,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_923" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="SCALED" data-tchmi-top="70" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center">
+<div id="TcHmiTextblock_923" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-text="SCALED" data-tchmi-top="70" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="15" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-vertical-alignment="Center" data-tchmi-visibility="%f%%pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,

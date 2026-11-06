@@ -1,0 +1,2930 @@
+[
+  {
+    "a": {
+      "Name": "TIID^Device 1 (EtherCAT)"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 18 (EL2904)"
+    },
+    "link": {
+      "VarA": "Term 1 (EK1100)^Term 3 (EL6910)^ConnectionOutputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 RxPDO",
+      "VarB": "Module 1 (FSOES)^TxPDO^FSOE"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIID^Device 1 (EtherCAT)"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "Term 1 (EK1100)^Term 18 (EL2904)^Module 1 (FSOES)^RxPDO^FSOE",
+      "VarB": "ConnectionInputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 TxPDO"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIID^Device 1 (EtherCAT)"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "Term 1 (EK1100)^Term 4 (EL1918)^Module 1 (FSOE)^FSoE Inputs^FSOE",
+      "VarB": "ConnectionOutputs^TwinSafeGroup1.Term 4 (EL1918) - Module 1 (FSOE)_3 RxPDO"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIID^Device 1 (EtherCAT)"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "Term 1 (EK1100)^Term 5 (EL1918)^Module 1 (FSOE)^FSoE Inputs^FSOE",
+      "VarB": "ConnectionOutputs^TwinSafeGroup1.Term 5 (EL1918) - Module 1 (FSOE)_4 RxPDO"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIID^Device 1 (EtherCAT)"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "Term 1 (EK1100)^Term 6 (EL2904)^Module 1 (FSOES)^RxPDO^FSOE",
+      "VarB": "ConnectionInputs^TwinSafeGroup1.Term 6 (EL2904) - Module 1 (FSOES)_5 TxPDO"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIID^Device 1 (EtherCAT)"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "Term 1 (EK1100)^Term 3 (EL6910)^ConnectionInputs^TwinSafeGroup1.Term 4 (EL1918) - Module 1 (FSOE)_3 TxPDO",
+      "VarB": "Module 1 (FSOE)^FSoE Outputs^FSOE"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIID^Device 1 (EtherCAT)"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "Term 1 (EK1100)^Term 3 (EL6910)^ConnectionInputs^TwinSafeGroup1.Term 5 (EL1918) - Module 1 (FSOE)_4 TxPDO",
+      "VarB": "Module 1 (FSOE)^FSoE Outputs^FSOE"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIID^Device 1 (EtherCAT)"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 6 (EL2904)"
+    },
+    "link": {
+      "VarA": "Term 1 (EK1100)^Term 3 (EL6910)^ConnectionOutputs^TwinSafeGroup1.Term 6 (EL2904) - Module 1 (FSOES)_5 RxPDO",
+      "VarB": "Module 1 (FSOES)^TxPDO^FSOE"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nDataIn3[0]",
+      "VarB": "DRV Torque actual value^Torque actual value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nDcOutputTime",
+      "VarB": "InfoData^DcOutputShift"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState1",
+      "VarB": "DRV Statusword^Statusword"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState2",
+      "VarB": "DRV Statusword^Statusword",
+      "Size": "8",
+      "OffsB": "8"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState4",
+      "VarB": "WcState^InputToggle",
+      "Size": "1",
+      "OffsA": "1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState4",
+      "VarB": "WcState^WcState"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nCtrl1",
+      "VarB": "DRV Controlword^Controlword"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nCtrl2",
+      "VarB": "DRV Controlword^Controlword",
+      "Size": "8",
+      "OffsB": "8"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nDataOut2",
+      "VarB": "DRV Target velocity^Target velocity"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nDataIn1",
+      "VarB": "FB Position^Position"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nDcInputTime",
+      "VarB": "InfoData^DcInputShift"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nState4",
+      "VarB": "WcState^InputToggle",
+      "Size": "1",
+      "OffsA": "1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nState4",
+      "VarB": "WcState^WcState"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nDataIn3[0]",
+      "VarB": "DRV Torque actual value^Torque actual value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nDcOutputTime",
+      "VarB": "InfoData^DcOutputShift"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState1",
+      "VarB": "DRV Statusword^Statusword"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState2",
+      "VarB": "DRV Statusword^Statusword",
+      "Size": "8",
+      "OffsB": "8"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState4",
+      "VarB": "WcState^InputToggle",
+      "Size": "1",
+      "OffsA": "1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState4",
+      "VarB": "WcState^WcState"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nCtrl1",
+      "VarB": "DRV Controlword^Controlword"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nCtrl2",
+      "VarB": "DRV Controlword^Controlword",
+      "Size": "8",
+      "OffsB": "8"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nDataOut2",
+      "VarB": "DRV Target velocity^Target velocity"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nDataIn1",
+      "VarB": "FB Position^Position"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nDcInputTime",
+      "VarB": "InfoData^DcInputShift"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nState4",
+      "VarB": "WcState^InputToggle",
+      "Size": "1",
+      "OffsA": "1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nState4",
+      "VarB": "WcState^WcState"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nDataIn3[0]",
+      "VarB": "DRV Torque actual value^Torque actual value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nDcOutputTime",
+      "VarB": "InfoData^DcOutputShift"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState1",
+      "VarB": "DRV Statusword^Statusword"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState2",
+      "VarB": "DRV Statusword^Statusword",
+      "Size": "8",
+      "OffsB": "8"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState4",
+      "VarB": "WcState^InputToggle",
+      "Size": "1",
+      "OffsA": "1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Inputs^In^nState4",
+      "VarB": "WcState^WcState"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nCtrl1",
+      "VarB": "DRV Controlword^Controlword"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nCtrl2",
+      "VarB": "DRV Controlword^Controlword",
+      "Size": "8",
+      "OffsB": "8"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Drive^Outputs^Out^nDataOut2",
+      "VarB": "DRV Target velocity^Target velocity"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nDataIn1",
+      "VarB": "FB Position^Position"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nDcInputTime",
+      "VarB": "InfoData^DcInputShift"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nState4",
+      "VarB": "WcState^InputToggle",
+      "Size": "1",
+      "OffsA": "1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)"
+    },
+    "link": {
+      "VarA": "Enc^Inputs^In^nState4",
+      "VarB": "WcState^WcState"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil0",
+      "VarB": "Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 0"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil1",
+      "VarB": "Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil2",
+      "VarB": "Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 2"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil3",
+      "VarB": "Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 3"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil4",
+      "VarB": "Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 4"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil5",
+      "VarB": "Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 5"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil6",
+      "VarB": "Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 6"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil7",
+      "VarB": "Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 7"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule3_VABX.bCoil0",
+      "VarB": "Module 3 (VABX-A-S-BV-V4A)^Outputs^Coil 0"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule3_VABX.bCoil1",
+      "VarB": "Module 3 (VABX-A-S-BV-V4A)^Outputs^Coil 1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule3_VABX.bCoil2",
+      "VarB": "Module 3 (VABX-A-S-BV-V4A)^Outputs^Coil 2"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule3_VABX.bCoil3",
+      "VarB": "Module 3 (VABX-A-S-BV-V4A)^Outputs^Coil 3"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule3_VABX.bCoil4",
+      "VarB": "Module 3 (VABX-A-S-BV-V4A)^Outputs^Coil 4"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule3_VABX.bCoil5",
+      "VarB": "Module 3 (VABX-A-S-BV-V4A)^Outputs^Coil 5"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule3_VABX.bCoil6",
+      "VarB": "Module 3 (VABX-A-S-BV-V4A)^Outputs^Coil 6"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule3_VABX.bCoil7",
+      "VarB": "Module 3 (VABX-A-S-BV-V4A)^Outputs^Coil 7"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil0",
+      "VarB": "Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 0"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil1",
+      "VarB": "Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil2",
+      "VarB": "Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 2"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil3",
+      "VarB": "Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 3"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil4",
+      "VarB": "Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 4"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil5",
+      "VarB": "Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 5"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil6",
+      "VarB": "Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 6"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil7",
+      "VarB": "Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 7"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.nTerminal_State",
+      "VarB": "InfoData^State"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch1",
+      "VarB": "Channel 1^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch10",
+      "VarB": "Channel 10^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch11",
+      "VarB": "Channel 11^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch12",
+      "VarB": "Channel 12^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch13",
+      "VarB": "Channel 13^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch14",
+      "VarB": "Channel 14^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch15",
+      "VarB": "Channel 15^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch16",
+      "VarB": "Channel 16^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch2",
+      "VarB": "Channel 2^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch3",
+      "VarB": "Channel 3^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch4",
+      "VarB": "Channel 4^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch5",
+      "VarB": "Channel 5^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch6",
+      "VarB": "Channel 6^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch7",
+      "VarB": "Channel 7^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch8",
+      "VarB": "Channel 8^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm10_EL2809.iEL2809_Ch9",
+      "VarB": "Channel 9^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch1",
+      "VarB": "AI Standard Channel 1^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch2",
+      "VarB": "AI Standard Channel 2^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch3",
+      "VarB": "AI Standard Channel 3^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch4",
+      "VarB": "AI Standard Channel 4^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch5",
+      "VarB": "AI Standard Channel 5^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch6",
+      "VarB": "AI Standard Channel 6^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch7",
+      "VarB": "AI Standard Channel 7^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8",
+      "VarB": "AI Standard Channel 8^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 11 (EL3058)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.nTerminal_State",
+      "VarB": "InfoData^State"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 13 (EL2502)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1",
+      "VarB": "PWM Outputs Channel 1^PWM output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 13 (EL2502)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2",
+      "VarB": "PWM Outputs Channel 2^PWM output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1",
+      "VarB": "Channel 1^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch10",
+      "VarB": "Channel 10^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch11",
+      "VarB": "Channel 11^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch12",
+      "VarB": "Channel 12^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch13",
+      "VarB": "Channel 13^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch14",
+      "VarB": "Channel 14^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch15",
+      "VarB": "Channel 15^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch16",
+      "VarB": "Channel 16^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch2",
+      "VarB": "Channel 2^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch3",
+      "VarB": "Channel 3^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch4",
+      "VarB": "Channel 4^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5",
+      "VarB": "Channel 5^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6",
+      "VarB": "Channel 6^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7",
+      "VarB": "Channel 7^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8",
+      "VarB": "Channel 8^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9",
+      "VarB": "Channel 9^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.nTerminal_State",
+      "VarB": "InfoData^State"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL3314-0092)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1",
+      "VarB": "TC Inputs Channel 1^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL3314-0092)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2",
+      "VarB": "TC Inputs Channel 2^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL3314-0092)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3",
+      "VarB": "TC Inputs Channel 3^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL3314-0092)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4",
+      "VarB": "TC Inputs Channel 4^Value"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1",
+      "VarB": "AO Outputs Channel 1^Analog output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2",
+      "VarB": "AO Outputs Channel 2^Analog output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3",
+      "VarB": "AO Outputs Channel 3^Analog output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4",
+      "VarB": "AO Outputs Channel 4^Analog output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5",
+      "VarB": "AO Outputs Channel 5^Analog output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6",
+      "VarB": "AO Outputs Channel 6^Analog output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7",
+      "VarB": "AO Outputs Channel 7^Analog output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL4028)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8",
+      "VarB": "AO Outputs Channel 8^Analog output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Safety.bAirSupplySafe",
+      "VarB": "StandardInputs^Standard Out Var 13"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Safety.bMainDoorClosed",
+      "VarB": "StandardInputs^Standard Out Var 8"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Safety.bMainDoorLocked",
+      "VarB": "StandardInputs^Standard Out Var 9"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Safety.bMainDoorUnSafe",
+      "VarB": "StandardInputs^Standard Out Var 10"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Safety.bResetButtonPressed",
+      "VarB": "StandardInputs^Standard Out Var 7"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Safety.bSafetyOk",
+      "VarB": "StandardInputs^Standard Out Var 12"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Safety.bTwoHandSafe",
+      "VarB": "StandardInputs^Standard Out Var 16"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_IO.stOutputs^bAirSupplyEnable",
+      "VarB": "StandardOutputs^Standard In Var 11"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_IO.stOutputs^bMainDoorLockRequest",
+      "VarB": "StandardOutputs^Standard In Var 14"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_IO.stOutputs^bSafetyErrorAcknowledgementRequest",
+      "VarB": "StandardOutputs^Standard In Var 1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_IO.stOutputs^bSafetyRunRequest",
+      "VarB": "StandardOutputs^Standard In Var 15"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 1.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch2",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 2.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch3",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 3.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch4",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 4.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch5",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 5.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch6",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 6.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch7",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 7.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch8",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 8.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch1",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 1.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch2",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 2.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch3",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 3.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch4",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 4.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch5",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 5.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch6",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 6.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 7.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 5 (EL1918)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8",
+      "VarB": "Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 8.Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1",
+      "VarB": "Channel 1^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch10",
+      "VarB": "Channel 10^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11",
+      "VarB": "Channel 11^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12",
+      "VarB": "Channel 12^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13",
+      "VarB": "Channel 13^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14",
+      "VarB": "Channel 14^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15",
+      "VarB": "Channel 15^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16",
+      "VarB": "Channel 16^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch2",
+      "VarB": "Channel 2^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch3",
+      "VarB": "Channel 3^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch4",
+      "VarB": "Channel 4^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch5",
+      "VarB": "Channel 5^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch6",
+      "VarB": "Channel 6^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch7",
+      "VarB": "Channel 7^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch8",
+      "VarB": "Channel 8^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch9",
+      "VarB": "Channel 9^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.stTerminalInfo.nTerminal_State",
+      "VarB": "InfoData^State"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1",
+      "VarB": "Channel 1^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch10",
+      "VarB": "Channel 10^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11",
+      "VarB": "Channel 11^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12",
+      "VarB": "Channel 12^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch13",
+      "VarB": "Channel 13^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch14",
+      "VarB": "Channel 14^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch15",
+      "VarB": "Channel 15^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch16",
+      "VarB": "Channel 16^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2",
+      "VarB": "Channel 2^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3",
+      "VarB": "Channel 3^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4",
+      "VarB": "Channel 4^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5",
+      "VarB": "Channel 5^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6",
+      "VarB": "Channel 6^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch7",
+      "VarB": "Channel 7^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch8",
+      "VarB": "Channel 8^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch9",
+      "VarB": "Channel 9^Input"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 8 (EL1809)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm8_EL1809.stTerminalInfo.nTerminal_State",
+      "VarB": "InfoData^State"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stTerm9_EL2809.stTerminalInfo.nTerminal_State",
+      "VarB": "InfoData^State"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch1",
+      "VarB": "Channel 1^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch10",
+      "VarB": "Channel 10^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch11",
+      "VarB": "Channel 11^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch12",
+      "VarB": "Channel 12^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch13",
+      "VarB": "Channel 13^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch14",
+      "VarB": "Channel 14^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch15",
+      "VarB": "Channel 15^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch16",
+      "VarB": "Channel 16^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch2",
+      "VarB": "Channel 2^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch3",
+      "VarB": "Channel 3^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4",
+      "VarB": "Channel 4^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5",
+      "VarB": "Channel 5^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6",
+      "VarB": "Channel 6^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7",
+      "VarB": "Channel 7^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch8",
+      "VarB": "Channel 8^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 9 (EL2809-0015)"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch9",
+      "VarB": "Channel 9^Output"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.abError[1]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Error0_Status"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.abError[2]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Error1_Status"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber",
+      "VarB": "API^Term 3 (Assignable Status)^Subterm 5 (Assignable Status)^Inputs^Program Number"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bGeneralFail",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Fail"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bGeneralPass",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Pass"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadComplete",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[3]^Program_Load_Complete"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bResultsReady",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Result_Ready"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bRunStatus",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[2]^Run_Status"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[0]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_0"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[1]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_1"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[2]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_2"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[3]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_3"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[4]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_4"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[5]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_5"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[6]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_6"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bToolJudge[7]",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[8]^Tool_Judge_7"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[1]^Trigger_Ack"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.bTriggerReady",
+      "VarB": "API^Term 2 (Status)^Subterm 4 (Status)^Inputs^Status Register[0]^Trigger_Ready"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.byByteResults",
+      "VarB": "API^Term 4 (Result Data 128Byte)^Subterm 6 (Result Data 128Byte)^Inputs^Result Data"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.udiVisionError0Code",
+      "VarB": "API^Term 3 (Assignable Status)^Subterm 5 (Assignable Status)^Inputs^Error0 Code"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_EtherCAT.udiVisionError1Code",
+      "VarB": "API^Term 3 (Assignable Status)^Subterm 5 (Assignable Status)^Inputs^Error1 Code"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.abErrorClear[1]",
+      "VarB": "API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Error0_Clear"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.abErrorClear[2]",
+      "VarB": "API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Error1_Clear"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bGoToConfig",
+      "VarB": "API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Go_to_Setting"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bGoToRun",
+      "VarB": "API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Go_to_Run"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadExecute",
+      "VarB": "API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[3]^Program_Load_Execute"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bProgramNumber_out",
+      "VarB": "API^Term 11 (Program Number)^Subterm 13 (Program Number)^Outputs^Program Number"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bReset",
+      "VarB": "API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[1]^Reset"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bResultAck",
+      "VarB": "API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Result_Ack"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TIID^Device 2 (EL6633)^vs-01"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bTrigger",
+      "VarB": "API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[0]^Trigger"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Motion.AxisDriveMotor.Axis.NcToPlc",
+      "VarB": "Outputs^ToPlc"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M1_DriveMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_Motion.AxisDriveMotor.Axis.PlcToNc",
+      "VarB": "Inputs^FromPlc"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc",
+      "VarB": "Outputs^ToPlc"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_Motion.AxisPatchFeedRollMotor.Axis.PlcToNc",
+      "VarB": "Inputs^FromPlc"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc",
+      "VarB": "Outputs^ToPlc"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_Motion.AxisWasteRollMotor.Axis.PlcToNc",
+      "VarB": "Inputs^FromPlc"
+    }
+  }
+]

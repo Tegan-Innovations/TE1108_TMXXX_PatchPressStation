@@ -254,7 +254,7 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
-<div id="TcHmiEllipse_37" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="89" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<div id="TcHmiEllipse_37" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="89" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1" data-tchmi-visibility="%f%%pp%ChannelFeedbackAvailable%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 3,
@@ -386,7 +386,7 @@
 }
 </script>
 </div>
-<div id="TcHmiEllipse_36" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<div id="TcHmiEllipse_36" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="129" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1" data-tchmi-visibility="%f%%pp%ChannelFeedbackAvailable%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 3,
@@ -518,7 +518,7 @@
 }
 </script>
 </div>
-<div id="TcHmiEllipse_35" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="169" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<div id="TcHmiEllipse_35" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="169" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1" data-tchmi-visibility="%f%%pp%ChannelFeedbackAvailable%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 3,
@@ -650,7 +650,7 @@
 }
 </script>
 </div>
-<div id="TcHmiEllipse_34" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="209" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<div id="TcHmiEllipse_34" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="209" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1" data-tchmi-visibility="%f%%pp%ChannelFeedbackAvailable%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 3,
@@ -782,7 +782,7 @@
 }
 </script>
 </div>
-<div id="TcHmiEllipse_33" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="249" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<div id="TcHmiEllipse_33" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="249" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1" data-tchmi-visibility="%f%%pp%ChannelFeedbackAvailable%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 3,
@@ -914,7 +914,7 @@
 }
 </script>
 </div>
-<div id="TcHmiEllipse_49" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="289" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<div id="TcHmiEllipse_49" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="289" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1" data-tchmi-visibility="%f%%pp%ChannelFeedbackAvailable%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 3,
@@ -1046,7 +1046,7 @@
 }
 </script>
 </div>
-<div id="TcHmiEllipse_48" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="329" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<div id="TcHmiEllipse_48" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="329" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1" data-tchmi-visibility="%f%%pp%ChannelFeedbackAvailable%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 3,
@@ -1178,7 +1178,7 @@
 }
 </script>
 </div>
-<div id="TcHmiEllipse_47" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="369" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1">
+<div id="TcHmiEllipse_47" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiEllipse" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="532" data-tchmi-left-unit="px" data-tchmi-top="369" data-tchmi-top-unit="px" data-tchmi-width="30" data-tchmi-width-unit="px" data-tchmi-stroke-thickness="8" data-tchmi-opacity="1" data-tchmi-visibility="%f%%pp%ChannelFeedbackAvailable%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-border-width" type="application/json">
 {
   "left": 3,
