@@ -149,8 +149,7 @@ GVL_MASTER.stStationEvents[3].aEvents[10].sSolution :=
 
 GVL_MASTER.stStationEvents[3].aEvents[11].bFault := TRUE;
 GVL_MASTER.stStationEvents[3].aEvents[11].bEventFlag :=
-    GVL_MASTER.stStatus.stVision.bFault
-    AND (GVL_MASTER.stStatus.stVision.eSupportFault = E_SupportCylinderFault.None);
+    GVL_MASTER.stStatus.stVision.bFault;
 GVL_MASTER.stStationEvents[3].aEvents[11].bEventText := 'Vision station fault';
 GVL_MASTER.stStationEvents[3].aEvents[11].sSolution :=
     'Check Vision station diagnostic, process equipment and simulation fault request';
@@ -436,20 +435,17 @@ GVL_MASTER.stStationEvents[3].aEvents[5].sSolution := 'Check support-cylinder UP
 
 // Vision support cylinder.
 GVL_MASTER.stStationEvents[3].aEvents[6].bFault := TRUE;
-GVL_MASTER.stStationEvents[3].aEvents[6].bEventFlag :=
-    GVL_MASTER.stStatus.stVision.eSupportFault = E_SupportCylinderFault.ExtendTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[6].bEventFlag := FALSE; // Vision nest support removed; keep alarm ID reserved.
 GVL_MASTER.stStationEvents[3].aEvents[6].bEventText := 'Vision support cylinder UP feedback timeout';
 GVL_MASTER.stStationEvents[3].aEvents[6].sSolution := 'Check UP sensor, air pressure, tubing, valve and cylinder mechanics';
 
 GVL_MASTER.stStationEvents[3].aEvents[7].bFault := TRUE;
-GVL_MASTER.stStationEvents[3].aEvents[7].bEventFlag :=
-    GVL_MASTER.stStatus.stVision.eSupportFault = E_SupportCylinderFault.RetractTimeout;
+GVL_MASTER.stStationEvents[3].aEvents[7].bEventFlag := FALSE; // Vision nest support removed; keep alarm ID reserved.
 GVL_MASTER.stStationEvents[3].aEvents[7].bEventText := 'Vision support cylinder DOWN feedback timeout';
 GVL_MASTER.stStationEvents[3].aEvents[7].sSolution := 'Check DOWN sensor, air pressure, tubing, valve and cylinder mechanics';
 
 GVL_MASTER.stStationEvents[3].aEvents[8].bFault := TRUE;
-GVL_MASTER.stStationEvents[3].aEvents[8].bEventFlag :=
-    GVL_MASTER.stStatus.stVision.eSupportFault = E_SupportCylinderFault.ContradictorySensors;
+GVL_MASTER.stStationEvents[3].aEvents[8].bEventFlag := FALSE; // Vision nest support removed; keep alarm ID reserved.
 GVL_MASTER.stStationEvents[3].aEvents[8].bEventText := 'Vision support cylinder sensor conflict';
 GVL_MASTER.stStationEvents[3].aEvents[8].sSolution := 'Check support-cylinder UP/DOWN sensors and mechanical adjustment';
 

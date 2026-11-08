@@ -6,6 +6,7 @@ VAR
     fbBlinkTimer    : TON;
     bBlinkTimerQOld : BOOL;
     bFlash          : BOOL;
+    fbEL6910Diagnostics : FB_EL6910Diagnostics;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Same 500 ms toggle used by the validated Silicone Station banner.
@@ -102,6 +103,29 @@ ELSE
 END_IF
 
 GVL_HMI.stStatus.stPatchDispense := GVL_MASTER.stStatus.stPatchDispense;
+// Display aggregate Patch faults, including feeding/motion, without changing control state.
+GVL_HMI.stStatus.stPatchDispense.bFault :=
+    GVL_MASTER.stStatus.stPatchDispense.bFault
+    OR GVL_Motion.stPatchFeedStatus.bFault
+    OR GVL_Motion.AxisDriveMotor.bError;
+IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
+    // Continuous UP holding at HOME is idle; actual manual actions are busy.
+    GVL_HMI.stStatus.stPatchDispense.bBusy :=
+        GVL_MASTER.stStatus.stPatchDispense.bBusy
+        OR NOT GVL_MASTER.stStatus.stPatchDispense.bHome
+        OR GVL_Motion.stPatchFeedStatus.bBusy
+        OR GVL_Motion.AxisDriveMotor.bMoving
+        OR GVL_MASTER.stOutputs.bStation1SupportExtend
+        OR GVL_MASTER.stOutputs.bStation1SupportRetract
+        OR GVL_MASTER.stOutputs.bPatchVerticalDown
+        OR GVL_MASTER.stOutputs.bPatchDispenserAir;
+    GVL_HMI.stStatus.stPatchDispense.bReady :=
+        GVL_MASTER.stStatus.stPatchDispense.bReady
+        AND GVL_MASTER.stStatus.stPatchDispense.bHome
+        AND GVL_HMI.stCommands.bPatchManualEnable
+        AND NOT GVL_HMI.stStatus.stPatchDispense.bBusy
+        AND NOT GVL_HMI.stStatus.stPatchDispense.bFault;
+END_IF
 GVL_HMI.stStatus.stHeatStake := GVL_MASTER.stStatus.stHeatStake;
 GVL_HMI.stStatus.stHeatStakeTemperature := GVL_MASTER.stStatus.stHeatStakeTemperature;
 GVL_HMI.stStatus.stHeatStakeProcess := GVL_MASTER.stStatus.stHeatStakeProcess;
@@ -170,8 +194,7 @@ GVL_HMI.stStatus.bVisionHorizontalFront :=
 GVL_HMI.stStatus.bVisionVerticalUpAllowed :=
     GVL_MASTER.stStatus.bVisionVerticalUpAllowed;
 
-GVL_HMI.stStatus.bVisionVerticalIntermediateAllowed :=
-    GVL_MASTER.stStatus.bVisionVerticalIntermediateAllowed;
+GVL_HMI.stStatus.bVisionVerticalIntermediateAllowed := FALSE; // Retired compatibility field.
 
 GVL_HMI.stStatus.bVisionVerticalFullDownAllowed :=
     GVL_MASTER.stStatus.bVisionVerticalFullDownAllowed;
@@ -214,9 +237,9 @@ GVL_HMI.stStatus.bVisionRotate180 :=GVL_MASTER.stStatus.bVisionRotate180;
 // Support
 // -----------------------------------------------------
 
-GVL_HMI.stStatus.bVisionSupportAllowed :=GVL_MASTER.stStatus.bVisionSupportAllowed;
-GVL_HMI.stStatus.bVisionSupportExtended :=GVL_MASTER.stStatus.bVisionSupportExtended;
-GVL_HMI.stStatus.bVisionSupportRetracted :=GVL_MASTER.stStatus.bVisionSupportRetracted;
+GVL_HMI.stStatus.bVisionSupportAllowed := FALSE; // Retired compatibility field.
+GVL_HMI.stStatus.bVisionSupportExtended := FALSE; // Retired compatibility field.
+GVL_HMI.stStatus.bVisionSupportRetracted := FALSE; // Retired compatibility field.
 
 
 // -----------------------------------------------------
@@ -411,6 +434,13 @@ GVL_EtherCAT.stFestoTerminalInfo.fbTerminalInfo(
     nTerminalState := GVL_EtherCAT.stFestoTerminalInfo.nTerminal_State,
     sTerminalState => GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo,
     bTerminalOperational => GVL_EtherCAT.stFestoTerminalInfo.bTerminalOperational);
+
+// EL6910 internal diagnostics only; no machine or TwinSAFE decisions consume these values.
+fbEL6910Diagnostics(
+    bEnable := GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational,
+    sMasterNetId := '172.18.239.27.2.1',
+    uiSlaveAddress := 1003,
+    stStatus := GVL_EL6910Diagnostics.stStatus);
 ]]></ST>
     </Implementation>
   </POU>

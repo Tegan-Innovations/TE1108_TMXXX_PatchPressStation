@@ -40,6 +40,8 @@ VAR_GLOBAL PERSISTENT RETAIN
     // CSV diagnostics
     bCSVQueueOverflow : BOOL := FALSE;
     udiCSVRecordsDropped : UDINT := 0;
+    stPatchProcessSettings : ST_PatchProcessSettings;
+    stVisionProcessSettings : ST_CameraProcessSettings;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

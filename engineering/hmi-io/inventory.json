@@ -766,7 +766,7 @@
       },
       {
         "channel": 5,
-        "label": "Station3 Support Retracted",
+        "label": "retired Vision nest support DOWN",
         "symbol": "GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch5",
         "type": "BOOL",
         "link": {
@@ -784,7 +784,7 @@
       },
       {
         "channel": 6,
-        "label": "Station3 Support Extended",
+        "label": "retired Vision nest support UP",
         "symbol": "GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch6",
         "type": "BOOL",
         "link": {
@@ -874,7 +874,7 @@
       },
       {
         "channel": 11,
-        "label": "Intermediate Module Retracted",
+        "label": "retired Vision intermediate stop OFF",
         "symbol": "GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch11",
         "type": "BOOL",
         "link": {
@@ -892,7 +892,7 @@
       },
       {
         "channel": 12,
-        "label": "Intermediate Module Extended",
+        "label": "retired Vision intermediate stop ON",
         "symbol": "GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch12",
         "type": "BOOL",
         "link": {

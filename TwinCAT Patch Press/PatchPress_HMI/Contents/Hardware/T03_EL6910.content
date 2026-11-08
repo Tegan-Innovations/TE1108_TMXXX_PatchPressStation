@@ -1,18 +1,72 @@
-<div id="T03_EL6910_EL1801_1" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1080" data-tchmi-height="480" data-tchmi-zindex="1">
+<div id="EL6910_Page" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-width="1080" data-tchmi-height="480">
+<div id="EL6910_TerminalLed" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-left="111" data-tchmi-top="10" data-tchmi-width="50" data-tchmi-height="50" data-tchmi-target-user-control="Contents/UserControl/led_RedAndGreen_1In.usercontrol" data-tchmi-input="%s%ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational%/s%"></div>
+<div id="EL6910_Title" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="176" data-tchmi-top="5" data-tchmi-width="850" data-tchmi-height="30" data-tchmi-text="Term 3 - EL6910 | TwinSAFE controller diagnostics" data-tchmi-text-font-size="24"></div>
+<div id="EL6910_TerminalState" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="176" data-tchmi-top="35" data-tchmi-width="850" data-tchmi-height="25" data-tchmi-text="%s%ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.sTerminalInfo%/s%" data-tchmi-text-font-size="16"></div>
+<div id="EL6910_TerminalImage" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-left="10" data-tchmi-top="5" data-tchmi-width="87" data-tchmi-height="468" data-tchmi-src="Images/IO/EL6910.png"></div>
+<div id="EL6910_Logic" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="111" data-tchmi-top="68" data-tchmi-width="410" data-tchmi-height="28" data-tchmi-text="%f%&#x27;Logic: &#x27; + %s%ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sLogicState%/s%%/f%" data-tchmi-text-font-size="17"></div>
+<div id="EL6910_Counter" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="536" data-tchmi-top="68" data-tchmi-width="530" data-tchmi-height="28" data-tchmi-text="%f%&#x27;Cycle counter: &#x27; + %s%ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sCycleCounter%/s%%/f%" data-tchmi-text-font-size="17"></div>
+<div id="EL6910_Group" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="111" data-tchmi-top="101" data-tchmi-width="410" data-tchmi-height="28" data-tchmi-text="%f%&#x27;Group slot 1: &#x27; + %s%ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupState%/s%%/f%" data-tchmi-text-font-size="17"></div>
+<div id="EL6910_GroupDiag" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="536" data-tchmi-top="101" data-tchmi-width="530" data-tchmi-height="28" data-tchmi-text="%f%&#x27;Group diagnostic: &#x27; + %s%ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic%/s%%/f%" data-tchmi-text-font-size="17"></div>
+<div id="EL6910_ReaderStatus" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="111" data-tchmi-top="135" data-tchmi-width="950" data-tchmi-height="25" data-tchmi-text="%s%ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus%/s%" data-tchmi-text-font-size="13"></div>
+<div id="EL6910_Tab0" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="111" data-tchmi-top="168" data-tchmi-width="225" data-tchmi-height="32" data-tchmi-text="Connections"><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%EL6910_DetailRegion::TargetContent%/ctrl%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/ContentPath",
+          "value": "Contents/Hardware/EL6910_Connections.content"
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script></div>
+<div id="EL6910_Tab1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="346" data-tchmi-top="168" data-tchmi-width="225" data-tchmi-height="32" data-tchmi-text="Function blocks"><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%EL6910_DetailRegion::TargetContent%/ctrl%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/ContentPath",
+          "value": "Contents/Hardware/EL6910_Blocks.content"
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script></div>
+<div id="EL6910_Tab2" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="581" data-tchmi-top="168" data-tchmi-width="225" data-tchmi-height="32" data-tchmi-text="Diagnostic history"><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%ctrl%EL6910_DetailRegion::TargetContent%/ctrl%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:framework#/definitions/ContentPath",
+          "value": "Contents/Hardware/EL6910_History.content"
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script></div>
+<div id="EL6910_DetailRegion" data-tchmi-type="TcHmi.Controls.System.TcHmiRegion" data-tchmi-left="111" data-tchmi-top="208" data-tchmi-width="955" data-tchmi-height="265" data-tchmi-target-content="Contents/Hardware/EL6910_Connections.content"></div>
 
 <script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
 {
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
-<div id="T03_EL6910_TcHmiContainer_12" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-height="383" data-tchmi-height-unit="px" data-tchmi-left="10" data-tchmi-left-unit="px" data-tchmi-top="41" data-tchmi-top-unit="px" data-tchmi-width="1060" data-tchmi-width-unit="px" data-tchmi-zindex="0"><div id="T03_EL6910_TcHmiTextblock_130" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="543" data-tchmi-left-unit="px" data-tchmi-text="%s%ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.sTerminalInfo%/s%" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="517" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="30" data-tchmi-text-horizontal-alignment="Left" data-tchmi-text-vertical-alignment="Center" data-tchmi-zindex="1">
-</div>
-
-<div id="T03_EL6910_Led_4" data-tchmi-type="TcHmi.Controls.System.TcHmiUserControlHost" data-tchmi-height="50" data-tchmi-height-unit="px" data-tchmi-left="483" data-tchmi-left-unit="px" data-tchmi-target-user-control="Contents/UserControl/led_RedAndGreen_1In.usercontrol" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="50" data-tchmi-width-unit="px" data-tchmi-zindex="13" data-tchmi-input="%s%ADS.PLC1.GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.bTerminalOperational%/s%">
-</div>
-<div id="T03_EL6910_TcHmiLine_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiLine" data-tchmi-height="383" data-tchmi-height-unit="px" data-tchmi-left="473" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="10" data-tchmi-width-unit="px" data-tchmi-x2="0" data-tchmi-y2="383">
-</div>
-<div id="T03_EL6910_TcHmiImage_9" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="364" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-src="Images/IO/EK1100_Detail.PNG" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="473" data-tchmi-width-unit="px">
-</div>
-</div>
 </div>

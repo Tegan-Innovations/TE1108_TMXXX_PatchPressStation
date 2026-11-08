@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<DUT Name="ST_EL6910Diagnostics" Id="{35f87785-9ee1-495d-afd1-ad6055bde289}"><Declaration><![CDATA[TYPE ST_EL6910Diagnostics :
+STRUCT
+    sReaderStatus : STRING(120) := 'Waiting for diagnostic reader';
+    sLogicState : STRING(80) := 'Unavailable';
+    sCycleCounter : STRING(80) := 'Unavailable';
+    sGroupState : STRING(80) := 'Unavailable';
+    sGroupDiagnostic : STRING(120) := 'Unavailable';
+    sHistoryStatus : STRING(120) := 'Waiting for history';
+    aConnections : ARRAY[1..6] OF ST_EL6910DiagRow;
+    aBlocks : ARRAY[1..24] OF ST_EL6910DiagRow;
+    aHistory : ARRAY[1..8] OF ST_EL6910HistoryRow;
+END_STRUCT
+END_TYPE]]></Declaration></DUT></TcPlcObject>

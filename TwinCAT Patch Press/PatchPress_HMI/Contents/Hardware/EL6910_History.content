@@ -1,0 +1,93 @@
+<div id="EL6910_History" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-width="1080" data-tchmi-height="265">
+<div id="EL6910_HistoryGrid" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-left="0" data-tchmi-top="0" data-tchmi-width="1050" data-tchmi-height="225" data-tchmi-src-data="%s%ADS.PLC1.GVL_EL6910Diagnostics.stStatus.aHistory%/s%" data-tchmi-grid-font-size="14" data-tchmi-show-row-numbers="False"><script data-tchmi-target-attribute="data-tchmi-src-column" type="application/json">[
+  {
+    "name": "sSeverity",
+    "label": "Severity",
+    "control": "TextBox",
+    "width": 85,
+    "widthUnit": "px",
+    "resize": true,
+    "minWidth": 60,
+    "minWidthUnit": "px",
+    "editable": false,
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Center",
+    "textColor": {
+      "color": "rgba(0, 0, 0, 1)"
+    },
+    "headerHorizontalAlignment": "Center",
+    "headerVerticalAlignment": "Center",
+    "ignoreEscapeSequences": false,
+    "autoFocusOut": true,
+    "autoSelectText": false,
+    "sortable": false
+  },
+  {
+    "name": "sTimestamp",
+    "label": "Device timestamp (raw)",
+    "control": "TextBox",
+    "width": 205,
+    "widthUnit": "px",
+    "resize": true,
+    "minWidth": 60,
+    "minWidthUnit": "px",
+    "editable": false,
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Center",
+    "textColor": {
+      "color": "rgba(0, 0, 0, 1)"
+    },
+    "headerHorizontalAlignment": "Center",
+    "headerVerticalAlignment": "Center",
+    "ignoreEscapeSequences": false,
+    "autoFocusOut": true,
+    "autoSelectText": false,
+    "sortable": false
+  },
+  {
+    "name": "sMessage",
+    "label": "Diagnostic message",
+    "control": "TextBox",
+    "width": 520,
+    "widthUnit": "px",
+    "resize": true,
+    "minWidth": 60,
+    "minWidthUnit": "px",
+    "editable": false,
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Center",
+    "textColor": {
+      "color": "rgba(0, 0, 0, 1)"
+    },
+    "headerHorizontalAlignment": "Center",
+    "headerVerticalAlignment": "Center",
+    "ignoreEscapeSequences": false,
+    "autoFocusOut": true,
+    "autoSelectText": false,
+    "sortable": false
+  },
+  {
+    "name": "sDetail",
+    "label": "Code / raw parameters",
+    "control": "TextBox",
+    "width": 480,
+    "widthUnit": "px",
+    "resize": true,
+    "minWidth": 60,
+    "minWidthUnit": "px",
+    "editable": false,
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Center",
+    "textColor": {
+      "color": "rgba(0, 0, 0, 1)"
+    },
+    "headerHorizontalAlignment": "Center",
+    "headerVerticalAlignment": "Center",
+    "ignoreEscapeSequences": false,
+    "autoFocusOut": true,
+    "autoSelectText": false,
+    "sortable": false
+  }
+]</script></div>
+<div id="EL6910_HistoryNote" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="0" data-tchmi-top="228" data-tchmi-width="1050" data-tchmi-height="26" data-tchmi-text="%s%ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sHistoryStatus%/s%" data-tchmi-text-font-size="13"></div>
+</div>

@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_StationProcessSettings" Id="{3e164b6f-de11-4dca-9030-f5df8bd57159}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_StationProcessSettings
+VAR
+    bInitialised : BOOL;
+    bWritePending : BOOL;
+    bWriteStart : BOOL;
+    bWriteBusySeen : BOOL;
+    fbWritePersistentData : FB_WritePersistentData;
+    stDefaultPatch : ST_PatchProcessSettings;
+    stDefaultVision : ST_CameraProcessSettings;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT bInitialised THEN
+    // M2 feed speed reduced after commissioning; preserve other retained settings.
+    IF GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity > 5 THEN
+        GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity := 5;
+    END_IF
+    IF GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity > 20 THEN
+        GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity := 20;
+        // Review and Apply explicitly to save the migrated value.
+    END_IF
+    IF NOT ((GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity >= 0.1) AND (GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity <= 20)
+        AND (GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity >= 0.1) AND (GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity <= 5)
+        AND (GVL_Persistent.stPatchProcessSettings.lrWasteRollVelocity >= 0.1) AND (GVL_Persistent.stPatchProcessSettings.lrWasteRollVelocity <= 50)
+        AND (GVL_Persistent.stPatchProcessSettings.udiReleaseMs >= 100) AND (GVL_Persistent.stPatchProcessSettings.udiReleaseMs <= 15000)
+        AND (GVL_Persistent.stPatchProcessSettings.udiAirBlowDelayMs >= 0) AND (GVL_Persistent.stPatchProcessSettings.udiAirBlowDelayMs <= 2000)) THEN
+        GVL_Persistent.stPatchProcessSettings := stDefaultPatch;
+        GVL_HMI.sPatchSettingsMessage := 'Stored values invalid: defaults loaded. Review and Apply.';
+    ELSE
+        GVL_HMI.sPatchSettingsMessage := 'Ready';
+    END_IF
+    GVL_HMI.stPatchProcessEdit := GVL_Persistent.stPatchProcessSettings;
+    IF NOT ((GVL_Persistent.stVisionProcessSettings.udiMovingTriggerDelayMs >= 0) AND (GVL_Persistent.stVisionProcessSettings.udiMovingTriggerDelayMs <= 1000)
+        AND (GVL_Persistent.stVisionProcessSettings.udiRotaryConfirmMs >= 1000) AND (GVL_Persistent.stVisionProcessSettings.udiRotaryConfirmMs <= 3000)) THEN
+        GVL_Persistent.stVisionProcessSettings := stDefaultVision;
+        GVL_HMI.sVisionSettingsMessage := 'Stored values invalid: defaults loaded. Review and Apply.';
+    ELSE
+        GVL_HMI.sVisionSettingsMessage := 'Ready';
+    END_IF
+    GVL_HMI.stVisionProcessEdit := GVL_Persistent.stVisionProcessSettings;
+    bInitialised := TRUE;
+END_IF
+
+// Use existing machine status; apply before PRG_Main starts any new process.
+GVL_HMI.bStationSettingsAllowed :=
+    ((GVL_MASTER.stStatus.eMachineState = E_MachineState.Stopped)
+     OR (GVL_MASTER.stStatus.eMachineState = E_MachineState.ReadyToStart))
+    AND NOT GVL_MASTER.stStatus.stPatchDispense.bBusy
+    AND NOT GVL_MASTER.stStatus.stHeatStake.bBusy
+    AND NOT GVL_MASTER.stStatus.stVision.bBusy
+    AND NOT GVL_Motion.stPatchFeedStatus.bBusy
+    AND NOT GVL_Motion.stPatchFeedStatus.bDriveBusy
+    AND NOT GVL_Motion.AxisDriveMotor.bMoving
+    AND NOT GVL_Motion.AxisPatchFeedRollMotor.bMoving
+    AND NOT GVL_Motion.AxisWasteRollMotor.bMoving;
+bWriteStart := FALSE;
+
+// Cancel wins over Apply. Consume command BOOLs so the HMI can issue another request.
+IF GVL_HMI.bPatchSettingsCancel THEN
+    GVL_HMI.stPatchProcessEdit := GVL_Persistent.stPatchProcessSettings;
+    GVL_HMI.sPatchSettingsMessage := 'Edits cancelled';
+ELSIF GVL_HMI.bPatchSettingsApply THEN
+    IF NOT GVL_HMI.bStationSettingsAllowed THEN
+        GVL_HMI.sPatchSettingsMessage := 'Apply rejected: stop machine and motion first';
+    ELSIF GVL_HMI.bStationSettingsSaving THEN
+        GVL_HMI.sPatchSettingsMessage := 'Apply rejected: save in progress';
+    ELSIF NOT ((GVL_HMI.stPatchProcessEdit.lrDriveMotorVelocity >= 0.1) AND (GVL_HMI.stPatchProcessEdit.lrDriveMotorVelocity <= 20)
+        AND (GVL_HMI.stPatchProcessEdit.lrPatchFeedRollVelocity >= 0.1) AND (GVL_HMI.stPatchProcessEdit.lrPatchFeedRollVelocity <= 5)
+        AND (GVL_HMI.stPatchProcessEdit.lrWasteRollVelocity >= 0.1) AND (GVL_HMI.stPatchProcessEdit.lrWasteRollVelocity <= 50)
+        AND (GVL_HMI.stPatchProcessEdit.udiReleaseMs >= 100) AND (GVL_HMI.stPatchProcessEdit.udiReleaseMs <= 15000)
+        AND (GVL_HMI.stPatchProcessEdit.udiAirBlowDelayMs >= 0) AND (GVL_HMI.stPatchProcessEdit.udiAirBlowDelayMs <= 2000)) THEN
+        GVL_HMI.sPatchSettingsMessage := 'Apply rejected: value outside allowed range';
+    ELSE
+        GVL_Persistent.stPatchProcessSettings := GVL_HMI.stPatchProcessEdit;
+        bWritePending := TRUE;
+        GVL_HMI.bStationSettingsSaveError := FALSE;
+        GVL_HMI.udiStationSettingsSaveErrorId := 0;
+        GVL_HMI.sPatchSettingsMessage := 'Applied - saving';
+    END_IF
+END_IF
+GVL_HMI.bPatchSettingsApply := FALSE;
+GVL_HMI.bPatchSettingsCancel := FALSE;
+GVL_HMI.stPatchProcessApplied := GVL_Persistent.stPatchProcessSettings;
+
+// Cancel wins over Apply. Consume command BOOLs so the HMI can issue another request.
+IF GVL_HMI.bVisionSettingsCancel THEN
+    GVL_HMI.stVisionProcessEdit := GVL_Persistent.stVisionProcessSettings;
+    GVL_HMI.sVisionSettingsMessage := 'Edits cancelled';
+ELSIF GVL_HMI.bVisionSettingsApply THEN
+    IF NOT GVL_HMI.bStationSettingsAllowed THEN
+        GVL_HMI.sVisionSettingsMessage := 'Apply rejected: stop machine and motion first';
+    ELSIF GVL_HMI.bStationSettingsSaving THEN
+        GVL_HMI.sVisionSettingsMessage := 'Apply rejected: save in progress';
+    ELSIF NOT ((GVL_HMI.stVisionProcessEdit.udiMovingTriggerDelayMs >= 0) AND (GVL_HMI.stVisionProcessEdit.udiMovingTriggerDelayMs <= 1000)
+        AND (GVL_HMI.stVisionProcessEdit.udiRotaryConfirmMs >= 1000) AND (GVL_HMI.stVisionProcessEdit.udiRotaryConfirmMs <= 3000)) THEN
+        GVL_HMI.sVisionSettingsMessage := 'Apply rejected: value outside allowed range';
+    ELSE
+        GVL_Persistent.stVisionProcessSettings := GVL_HMI.stVisionProcessEdit;
+        bWritePending := TRUE;
+        GVL_HMI.bStationSettingsSaveError := FALSE;
+        GVL_HMI.udiStationSettingsSaveErrorId := 0;
+        GVL_HMI.sVisionSettingsMessage := 'Applied - saving';
+    END_IF
+END_IF
+GVL_HMI.bVisionSettingsApply := FALSE;
+GVL_HMI.bVisionSettingsCancel := FALSE;
+GVL_HMI.stVisionProcessApplied := GVL_Persistent.stVisionProcessSettings;
+
+IF bWritePending AND NOT fbWritePersistentData.BUSY THEN
+    bWriteStart := TRUE;
+    bWritePending := FALSE;
+    bWriteBusySeen := FALSE;
+END_IF
+fbWritePersistentData(NETID := '', PORT := 851, START := bWriteStart,
+    TMOUT := T#2S, MODE := SPDM_VAR_BOOST);
+IF fbWritePersistentData.BUSY THEN bWriteBusySeen := TRUE; END_IF
+IF fbWritePersistentData.ERR THEN
+    GVL_HMI.bStationSettingsSaveError := TRUE;
+    GVL_HMI.udiStationSettingsSaveErrorId := fbWritePersistentData.ERRID;
+    IF GVL_HMI.sPatchSettingsMessage = 'Applied - saving' THEN
+        GVL_HMI.sPatchSettingsMessage := 'Applied, SAVE FAILED. Correct cause and Apply again.';
+    END_IF
+    IF GVL_HMI.sVisionSettingsMessage = 'Applied - saving' THEN
+        GVL_HMI.sVisionSettingsMessage := 'Applied, SAVE FAILED. Correct cause and Apply again.';
+    END_IF
+ELSIF bWriteBusySeen AND NOT fbWritePersistentData.BUSY THEN
+    bWriteBusySeen := FALSE;
+    IF GVL_HMI.sPatchSettingsMessage = 'Applied - saving' THEN
+        GVL_HMI.sPatchSettingsMessage := 'Applied and saved';
+    END_IF
+    IF GVL_HMI.sVisionSettingsMessage = 'Applied - saving' THEN
+        GVL_HMI.sVisionSettingsMessage := 'Applied and saved';
+    END_IF
+END_IF
+GVL_HMI.bStationSettingsSaving := fbWritePersistentData.BUSY OR bWritePending OR bWriteStart;
+// Preserve direction, NC dynamics, watchdogs and temporary feedback configuration.
+GVL_Motion.stPatchFeedSettings.lrDriveMotorVelocity := GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity;
+GVL_Motion.stPatchFeedSettings.lrPatchFeedRollVelocity := GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity;
+GVL_Motion.stPatchFeedSettings.lrWasteRollVelocity := GVL_Persistent.stPatchProcessSettings.lrWasteRollVelocity;
+
+// Patch vertical sensors are fitted: physical feedback is mandatory, including after an online change.
+GVL_Motion.stPatchFeedSettings.bUsePatchVerticalFeedback := TRUE;
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

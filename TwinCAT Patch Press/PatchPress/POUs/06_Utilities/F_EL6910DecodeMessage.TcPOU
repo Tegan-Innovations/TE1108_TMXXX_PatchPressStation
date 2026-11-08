@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="F_EL6910DecodeMessage" Id="{57e0c636-9d70-444c-b429-ad9ed0a07fce}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_EL6910DecodeMessage : ST_EL6910HistoryRow
+VAR_INPUT
+    aData : ARRAY[0..255] OF BYTE;
+    cbData : UDINT;
+END_VAR
+VAR
+    wFlags, wText, wParam : WORD;
+    udiCode, udiValue : UDINT;
+    uliStamp : ULINT;
+    diValue : DINT;
+    iValue : INT;
+    siValue : SINT;
+    uiValue : UINT;
+    usiValue : USINT;
+    pos, width, parameter, count, replaceAt, j : INT;
+    sTemplate, sValue, sRaw : STRING(255);
+    sChar : STRING(1);
+    bSupported : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_EL6910DecodeMessage.sSeverity := '';
+F_EL6910DecodeMessage.sTimestamp := '';
+F_EL6910DecodeMessage.sMessage := '';
+F_EL6910DecodeMessage.sDetail := '';
+IF (cbData < 16) OR (cbData > 256) THEN
+    F_EL6910DecodeMessage.sMessage := 'Invalid diagnostic record length';
+    RETURN;
+END_IF
+MEMCPY(ADR(udiCode), ADR(aData[0]), 4);
+MEMCPY(ADR(wFlags), ADR(aData[4]), 2);
+MEMCPY(ADR(wText), ADR(aData[6]), 2);
+MEMCPY(ADR(uliStamp), ADR(aData[8]), 8);
+IF (udiCode = 0) AND (wText = 0) AND (uliStamp = 0) THEN RETURN; END_IF
+CASE wFlags AND 15 OF
+    0: F_EL6910DecodeMessage.sSeverity := 'Info';
+    1: F_EL6910DecodeMessage.sSeverity := 'Warning';
+    2: F_EL6910DecodeMessage.sSeverity := 'Error';
+ELSE F_EL6910DecodeMessage.sSeverity := 'Unknown';
+END_CASE
+IF (wFlags AND 16) <> 0 THEN
+    F_EL6910DecodeMessage.sTimestamp := CONCAT('Local 0x',F_EL6910Hex(uliStamp,16));
+ELSE
+    F_EL6910DecodeMessage.sTimestamp := CONCAT('DC 0x',F_EL6910Hex(uliStamp,16));
+END_IF
+F_EL6910DecodeMessage.sDetail := CONCAT(CONCAT('Code 0x',F_EL6910Hex(UDINT_TO_ULINT(udiCode),8)),CONCAT(' / Text 0x',F_EL6910Hex(WORD_TO_ULINT(wText),4)));
+sRaw := '';
+FOR j := 16 TO MIN(UDINT_TO_INT(cbData)-1, 63) DO
+    sRaw := CONCAT(sRaw, F_EL6910Hex(BYTE_TO_ULINT(aData[j]),2));
+END_FOR
+F_EL6910DecodeMessage.sDetail := CONCAT(F_EL6910DecodeMessage.sDetail,CONCAT(' / params raw ',sRaw));
+sTemplate := F_EL6910MessageTemplate(wText);
+count := WORD_TO_INT(SHR(wFlags,8));
+pos := 16;
+bSupported := TRUE;
+FOR parameter := 1 TO MIN(count, 40) DO
+    IF pos + 2 > UDINT_TO_INT(cbData) THEN bSupported := FALSE; EXIT; END_IF
+    MEMCPY(ADR(wParam), ADR(aData[pos]), 2);
+    pos := pos + 2;
+    IF (wParam AND 16#F000) <> 0 THEN bSupported := FALSE; EXIT; END_IF
+    CASE wParam AND 16#0FFF OF
+        1,2,5: width := 1;
+        3,6: width := 2;
+        4,7: width := 4;
+    ELSE bSupported := FALSE; EXIT;
+    END_CASE
+    IF pos + width > UDINT_TO_INT(cbData) THEN bSupported := FALSE; EXIT; END_IF
+    udiValue := 0;
+    MEMCPY(ADR(udiValue),ADR(aData[pos]),INT_TO_UDINT(width));
+    replaceAt := FIND(sTemplate,'%');
+    IF replaceAt = 0 THEN bSupported := FALSE; EXIT; END_IF
+    sChar := MID(sTemplate,1,replaceAt+1);
+    IF sChar = 'x' THEN
+        sValue := F_EL6910Hex(UDINT_TO_ULINT(udiValue),INT_TO_UINT(width*2));
+    ELSIF sChar = 'd' THEN
+        CASE wParam AND 16#0FFF OF
+            2: MEMCPY(ADR(siValue),ADR(aData[pos]),1); sValue := SINT_TO_STRING(siValue);
+            3: MEMCPY(ADR(iValue),ADR(aData[pos]),2); sValue := INT_TO_STRING(iValue);
+            4: MEMCPY(ADR(diValue),ADR(aData[pos]),4); sValue := DINT_TO_STRING(diValue);
+        ELSE sValue := UDINT_TO_STRING(udiValue);
+        END_CASE
+    ELSE bSupported := FALSE; EXIT;
+    END_IF
+    sTemplate := REPLACE(sTemplate,sValue,2,replaceAt);
+    pos := pos + width;
+END_FOR
+IF (count > 40) OR (FIND(sTemplate,'%') <> 0) THEN bSupported := FALSE; END_IF
+IF NOT bSupported THEN sTemplate := CONCAT(sTemplate,' [see raw parameters]'); END_IF
+F_EL6910DecodeMessage.sMessage := sTemplate;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

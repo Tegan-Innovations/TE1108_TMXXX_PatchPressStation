@@ -14698,6 +14698,7 @@ Submodule Info: Writes data to VS
 		</OwnerA>
 		<OwnerA Name="TIPC^PatchPress^PatchPress Instance">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Box 1 (VABX-A-S-EL-E12-CTED-ECM12)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stFestoTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil0" VarB="Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 0"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil1" VarB="Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 1"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule2_VABX.bCoil2" VarB="Module 2 (VABX-A-S-BV-V4A)^Outputs^Coil 2"/>
@@ -14722,7 +14723,9 @@ Submodule Info: Writes data to VS
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil5" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 5"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil6" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 6"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stFestoModule4_VABX.bCoil7" VarB="Module 4 (VABX-A-S-BV-V4A)^Outputs^Coil 7"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stFestoTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 10 (EL2809-0015)">
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm10_EL2809.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
@@ -14754,10 +14757,28 @@ Submodule Info: Writes data to VS
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.iEL3058_Ch8" VarB="AI Standard Channel 8^Value"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm11_EL3058.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 12 (EL9410)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 13 (EL2502)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1" VarB="PWM Outputs Channel 1^PWM output"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2" VarB="PWM Outputs Channel 2^PWM output"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm13_EL2502.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 14 (EL9576)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 18 (EL2904)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 19 (EL1809)">
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1" VarB="Channel 1^Input"/>
@@ -14778,14 +14799,11 @@ Submodule Info: Writes data to VS
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9" VarB="Channel 9^Input"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
-			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1" VarB="TC Inputs Channel 1^Value"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2" VarB="TC Inputs Channel 2^Value"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3" VarB="TC Inputs Channel 3^Value"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4" VarB="TC Inputs Channel 4^Value"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 2 (EL6070-0033)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL4028)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1" VarB="AO Outputs Channel 1^Analog output"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2" VarB="AO Outputs Channel 2^Analog output"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3" VarB="AO Outputs Channel 3^Analog output"/>
@@ -14794,9 +14812,19 @@ Submodule Info: Writes data to VS
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6" VarB="AO Outputs Channel 6^Analog output"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7" VarB="AO Outputs Channel 7^Analog output"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8" VarB="AO Outputs Channel 8^Analog output"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1" VarB="TC Inputs Channel 1^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2" VarB="TC Inputs Channel 2^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3" VarB="TC Inputs Channel 3^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4" VarB="TC Inputs Channel 4^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 22 (EL6633)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 				<Link VarA="PlcTask Inputs^GVL_Safety.bAirSupplySafe" VarB="StandardInputs^Standard Out Var 13"/>
 				<Link VarA="PlcTask Inputs^GVL_Safety.bMainDoorClosed" VarB="StandardInputs^Standard Out Var 8"/>
 				<Link VarA="PlcTask Inputs^GVL_Safety.bMainDoorLocked" VarB="StandardInputs^Standard Out Var 9"/>
@@ -14808,7 +14836,6 @@ Submodule Info: Writes data to VS
 				<Link VarA="PlcTask Outputs^GVL_IO.stOutputs^bMainDoorLockRequest" VarB="StandardOutputs^Standard In Var 14"/>
 				<Link VarA="PlcTask Outputs^GVL_IO.stOutputs^bSafetyErrorAcknowledgementRequest" VarB="StandardOutputs^Standard In Var 1"/>
 				<Link VarA="PlcTask Outputs^GVL_IO.stOutputs^bSafetyRunRequest" VarB="StandardOutputs^Standard In Var 15"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 4 (EL1918)">
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm4_EL1918.iEL1918_Ch1" VarB="Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 1.Input"/>
@@ -14831,6 +14858,9 @@ Submodule Info: Writes data to VS
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch7" VarB="Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 7.Input"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.iEL1918_Ch8" VarB="Module 1 (FSOE)^FSoE Inputs^FSOE^FSIN Module 8.Input"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm5_EL1918.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 6 (EL2904)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 7 (EL1809)">
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch1" VarB="Channel 1^Input"/>
@@ -14911,6 +14941,8 @@ Submodule Info: Writes data to VS
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stVSKeyenceCamera.byByteResults" VarB="API^Term 4 (Result Data 128Byte)^Subterm 6 (Result Data 128Byte)^Inputs^Result Data"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.udiVisionError0Code" VarB="API^Term 3 (Assignable Status)^Subterm 5 (Assignable Status)^Inputs^Error0 Code"/>
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.udiVisionError1Code" VarB="API^Term 3 (Assignable Status)^Subterm 5 (Assignable Status)^Inputs^Error1 Code"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.wVisionPnDiag" VarB="Inputs^PnIoBoxDiag"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.wVisionPnState" VarB="Inputs^PnIoBoxState"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.abErrorClear[1]" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Error0_Clear"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.abErrorClear[2]" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Error1_Clear"/>
 				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stVSKeyenceCamera.bGoToConfig" VarB="API^Term 10 (Control)^Subterm 12 (Control)^Outputs^Control Register[2]^Go_to_Setting"/>
@@ -14932,36 +14964,6 @@ Submodule Info: Writes data to VS
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor">
 				<Link VarA="PlcTask Inputs^GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc" VarB="Outputs^ToPlc"/>
 				<Link VarA="PlcTask Outputs^GVL_Motion.AxisWasteRollMotor.Axis.PlcToNc" VarB="Inputs^FromPlc"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 12 (EL9410)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 14 (EL9576)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm15_EL7201.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm16_EL7201.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm17_EL7201.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 18 (EL2904)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm18_EL2904.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 2 (EL6070-0033)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 22 (EL6633)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-			</OwnerB>
-					<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 6 (EL2904)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm6_EL2904.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 		</OwnerA>
 	</Mappings>

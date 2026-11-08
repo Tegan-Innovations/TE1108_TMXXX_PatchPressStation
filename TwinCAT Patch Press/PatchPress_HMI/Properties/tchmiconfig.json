@@ -110,6 +110,9 @@
       "url": "Contents/UserControl/16CH_Dig_IO_CARD.usercontrol"
     },
     {
+      "url": "Contents/UserControl/1CH_Motion_Interface_CARD.usercontrol"
+    },
+    {
       "url": "Contents/UserControl/4CH_Dig_IO_CARD.usercontrol"
     },
     {
@@ -149,49 +152,42 @@
   "controls": [],
   "content": [
     {
-      "url": "Contents/Hardware/C6010-0010.content",
+      "url": "Contents/Hardware/EL6910_Blocks.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
       "preloadBindings": false
     },
     {
-      "url": "Contents/Hardware/EL1809T12.content",
+      "url": "Contents/Hardware/EL6910_Connections.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
       "preloadBindings": false
     },
     {
-      "url": "Contents/Hardware/EL9188.content",
+      "url": "Contents/Hardware/EL6910_History.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
       "preloadBindings": false
     },
     {
-      "url": "Contents/Hardware/EL9189.content",
+      "url": "Contents/Hardware/Festo_Module2.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
       "preloadBindings": false
     },
     {
-      "url": "Contents/Hardware/T00_EL2809.content",
+      "url": "Contents/Hardware/Festo_Module3.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
       "preloadBindings": false
     },
     {
-      "url": "Contents/Hardware/T00_EL3064.content",
-      "preload": false,
-      "keepAlive": false,
-      "loadSync": false,
-      "preloadBindings": false
-    },
-    {
-      "url": "Contents/Hardware/T00_EL6652.content",
+      "url": "Contents/Hardware/Festo_Module4.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
@@ -205,7 +201,7 @@
       "preloadBindings": false
     },
     {
-      "url": "Contents/Hardware/T02_EL6070_0033.content",
+      "url": "Contents/Hardware/T02_EL6070.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
@@ -331,6 +327,13 @@
       "preloadBindings": false
     },
     {
+      "url": "Contents/Hardware/T20_EL4028.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
       "url": "Contents/Hardware/T21_EL3314.content",
       "preload": false,
       "keepAlive": false,
@@ -339,6 +342,13 @@
     },
     {
       "url": "Contents/Hardware/T22_EL6633.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Contents/Hardware/T23_EL9011.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,
@@ -527,6 +537,13 @@
       "preloadBindings": false
     },
     {
+      "url": "Contents/Screens/popups/Content_Popup_VisionCamera.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
       "url": "Contents/Screens/Settings.content",
       "preload": false,
       "keepAlive": false,
@@ -563,6 +580,13 @@
     },
     {
       "url": "Contents/Screens/Settings/settings_Puck.content",
+      "preload": false,
+      "keepAlive": false,
+      "loadSync": false,
+      "preloadBindings": false
+    },
+    {
+      "url": "Contents/Screens/Settings/settings_VisionStation.content",
       "preload": false,
       "keepAlive": false,
       "loadSync": false,

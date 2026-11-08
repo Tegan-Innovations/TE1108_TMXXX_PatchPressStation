@@ -7,8 +7,8 @@ STRUCT
     bWasteRollConfigured : BOOL := TRUE;
     eWasteRollDirection : MC_Direction := MC_Negative_Direction;
     lrWasteRollVelocity : LREAL := 50.0;
-    lrPatchFeedRollVelocity : LREAL := 10.0;
-    lrDriveMotorVelocity : LREAL := 30.0;
+    lrPatchFeedRollVelocity : LREAL := 5.0;
+    lrDriveMotorVelocity : LREAL := 20.0;
     // 0 selects the commissioned NC acceleration/deceleration/jerk.
     lrAcceleration : LREAL := 0.0;
     lrDeceleration : LREAL := 0.0;
@@ -18,8 +18,8 @@ STRUCT
     // Initial engineering watchdog; validate against the real web mechanism.
     tWasteRollRunTimeout : TIME := T#30S;
     tPatchFeedRollRunTimeout : TIME := T#30S;
-    // TEMPORARY commissioning: restore TRUE after wiring Term19 Input9/Input10.
-    bUsePatchVerticalFeedback : BOOL := FALSE;
+    // Physical Patch vertical sensors: Term19 Input9 UP / Input10 DOWN.
+    bUsePatchVerticalFeedback : BOOL := TRUE;
     tPatchVerticalMoveTime : TIME := T#1S;
 END_STRUCT
 END_TYPE]]></Declaration>

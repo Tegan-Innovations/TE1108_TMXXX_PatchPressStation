@@ -24,7 +24,9 @@ VAR
     rtRejectChuteAcknowledge : R_TRIG;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// POWER MANAGEMENT - REQUEST / CANCEL / COUNTDOWN
+      <ST><![CDATA[GVL_HMI.stCommands.bVisionSupportExtendRequest := FALSE; // Consume obsolete command in every mode.
+GVL_HMI.stCommands.bVisionVerticalIntermediateRequest := FALSE; // Consume obsolete command in every mode.
+// POWER MANAGEMENT - REQUEST / CANCEL / COUNTDOWN
 // =====================================================
 CASE GVL_HMI.stCommands.ePowerCmd OF
     E_PLC_Power.Reboot,
@@ -199,7 +201,7 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
     GVL_MASTER.stCommand.bVisionHorizontalFrontRequest :=GVL_HMI.stCommands.bVisionHorizontalFrontRequest;
     // Vertical
     GVL_MASTER.stCommand.bVisionVerticalUpRequest :=GVL_HMI.stCommands.bVisionVerticalUpRequest;
-    GVL_MASTER.stCommand.bVisionVerticalIntermediateRequest :=GVL_HMI.stCommands.bVisionVerticalIntermediateRequest;
+    GVL_MASTER.stCommand.bVisionVerticalIntermediateRequest := FALSE; // Removed hardware: ignore old clients.
     GVL_MASTER.stCommand.bVisionVerticalFullDownRequest :=GVL_HMI.stCommands.bVisionVerticalFullDownRequest;
 		
 		// Consume momentary HMI requests.
@@ -233,8 +235,7 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
 	GVL_HMI.stCommands.bVisionRotate180Request 				:= FALSE;
 
     // Support
-    GVL_MASTER.stCommand.bVisionSupportExtendRequest :=
-        GVL_HMI.stCommands.bVisionSupportExtendRequest;
+    GVL_MASTER.stCommand.bVisionSupportExtendRequest := FALSE; // Removed hardware: ignore old clients.
 
 
 ELSE
@@ -338,13 +339,13 @@ ELSE
     GVL_MASTER.stCommand.bVisionHorizontalBackRequest 		:= FALSE;
     GVL_MASTER.stCommand.bVisionHorizontalFrontRequest 		:= FALSE;
     GVL_MASTER.stCommand.bVisionVerticalUpRequest 			:= FALSE;
-    GVL_MASTER.stCommand.bVisionVerticalIntermediateRequest := FALSE;
+    GVL_MASTER.stCommand.bVisionVerticalIntermediateRequest := FALSE; // Removed hardware: ignore old clients.
     GVL_MASTER.stCommand.bVisionVerticalFullDownRequest 	:= FALSE;
     GVL_MASTER.stCommand.bVisionGripOpenRequest 			:= FALSE;
     GVL_MASTER.stCommand.bVisionGripCloseRequest 			:= FALSE;
     GVL_MASTER.stCommand.bVisionRotate0Request 				:= FALSE;
     GVL_MASTER.stCommand.bVisionRotate180Request 			:= FALSE;
-    GVL_MASTER.stCommand.bVisionSupportExtendRequest 		:= FALSE;
+    GVL_MASTER.stCommand.bVisionSupportExtendRequest := FALSE; // Removed hardware: ignore old clients.
 
 END_IF
 

@@ -126,6 +126,9 @@
     <Compile Include="DUTs\02_Components\Motion\ST_Axis.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\03_Stations\PatchDispense\ST_PatchProcessSettings.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\03_Stations\Vision\ST_CameraProcessSettings.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -136,6 +139,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL6633.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL6910Diagnostics.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL6910DiagRow.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL6910HistoryRow.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\04_IO_Mapping\Terminals\ST_EL9576.TcDUT">
@@ -273,6 +285,9 @@
     <Compile Include="GVLs\GVL_Config.TcGVL">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GVLs\GVL_EL6910Diagnostics.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="GVLs\GVL_EtherCAT.TcGVL">
       <SubType>Code</SubType>
     </Compile>
@@ -319,6 +334,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\00_Application\PRG_ReadInputs.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\00_Application\PRG_StationProcessSettings.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\00_Application\PRG_WriteOutputs.TcPOU">
@@ -393,7 +411,19 @@
     <Compile Include="POUs\05_AlarmsAndEvents\PRG_Events.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\06_Utilities\FB_EL6910Diagnostics.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\06_Utilities\FB_TerminalInfo.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\06_Utilities\F_EL6910DecodeMessage.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\06_Utilities\F_EL6910Hex.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\06_Utilities\F_EL6910MessageTemplate.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\06_Utilities\F_ScaleLinear.TcPOU">
@@ -480,6 +510,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <LibraryReference Include="Tc2_EtherCAT,3.7.1.0,Beckhoff Automation GmbH">
+      <Namespace>Tc2_EtherCAT</Namespace>
+    </LibraryReference>
     <LibraryReference Include="Tc2_MC2,3.3.72.0,Beckhoff Automation GmbH">
       <Namespace>Tc2_MC2</Namespace>
     </LibraryReference>

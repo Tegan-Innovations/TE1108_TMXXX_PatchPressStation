@@ -25,6 +25,31 @@ VAR_GLOBAL
 	bUnlockDoorVisible 		: BOOL  := FALSE; 
 	bUnlockDoorPopupRequest : BOOL := FALSE;
 
+    // Manual camera: 0 = no selection, 1..4 = image/program 0..3.
+    udiCameraManualImageSelection : UDINT;
+    bCameraManualTrigger : BOOL;
+    bCameraManualAllowed : BOOL;
+    bCameraConnected : BOOL;
+    bCameraManualReady : BOOL;
+    bCameraManualBusy : BOOL;
+    bCameraManualPass : BOOL;
+    bCameraManualFail : BOOL;
+    udiCameraManualCaptureCount : UDINT;
+    sCameraManualMessage : STRING(160);
+    stPatchProcessEdit : ST_PatchProcessSettings;
+    stPatchProcessApplied : ST_PatchProcessSettings;
+    bPatchSettingsApply : BOOL;
+    bPatchSettingsCancel : BOOL;
+    sPatchSettingsMessage : STRING(160);
+    stVisionProcessEdit : ST_CameraProcessSettings;
+    stVisionProcessApplied : ST_CameraProcessSettings;
+    bVisionSettingsApply : BOOL;
+    bVisionSettingsCancel : BOOL;
+    sVisionSettingsMessage : STRING(160);
+    bStationSettingsAllowed : BOOL;
+    bStationSettingsSaving : BOOL;
+    bStationSettingsSaveError : BOOL;
+    udiStationSettingsSaveErrorId : UDINT;
 END_VAR
 VAR_GLOBAL CONSTANT
     sWHITE 					: STRING(40) := '{"color":"rgba(255,255,255,255)"}';

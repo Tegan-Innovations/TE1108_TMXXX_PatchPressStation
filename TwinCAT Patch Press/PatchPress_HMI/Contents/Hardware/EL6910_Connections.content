@@ -1,0 +1,93 @@
+<div id="EL6910_Connections" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-width="1080" data-tchmi-height="265">
+<div id="EL6910_ConnectionGrid" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiDatagrid" data-tchmi-left="0" data-tchmi-top="0" data-tchmi-width="1050" data-tchmi-height="225" data-tchmi-src-data="%s%ADS.PLC1.GVL_EL6910Diagnostics.stStatus.aConnections%/s%" data-tchmi-grid-font-size="14" data-tchmi-show-row-numbers="False"><script data-tchmi-target-attribute="data-tchmi-src-column" type="application/json">[
+  {
+    "name": "sName",
+    "label": "CoE index",
+    "control": "TextBox",
+    "width": 220,
+    "widthUnit": "px",
+    "resize": true,
+    "minWidth": 60,
+    "minWidthUnit": "px",
+    "editable": false,
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Center",
+    "textColor": {
+      "color": "rgba(0, 0, 0, 1)"
+    },
+    "headerHorizontalAlignment": "Center",
+    "headerVerticalAlignment": "Center",
+    "ignoreEscapeSequences": false,
+    "autoFocusOut": true,
+    "autoSelectText": false,
+    "sortable": false
+  },
+  {
+    "name": "sState",
+    "label": "State (hex)",
+    "control": "TextBox",
+    "width": 130,
+    "widthUnit": "px",
+    "resize": true,
+    "minWidth": 60,
+    "minWidthUnit": "px",
+    "editable": false,
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Center",
+    "textColor": {
+      "color": "rgba(0, 0, 0, 1)"
+    },
+    "headerHorizontalAlignment": "Center",
+    "headerVerticalAlignment": "Center",
+    "ignoreEscapeSequences": false,
+    "autoFocusOut": true,
+    "autoSelectText": false,
+    "sortable": false
+  },
+  {
+    "name": "sDiagnostic",
+    "label": "Diagnostic (hex)",
+    "control": "TextBox",
+    "width": 200,
+    "widthUnit": "px",
+    "resize": true,
+    "minWidth": 60,
+    "minWidthUnit": "px",
+    "editable": false,
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Center",
+    "textColor": {
+      "color": "rgba(0, 0, 0, 1)"
+    },
+    "headerHorizontalAlignment": "Center",
+    "headerVerticalAlignment": "Center",
+    "ignoreEscapeSequences": false,
+    "autoFocusOut": true,
+    "autoSelectText": false,
+    "sortable": false
+  },
+  {
+    "name": "sQuality",
+    "label": "Read quality",
+    "control": "TextBox",
+    "width": 350,
+    "widthUnit": "px",
+    "resize": true,
+    "minWidth": 60,
+    "minWidthUnit": "px",
+    "editable": false,
+    "horizontalAlignment": "Left",
+    "verticalAlignment": "Center",
+    "textColor": {
+      "color": "rgba(0, 0, 0, 1)"
+    },
+    "headerHorizontalAlignment": "Center",
+    "headerVerticalAlignment": "Center",
+    "ignoreEscapeSequences": false,
+    "autoFocusOut": true,
+    "autoSelectText": false,
+    "sortable": false
+  }
+]</script></div>
+<div id="EL6910_ConnectionNote" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="0" data-tchmi-top="228" data-tchmi-width="1050" data-tchmi-height="26" data-tchmi-text="Raw controller slots 1-6; slot number is not assumed to be the FSoE Connection ID." data-tchmi-text-font-size="13"></div>
+</div>

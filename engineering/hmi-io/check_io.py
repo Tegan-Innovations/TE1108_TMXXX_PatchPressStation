@@ -3,6 +3,8 @@ from pathlib import Path
 import re,json,xml.etree.ElementTree as E,html
 root=Path(__file__).resolve().parents[2];base=Path(__file__).parent;plc=root/'TwinCAT Patch Press/PatchPress';hmi=root/'TwinCAT Patch Press/PatchPress_HMI'
 inventory=json.loads((base/'inventory.json').read_text());routes=json.loads((base/'routes.json').read_text());symbols=json.loads((base/'symbols.json').read_text())
+detail_pages=[('EL6910 '+name,'Contents/Hardware/EL6910_'+name+'.content') for name in ['Connections','Blocks','History']]
+page_routes=routes+detail_pages
 normal=lambda s:(s or '').replace('\r\n','\n').replace('Â°','°').strip()
 for snapshot in json.loads((base/'verified-sections.json').read_text()):
  parts=snapshot['path'].split('^')[3:];p=plc.joinpath(*parts).with_suffix('.TcGVL' if parts[0]=='GVLs' else '.TcPOU');o=E.parse(p).getroot()[0]
@@ -31,13 +33,20 @@ def canonical(x):
 oldset={canonical(x) for x in before};newset={canonical(x) for x in after}
 assert oldset<=newset,'Existing process/safety/NC links must remain unchanged'
 added=[json.loads(x) for x in newset-oldset]
-assert len(added)==17,len(added)
-assert all(x['link']['VarA'].endswith('nTerminal_State') and x['link']['VarB']=='InfoData^State' for x in added)
+terminal_added=[x for x in added if x['link']['VarA'].endswith('nTerminal_State')]
+camera_added=[x for x in added if x['link']['VarA'].startswith('PlcTask Inputs^GVL_EtherCAT.wVisionPn')]
+assert len(terminal_added)==17,len(terminal_added)
+assert all(x['link']['VarB']=='InfoData^State' for x in terminal_added)
+assert len(added)==len(terminal_added)+len(camera_added)
+assert len(camera_added)==2
+assert {(x['link']['VarA'],x['link']['VarB']) for x in camera_added}=={
+ ('PlcTask Inputs^GVL_EtherCAT.wVisionPnState','Inputs^PnIoBoxState'),
+ ('PlcTask Inputs^GVL_EtherCAT.wVisionPnDiag','Inputs^PnIoBoxDiag')}
 assert 'GVL_IoDiagnostics' not in (plc/'PatchPress.plcproj').read_text(encoding='utf-8-sig')
 for item in inventory:
  if item['state']:
   assert any(x['link']['VarA']=='PlcTask Inputs^'+item['state'] and x['b']['Name']==item['path'] and x['link']['VarB']=='InfoData^State' for x in after),item['name']
-print('PASS original process/NC/FSoE links preserved; exactly 17 added InfoData state links, 23 total; existing terminal structures used')
+print('PASS original process/NC/FSoE links preserved; 17 added InfoData state links, 23 total, and 2 read-only camera connection links')
 
 # Resolve actual IEC declarations so a saved HMI symbol cannot silently point to a nonexistent member.
 types={d.findtext('Name'):{s.findtext('Name'):s.findtext('Type') for s in d.findall('SubItem')} for d in E.parse(plc/'PatchPress.tmc').iter('DataType')};globals={}
@@ -62,7 +71,7 @@ for var,typ in symbols.items():
 print('PASS all',len(symbols),'HMI symbols resolve to actual typed PLC members and exact server mappings')
 
 ids=[];used=set();project=E.parse(hmi/'PatchPress_HMI.hmiproj');included={x.get('Include','').replace('\\','/') for x in project.iter()}
-for label,path in routes:
+for label,path in page_routes:
  assert path in included,path
  p=hmi/path;s=p.read_text(encoding='utf-8-sig');ids+=re.findall(r'\bid="([^"]+)"',s)
  assert 'GVL_IO.dw_' not in s and 'Silicone' not in s and 'JavaScript' not in s
@@ -96,7 +105,7 @@ print('PASS all channels, native bindings/navigation, disabled numerics, unique 
 current=E.parse(root/'TwinCAT Patch Press/TwinCAT Patch Press.tsproj')
 devices=[b.findtext('Name') for b in current.iter('Box') if (b.findtext('Name') or '').startswith('Term ')]
 assert [label for label,path in routes if label.startswith('Term ')]==devices
-active={path for label,path in routes}
+active={path for label,path in page_routes}
 assert {p for p in included if p.startswith('Contents/Hardware/') and p.endswith('.content')}==active
 for item in inventory:
  if item['key']=='Festo':continue
@@ -116,7 +125,7 @@ analog=(hmi/'Contents/UserControl/8CH_Analog_Input_CARD.usercontrol').read_text(
 num=re.findall(r'<div[^>]*data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput"[^>]*>',analog)
 assert len(num)==16,len(num)
 for tag in num:assert 'data-tchmi-is-enabled="False"' in tag and 'data-tchmi-decimal-digits="3"' in tag
-for label,path in routes:
+for label,path in page_routes:
  s=(hmi/path).read_text()
  for target in re.findall(r'data-tchmi-target-user-control="([^"]+)"',s):
   assert (hmi/target).exists()

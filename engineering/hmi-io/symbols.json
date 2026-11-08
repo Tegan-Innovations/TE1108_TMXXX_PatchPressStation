@@ -240,5 +240,14 @@
   "GVL_Motion.AxisWasteRollMotor.bEnabled": "BOOL",
   "GVL_Motion.AxisWasteRollMotor.bOperational": "BOOL",
   "GVL_Motion.AxisWasteRollMotor.bHomed": "BOOL",
-  "GVL_Motion.AxisWasteRollMotor.bMoving": "BOOL"
+  "GVL_Motion.AxisWasteRollMotor.bMoving": "BOOL",
+  "GVL_EL6910Diagnostics.stStatus.aConnections": "ARRAY",
+  "GVL_EL6910Diagnostics.stStatus.aBlocks": "ARRAY",
+  "GVL_EL6910Diagnostics.stStatus.aHistory": "ARRAY",
+  "GVL_EL6910Diagnostics.stStatus.sHistoryStatus": "STRING",
+  "GVL_EL6910Diagnostics.stStatus.sLogicState": "STRING",
+  "GVL_EL6910Diagnostics.stStatus.sCycleCounter": "STRING",
+  "GVL_EL6910Diagnostics.stStatus.sGroupState": "STRING",
+  "GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic": "STRING",
+  "GVL_EL6910Diagnostics.stStatus.sReaderStatus": "STRING"
 }

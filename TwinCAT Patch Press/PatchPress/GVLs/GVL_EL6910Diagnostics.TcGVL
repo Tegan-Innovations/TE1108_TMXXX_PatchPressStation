@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<GVL Name="GVL_EL6910Diagnostics" Id="{78ef46cb-1437-4d1d-a484-74284eae251d}"><Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+    // Display-only, not consumed by machine or safety permissives.
+    stStatus : ST_EL6910Diagnostics;
+END_VAR]]></Declaration></GVL></TcPlcObject>

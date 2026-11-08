@@ -1,0 +1,13 @@
+# Vision PBUP DOWN dwell — 2026-11-08
+
+Branch `feat/vision-pbup-down-dwell-1s`. Only FB_VisionStation.Cyclic product source changed; all previous work preserved. No runtime writes, movement, download, activation, publication or commit.
+
+The PBUP mounting descent (process step 70, horizontal FRONT before lifting and flipping) now uses a fixed 1 s TON preset after its existing target condition DOWN=true/UP=false. The existing tonStepDelay is reused: step 70 selects T#1S; every other process and HOME step retains its previous tStepDelay. Therefore the 1 s replaces the former 100 ms qualification at this step; it is not an estimated travel time and does not start before DOWN.
+
+Down loss or Up overlap resets the qualification. The existing step transition resets this timer before UP step 80; UP still requires its endpoint before later clearance/flip. The step diagnostic reports the PBUP DOWN holding phase. Existing valve requests, manual/automatic ownership, travel timeout, stop/reset/safety logic, camera code, results, interfaces and persistent settings are unchanged. Normal stop/reset/restart paths rearm the wait; no automatic restart was added.
+
+Evidence: snapshot/hash-protected dry run/write and XAE readback; check_saved.py verifies saved content, unchanged declaration and exactly two intended source hunks. check_dwell.py executes saved ST with the 10 ms task/timer model: Manual/Auto, delayed DOWN, no UP before 1 s, DOWN loss/UP conflict restart, stop/disable/safety interruption followed by actual RequestReset and a later explicit new sequence, unchanged 100 ms pick/replacement descents. Existing Vision hardware, slow-descent, first-inspection and camera protocol regressions passed. Two old descent assertions were updated for the newly requested step-70 dwell.
+
+Initial XAE build reported two failed projects with no compiler diagnostic in Error List; output panes were not available through DTE. A subsequent fresh build succeeded, failedProjectCount=0. Both results are retained; the final successful build is the validation result. Error List contains earlier field events (Festo emergencies and EL6910 restart), not new source diagnostics.
+
+Supervised acceptance after authorized deployment: observe physical DOWN/Up inputs, step 70, dwell ET, final vertical outputs and assembly engagement in Manual and AutoCycle. Require a full continuous second at DOWN/no UP before step 80/UP; verify signal withdrawal restarts the wait, no premature flip, and stop/safety/reset behavior remains correct. Confirm the 1 s provides acceptable PBUP seating/process quality without changing protection limits. Physical assembly validation and deployment remain outstanding.

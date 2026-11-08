@@ -1,8 +1,7 @@
 <div id="Content1_31" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-top="0" data-tchmi-left="0" data-tchmi-width="1340" data-tchmi-height="480">
 
 <div id="TcHmiTreeView_1" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTreeView" data-tchmi-height="480" data-tchmi-height-unit="px" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="0" data-tchmi-top-unit="px" data-tchmi-width="260" data-tchmi-width-unit="px" data-tchmi-hierarchical-data-property="children">
-<script data-tchmi-target-attribute="data-tchmi-columns" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-columns" type="application/json">[
   {
     "autoFocusOut": true,
     "autoSelectText": false,
@@ -22,10 +21,8 @@
     "width": 280,
     "widthUnit": "px"
   }
-]
-</script>
-<script data-tchmi-target-attribute="data-tchmi-data" type="application/json">
-[
+]</script>
+<script data-tchmi-target-attribute="data-tchmi-data" type="application/json">[
   {
     "Name": "Settings",
     "children": [
@@ -39,14 +36,15 @@
         "Name": "Patch Dispense"
       },
       {
+        "Name": "Vision Station"
+      },
+      {
         "Name": "Others"
       }
     ]
   }
-]
-</script>
-<script data-tchmi-target-attribute="data-tchmi-cell-content-padding" type="application/json">
-{
+]</script>
+<script data-tchmi-target-attribute="data-tchmi-cell-content-padding" type="application/json">{
   "left": 3,
   "leftUnit": "px",
   "right": 3,
@@ -55,8 +53,7 @@
   "topUnit": "px",
   "bottom": 0,
   "bottomUnit": "px"
-}
-</script>
+}</script>
 <script data-tchmi-target-attribute="data-tchmi-selected-row-value" type="application/json">
 
 </script>
@@ -135,6 +132,26 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/ContentPath",
                   "value": "Contents/Screens/Settings/settings_PatchDispense.content"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "caseValue": {
+              "objectType": "StaticValue",
+              "valueType": "tchmi:general#/definitions/Any",
+              "value": "Vision Station"
+            },
+            "actions": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%IO_Region_18::TargetContent%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/ContentPath",
+                  "value": "Contents/Screens/Settings/settings_VisionStation.content"
                 },
                 "asyncWait": true
               }

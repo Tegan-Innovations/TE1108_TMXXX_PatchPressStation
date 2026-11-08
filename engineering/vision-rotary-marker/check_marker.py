@@ -13,14 +13,17 @@ machine=method('POUs/01_Core/Machine/FB_IndexedPatchPressMachine.TcPOU','Cyclic'
 prefix=vision[:vision.index('// Rearm inspection 2')]
 request=vision[vision.index('bTriggerRequestInternal :='):vision.index('bGetResultsRequestInternal :=')]
 endpoint=machine[machine.index('tonVisionRotate0Confirm('):machine.index('bVisionRotate180Confirmed := tonVisionRotate180Confirm.Q;')+len('bVisionRotate180Confirmed := tonVisionRotate180Confirm.Q;')]
-def strip(s):return re.sub(r'//[^\n]*','',s)
+def strip(s):
+ # UDINT milliseconds and TIME milliseconds have the same numeric test representation.
+ return re.sub(r'UDINT_TO_TIME\(([^()]+)\)',r'\1',re.sub(r'//[^\n]*','',s))
 prefix,request,endpoint=map(strip,[prefix,request,endpoint])
 calls=re.compile(r'\b((?:ton|rt)\w+)\((.*?)\);',re.S)
 class Runner:
  def __init__(self,code):
   self.v={k:0 for k in re.findall(h['var'],code)};self.t=0;self.timers={};self.edges={}
   self.v.update({'E_PatchStationState.Processing':30,'E_PatchStationState.Ready':20,
-    'tTakingPictureWHileRotating':100,'tFlipDepartureFilter':20,'tVisionRotaryConfirm':1000})
+    'tTakingPictureWHileRotating':100,'tFlipDepartureFilter':20,'tVisionRotaryConfirm':1000,
+    'stProcessSettingsInternal.udiMovingTriggerDelayMs':100})
  def execute(self,code):
   pos=0
   for m in calls.finditer(code):

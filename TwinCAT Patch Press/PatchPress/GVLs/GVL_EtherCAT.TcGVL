@@ -34,6 +34,9 @@ VAR_GLOBAL
 	stVSKeyenceCamera	: ST_VS_Keyence_Camera;
 	
     // PROFINET Assignable Status, appended separately to preserve camera DUT.
+    // Offline linked PROFINET diagnostics; invalid until valid I/O is received.
+    wVisionPnState AT %I* : WORD := 16#FFFF;
+    wVisionPnDiag AT %I* : WORD := 16#FFFF;
     udiVisionError0Code AT %I* : UDINT;
     udiVisionError1Code AT %I* : UDINT;
     // Diagnostics for the power terminals and the shared Festo coupler.

@@ -64,6 +64,9 @@ VAR
     bPatchDetectedInternal : BOOL;
     bDriveMotionSeenInternal : BOOL;
     bPatchOpticalLeftInternal : BOOL;
+    bPatchOpticalRightInternal : BOOL;
+    bPatchLeftSeenInternal : BOOL;
+    bPatchRightSeenInternal : BOOL;
     bVerticalUpInternal : BOOL;
     bVerticalDownInternal : BOOL;
     bDriveStandstillInternal : BOOL;
@@ -74,6 +77,8 @@ VAR
     bHoldUpRequiredInternal : BOOL;
     rtFullSequence : R_TRIG;
     rtFeedOnly : R_TRIG;
+    stProcessSettingsInternal : ST_PatchProcessSettings;
+    tonAirBlowDelay : TON;
     tonFeed : TON;
     tonRelease : TON;
     tonVertical : TON;
@@ -147,10 +152,16 @@ IF NOT bHomeExecutionAllowedInternal THEN usiHomeStepInternal := 0; END_IF
 tonHomeSupportRetract(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 10), PT := T#300MS);
 tonHomeVerticalUp(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 30)
     AND NOT bVerticalUpReadyInternal, PT := tSupportMoveTimeout);
+// Delay starts at first patch detection; feed-only never requests airblow.
+tonAirBlowDelay(IN := bSafetyOkInternal AND NOT bFeedOnlyInternal
+    AND (eStateInternal = E_PatchStationState.Processing)
+    AND (((usiStepInternal = 20) AND (bPatchOpticalLeftInternal OR bPatchOpticalRightInternal))
+        OR (usiStepInternal = 21) OR (usiStepInternal = 22) OR (usiStepInternal = 40)),
+    PT := UDINT_TO_TIME(stProcessSettingsInternal.udiAirBlowDelayMs));
 tonFeed(IN := bSafetyOkInternal AND (eStateInternal = E_PatchStationState.Processing)
     AND ((usiStepInternal = 20) OR (usiStepInternal = 21)), PT := T#30S);
 tonRelease(IN := bSafetyOkInternal AND (eStateInternal = E_PatchStationState.Processing)
-    AND (usiStepInternal = 50), PT := T#5S);
+    AND (usiStepInternal = 50), PT := UDINT_TO_TIME(stProcessSettingsInternal.udiReleaseMs));
 tonVertical(IN := bSafetyOkInternal AND
     (((eStateInternal = E_PatchStationState.Processing) AND
       (((usiStepInternal = 40) AND NOT bVerticalDownReadyInternal)
@@ -196,7 +207,7 @@ ELSIF (eStateInternal = E_PatchStationState.Processing) AND (usiStepInternal = 5
 ELSIF tonFeed.Q THEN
     eStateInternal := E_PatchStationState.Fault;
     stResultInternal.udiFaultCode := 6;
-    sDiagnosticInternal := 'Patch: Input6 patch detection/end timeout';
+    sDiagnosticInternal := 'Patch: optical patch detection/end timeout';
 ELSIF tonVertical.Q OR tonHomeVerticalUp.Q THEN
     eStateInternal := E_PatchStationState.Fault;
     stResultInternal.udiFaultCode := 5;
@@ -218,6 +229,8 @@ ELSIF NOT bSafetyOkInternal OR NOT bCommissionedInternal THEN
     eStateInternal := E_PatchStationState.Disabled;
     usiStepInternal := 0;
     bPatchDetectedInternal := FALSE;
+    bPatchLeftSeenInternal := FALSE;
+    bPatchRightSeenInternal := FALSE;
     bDriveMotionSeenInternal := FALSE;
     bHomeConfirmedInternal := FALSE;
     stResultInternal.bValid := FALSE;
@@ -228,6 +241,8 @@ ELSIF bStopRequestInternal THEN
     eStateInternal := E_PatchStationState.Homing;
     stResultInternal.bValid := FALSE;
     bPatchDetectedInternal := FALSE;
+    bPatchLeftSeenInternal := FALSE;
+    bPatchRightSeenInternal := FALSE;
     IF usiStepInternal < 90 THEN usiStepInternal := 90; END_IF
     CASE usiStepInternal OF
         90:
@@ -277,11 +292,18 @@ ELSIF NOT bEnableInternal THEN
     eStateInternal := E_PatchStationState.Disabled;
     usiStepInternal := 0;
     bPatchDetectedInternal := FALSE;
+    bPatchLeftSeenInternal := FALSE;
+    bPatchRightSeenInternal := FALSE;
     stResultInternal.bValid := FALSE;
     sDiagnosticInternal := 'Patch: disabled';
 
 ELSIF eStateInternal = E_PatchStationState.Processing THEN
     IF bDriveMovingInternal THEN bDriveMotionSeenInternal := TRUE; END_IF
+    // Qualify each sensor independently during the current feed only.
+    IF (usiStepInternal = 20) OR (usiStepInternal = 21) THEN
+        IF bPatchOpticalLeftInternal THEN bPatchLeftSeenInternal := TRUE; END_IF
+        IF bPatchOpticalRightInternal THEN bPatchRightSeenInternal := TRUE; END_IF
+    END_IF
     CASE usiStepInternal OF
         10:
             bVerticalUpRequestInternal := TRUE;
@@ -292,25 +314,24 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
                 AND bVerticalIndexReadyInternal THEN usiStepInternal := 20; END_IF
         20:
             bDriveRunRequestInternal := TRUE;
-            sDiagnosticInternal := 'Patch: M1 waiting for Input6 detection';
-            IF bPatchOpticalLeftInternal THEN
+            sDiagnosticInternal := 'Patch: M1 waiting for optical detection';
+            IF bPatchOpticalLeftInternal OR bPatchOpticalRightInternal THEN
                 bPatchDetectedInternal := TRUE;
-                bAirBlowRequestInternal := NOT bFeedOnlyInternal;
+                bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
                 usiStepInternal := 21;
             END_IF
         21:
             bDriveRunRequestInternal := TRUE;
-            bAirBlowRequestInternal := NOT bFeedOnlyInternal;
-            sDiagnosticInternal := 'Patch: M1 feeding to Input6 falling edge';
-            // TEMPORARY: Input5 right sensor excluded until bracket is repaired.
-            // Future dual-sensor condition must require both sensors to have seen the patch.
-            // AND NOT bPatchOpticalRightInternal
-            IF bPatchDetectedInternal AND bDriveMotionSeenInternal AND NOT bPatchOpticalLeftInternal THEN
+            bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
+            sDiagnosticInternal := 'Patch: M1 waiting both optical trailing edges';
+            IF bPatchDetectedInternal AND bDriveMotionSeenInternal
+                AND bPatchLeftSeenInternal AND bPatchRightSeenInternal
+                AND NOT bPatchOpticalLeftInternal AND NOT bPatchOpticalRightInternal THEN
                 bDriveRunRequestInternal := FALSE;
                 usiStepInternal := 22;
             END_IF
         22:
-            bAirBlowRequestInternal := NOT bFeedOnlyInternal;
+            bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
             sDiagnosticInternal := 'Patch: waiting M1 standstill';
             IF bDriveStandstillInternal AND NOT bDriveBusyInternal THEN
                 IF bFeedOnlyInternal THEN
@@ -323,7 +344,7 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
             END_IF
         40:
             bVerticalDownRequestInternal := TRUE;
-            bAirBlowRequestInternal := TRUE;
+            bAirBlowRequestInternal := tonAirBlowDelay.Q;
             sDiagnosticInternal := 'Patch: vertical DOWN';
             IF bVerticalDownReadyInternal AND NOT bVerticalUpReadyInternal THEN
                 bAirBlowRequestInternal := FALSE;
@@ -332,7 +353,7 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
         50:
             // Bistable valve retains DOWN; do not energise UP during the release dwell.
             bVerticalDownRequestInternal := FALSE;
-            sDiagnosticInternal := 'Patch: release dwell 5 s';
+            sDiagnosticInternal := 'Patch: release dwell';
             IF tonRelease.Q THEN usiStepInternal := 60; END_IF
         60:
             bVerticalUpRequestInternal := TRUE;
@@ -462,6 +483,8 @@ bAirBlowRequestInternal := FALSE;
 bVerticalDownRequestInternal := FALSE;
 bFeedOnlyInternal := FALSE;
 bPatchDetectedInternal := FALSE;
+bPatchLeftSeenInternal := FALSE;
+bPatchRightSeenInternal := FALSE;
 bDriveMotionSeenInternal := FALSE;
 tonFeed(IN := FALSE);
 tonRelease(IN := FALSE);
@@ -506,6 +529,8 @@ bAirBlowRequestInternal := FALSE;
 bVerticalDownRequestInternal := FALSE;
 bFeedOnlyInternal := FALSE;
 bPatchDetectedInternal := FALSE;
+bPatchLeftSeenInternal := FALSE;
+bPatchRightSeenInternal := FALSE;
 bDriveMotionSeenInternal := FALSE;
 tonFeed(IN := FALSE);
 tonRelease(IN := FALSE);
@@ -601,6 +626,8 @@ bAirBlowRequestInternal := FALSE;
 bVerticalDownRequestInternal := FALSE;
 bFeedOnlyInternal := FALSE;
 bPatchDetectedInternal := FALSE;
+bPatchLeftSeenInternal := FALSE;
+bPatchRightSeenInternal := FALSE;
 bDriveMotionSeenInternal := FALSE;
 tonFeed(IN := FALSE);
 tonRelease(IN := FALSE);
@@ -653,6 +680,8 @@ IF bEnableInternal
 THEN
     bFeedOnlyInternal := FALSE;
     bPatchDetectedInternal := FALSE;
+    bPatchLeftSeenInternal := FALSE;
+    bPatchRightSeenInternal := FALSE;
     bDriveMotionSeenInternal := FALSE;
     stResultInternal.bValid := FALSE;
     stResultInternal.bPassed := FALSE;
@@ -677,6 +706,7 @@ END_VAR]]></Declaration>
     <Method Name="Update" Id="{f6ee0503-c772-4ebc-a880-089dbece365c}">
       <Declaration><![CDATA[METHOD PUBLIC Update
 VAR_INPUT
+    stProcessSettings : ST_PatchProcessSettings;
     bRunSequenceRequest : BOOL;
     bFeedOnlyRequest : BOOL;
     bStartPermitted : BOOL;
@@ -703,6 +733,7 @@ VAR_INPUT
 	bManualMode 		: BOOL;
 	bManualSupportExtendDesired : BOOL;
 	bHomingAllowed : BOOL;
+    bPatchOpticalRight : BOOL;
 END_VAR
 VAR_OUTPUT
     bVerticalIndexReady : BOOL;
@@ -715,7 +746,8 @@ VAR_OUTPUT
 	bVerticalUpRequest 		: BOOL;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[
+        <ST><![CDATA[stProcessSettingsInternal := stProcessSettings;
+
 bEnableInternal := bEnable;
 bManualModeInternal := bManualMode;
 bManualSupportExtendDesiredInternal := bManualSupportExtendDesired;
@@ -730,6 +762,7 @@ tSupportMoveTimeout := tSupportTimeout;
 bStartPermittedInternal := bStartPermitted;
 bHoldUpRequiredInternal := bHoldUpRequired;
 bPatchOpticalLeftInternal := bPatchOpticalLeft;
+bPatchOpticalRightInternal := bPatchOpticalRight;
 bUseVerticalFeedbackInternal := bUseVerticalFeedback;
 tVerticalMoveTimeInternal := tVerticalMoveTime;
 bVerticalUpCommandInternal := bVerticalUpCommand;
@@ -759,6 +792,8 @@ IF bManualModeInternal AND bStartPermittedInternal AND NOT bReset THEN
         usiStepInternal := 20;
         bFeedOnlyInternal := TRUE;
         bPatchDetectedInternal := FALSE;
+        bPatchLeftSeenInternal := FALSE;
+        bPatchRightSeenInternal := FALSE;
         bDriveMotionSeenInternal := FALSE;
         stResultInternal.bValid := FALSE;
     END_IF

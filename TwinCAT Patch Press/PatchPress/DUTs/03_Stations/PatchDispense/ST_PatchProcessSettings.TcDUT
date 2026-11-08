@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="ST_PatchProcessSettings" Id="{122c61c9-499d-42ab-af1a-dfbd125f9c0c}">
+    <Declaration><![CDATA[TYPE ST_PatchProcessSettings :
+STRUCT
+    lrDriveMotorVelocity : LREAL := 20.0;
+    lrPatchFeedRollVelocity : LREAL := 5.0;
+    lrWasteRollVelocity : LREAL := 50.0;
+    udiReleaseMs : UDINT := 5000;
+    udiAirBlowDelayMs : UDINT := 0;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

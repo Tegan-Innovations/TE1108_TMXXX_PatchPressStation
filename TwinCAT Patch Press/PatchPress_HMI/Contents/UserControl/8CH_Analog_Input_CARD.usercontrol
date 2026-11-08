@@ -279,6 +279,12 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
 </div>
 <div id="TcHmiNumericInput_870" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_2_InputOutputSignal%/pp%" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 2 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -301,6 +307,12 @@
 </script>
 
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
 {
   "color": "rgba(255, 255, 255, 1)"
 }
@@ -331,6 +343,12 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
 </div>
 <div id="TcHmiNumericInput_872" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_4_InputOutputSignal%/pp%" data-tchmi-top="226" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 4 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -353,6 +371,12 @@
 </script>
 
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
 {
   "color": "rgba(255, 255, 255, 1)"
 }
@@ -383,6 +407,12 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
 </div>
 <div id="TcHmiNumericInput_874" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_6_InputOutputSignal%/pp%" data-tchmi-top="306" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 6 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -405,6 +435,12 @@
 </script>
 
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
 {
   "color": "rgba(255, 255, 255, 1)"
 }
@@ -435,6 +471,12 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
 </div>
 <div id="TcHmiNumericInput_876" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="531" data-tchmi-left-unit="px" data-tchmi-value="%pp%_8_InputOutputSignal%/pp%" data-tchmi-top="386" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 8 ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -457,6 +499,12 @@
 </script>
 
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
 {
   "color": "rgba(255, 255, 255, 1)"
 }
@@ -487,8 +535,14 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 1)"
+}
+</script>
 </div>
-<div id="TcHmiNumericInput_915" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_2_ScaledValue%/pp%" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 2 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
+<div id="TcHmiNumericInput_915" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_2_ScaledValue%/pp%" data-tchmi-top="146" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 2 &amp;amp;&amp;amp; %pp%ShowScaledValues%/pp% ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -513,8 +567,14 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 1)"
+}
+</script>
 </div>
-<div id="TcHmiNumericInput_916" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_3_ScaledValue%/pp%" data-tchmi-top="186" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 3 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
+<div id="TcHmiNumericInput_916" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_3_ScaledValue%/pp%" data-tchmi-top="186" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 3 &amp;amp;&amp;amp; %pp%ShowScaledValues%/pp% ? 'Visible' : 'Hidden'%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "left": 0,
@@ -537,6 +597,12 @@
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
 {
   "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 1)"
 }
 </script>
 </div>
@@ -565,6 +631,12 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 1)"
+}
+</script>
 </div>
 <div id="TcHmiNumericInput_918" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_5_ScaledValue%/pp%" data-tchmi-top="266" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 5 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -589,6 +661,12 @@
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
 {
   "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 1)"
 }
 </script>
 </div>
@@ -617,6 +695,12 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 1)"
+}
+</script>
 </div>
 <div id="TcHmiNumericInput_920" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_7_ScaledValue%/pp%" data-tchmi-top="346" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 7 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -643,6 +727,12 @@
   "color": "rgba(255, 255, 255, 1)"
 }
 </script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 1)"
+}
+</script>
 </div>
 <div id="TcHmiNumericInput_921" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-left="691" data-tchmi-left-unit="px" data-tchmi-value="%pp%_8_ScaledValue%/pp%" data-tchmi-top="386" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="3" data-tchmi-value-font-size="15" data-tchmi-visibility="%f%%pp%ChannelCount%/pp% &gt;= 8 &amp;&amp; %pp%ShowScaledValues%/pp% ? &#x27;Visible&#x27; : &#x27;Hidden&#x27;%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
@@ -667,6 +757,12 @@
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
 {
   "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+
+<script data-tchmi-target-attribute="data-tchmi-value-color" type="application/json">
+{
+  "color": "rgba(0, 0, 0, 1)"
 }
 </script>
 </div>
@@ -697,5 +793,9 @@
   "bottomUnit": "px"
 }
 </script>
+
+
+
+
 </div>
 </div>

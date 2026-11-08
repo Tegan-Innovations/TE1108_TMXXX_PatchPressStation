@@ -28,12 +28,18 @@ states={enum+k:v for k,v in [('Disabled',0),('Homing',10),('Ready',20),('Process
 def initial(feed_only=False,step=10):
     v={token:0 for token in re.findall(h['var'],code)}
     v.update(states)
+    # Existing tests script timer feedback. Default airblow delay is zero.
+    v['tonAirBlowDelay.Q']=True
     v.update({'bEnableInternal':True,'bCommissionedInternal':True,'bSafetyOkInternal':True,
         'bUseVerticalFeedbackInternal':True,
         'bSupervisionEnableInternal':True,'bVerticalUpInternal':True,'bDriveStandstillInternal':True,
         'bSupportRetractedInternal':True,'eStateInternal':30,'usiStepInternal':step,'bFeedOnlyInternal':feed_only})
     return v
 def scan(v,**kw):
+    # Baseline scenarios use simultaneous optical signals; staggered signals are
+    # exercised separately in patch-dual-optical/check_dual.py.
+    if 'bPatchOpticalLeftInternal' in kw and 'bPatchOpticalRightInternal' not in kw:
+        kw['bPatchOpticalRightInternal']=kw['bPatchOpticalLeftInternal']
     v.update(kw);h['execute'](code,v)
     assert not (v['bVerticalUpRequestInternal'] and v['bVerticalDownRequestInternal'])
     assert not (v['bSupportExtendRequestInternal'] and v['bSupportRetractRequestInternal'])
@@ -141,7 +147,7 @@ assert not v['stOutputsInternal.bPatchVerticalUp'] and not v['stOutputsInternal.
 print('PASS actuator arbitration: Auto/Manual index hold-UP, exclusive sequence/dwell control, opposite coils and safety withdrawal')
 mapping=(plc/'POUs/04_IO_Mapping/PRG_TerminalMapping.TcPOU').read_text(encoding='utf-8-sig')
 assert 'bPatchOpticalLeft := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6' in mapping
-assert '// bPatchOpticalRight := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5;' in mapping
+assert 'GVL_IO.stInputs.bPatchOpticalRight := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5;' in mapping
 content=(root/'TwinCAT Patch Press/PatchPress_HMI/Contents/Screens/ManualTabs/PatchTab.content').read_text()
 config=json.loads((root/'TwinCAT Patch Press/PatchPress_HMI/Server/TcHmiSrv/TcHmiSrv.Config.default.json').read_text(encoding='utf-8-sig'))
 for control,symbol in [('TcHmiButton_PatchDispense','stCommands.bPatchDispenseRequest'),('TcHmiButton_PatchRunSequence','stCommands.bPatchManualRunSequence'),('TcHmiHtmlHost_PatchReady','stStatus.stPatchDispense.bReady'),('TcHmiHtmlHost_PatchBusy','stStatus.stPatchDispense.bBusy'),('TcHmiHtmlHost_PatchFault','stStatus.stPatchDispense.bFault')]:
