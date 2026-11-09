@@ -805,6 +805,9 @@
     <Content Include="Images\Project\DispenseCylinder.png">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Images\Project\DriveMotor.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Images\Project\HeatStakeStation.png">
       <SubType>Content</SubType>
     </Content>

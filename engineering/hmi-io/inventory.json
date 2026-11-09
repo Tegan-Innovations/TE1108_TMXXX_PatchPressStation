@@ -1102,7 +1102,7 @@
       },
       {
         "channel": 7,
-        "label": "No application assignment",
+        "label": "Heat Stake Valve (1=Up / 0=Down)",
         "symbol": "GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7",
         "type": "BOOL",
         "link": {

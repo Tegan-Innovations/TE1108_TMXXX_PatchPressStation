@@ -1,0 +1,11 @@
+# Main station LED initialization — 2026-11-09
+
+Branch: fix/main-station-led-initialization, based on pushed checkpoint f6a47d5.
+
+The nine Ready/Busy/Fault HtmlHost controls for Patch Dispense, Heat Stake and Vision had no explicit BackgroundColor and only a symbol-triggered color action. No onAttached action initialized them. A control awaiting its color action therefore had no defined fill, consistent with the intermittent missing indicators reported when entering Main. The exact live timing was not reproduced here.
+
+Main.content now supplies the existing neutral grey as the initial background of each of these nine controls and repeats its existing native condition on the owner's onAttached event. Existing symbol subscriptions continue to update colors. The original symbol event, condition, active colors, off color, control properties, geometry, labels and surrounding content remain unchanged. No JavaScript, PLC changes, command writes, timer retries or navigation changes were introduced. Until an ADS value is available the neutral fill keeps the indicator visible; it does not establish communication or station readiness.
+
+Checks: check_hmi.py validates all nine saved controls, initial fill, identical attach/change actions for both Boolean values, correct mapped symbols, repeated state/reattach action evaluation, unique control IDs, every JSON script and exact preservation outside these controls. This evaluates the saved native configuration; it is not a browser rendering test. Scoped git diff --check passed. Offline HMI Release MSBuild completed with exit code 0. The active XAE solution was confirmed as this checkout. Existing unrelated changes were preserved. No PLC build was needed for this HMI-only change.
+
+After authorized publication, validate repeated Menu -> Main navigation with unchanged station statuses, initial connection with ADS data delayed, and reconnecting ADS. All nine circles should be visible immediately in grey and show the existing green/amber/red active colors when their respective status is true. Changing true/false while Main is open and leaving/re-entering Main should refresh the same colors without requiring a second visit. Live browser rendering, designer rendering, ADS timing and physical station behavior remain untested. No publication, runtime write, download or commit was performed.

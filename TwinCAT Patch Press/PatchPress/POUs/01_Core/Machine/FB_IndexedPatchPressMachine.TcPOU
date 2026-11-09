@@ -149,6 +149,9 @@ VAR
 
     bHeatStakeHeadLockRequest 		: BOOL;
     bHeatStakeHeadUnlockRequest 	: BOOL;
+    // Monostable valve output state; re-arm descent only after completed HOME.
+    bHeatStakeHeadUpRecoveryLatched : BOOL := TRUE;
+    bHeatStakeHeadDownHeld : BOOL := FALSE;
     bHeatStakeHeadDownRequest 		: BOOL;
     bHeatStakeHeadUpRequest 		: BOOL;
     rHeatStakePressureCommandBar 	: LREAL;
@@ -559,6 +562,7 @@ GVL_HMI.bCameraConnected := (GVL_EtherCAT.wVisionPnState = 0)
     AND GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational;
 bManualCameraAllowed := (eMachineState = E_MachineState.Manual)
     AND stCommand.bVisionManualEnable AND stInputs.stSafety.bSafetyOk
+    AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
     AND NOT stCommand.bStop AND NOT stCommand.bReset
     AND NOT stCommand.bVisionManualRunSequence AND NOT stCommand.bVisionManualHomeRequest
     AND NOT fbVision.IsBusy() AND NOT bVisionManualSequenceActive AND NOT bVisionManualHomeActive;
@@ -1203,7 +1207,8 @@ tpPatchAirBlow(
 bVisionManualEnableAllowed :=
     (eMachineState = E_MachineState.Manual)
     AND stInputs.stSafety.bSafetyOk
-    AND NOT bRejectChuteStopRequestLatched;
+    AND NOT bRejectChuteStopRequestLatched
+    AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus;
 
 // Every individual Vision movement requires the general Vision Enable.
 bVisionHorizontalBackAllowed :=
@@ -1288,6 +1293,7 @@ bVisionManualRunSequenceAllowed :=
 	// Cancel sequence ownership if Manual Mode is left
 	// or Vision Manual Enable is removed.
 	IF (eMachineState <> E_MachineState.Manual)
+		OR NOT bVisionManualEnableAllowed
 		OR NOT stCommand.bVisionManualEnable
 	THEN
 		bVisionManualSequenceActive := FALSE;
@@ -1308,6 +1314,7 @@ bVisionManualRunSequenceAllowed :=
 	// Cancel Home ownership if Manual Mode is left
 	// or Vision Manual Enable is removed.
 	IF (eMachineState <> E_MachineState.Manual)
+		OR NOT bVisionManualEnableAllowed
 		OR NOT stCommand.bVisionManualEnable
 	THEN
 		bVisionManualHomeActive := FALSE;
@@ -1484,6 +1491,16 @@ CASE usiHeatStakeManualActionStep OF
             usiHeatStakeManualActionStep := 0;
         END_IF
 END_CASE
+
+// Manual UNLOCK is a maintained valve command, not only the 1 s action pulse.
+// Leave automatic Stake Patch, homing and fault/recovery ownership unchanged.
+IF (eMachineState = E_MachineState.Manual)
+    AND NOT bHeatStakeManualStakeCycleActive
+    AND NOT fbHeatStake.IsBusy() THEN
+    bHeatStakeHeadUnlockRequest :=
+        (bHeatStakeHeadUnlockRequest OR bHeatStakeManualHeadUnlocked)
+        AND NOT bHeatStakeHeadLockRequest;
+END_IF
 
 // Support toggle: ON = UP/Extend, OFF = DOWN/Retract.
 // Independent from Heat Stake temperature Enable.
@@ -3450,6 +3467,33 @@ IF eMachineState = E_MachineState.Manual THEN
         stHeatStakeStatus.bReady
         AND NOT stHeatStakeStatus.bBusy;
 END_IF
+
+// Single-solenoid head valve: retain the requested direction between legacy pulses.
+// Reservoir air and maintained valve power are required for physical fault retraction.
+IF NOT stInputs.stSafety.bSafetyOk
+    OR NOT stInputs.stSafety.bProcessSafetyPermitted
+    OR NOT GVL_Safety.bAirSupplySafe
+    OR (eMachineState = E_MachineState.Fault) THEN
+    bHeatStakeHeadUpRecoveryLatched := TRUE;
+    bHeatStakeHeadDownHeld := FALSE;
+ELSIF (ePreviousMachineState = E_MachineState.Initialising)
+    AND (eMachineState = E_MachineState.ReadyToStart)
+    AND stInputs.bHeatStakeHeadUp
+    AND NOT stInputs.bHeatStakeHeadDown THEN
+    // Reset/safety recovery alone must never re-arm descent.
+    bHeatStakeHeadUpRecoveryLatched := FALSE;
+    bHeatStakeHeadDownHeld := FALSE;
+END_IF
+
+IF bHeatStakeHeadUpRecoveryLatched OR bHeatStakeHeadUpRequest THEN
+    bHeatStakeHeadDownHeld := FALSE; // UP wins conflicting requests.
+ELSIF bHeatStakeHeadDownRequest THEN
+    bHeatStakeHeadDownHeld := TRUE;
+END_IF
+
+stOutputsInternal.bHeatStakeHeadDown := bHeatStakeHeadDownHeld
+    AND NOT bHeatStakeHeadUpRecoveryLatched;
+stOutputsInternal.bHeatStakeHeadUp := NOT stOutputsInternal.bHeatStakeHeadDown;
 
 stOutputs := stOutputsInternal;
 stStatus.eMachineState := eMachineState;

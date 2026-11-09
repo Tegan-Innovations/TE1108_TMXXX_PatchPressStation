@@ -126,6 +126,26 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
         AND NOT GVL_HMI.stStatus.stPatchDispense.bBusy
         AND NOT GVL_HMI.stStatus.stPatchDispense.bFault;
 END_IF
+// ReadyToStart indication accepts the deliberately disabled, idle M1 axis.
+// This does not change FB readiness, motion enable or sequence start permissives.
+IF GVL_MASTER.stStatus.eMachineState = E_MachineState.ReadyToStart THEN
+    GVL_HMI.stStatus.stPatchDispense.bReady :=
+        GVL_MASTER.stStatus.stPatchDispense.bCommissioned
+        AND (GVL_MASTER.stStatus.stPatchDispense.eState = E_PatchStationState.Ready)
+        AND GVL_MASTER.stStatus.stPatchDispense.bHome
+        AND NOT GVL_MASTER.stStatus.stPatchDispense.bBusy
+        AND NOT GVL_HMI.stStatus.stPatchDispense.bFault
+        AND GVL_MASTER.stInputs.stSafety.bSafetyOk
+        AND GVL_MASTER.stInputs.stSafety.bMotionSafetyPermitted
+        AND GVL_MASTER.stInputs.bMainDoorClosed
+        AND GVL_Safety.bAirSupplySafe
+        AND NOT GVL_Motion.stPatchFeedStatus.bBusy
+        AND NOT GVL_Motion.AxisDriveMotor.bMoving
+        AND NOT GVL_Motion.AxisDriveMotor.Axis.Status.ErrorStop
+        AND (GVL_Motion.AxisDriveMotor.Axis.NcToPlc.AxisId <> 0)
+        AND (GVL_Motion.AxisDriveMotor.bStandstill
+            OR GVL_Motion.AxisDriveMotor.Axis.Status.Disabled);
+END_IF
 GVL_HMI.stStatus.stHeatStake := GVL_MASTER.stStatus.stHeatStake;
 GVL_HMI.stStatus.stHeatStakeTemperature := GVL_MASTER.stStatus.stHeatStakeTemperature;
 GVL_HMI.stStatus.stHeatStakeProcess := GVL_MASTER.stStatus.stHeatStakeProcess;

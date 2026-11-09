@@ -24,7 +24,11 @@ VAR
     rtRejectChuteAcknowledge : R_TRIG;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[GVL_HMI.stCommands.bVisionSupportExtendRequest := FALSE; // Consume obsolete command in every mode.
+      <ST><![CDATA[// Camera RUN loss withdraws manual enable; recovery requires a fresh selection.
+IF NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus THEN
+    GVL_HMI.stCommands.bVisionManualEnable := FALSE;
+END_IF
+GVL_HMI.stCommands.bVisionSupportExtendRequest := FALSE; // Consume obsolete command in every mode.
 GVL_HMI.stCommands.bVisionVerticalIntermediateRequest := FALSE; // Consume obsolete command in every mode.
 // POWER MANAGEMENT - REQUEST / CANCEL / COUNTDOWN
 // =====================================================

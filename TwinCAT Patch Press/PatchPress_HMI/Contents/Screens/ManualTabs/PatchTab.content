@@ -1365,6 +1365,8 @@
 </div>
     <div id="TcHmiImage_110" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="105" data-tchmi-height-unit="px" data-tchmi-left="122" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/DispenseCylinder.png" data-tchmi-top="67" data-tchmi-top-unit="px" data-tchmi-width="94" data-tchmi-width-unit="px">
 </div>
+<div id="TcHmiImage_111" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="81" data-tchmi-height-unit="px" data-tchmi-left="366" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/DriveMotor.png" data-tchmi-top="85" data-tchmi-top-unit="px" data-tchmi-width="102" data-tchmi-width-unit="px">
+</div>
 </div>
     <div id="PatchAirBlowControl" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-left="770" data-tchmi-left-unit="px" data-tchmi-top="5" data-tchmi-top-unit="px" data-tchmi-width="245" data-tchmi-width-unit="px" data-tchmi-height="280" data-tchmi-height-unit="px">
         <div id="TcHmiRectangle_PatchAirBlowControl" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiRectangle" data-tchmi-left="0" data-tchmi-left-unit="px" data-tchmi-top="12" data-tchmi-top-unit="px" data-tchmi-width="245" data-tchmi-width-unit="px" data-tchmi-height="268" data-tchmi-height-unit="px">

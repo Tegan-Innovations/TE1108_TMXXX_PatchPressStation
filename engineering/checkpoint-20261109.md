@@ -1,0 +1,7 @@
+# Commissioning checkpoint — 2026-11-09
+
+Includes Main station LED initial appearance/attachment refresh; Patch standby Ready indication; Vision camera RUN admission/manual enable mapping and re-selection; Heat Stake single-solenoid continuous direction control with UP recovery retention and revised output labels; maintained manual Unlock; and the saved Patch manual motor illustration.
+
+User reported the head valve change worked very well and subsequently reported successful testing of the manual Unlock change before requesting this commit/push. This is user-provided commissioning evidence, not independent observation of all machine test paths. The last tool-driven XAE build attempts for Unlock returned two failed projects without source diagnostics; no successful replacement build is claimed. Source-driven Unlock, camera and Vision tests passed. Feature handovers retain the original evidence and validation boundaries.
+
+M2/M3 PLC/NC disconnection is intentional for manual tests with a different gearbox, as confirmed by the user. Preserve the current working configuration and do not restore links automatically. These temporary NC/configuration changes, generated XAE metadata, local publication credentials/settings and editor/build artifacts are excluded from this source checkpoint. The committed project retains its prior NC configuration; restore/validate the chosen gearbox scaling and links before PLC-controlled operation resumes. No TwinSAFE configuration is changed by this checkpoint.

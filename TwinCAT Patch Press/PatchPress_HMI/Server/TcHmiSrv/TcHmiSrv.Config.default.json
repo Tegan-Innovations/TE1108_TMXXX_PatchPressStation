@@ -5047,6 +5047,23 @@
     "SOCKET_TIMEOUT": "PT10S",
     "SUBSCRIPTION_FLOODPROTECTION": 100,
     "SYMBOLS": {
+    "ADS.PLC1.GVL_HMI.stStatus.bVisionManualEnableAllowed": {
+        "ACCESS": 1,
+        "DOMAIN": "ADS",
+        "DYNAMIC": true,
+        "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionManualEnableAllowed",
+        "SCHEMA": {
+            "allOf": [
+                {
+                    "$ref": "tchmi:general#/definitions/BOOL"
+                },
+                {
+                    "propertyOrder": 33
+                }
+            ]
+        },
+        "USEMAPPING": true
+    },
     "ADS.PLC1.GVL_MASTER.stOutputs.bPatchDispenserAir": {
         "ACCESS": 1,
         "DOMAIN": "ADS",

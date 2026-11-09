@@ -192,6 +192,8 @@ GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch4 := GVL_IO.stOutputs.bStatusIndicatorGree
 // Ch6 = operator/nest light
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch5 := GVL_IO.stOutputs.bInternalLight;
 GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch6 := GVL_IO.stOutputs.bNestLight;
+// Monostable Heat Stake valve: TRUE = UP, FALSE = DOWN.
+GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7 := GVL_IO.stOutputs.bHeatStakeHeadUp;
 
 (*
 ======================================================================================================================
@@ -269,8 +271,8 @@ GVL_EtherCAT.stFestoModule3_VABX.bCoil7 := GVL_IO.stOutputs.bVisionGripClose;
 // Coil1 = Vision gripper rotation 180Â° / PLACE
 // Coil2 = Patch dispenser AIR
 // Coil3 = Heat Stake head UNLOCK
-// Coil4 = Heat Stake head DOWN
-// Coil5 = Heat Stake head UP
+// Coil4 = retired head DOWN output (always OFF)
+// Coil5 = continuous pilot supply for the external head valve
 // Coil6 = Patch vertical support DOWN
 // Coil7 = Patch vertical support UP
 
@@ -278,8 +280,8 @@ GVL_EtherCAT.stFestoModule4_VABX.bCoil0 := GVL_IO.stOutputs.bVisionRotate0;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil1 := GVL_IO.stOutputs.bVisionRotate180;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil2 := GVL_IO.stOutputs.bPatchDispenserAir;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil3 := GVL_IO.stOutputs.bHeatStakeHeadUnlock;
-GVL_EtherCAT.stFestoModule4_VABX.bCoil4 := GVL_IO.stOutputs.bHeatStakeHeadDown;
-GVL_EtherCAT.stFestoModule4_VABX.bCoil5 := GVL_IO.stOutputs.bHeatStakeHeadUp;
+GVL_EtherCAT.stFestoModule4_VABX.bCoil4 := FALSE; // Retired direction output.
+GVL_EtherCAT.stFestoModule4_VABX.bCoil5 := TRUE; // Continuous pilot supply; reservoir supports retraction.
 GVL_EtherCAT.stFestoModule4_VABX.bCoil6 := GVL_IO.stOutputs.bPatchVerticalDown;
 GVL_EtherCAT.stFestoModule4_VABX.bCoil7 := GVL_IO.stOutputs.bPatchVerticalUp;
 
