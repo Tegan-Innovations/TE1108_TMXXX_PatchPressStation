@@ -3,11 +3,13 @@
   <DUT Name="ST_PatchProcessSettings" Id="{122c61c9-499d-42ab-af1a-dfbd125f9c0c}">
     <Declaration><![CDATA[TYPE ST_PatchProcessSettings :
 STRUCT
-    lrDriveMotorVelocity : LREAL := 20.0;
-    lrPatchFeedRollVelocity : LREAL := 5.0;
+    lrDriveMotorVelocity : LREAL := 40.0;
+    lrPatchFeedRollVelocity : LREAL := 200.0;
     lrWasteRollVelocity : LREAL := 50.0;
     udiReleaseMs : UDINT := 5000;
-    udiAirBlowDelayMs : UDINT := 0;
+    udiAirBlowDelayMs : UDINT := 3000;
+    // M1 run-on after the left optical clears; milliseconds.
+    udiDriveStopDelayMs : UDINT := 2000;
 END_STRUCT
 END_TYPE]]></Declaration>
   </DUT>

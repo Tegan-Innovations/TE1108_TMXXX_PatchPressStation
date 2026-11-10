@@ -1,4 +1,4 @@
-﻿{
+{
     "ALLOWED_ORIGINS": [],
     "ALLOW_REMOTE_ADMIN": true,
     "ALLOW_SSL_CERTIFICATES_HOSTS_ORIGINS": true,
@@ -4148,6 +4148,13 @@
                                 "$ref": "tchmi:general#/definitions/UDINT"
                             }
                         ]
+                    },
+                    "udiDriveStopDelayMs": {
+                        "allOf": [
+                            {
+                                "$ref": "tchmi:general#/definitions/UDINT"
+                            }
+                        ]
                     }
                 },
                 "required": [
@@ -4155,7 +4162,8 @@
                     "lrPatchFeedRollVelocity",
                     "lrWasteRollVelocity",
                     "udiReleaseMs",
-                    "udiAirBlowDelayMs"
+                    "udiAirBlowDelayMs",
+                    "udiDriveStopDelayMs"
                 ],
                 "type": "object"
             },
@@ -5047,37 +5055,37 @@
     "SOCKET_TIMEOUT": "PT10S",
     "SUBSCRIPTION_FLOODPROTECTION": 100,
     "SYMBOLS": {
-    "ADS.PLC1.GVL_HMI.stStatus.bVisionManualEnableAllowed": {
-        "ACCESS": 1,
-        "DOMAIN": "ADS",
-        "DYNAMIC": true,
-        "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionManualEnableAllowed",
-        "SCHEMA": {
-            "allOf": [
-                {
-                    "$ref": "tchmi:general#/definitions/BOOL"
-                },
-                {
-                    "propertyOrder": 33
-                }
-            ]
+        "ADS.PLC1.GVL_HMI.stStatus.bVisionManualEnableAllowed": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stStatus::bVisionManualEnableAllowed",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    },
+                    {
+                        "propertyOrder": 33
+                    }
+                ]
+            },
+            "USEMAPPING": true
         },
-        "USEMAPPING": true
-    },
-    "ADS.PLC1.GVL_MASTER.stOutputs.bPatchDispenserAir": {
-        "ACCESS": 1,
-        "DOMAIN": "ADS",
-        "DYNAMIC": true,
-        "MAPPING": "PLC1::GVL_MASTER::stOutputs::bPatchDispenserAir",
-        "SCHEMA": {
-            "allOf": [
-                {
-                    "$ref": "tchmi:general#/definitions/BOOL"
-                }
-            ]
+        "ADS.PLC1.GVL_MASTER.stOutputs.bPatchDispenserAir": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_MASTER::stOutputs::bPatchDispenserAir",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/BOOL"
+                    }
+                ]
+            },
+            "USEMAPPING": true
         },
-        "USEMAPPING": true
-    },
         "ADS.PLC1.GVL_HMI.udiCameraManualImageSelection": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -20594,6 +20602,34 @@
                 ]
             },
             "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stPatchProcessEdit::udiDriveStopDelayMs",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
+        },
+        "ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiDriveStopDelayMs": {
+            "ACCESS": 1,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_HMI::stPatchProcessApplied::udiDriveStopDelayMs",
+            "SCHEMA": {
+                "allOf": [
+                    {
+                        "$ref": "tchmi:general#/definitions/UDINT"
+                    }
+                ]
+            },
+            "USEMAPPING": true
         }
     },
     "SYMBOL_COMPLEXITY_LIMIT": 100,
@@ -20862,7 +20898,9 @@
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sCycleCounter": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupState": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic": 1,
-                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1
+                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs": 3,
+                "ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiDriveStopDelayMs": 1
             }
         },
         "Engineer": {
@@ -21125,7 +21163,9 @@
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sCycleCounter": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupState": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic": 1,
-                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1
+                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs": 3,
+                "ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiDriveStopDelayMs": 1
             }
         },
         "Operator": {
@@ -21388,7 +21428,9 @@
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sCycleCounter": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupState": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic": 1,
-                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1
+                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiDriveStopDelayMs": 1
             }
         },
         "__SystemAdministrators": {
@@ -21572,7 +21614,9 @@
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sCycleCounter": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupState": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic": 1,
-                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1
+                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs": 3,
+                "ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiDriveStopDelayMs": 1
             }
         },
         "__SystemGuests": {
@@ -21772,7 +21816,9 @@
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sCycleCounter": 0,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupState": 0,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic": 0,
-                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 0
+                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 0,
+                "ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs": 0,
+                "ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiDriveStopDelayMs": 0
             }
         },
         "__SystemMaintenanceUsers": {
@@ -21956,7 +22002,9 @@
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sCycleCounter": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupState": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic": 1,
-                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1
+                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiDriveStopDelayMs": 1
             }
         },
         "__SystemUsers": {
@@ -22744,7 +22792,9 @@
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sCycleCounter": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupState": 1,
                 "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sGroupDiagnostic": 1,
-                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1
+                "ADS.PLC1.GVL_EL6910Diagnostics.stStatus.sReaderStatus": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs": 1,
+                "ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiDriveStopDelayMs": 1
             }
         }
     },

@@ -475,15 +475,6 @@ THEN
         stCommand.bHeatStakeManualSupportUp;
 END_IF
 
-// Same strategy as the validated Silicone Station.
-// Door locking is requested independently from door feedback while the
-// machine is in an active state that requires the door secured.
-bAirAndDoorEnable :=
-    (eMachineState = E_MachineState.Initialising)
-    OR (eMachineState = E_MachineState.ReadyToStart)
-    OR (eMachineState = E_MachineState.AutoCycle)
-    OR (eMachineState = E_MachineState.Manual)
-	OR (eMachineState = E_MachineState.Dwell);
 
 // 500 ms operator indication blink, matching the validated Silicone core.
 tonLedBlink(IN := NOT tonLedBlink.Q, PT := T#500MS);
@@ -3130,6 +3121,18 @@ stIndexStatus := fbIndex.GetStatus();
 
 ///////////////////////////////////////////////////////////////////
 
+
+// Use the state after the machine CASE transitions in this scan.
+// Stopped -> Initialising must not drop an existing hot-door lock request.
+// Same strategy as the validated Silicone Station.
+// Door locking is requested independently from door feedback while the
+// machine is in an active state that requires the door secured.
+bAirAndDoorEnable :=
+    (eMachineState = E_MachineState.Initialising)
+    OR (eMachineState = E_MachineState.ReadyToStart)
+    OR (eMachineState = E_MachineState.AutoCycle)
+    OR (eMachineState = E_MachineState.Manual)
+	OR (eMachineState = E_MachineState.Dwell);
 
  // =====================================================
  // MAIN DOOR - HOT TEMPERATURE PROTECTION

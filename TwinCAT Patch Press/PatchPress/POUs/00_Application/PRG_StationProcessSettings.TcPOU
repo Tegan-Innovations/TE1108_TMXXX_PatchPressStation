@@ -13,19 +13,13 @@ VAR
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF NOT bInitialised THEN
-    // M2 feed speed reduced after commissioning; preserve other retained settings.
-    IF GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity > 5 THEN
-        GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity := 5;
-    END_IF
-    IF GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity > 20 THEN
-        GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity := 20;
-        // Review and Apply explicitly to save the migrated value.
-    END_IF
-    IF NOT ((GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity >= 0.1) AND (GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity <= 20)
-        AND (GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity >= 0.1) AND (GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity <= 5)
+    // Preserve retained values; new speeds and delay are applied through Patch Settings.
+    IF NOT ((GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity >= 0.1) AND (GVL_Persistent.stPatchProcessSettings.lrDriveMotorVelocity <= 40)
+        AND (GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity >= 0.1) AND (GVL_Persistent.stPatchProcessSettings.lrPatchFeedRollVelocity <= 200)
         AND (GVL_Persistent.stPatchProcessSettings.lrWasteRollVelocity >= 0.1) AND (GVL_Persistent.stPatchProcessSettings.lrWasteRollVelocity <= 50)
         AND (GVL_Persistent.stPatchProcessSettings.udiReleaseMs >= 100) AND (GVL_Persistent.stPatchProcessSettings.udiReleaseMs <= 15000)
-        AND (GVL_Persistent.stPatchProcessSettings.udiAirBlowDelayMs >= 0) AND (GVL_Persistent.stPatchProcessSettings.udiAirBlowDelayMs <= 2000)) THEN
+        AND (GVL_Persistent.stPatchProcessSettings.udiAirBlowDelayMs >= 0) AND (GVL_Persistent.stPatchProcessSettings.udiAirBlowDelayMs <= 5000)
+        AND (GVL_Persistent.stPatchProcessSettings.udiDriveStopDelayMs >= 0) AND (GVL_Persistent.stPatchProcessSettings.udiDriveStopDelayMs <= 5000)) THEN
         GVL_Persistent.stPatchProcessSettings := stDefaultPatch;
         GVL_HMI.sPatchSettingsMessage := 'Stored values invalid: defaults loaded. Review and Apply.';
     ELSE
@@ -66,11 +60,12 @@ ELSIF GVL_HMI.bPatchSettingsApply THEN
         GVL_HMI.sPatchSettingsMessage := 'Apply rejected: stop machine and motion first';
     ELSIF GVL_HMI.bStationSettingsSaving THEN
         GVL_HMI.sPatchSettingsMessage := 'Apply rejected: save in progress';
-    ELSIF NOT ((GVL_HMI.stPatchProcessEdit.lrDriveMotorVelocity >= 0.1) AND (GVL_HMI.stPatchProcessEdit.lrDriveMotorVelocity <= 20)
-        AND (GVL_HMI.stPatchProcessEdit.lrPatchFeedRollVelocity >= 0.1) AND (GVL_HMI.stPatchProcessEdit.lrPatchFeedRollVelocity <= 5)
+    ELSIF NOT ((GVL_HMI.stPatchProcessEdit.lrDriveMotorVelocity >= 0.1) AND (GVL_HMI.stPatchProcessEdit.lrDriveMotorVelocity <= 40)
+        AND (GVL_HMI.stPatchProcessEdit.lrPatchFeedRollVelocity >= 0.1) AND (GVL_HMI.stPatchProcessEdit.lrPatchFeedRollVelocity <= 200)
         AND (GVL_HMI.stPatchProcessEdit.lrWasteRollVelocity >= 0.1) AND (GVL_HMI.stPatchProcessEdit.lrWasteRollVelocity <= 50)
         AND (GVL_HMI.stPatchProcessEdit.udiReleaseMs >= 100) AND (GVL_HMI.stPatchProcessEdit.udiReleaseMs <= 15000)
-        AND (GVL_HMI.stPatchProcessEdit.udiAirBlowDelayMs >= 0) AND (GVL_HMI.stPatchProcessEdit.udiAirBlowDelayMs <= 2000)) THEN
+        AND (GVL_HMI.stPatchProcessEdit.udiAirBlowDelayMs >= 0) AND (GVL_HMI.stPatchProcessEdit.udiAirBlowDelayMs <= 5000)
+        AND (GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs >= 0) AND (GVL_HMI.stPatchProcessEdit.udiDriveStopDelayMs <= 5000)) THEN
         GVL_HMI.sPatchSettingsMessage := 'Apply rejected: value outside allowed range';
     ELSE
         GVL_Persistent.stPatchProcessSettings := GVL_HMI.stPatchProcessEdit;

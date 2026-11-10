@@ -79,6 +79,7 @@ VAR
     rtFeedOnly : R_TRIG;
     stProcessSettingsInternal : ST_PatchProcessSettings;
     tonAirBlowDelay : TON;
+    tonDriveStopDelay : TON;
     tonFeed : TON;
     tonRelease : TON;
     tonVertical : TON;
@@ -152,14 +153,24 @@ IF NOT bHomeExecutionAllowedInternal THEN usiHomeStepInternal := 0; END_IF
 tonHomeSupportRetract(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 10), PT := T#300MS);
 tonHomeVerticalUp(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 30)
     AND NOT bVerticalUpReadyInternal, PT := tSupportMoveTimeout);
-// Delay starts at first patch detection; feed-only never requests airblow.
+// TEMPORARY: left optical only; right input remains raw for diagnostics.
+// Delay starts at left patch detection; feed-only never requests airblow.
 tonAirBlowDelay(IN := bSafetyOkInternal AND NOT bFeedOnlyInternal
     AND (eStateInternal = E_PatchStationState.Processing)
-    AND (((usiStepInternal = 20) AND (bPatchOpticalLeftInternal OR bPatchOpticalRightInternal))
-        OR (usiStepInternal = 21) OR (usiStepInternal = 22) OR (usiStepInternal = 40)),
+    AND (((usiStepInternal = 20) AND bPatchOpticalLeftInternal)
+        OR (usiStepInternal = 21) OR (usiStepInternal = 23) OR (usiStepInternal = 22) OR (usiStepInternal = 40)),
     PT := UDINT_TO_TIME(stProcessSettingsInternal.udiAirBlowDelayMs));
+// Start on qualified left trailing edge and latch timing in step 23.
+// A later patch or sensor bounce cannot restart or extend the run-on.
+tonDriveStopDelay(IN := bSafetyOkInternal AND bEnableInternal AND bCommissionedInternal
+    AND NOT bStopRequestInternal AND NOT bHomeRequestInternal
+    AND (eStateInternal = E_PatchStationState.Processing)
+    AND ((usiStepInternal = 23)
+        OR ((usiStepInternal = 21) AND bPatchDetectedInternal AND bPatchLeftSeenInternal
+            AND (bDriveMotionSeenInternal OR bDriveMovingInternal) AND NOT bPatchOpticalLeftInternal)),
+    PT := UDINT_TO_TIME(stProcessSettingsInternal.udiDriveStopDelayMs));
 tonFeed(IN := bSafetyOkInternal AND (eStateInternal = E_PatchStationState.Processing)
-    AND ((usiStepInternal = 20) OR (usiStepInternal = 21)), PT := T#30S);
+    AND ((usiStepInternal = 20) OR (usiStepInternal = 21) OR (usiStepInternal = 23)), PT := T#30S);
 tonRelease(IN := bSafetyOkInternal AND (eStateInternal = E_PatchStationState.Processing)
     AND (usiStepInternal = 50), PT := UDINT_TO_TIME(stProcessSettingsInternal.udiReleaseMs));
 tonVertical(IN := bSafetyOkInternal AND
@@ -188,7 +199,7 @@ ELSIF bSupervisionEnableInternal AND bSafetyOkInternal
     eSupportFaultInternal := E_SupportCylinderFault.ContradictorySensors;
     sDiagnosticInternal := 'Patch: support sensor conflict';
 ELSIF (eStateInternal = E_PatchStationState.Processing) AND NOT bFeedOnlyInternal
-    AND ((usiStepInternal = 20) OR (usiStepInternal = 21) OR (usiStepInternal = 22) OR (usiStepInternal = 30))
+    AND ((usiStepInternal = 20) OR (usiStepInternal = 21) OR (usiStepInternal = 23) OR (usiStepInternal = 22) OR (usiStepInternal = 30))
     AND (NOT bVerticalUpReadyInternal OR bVerticalDownReadyInternal) THEN
     eStateInternal := E_PatchStationState.Fault;
     stResultInternal.udiFaultCode := 8;
@@ -314,8 +325,8 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
                 AND bVerticalIndexReadyInternal THEN usiStepInternal := 20; END_IF
         20:
             bDriveRunRequestInternal := TRUE;
-            sDiagnosticInternal := 'Patch: M1 waiting for optical detection';
-            IF bPatchOpticalLeftInternal OR bPatchOpticalRightInternal THEN
+            sDiagnosticInternal := 'Patch: M1 waiting left optical detection';
+            IF bPatchOpticalLeftInternal THEN
                 bPatchDetectedInternal := TRUE;
                 bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
                 usiStepInternal := 21;
@@ -323,10 +334,22 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
         21:
             bDriveRunRequestInternal := TRUE;
             bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
-            sDiagnosticInternal := 'Patch: M1 waiting both optical trailing edges';
+            sDiagnosticInternal := 'Patch: M1 waiting left optical trailing edge';
             IF bPatchDetectedInternal AND bDriveMotionSeenInternal
-                AND bPatchLeftSeenInternal AND bPatchRightSeenInternal
-                AND NOT bPatchOpticalLeftInternal AND NOT bPatchOpticalRightInternal THEN
+                AND bPatchLeftSeenInternal
+                AND NOT bPatchOpticalLeftInternal THEN
+                IF tonDriveStopDelay.Q THEN
+                    bDriveRunRequestInternal := FALSE;
+                    usiStepInternal := 22;
+                ELSE
+                    usiStepInternal := 23;
+                END_IF
+            END_IF
+        23:
+            bDriveRunRequestInternal := TRUE;
+            bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
+            sDiagnosticInternal := 'Patch: M1 extra feed after left optical OFF';
+            IF tonDriveStopDelay.Q THEN
                 bDriveRunRequestInternal := FALSE;
                 usiStepInternal := 22;
             END_IF

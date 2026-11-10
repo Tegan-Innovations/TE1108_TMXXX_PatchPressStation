@@ -1,0 +1,7 @@
+# Checkpoint before temporary Patch nest-support trial — 2026-11-10
+
+Includes M1/M2 software speed defaults/limits 40/200 mm/s, air-delay default 3000 ms and maximum 5000 ms, temporary left-only patch detection, configurable M1 run-on after left TRUE -> FALSE (default 2000 ms, range 0–5000), native HMI Edit/Applied/Apply bindings and ADS mapping additions, and door-lock request timing aligned with the updated machine state on Reset.
+
+User reports the left-only feed worked well and the door Reset correction appears to have worked. These are user-provided commissioning observations. Scripted settings/run-on/door tests passed. Original M1 delay PLC/HMI offline builds succeeded; the later door patch offline build returned two failed projects without explanatory source diagnostics. A successful final compilation and supervised validation must be recorded before production acceptance. Native engineering HMI mapping repair read back Edit/Applied 2000; remote republication/browser operation is separate evidence.
+
+This checkpoint is made at the user's explicit commit/push request before the new temporary no-nest-support test. The nest-support trial is not part of this commit. Existing unrelated source/designer edits, hardware/NC/TwinSAFE configuration, generated files, editor state and publish credentials remain outside this checkpoint. HMI server configuration is staged semantically from HEAD with only the new delay mappings, corresponding role permissions and schema property; unrelated local configuration differences remain in the working copy.
