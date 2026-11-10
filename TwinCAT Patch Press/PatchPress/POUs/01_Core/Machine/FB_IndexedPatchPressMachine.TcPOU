@@ -49,6 +49,8 @@ VAR
     stOperatorNest : ST_Nest;
     stPatchDispenseNest : ST_Nest;
     stHeatStakeNest : ST_Nest;
+    stHeatStakePresenceResult : ST_ProcessResult;
+    stEmptyHeatStakePresenceResult : ST_ProcessResult;
     stVisionNest : ST_Nest;
 	stHistoryNest : ST_Nest;
 	stPatchDispenseCycleResult : ST_ProcessResult;
@@ -680,13 +682,14 @@ END_IF
 //---------------------------------------------------------------------------------------------------
 
 // Patch feeding owns its axis commands; it does not own physical safety outputs.
+// Stopping withdraws M1 control. FB_PatchFeedAxis retains power for its own
+// controlled halt; do not start a previously idle M1 simply by entering Stopping.
 fbPatchFeedManager.Cyclic(
     bDrivePermit := bPatchDispenseCommissioned AND stInputs.bMainDoorClosed
         AND GVL_Safety.bAirSupplySafe AND NOT stInputs.bEventFault
         AND ((eMachineState = E_MachineState.AutoCycle)
             OR ((eMachineState = E_MachineState.Manual)
-                AND (stCommand.bPatchManualEnable OR fbPatchDispense.IsBusy()))
-            OR (eMachineState = E_MachineState.Stopping)),
+                AND (stCommand.bPatchManualEnable OR fbPatchDispense.IsBusy()))),
     bDriveRunRequest := bPatchDriveRunRequest,
     bPermit := bPatchDispenseCommissioned
         AND ((eMachineState = E_MachineState.AutoCycle)
@@ -815,16 +818,37 @@ bVisionProcessingBeforeUpdate := fbVision.IsBusy();
 
 fbOperatorStation.Cyclic(bAutomaticActive := (eMachineState = E_MachineState.AutoCycle), bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy, stOperatorNest := stOperatorNest, bPartPresent := stInputs.bLoadingStationEaglePresent,
     bPbupPresent := stInputs.bLoadingStationPbupPresent, bTwoHandsSafe := stInputs.bTwoHandsSafe,
-    bResetRequest := stCommand.bReset, bRejectChutePartPresent := stInputs.bRejectChutePartPresent, bRequireRejectConfirm := stConfig.bRequireRejectConfirm, bAllowEmptyNestIndex := stConfig.bAllowEmptyNestIndex);
+    bResetRequest := stCommand.bReset, bRejectChutePartPresent := stInputs.bRejectChutePartPresent, bRequireRejectConfirm := stConfig.bRequireRejectConfirm
+        OR (stOperatorNest.stHeatStakeResult.bValid
+            AND (stOperatorNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode)), bAllowEmptyNestIndex := stConfig.bAllowEmptyNestIndex);
 stOperatorStatus := fbOperatorStation.GetStatus();
+
+// Acknowledge only this physical nest's warning on the operator's accepted reject edge.
+// Reset, stop, fault, sensor recovery and mere part removal do not clear it.
+IF stOperatorStatus.bRejectEdgeAccepted
+    AND stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy
+    AND (stInputs.eIndexPosition <> E_TablePosition.Unknown)
+    AND (stOperatorNest.nId >= 1) AND (stOperatorNest.nId <= 4)
+    AND stOperatorNest.stHeatStakeResult.bValid
+    AND (stOperatorNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode)
+THEN
+    stHeatStakePresenceResult := stOperatorNest.stHeatStakeResult;
+    stHeatStakePresenceResult.udiAlertCode := 0;
+    fbNestManager.StoreHeatStakeResultAtPosition(
+        ePosition := stConfig.eOperatorPosition,
+        stResult := stHeatStakePresenceResult);
+END_IF
+
 bPatchStartAllowed := stInputs.bIndexReady AND stInputs.bIndexLocked
     AND NOT stIndexStatus.bBusy AND NOT stCommand.bStop AND NOT stCommand.bReset
     AND NOT stCommand.bManualIndexForward AND NOT stInputs.bEventFault
     AND NOT stInputs.bEventCycleStopRequest AND NOT bRejectChuteStopRequestLatched
     AND NOT bAutoCycleStopRequestLatched AND NOT bProcessRequestIndex
     AND NOT tpPatchManualVerticalUp.Q AND NOT tpPatchManualVerticalDown.Q
-    AND NOT stCommand.bPatchVerticalUpRequest AND NOT stCommand.bPatchVerticalDownRequest
-    AND NOT stCommand.bPatchSupportExtendRequest AND NOT stCommand.bPatchSupportRetractRequest;
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//     AND NOT stCommand.bPatchVerticalUpRequest AND NOT stCommand.bPatchVerticalDownRequest
+//     AND NOT stCommand.bPatchSupportExtendRequest AND NOT stCommand.bPatchSupportRetractRequest;
+    AND NOT stCommand.bPatchVerticalUpRequest AND NOT stCommand.bPatchVerticalDownRequest;
 
 // Apply the ProcessCycle commands generated on the previous scan.
 IF stCommand.bReset OR bProcessCycleCompletePulse THEN
@@ -860,9 +884,37 @@ IF bProcessStartStations THEN
     END_IF
 
     IF bHeatStakeRequired THEN
-        fbHeatStake.RequestStart();
+        // Product crosscheck at admission, before any Heat Stake sequence is requested.
+        IF NOT stInputs.bHeatStakeEaglePresent THEN
+            IF (eMachineState = E_MachineState.AutoCycle)
+                AND stInputs.stSafety.bSafetyOk
+                AND stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy
+                AND (stInputs.eIndexPosition <> E_TablePosition.Unknown)
+                AND (stHeatStakeNest.nId >= 1) AND (stHeatStakeNest.nId <= 4)
+                AND NOT fbHeatStake.IsBusy()
+            THEN
+                stHeatStakePresenceResult := stEmptyHeatStakePresenceResult;
+                stHeatStakePresenceResult.bValid := TRUE;
+                stHeatStakePresenceResult.bPassed := FALSE;
+                stHeatStakePresenceResult.eCode := E_ProcessResultCode.Fail;
+                stHeatStakePresenceResult.udiAlertCode := GVL_MASTER.udiHeatStakePatchMissingAlertCode;
+                stHeatStakePresenceResult.sDetail := 'Patch not detected at Heat Stake - Heat FAIL / Vision NOT TESTED';
+                fbNestManager.StoreHeatStakeResultAtPosition(
+                    ePosition := stConfig.eHeatStakePosition,
+                    stResult := stHeatStakePresenceResult);
+                // Reclassify immediately so completion/fault handling cannot overwrite this FAIL.
+                stHeatStakeNest := fbNestManager.GetNestAtPosition(stConfig.eHeatStakePosition);
+                bHeatStakeRequired := FALSE;
+            END_IF
+        ELSE
+            fbHeatStake.RequestStart();
+        END_IF
     ELSE
-        fbNestManager.MarkHeatStakeNotTestedAtPosition(stConfig.eHeatStakePosition);
+        // Keep this product FAIL across cycle restarts until its reject is confirmed.
+        IF NOT (stHeatStakeNest.stHeatStakeResult.bValid
+            AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode)) THEN
+            fbNestManager.MarkHeatStakeNotTestedAtPosition(stConfig.eHeatStakePosition);
+        END_IF
     END_IF
 
     IF bVisionRequired THEN
@@ -1128,7 +1180,11 @@ bHeatStakeManualHeadDownAllowed :=
     AND NOT bHeatStakeManualActionBusy
     AND bHeatStakeManualHeadUnlocked
     AND stInputs.bHeatStakeHeadUp
-    AND NOT stInputs.bHeatStakeHeadDown;
+    AND NOT stInputs.bHeatStakeHeadDown
+    // Product protection also applies to a manual DOWN request with a loaded nest.
+    AND (NOT stHeatStakeNest.bPartPresent OR stInputs.bHeatStakeEaglePresent)
+    AND NOT (stHeatStakeNest.stHeatStakeResult.bValid
+        AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode));
 
 bHeatStakeManualHeadUpAllowed :=
     (eMachineState = E_MachineState.Manual)
@@ -1255,7 +1311,9 @@ bVisionManualRunSequenceAllowed :=
     AND stInputs.bHorizontalMiniSlideExtended
     AND stInputs.bVerticalMiniSlideRetracted
     AND stInputs.bRotaryGripperOpened
-    AND bVisionRotate0Confirmed;
+    AND bVisionRotate0Confirmed
+    AND NOT (stVisionNest.stHeatStakeResult.bValid
+        AND (stVisionNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode));
 	
 	
 	// =====================================================
@@ -1321,6 +1379,8 @@ bHeatStakeManualStakeAllowed :=
     AND NOT fbHeatStake.IsBusy()
     AND bHeatStakeManualHomePosition
     AND stInputs.bHeatStakeEaglePresent
+    AND NOT (stHeatStakeNest.stHeatStakeResult.bValid
+        AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode))
     AND stInputs.bHeatStakePatchPresent
     AND NOT stIndexStatus.bBusy;
 	
@@ -1592,6 +1652,8 @@ IF (eMachineState = E_MachineState.Manual)
     AND NOT fbVision.IsBusy()
     AND NOT fbVision.IsDone()
     AND NOT fbVision.IsFaulted()
+    AND NOT (stVisionNest.stHeatStakeResult.bValid
+        AND (stVisionNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode))
 THEN
     fbVision.RequestStart();
 END_IF;
@@ -2037,7 +2099,10 @@ ELSE
     stPatchDispenseStatus.eResultStatus := E_StationResultStatus.NotTested;
 END_IF
 
-IF NOT bHeatStakeRequired THEN
+IF stHeatStakeNest.stHeatStakeResult.bValid
+    AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode) THEN
+    stHeatStakeStatus.eResultStatus := E_StationResultStatus.Fail;
+ELSIF NOT bHeatStakeRequired THEN
     stHeatStakeStatus.eResultStatus := E_StationResultStatus.NotTested;
 ELSIF stHeatStakeNest.stHeatStakeResult.bValid THEN
     IF stHeatStakeNest.stHeatStakeResult.bPassed THEN
@@ -3155,28 +3220,34 @@ bAirAndDoorEnable :=
  bMainDoorHotLockRequired :=
      (eMachineState = E_MachineState.Stopped)
      AND NOT bMainDoorUnlockAcknowledged
-     AND (
-         (stHeatStakeTemperatureStatus.rHeater1TemperatureC >
-             GVL_Config.rMainDoorHotTemperatureLimitC)
-         OR
-         (stHeatStakeTemperatureStatus.rHeater2TemperatureC >
-             GVL_Config.rMainDoorHotTemperatureLimitC)
-     );
+     // TC3 is head/body feedback; TC1/TC2 cartridge temperatures do not set this demand.
+     // Equality requires acknowledgement; an unordered/NaN value is not considered cool.
+     AND NOT (stHeatStakeTemperatureStatus.rOverTempTemperatureC <
+         GVL_Config.rMainDoorHotTemperatureLimitC);
 
  // =====================================================
  // MAIN DOOR SUPERVISION
  // =====================================================
 
  fbMainDoorLock.Cyclic(
+     // Supervise the same lock demand sent to TwinSAFE, including hot-door retention.
+     // Retain an existing lock through the entry scan: feeder stop permissions
+     // take effect next scan. Never create a new lock demand on PowerUp/recovery.
      bEnableAutomatic := bAirAndDoorEnable
-         OR ((eMachineState = E_MachineState.Stopping) AND fbPatchFeedManager.stStatus.bBusy),
+         OR ((eMachineState = E_MachineState.Stopping)
+             AND (((ePreviousMachineState <> E_MachineState.Stopping)
+                     AND stMainDoorStatus.bLockRequest)
+                 OR fbPatchFeedManager.stStatus.bBusy))
+         OR bMainDoorHotLockRequired,
      bManualEnable := FALSE,
      bManualLockRequest := FALSE,
      bManualUnlockRequest := FALSE,
 
      bStopRequest :=
          (eMachineState = E_MachineState.Fault)
-         OR ((eMachineState = E_MachineState.Stopping) AND NOT fbPatchFeedManager.stStatus.bBusy)
+         OR ((eMachineState = E_MachineState.Stopping)
+             AND (ePreviousMachineState = E_MachineState.Stopping)
+             AND NOT fbPatchFeedManager.stStatus.bBusy)
          OR (
              (eMachineState = E_MachineState.Stopped)
              AND NOT bMainDoorHotLockRequired
@@ -3201,7 +3272,10 @@ bAirAndDoorEnable :=
 
  stOutputsInternal.bMainDoorLockRequest :=
      bAirAndDoorEnable
-     OR ((eMachineState = E_MachineState.Stopping) AND fbPatchFeedManager.stStatus.bBusy)
+     OR ((eMachineState = E_MachineState.Stopping)
+             AND (((ePreviousMachineState <> E_MachineState.Stopping)
+                     AND stMainDoorStatus.bLockRequest)
+                 OR fbPatchFeedManager.stStatus.bBusy))
      OR bMainDoorHotLockRequired;
 
 	///////////////////////////////
@@ -3360,6 +3434,8 @@ THEN
     // Vision becomes Fail.
 
     IF stVisionNest.bPartPresent
+        AND NOT (stVisionNest.stHeatStakeResult.bValid
+            AND (stVisionNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode))
         AND (
             bVisionProcessingBeforeUpdate
             OR (bProcessStartStations AND bVisionRequired)
@@ -3550,6 +3626,8 @@ stStatus.bHeatStakeHeadDownTimeoutFault := bHeatStakeStationHeadDownTimeoutFault
 stStatus.bHeatStakeHeadUpTimeoutFault := bHeatStakeStationHeadUpTimeoutFault OR bHeatStakeManualHeadUpTimeoutFault;
 stStatus.bHeatStakeHeadSensorConflictFault := bHeatStakeStationHeadSensorConflictFault OR (stInputs.bHeatStakeHeadUp AND stInputs.bHeatStakeHeadDown);
 stStatus.stPermissives := stPermissives;
+// Refresh published records after same-scan admission/reject updates.
+aNestSnapshot := fbNestManager.GetAllNests();
 stStatus.aNest := aNestSnapshot;
 stStatus.aNestStatistics := fbNestManager.GetAllNestStatistics();
 stStatus.sAutoCycleBlockReason := sAutoCycleBlockReason;

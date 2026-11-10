@@ -1,0 +1,19 @@
+# Stop door lock reassertion — correction
+
+Read-only runtime capture authorized by user. No machine commands, variable writes, reset, download, publication or TwinSAFE changes sent by the agent. Operator performed Reset/Stop.
+
+Evidence `capture-20261110-121304.json` (3525 samples, ADS batch reads, not guaranteed scan-atomic): head approximately 32 C, applied limit 40 C, hot-hold false throughout. At 12:12:56.270661 UTC Stop=TRUE, machine Stopping, door Unlocking, supervisor and TwinSAFE lock requests FALSE. At 12:12:56.280595 UTC machine remains Stopping, bAirAndDoorEnable FALSE and hot-hold FALSE, but supervisor and physical lock requests return TRUE and door state becomes Locked. At 12:12:56.295375 UTC locked feedback disappears and FeedbackMismatch occurs. bDoorUnsafe stayed FALSE. This separates the observed failure from the earlier uncorrelated MON EDM event.
+
+Source cause: unconditional `Stopping` admission in M1 bDrivePermit powers an idle M1 on the following scan. Axis power-up/shutdown counts as manager Busy, which reasserts the lock request after release. This also leaves a scan-order gap when an already enabled idle axis begins its shutdown. Current test reproduces the old idle-M1 power-up/relock path using executable axis state logic and caller expressions.
+
+Correction only in machine Cyclic:
+
+- Withdraw M1 control in Stopping; FB_PatchFeedAxis already owns and retains power for its controlled halt before disabling. M1 must not start merely because Stop was requested.
+- Retain an existing door lock request through entry to Stopping, until the next scan applies stop permissions. Continue holding while feeder Busy; then normal release. Apply identical demand to supervisor and physical request. Entry retention is guarded by the previous published lock request, so PowerUp/fault recovery does not introduce a new request.
+- Existing temperature acknowledgement, unsafe/closed/locked supervision, timeout values, station completion policies, motion parameters and TwinSAFE unchanged.
+
+Validation: fresh snapshots/hash-checked dry-run/write, XAE readback and saved-file synchronization; check_stop_fix.py passed old-behavior reproduction, Ready/Manual/Auto entry, monitor/idle/moving/halt/disable axis cases, 648 lock-demand combinations, hot retention/cold release, and no new PowerUp/recovery request. Scoped diff whitespace check passed. Final offline PLC build succeeded with zero failed projects; earlier attempts failed without source diagnostics. Independent MSBuild invocation cannot parse TcSmProject and is not the validation result. Final structured successful XAE result saved separately.
+
+Commissioning still required after operator downloads matching PLC: cold Ready Stop and Manual Stop should reach Stopped with one lock withdrawal, no relock and no N21; moving M1/M2/M3 must complete controlled stopping before lock release; Auto Stop must preserve active station completion; hot Stopped must retain existing acknowledgement behavior; Reset reacquires lock; real unsafe feedback and required-lock loss still fault; PowerUp/fault recovery must not acquire a new lock solely from entry retention. Test under engineering supervision. No HMI publication required for this machine-only correction. No commit/push requested or performed.
+
+Capture tooling note: an initial named method input was not exposed by ADS (1808), so it was replaced with the published supervisor lock request. First sequential capture omitted an event; another captured a coarse transition. One extended capture was lost when the execution tool forcibly terminated the process before finally ran; no conclusion uses that lost recording. Collector now continuously flushes JSONL and accepts a local stop marker for graceful completion. Final diagnosis uses the preserved batch-read capture above. Runtime symbol sizes are used to decode REAL/LREAL correctly.
