@@ -3610,7 +3610,7 @@ stStatus.bSafetyRunRequested := stOutputsInternal.bSafetyRunRequest;
 stStatus.bEventFault := stInputs.bEventFault;
 stStatus.bCycleStopRequested := stInputs.bEventCycleStopRequest;
 stStatus.bIndexPermissive := stPermissives.bIndexMoveAllowed;
-stStatus.bEnableSetting := (eMachineState = E_MachineState.Stopped) OR (eMachineState = E_MachineState.Manual);
+stStatus.bEnableSetting := (eMachineState = E_MachineState.Stopped);
 stStatus.bAllStationsCommissioned := bPatchDispenseCommissioned AND bHeatStakeCommissioned AND bVisionCommissioned;
 stStatus.bAutoCycleAllowed := bAutoCycleAllowed;
 stStatus.bDisabledNestPartIndexBlocked := bDisabledNestPartPresent;
