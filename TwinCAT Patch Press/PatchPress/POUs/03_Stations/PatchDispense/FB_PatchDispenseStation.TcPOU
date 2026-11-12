@@ -93,6 +93,7 @@ VAR
     bVerticalIndexReadyInternal : BOOL;
     tonVerticalTimedUp : TON;
     tonVerticalTimedDown : TON;
+    bPatchRightOffSeenInternal : BOOL; // Fresh OFF then ON required for each feed.
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -153,21 +154,26 @@ IF NOT bHomeExecutionAllowedInternal THEN usiHomeStepInternal := 0; END_IF
 tonHomeSupportRetract(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 10), PT := T#300MS);
 tonHomeVerticalUp(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 30)
     AND NOT bVerticalUpReadyInternal, PT := tSupportMoveTimeout);
-// TEMPORARY: left optical only; right input remains raw for diagnostics.
-// Delay starts at left patch detection; feed-only never requests airblow.
-tonAirBlowDelay(IN := bSafetyOkInternal AND NOT bFeedOnlyInternal
-    AND (eStateInternal = E_PatchStationState.Processing)
-    AND (((usiStepInternal = 20) AND bPatchOpticalLeftInternal)
-        OR (usiStepInternal = 21) OR (usiStepInternal = 23) OR (usiStepInternal = 22) OR (usiStepInternal = 40)),
-    PT := UDINT_TO_TIME(stProcessSettingsInternal.udiAirBlowDelayMs));
-// Start on qualified left trailing edge and latch timing in step 23.
-// A later patch or sensor bounce cannot restart or extend the run-on.
+// Vacuum starts on the rising edge AFTER the first real RIGHT falling edge.
+// RIGHT must first be seen ON in this feed; an initial OFF does not arm vacuum.
+IF NOT bSafetyOkInternal OR NOT bEnableInternal OR NOT bCommissionedInternal
+    OR bStopRequestInternal OR bHomeRequestInternal
+    OR (eStateInternal <> E_PatchStationState.Processing) OR (usiStepInternal <> 20) THEN
+    bPatchRightOffSeenInternal := FALSE;
+ELSIF bPatchRightSeenInternal AND NOT bPatchOpticalRightInternal THEN
+    bPatchRightOffSeenInternal := TRUE;
+END_IF
+// Retained legacy timer/settings member is no longer used to start the Venturi.
+tonAirBlowDelay(IN := FALSE);
+// Both sensors OFF after the qualified RIGHT pulse starts the existing run-on.
+// Step 23 latches timing; later sensor changes do not restart it.
 tonDriveStopDelay(IN := bSafetyOkInternal AND bEnableInternal AND bCommissionedInternal
     AND NOT bStopRequestInternal AND NOT bHomeRequestInternal
     AND (eStateInternal = E_PatchStationState.Processing)
     AND ((usiStepInternal = 23)
-        OR ((usiStepInternal = 21) AND bPatchDetectedInternal AND bPatchLeftSeenInternal
-            AND (bDriveMotionSeenInternal OR bDriveMovingInternal) AND NOT bPatchOpticalLeftInternal)),
+        OR ((usiStepInternal = 21) AND bPatchDetectedInternal AND bPatchRightSeenInternal
+            AND (bDriveMotionSeenInternal OR bDriveMovingInternal)
+            AND NOT bPatchOpticalLeftInternal AND NOT bPatchOpticalRightInternal)),
     PT := UDINT_TO_TIME(stProcessSettingsInternal.udiDriveStopDelayMs));
 tonFeed(IN := bSafetyOkInternal AND (eStateInternal = E_PatchStationState.Processing)
     AND ((usiStepInternal = 20) OR (usiStepInternal = 21) OR (usiStepInternal = 23)), PT := T#30S);
@@ -325,19 +331,19 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
                 AND bVerticalIndexReadyInternal THEN usiStepInternal := 20; END_IF
         20:
             bDriveRunRequestInternal := TRUE;
-            sDiagnosticInternal := 'Patch: M1 waiting left optical detection';
-            IF bPatchOpticalLeftInternal THEN
+            sDiagnosticInternal := 'Patch: M1 waiting RIGHT falling then rising edge';
+            IF bPatchRightOffSeenInternal AND bPatchOpticalRightInternal THEN
                 bPatchDetectedInternal := TRUE;
-                bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
+                bAirBlowRequestInternal := NOT bFeedOnlyInternal;
                 usiStepInternal := 21;
             END_IF
         21:
             bDriveRunRequestInternal := TRUE;
-            bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
-            sDiagnosticInternal := 'Patch: M1 waiting left optical trailing edge';
+            bAirBlowRequestInternal := NOT bFeedOnlyInternal;
+            sDiagnosticInternal := 'Patch: vacuum ON - waiting both optical OFF';
             IF bPatchDetectedInternal AND bDriveMotionSeenInternal
-                AND bPatchLeftSeenInternal
-                AND NOT bPatchOpticalLeftInternal THEN
+                AND bPatchRightSeenInternal
+                AND NOT bPatchOpticalLeftInternal AND NOT bPatchOpticalRightInternal THEN
                 IF tonDriveStopDelay.Q THEN
                     bDriveRunRequestInternal := FALSE;
                     usiStepInternal := 22;
@@ -347,14 +353,14 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
             END_IF
         23:
             bDriveRunRequestInternal := TRUE;
-            bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
-            sDiagnosticInternal := 'Patch: M1 extra feed after left optical OFF';
+            bAirBlowRequestInternal := NOT bFeedOnlyInternal;
+            sDiagnosticInternal := 'Patch: M1 extra feed after both optical OFF';
             IF tonDriveStopDelay.Q THEN
                 bDriveRunRequestInternal := FALSE;
                 usiStepInternal := 22;
             END_IF
         22:
-            bAirBlowRequestInternal := NOT bFeedOnlyInternal AND tonAirBlowDelay.Q;
+            bAirBlowRequestInternal := NOT bFeedOnlyInternal;
             sDiagnosticInternal := 'Patch: waiting M1 standstill';
             IF bDriveStandstillInternal AND NOT bDriveBusyInternal THEN
                 IF bFeedOnlyInternal THEN
@@ -367,7 +373,7 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
             END_IF
         40:
             bVerticalDownRequestInternal := TRUE;
-            bAirBlowRequestInternal := tonAirBlowDelay.Q;
+            bAirBlowRequestInternal := TRUE;
             sDiagnosticInternal := 'Patch: vertical DOWN';
             IF bVerticalDownReadyInternal AND NOT bVerticalUpReadyInternal THEN
                 bAirBlowRequestInternal := FALSE;
@@ -387,6 +393,9 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
             bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
             sDiagnosticInternal := 'Patch: lowering nest';
             IF bSupportRetractedInternal AND NOT bSupportExtendedInternal THEN
+                // Manual dispense has returned to its confirmed idle position.
+                // Restore HOME cleared during DOWN so the HMI can show Ready again.
+                IF bManualModeInternal THEN bHomeConfirmedInternal := TRUE; END_IF
                 stResultInternal.bValid := TRUE;
                 stResultInternal.bPassed := NOT bSimulatedFail;
                 stResultInternal.udiFaultCode := 0;
