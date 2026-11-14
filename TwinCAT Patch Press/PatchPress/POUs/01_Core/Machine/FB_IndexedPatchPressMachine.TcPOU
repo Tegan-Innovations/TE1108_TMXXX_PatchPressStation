@@ -22,6 +22,23 @@ VAR
     fbHeatStakeTemperature : FB_HeatStakeTemperatureControl;
     fbHeatStakePressureRegulator : FB_VeabPressureRegulator;
     fbVision : FB_VisionStation;
+    fbVisionManualImages : FB_VisionManualImages;
+    aVisionPbupReferenceKnown : ARRAY[1..4] OF BOOL;
+    uiVisionPbupNest : UINT;
+    uiVisionPbupEditNest : UINT;
+    uiVisionImageOwnedNest : UINT;
+    eVisionImageOwnedIndex : E_TablePosition;
+    bVisionImagePermit : BOOL;
+    bVisionImageJogBusy : BOOL;
+    bVisionImageOwnedBeforeUpdate : BOOL;
+    bVisionImageRecoveryRequired : BOOL;
+    bManualImageTriggerCommand : BOOL;
+    bManualCameraTransportReady : BOOL;
+    bManualImageCameraFailed : BOOL;
+    bVisionPbupFitted : BOOL;
+    bVisionPbupKnown : BOOL;
+    rtVisionPbupAutoBusy : R_TRIG;
+    rtVisionPbupAutoDone : R_TRIG;
     tonVisionRotate0Confirm : TON;
     tonVisionRotate180Confirm : TON;
     tVisionRotaryConfirm : TIME := T#1S;
@@ -250,6 +267,7 @@ VAR
 		
 		// Vision Manual Mode
 	bVisionManualEnableAllowed          : BOOL;
+    bVisionCameraStartBlocked : BOOL; // Live camera error/recovery latch; blocks new starts.
 	
 	bVisionHorizontalBackAllowed        : BOOL;
 	bVisionHorizontalFrontAllowed       : BOOL;
@@ -304,8 +322,7 @@ VAR
 	// =====================================================
 	// PATCH DISPENSING - MANUAL VERTICAL
 	// =====================================================
-	tpPatchManualVerticalUp   : TP;
-	tpPatchManualVerticalDown : TP;
+    bPatchManualVerticalDownHeld : BOOL; // Volatile target; never replay DOWN after permission loss.
 	
 	bPatchVerticalUpAllowed   : BOOL;
 	bPatchVerticalDownAllowed : BOOL;
@@ -313,6 +330,38 @@ VAR
 	tonPatchHomeUpOutputVerify : TON;
 	bPatchHomeUpOutputVerified : BOOL := FALSE;
 	
+    // Per-product volatile confidence/location; existing retained fitted array stays compatible.
+    aVisionProductLocation : ARRAY[1..4] OF USINT; // 0 unknown, 1 nest, 2 legacy nest alias, 3 held; PBUP state is separate.
+    aVisionPbupSource : ARRAY[1..4] OF USINT;
+    aVisionLoadEmptySeen : ARRAY[1..4] OF BOOL;
+    aVisionLoadCandidate : ARRAY[1..4] OF BOOL;
+    uiVisionLoadObservedNest : UINT;
+    tonVisionLoadEmpty : TON;
+    tonVisionLoadPair : TON;
+    bManualIndexAttempt : BOOL;
+    bManualIndexStartAllowed : BOOL;
+    bManualIndexWarningActive : BOOL;
+    bManualIndexBlockVision : BOOL;
+    bManualIndexBlockHeat : BOOL;
+    bManualIndexBlockPatch : BOOL;
+    bManualIndexBlockOther : BOOL;
+    bManualCameraDrainResult : BOOL;
+    bManualCameraDiscardedResult : BOOL;
+    stManualCameraDiscardedResults : ST_VisionResults;
+    bManualCameraRecoveryAllowed : BOOL;
+    bManualCameraRecoveryActive : BOOL;
+    bManualCameraRecoveryFailed : BOOL;
+    bManualCameraCaptureAfterRecovery : BOOL;
+    bManualCameraClearError0 : BOOL;
+    bManualCameraClearError1 : BOOL;
+    usiManualCameraRecoveryStep : USINT;
+    udiManualCameraRecoveryImage : UDINT;
+    udiManualCameraRecoveryError0 : UDINT;
+    udiManualCameraRecoveryError1 : UDINT;
+    tonManualCameraRecovery : TON;
+    sManualCameraRecoveryMessage : STRING(160);
+    bManualCameraResetOnly : BOOL;
+    bManualCameraRecoveredPulse : BOOL;
 END_VAR
 VAR
     bManualCameraAllowed : BOOL;
@@ -549,22 +598,138 @@ fbVSCamera(
 );
 bVisionGetCurrentProgram := fbVSCamera.GetCurrentProgram();
 
+// Sample the physical edge even when disabled/blocked. Never create an edge on Enable.
+rtManualIndexMove(CLK := stInputs.bTwoHandsSafe);
+bManualIndexAttempt := rtManualIndexMove.Q AND (eMachineState = E_MachineState.Manual)
+    AND stCommand.bIndexerManualEnable AND NOT bRejectChuteStopRequestLatched;
+
 // Manual camera commands are consumed once; camera output ownership remains here.
 GVL_HMI.bCameraConnected := (GVL_EtherCAT.wVisionPnState = 0)
     AND (GVL_EtherCAT.wVisionPnDiag = 2)
     AND GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational;
 bManualCameraAllowed := (eMachineState = E_MachineState.Manual)
     AND stCommand.bVisionManualEnable AND stInputs.stSafety.bSafetyOk
-    AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
+    AND (GVL_EtherCAT.stVSKeyenceCamera.bRunStatus OR fbVSCamera.IsFaulted()
+        OR bManualCameraRecoveryActive OR bVisionCameraStartBlocked
+        OR fbVisionManualImages.bPrepared OR (fbVisionManualImages.usiStep = 210)
+        OR fbVisionManualImages.bCameraWarning)
     AND NOT stCommand.bStop AND NOT stCommand.bReset
-    AND NOT stCommand.bVisionManualRunSequence AND NOT stCommand.bVisionManualHomeRequest
-    AND NOT fbVision.IsBusy() AND NOT bVisionManualSequenceActive AND NOT bVisionManualHomeActive;
-bManualCameraOwner := bManualCameraAllowed
-    AND (GVL_HMI.udiCameraManualImageSelection >= 1)
-    AND (GVL_HMI.udiCameraManualImageSelection <= 4);
+    AND (fbVisionManualImages.bActive
+        OR (NOT stCommand.bVisionManualRunSequence AND NOT stCommand.bVisionManualHomeRequest))
+    AND stInputs.bMainDoorClosed AND GVL_Safety.bAirSupplySafe
+    AND bVisionCommissioned AND NOT stInputs.bEventFault
+    AND NOT stInputs.bEventCycleStopRequest AND NOT bRejectChuteStopRequestLatched
+    AND stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy
+    AND (stInputs.eIndexPosition <> E_TablePosition.Unknown)
+    AND (NOT fbVision.IsBusy() OR fbVisionManualImages.bActive)
+    AND NOT fbVisionManualImages.bFault
+    AND NOT bVisionManualSequenceActive AND NOT bVisionManualHomeActive;
+GVL_HMI.bCameraResetAllowed := (eMachineState = E_MachineState.Manual)
+    AND stCommand.bVisionManualEnable AND stInputs.stSafety.bSafetyOk
+    AND stInputs.bMainDoorClosed AND GVL_Safety.bAirSupplySafe AND GVL_HMI.bCameraConnected
+    AND NOT stCommand.bStop AND NOT stCommand.bReset AND NOT stInputs.bEventFault
+    AND NOT stInputs.bEventCycleStopRequest AND NOT bRejectChuteStopRequestLatched
+    AND stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy
+    AND (stInputs.eIndexPosition <> E_TablePosition.Unknown)
+    AND NOT bVisionManualSequenceActive AND NOT bVisionManualHomeActive
+    AND (usiManualCameraStep = 0) AND NOT bManualCameraRecoveryActive
+    AND NOT fbVisionManualImages.bBusy AND NOT bVisionImageJogBusy
+    AND NOT stInputs.bTwoHandsSafe AND NOT stIndexStatus.bTwoHandRequired;
+bManualCameraOwner := (bManualCameraAllowed
+    AND (GVL_HMI.udiCameraManualImageSelection >= 1) AND (GVL_HMI.udiCameraManualImageSelection <= 4))
+    OR (GVL_HMI.bCameraReset AND GVL_HMI.bCameraResetAllowed)
+    OR (bManualCameraRecoveryActive AND (eMachineState = E_MachineState.Manual)
+        AND stInputs.stSafety.bSafetyOk AND stInputs.bMainDoorClosed AND GVL_Safety.bAirSupplySafe
+        AND GVL_HMI.bCameraConnected AND NOT stCommand.bStop AND NOT stCommand.bReset
+        AND NOT stInputs.bEventFault AND NOT stInputs.bEventCycleStopRequest
+        AND NOT bRejectChuteStopRequestLatched);
+bManualImageTriggerCommand := GVL_HMI.bCameraManualTrigger;
+bManualImageCameraFailed := FALSE;
+bManualCameraRecoveredPulse := FALSE;
 bManualCameraReset := FALSE;
 bManualCameraConsume := FALSE;
 tonManualCamera(IN := (usiManualCameraStep <> 0), PT := T#10S);
+// An explicit operator click may recover camera errors. No reset/GoToRun/motion.
+// A click at an already prepared position requests ONE capture after recovery.
+// At HOME without a prepared image it recovers only; Prepare is still required.
+bManualCameraRecoveryAllowed := bManualCameraOwner
+    AND (bVisionCameraStartBlocked OR fbVisionManualImages.bCameraWarning)
+    AND GVL_HMI.bCameraConnected AND (usiManualCameraStep = 0)
+    AND NOT bManualCameraRecoveryActive AND NOT fbVisionManualImages.bFault
+    AND NOT fbVisionManualImages.bBusy AND NOT bVisionImageJogBusy
+    AND (fbVisionManualImages.bPrepared OR stVisionStatus.bHome)
+    AND NOT stInputs.bTwoHandsSafe AND NOT stIndexStatus.bTwoHandRequired;
+IF (bManualImageTriggerCommand AND bManualCameraRecoveryAllowed)
+    OR (GVL_HMI.bCameraReset AND GVL_HMI.bCameraResetAllowed) THEN
+    bManualCameraResetOnly := GVL_HMI.bCameraReset;
+    bManualCameraRecoveryActive := TRUE;
+    bManualCameraRecoveryFailed := FALSE;
+    usiManualCameraRecoveryStep := 1;
+    udiManualCameraRecoveryImage := GVL_HMI.udiCameraManualImageSelection;
+    IF bManualCameraResetOnly THEN
+        udiManualCameraRecoveryImage := GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber + 1;
+    END_IF
+    bManualCameraCaptureAfterRecovery := NOT bManualCameraResetOnly AND fbVisionManualImages.bPrepared
+        AND (fbVisionManualImages.udiPreparedImage = udiManualCameraRecoveryImage)
+        AND bVisionPbupKnown;
+    bManualCameraClearError0 := GVL_EtherCAT.stVSKeyenceCamera.abError[1];
+    bManualCameraClearError1 := GVL_EtherCAT.stVSKeyenceCamera.abError[2];
+    udiManualCameraRecoveryError0 := GVL_EtherCAT.udiVisionError0Code;
+    udiManualCameraRecoveryError1 := GVL_EtherCAT.udiVisionError1Code;
+    // Discard only the old software camera transaction. Live error feedback stays visible.
+    bManualCameraReset := TRUE;
+END_IF
+tonManualCameraRecovery(IN := bManualCameraRecoveryActive, PT := T#3S);
+IF bManualCameraRecoveryActive THEN
+    bManualImageTriggerCommand := FALSE;
+    IF NOT bManualCameraOwner OR NOT GVL_HMI.bCameraConnected
+        OR (NOT bManualCameraResetOnly AND (GVL_HMI.udiCameraManualImageSelection <> udiManualCameraRecoveryImage))
+        OR bVisionImageJogBusy OR stCommand.bStop OR stCommand.bReset
+        OR (bManualCameraCaptureAfterRecovery AND NOT fbVisionManualImages.bPrepared) THEN
+        bManualCameraRecoveryActive := FALSE;
+        bManualCameraCaptureAfterRecovery := FALSE;
+        bManualCameraRecoveryFailed := TRUE;
+        sManualCameraRecoveryMessage := 'Camera recovery cancelled; no capture sent';
+    ELSIF tonManualCameraRecovery.Q THEN
+        bManualCameraRecoveryActive := FALSE;
+        bManualCameraCaptureAfterRecovery := FALSE;
+        bManualCameraRecoveryFailed := TRUE;
+        sManualCameraRecoveryMessage := 'Camera recovery timeout; check camera, then retry';
+    ELSIF (GVL_EtherCAT.stVSKeyenceCamera.abError[1]
+            AND (NOT bManualCameraClearError0 OR (GVL_EtherCAT.udiVisionError0Code <> udiManualCameraRecoveryError0)))
+        OR (GVL_EtherCAT.stVSKeyenceCamera.abError[2]
+            AND (NOT bManualCameraClearError1 OR (GVL_EtherCAT.udiVisionError1Code <> udiManualCameraRecoveryError1))) THEN
+        bManualCameraRecoveryActive := FALSE;
+        bManualCameraCaptureAfterRecovery := FALSE;
+        bManualCameraRecoveryFailed := TRUE;
+        sManualCameraRecoveryMessage := 'Camera error changed; inspect camera before retry';
+    ELSIF usiManualCameraRecoveryStep = 1 THEN
+        sManualCameraRecoveryMessage := 'Camera: requesting error clear';
+        IF NOT GVL_EtherCAT.stVSKeyenceCamera.abError[1]
+            AND NOT GVL_EtherCAT.stVSKeyenceCamera.abError[2] THEN
+            usiManualCameraRecoveryStep := 2;
+        END_IF
+    ELSE
+        sManualCameraRecoveryMessage := 'Camera: waiting for RUN / clean handshake';
+        IF GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
+            AND GVL_EtherCAT.stVSKeyenceCamera.bTriggerReady
+            AND NOT GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge
+            AND NOT GVL_EtherCAT.stVSKeyenceCamera.bResultsReady
+            AND NOT GVL_EtherCAT.stVSKeyenceCamera.bResultAck
+            AND NOT GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadExecute
+            AND (GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber = udiManualCameraRecoveryImage - 1) THEN
+            bManualCameraRecoveryActive := FALSE;
+            bManualCameraRecoveryFailed := FALSE;
+            bManualCameraRecoveredPulse := TRUE;
+            bManualImageTriggerCommand := bManualCameraCaptureAfterRecovery;
+            bManualCameraCaptureAfterRecovery := FALSE;
+            sManualCameraRecoveryMessage := 'Camera recovered; prepare if no position is reserved';
+        END_IF
+    END_IF
+END_IF
+
+GVL_HMI.bCameraReset := FALSE; // Accepted or rejected once, never queued.
+IF NOT bManualCameraRecoveryActive THEN bManualCameraResetOnly := FALSE; END_IF
 IF NOT bManualCameraOwner THEN
     IF usiManualCameraStep <> 0 THEN bManualCameraReset := TRUE; END_IF
     usiManualCameraStep := 0;
@@ -577,10 +742,11 @@ ELSE
         GVL_HMI.bCameraManualPass := FALSE;
         GVL_HMI.bCameraManualFail := FALSE;
     END_IF
-    IF GVL_HMI.bCameraManualTrigger AND (usiManualCameraStep = 0)
+    IF fbVisionManualImages.bActive AND fbVisionManualImages.bCaptureRequest
+        AND (usiManualCameraStep = 0)
         AND GVL_HMI.bCameraConnected AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
         AND NOT fbVSCamera.IsFaulted() THEN
-        udiManualCameraProgram := GVL_HMI.udiCameraManualImageSelection - 1;
+        udiManualCameraProgram := fbVisionManualImages.udiPreparedImage - 1;
         usiManualCameraStep := 10;
         bManualCameraReset := TRUE;
         GVL_HMI.bCameraManualPass := FALSE;
@@ -588,10 +754,12 @@ ELSE
         GVL_HMI.sCameraManualMessage := 'Loading selected program';
     END_IF
     IF usiManualCameraStep <> 0 THEN
-        IF NOT GVL_HMI.bCameraConnected OR NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
+        IF fbVisionManualImages.bCameraWarning
+            OR NOT GVL_HMI.bCameraConnected OR NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
             OR fbVSCamera.IsFaulted() OR fbVSCamera.bRecoveryFailed OR tonManualCamera.Q THEN
             usiManualCameraStep := 0;
             bManualCameraReset := TRUE;
+            bManualImageCameraFailed := TRUE;
             GVL_HMI.sCameraManualMessage := 'Capture aborted: connection, Run, camera error or timeout';
         ELSIF (usiManualCameraStep = 10)
             AND (GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber = udiManualCameraProgram)
@@ -607,7 +775,10 @@ ELSE
 END_IF
 GVL_HMI.bCameraManualTrigger := FALSE;
 IF bManualCameraOwner THEN
-    IF usiManualCameraStep = 0 THEN
+    IF (usiManualCameraStep = 0) AND bManualCameraResetOnly THEN
+        udiManualCameraProgram := udiManualCameraRecoveryImage - 1;
+    ELSIF (usiManualCameraStep = 0) AND (GVL_HMI.udiCameraManualImageSelection >= 1)
+        AND (GVL_HMI.udiCameraManualImageSelection <= 4) THEN
         udiManualCameraProgram := GVL_HMI.udiCameraManualImageSelection - 1;
     END_IF
 END_IF
@@ -620,9 +791,15 @@ END_IF
 
 // Apply previous-scan station commands, then sample ACK/result in this scan.
 // Close an unacknowledged moving-picture request at the physical 180 end sensor.
-IF NOT bVisionTriggerRequest THEN bVisionRotatingCaptureAccepted := FALSE; END_IF
+IF (bManualCameraOwner AND (usiManualCameraStep = 0))
+    OR (NOT bManualCameraOwner AND NOT bVisionTriggerRequest) THEN
+    bVisionRotatingCaptureAccepted := FALSE;
+END_IF
 bVisionTriggerAccepted := fbVSCamera.RequestTrigger(
-    bEnable := (bManualCameraOwner AND (usiManualCameraStep = 20))
+    bEnable := (bManualCameraOwner AND (usiManualCameraStep = 20)
+        AND ((udiManualCameraProgram <> 1) OR NOT fbVisionManualImages.bMovingCapture
+            OR NOT stInputs.bRotaryGripperPlace180 OR bVisionRotatingCaptureAccepted
+            OR GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge))
         OR (NOT bManualCameraOwner AND bVisionTriggerRequest
         AND ((GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber <> 1)
             OR NOT stInputs.bRotaryGripperPlace180
@@ -632,11 +809,13 @@ IF bVisionTriggerAccepted AND (GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNum
     bVisionRotatingCaptureAccepted := TRUE;
 END_IF
 IF bManualCameraOwner THEN
-    fbVSCamera.RequestChangeProgram(bEnable := TRUE, nProgramNumber := udiManualCameraProgram);
+    fbVSCamera.RequestChangeProgram(bEnable := NOT bManualCameraResetOnly, nProgramNumber := udiManualCameraProgram);
 ELSE
     fbVSCamera.RequestChangeProgram(bEnable := bVisionChangeProgramRequest, nProgramNumber := nVisionProgramNumber);
 END_IF
 fbVSCamera.Cyclic();
+// A pre-existing camera error must be visible before a new station attempt.
+bVisionCameraStartBlocked := fbVSCamera.IsFaulted() OR fbVSCamera.bRecoveryFailed;
 bVisionGetResultsReadyRequest := fbVSCamera.GetResultsReady();
 IF bManualCameraOwner AND (usiManualCameraStep = 20) AND bVisionGetResultsReadyRequest THEN
     bManualCameraConsume := fbVSCamera.GetResults(stVisionResults => stManualCameraResults, bResetResults := FALSE);
@@ -651,16 +830,18 @@ IF bManualCameraOwner AND (usiManualCameraStep = 20) AND bVisionGetResultsReadyR
     END_IF
 END_IF
 GVL_HMI.bCameraManualAllowed := bManualCameraAllowed;
-GVL_HMI.bCameraManualBusy := (usiManualCameraStep <> 0)
+GVL_HMI.bCameraManualBusy := bManualCameraRecoveryActive OR (usiManualCameraStep <> 0)
     OR (bManualCameraOwner AND GVL_HMI.bCameraConnected AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
         AND (GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber <> udiManualCameraProgram));
-GVL_HMI.bCameraManualReady := bManualCameraOwner AND GVL_HMI.bCameraConnected
+bManualCameraTransportReady := bManualCameraOwner AND GVL_HMI.bCameraConnected
     AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus AND NOT fbVSCamera.IsFaulted()
     AND NOT fbVSCamera.bRecoveryFailed AND NOT GVL_HMI.bCameraManualBusy
     AND (GVL_EtherCAT.stVSKeyenceCamera.bCurrentProgramNumber = udiManualCameraProgram)
     AND GVL_EtherCAT.stVSKeyenceCamera.bTriggerReady
     AND NOT GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge
-    AND NOT GVL_EtherCAT.stVSKeyenceCamera.bResultsReady;
+    AND NOT GVL_EtherCAT.stVSKeyenceCamera.bResultsReady
+    AND NOT GVL_EtherCAT.stVSKeyenceCamera.bResultAck
+    AND NOT bManualCameraRecoveryActive;
 
 
 IF NOT bManualCameraOwner AND bVisionGetResultsRequest
@@ -669,8 +850,18 @@ IF NOT bManualCameraOwner AND bVisionGetResultsRequest
     fbVSCamera.GetResults(stVisionResults => nVisionResults, bResetResults := FALSE);
 END_IF
 
+bManualCameraDrainResult := FALSE;
+IF bManualCameraOwner AND (usiManualCameraStep = 0)
+    AND NOT fbVisionManualImages.bBusy AND NOT fbVisionManualImages.bCaptureRequest
+    AND NOT fbVSCamera.IsFaulted() AND NOT fbVSCamera.bRecoveryFailed THEN
+    bManualCameraDiscardedResult := fbVSCamera.GetResults(
+        stVisionResults => stManualCameraDiscardedResults, bResetResults := FALSE);
+    bManualCameraDrainResult := GVL_EtherCAT.stVSKeyenceCamera.bResultsReady
+        OR bManualCameraDiscardedResult;
+END_IF
+
 // Copy the latched payload before acknowledging/releasing it.
-IF (bManualCameraOwner AND (usiManualCameraStep = 30))
+IF bManualCameraDrainResult OR (bManualCameraOwner AND (usiManualCameraStep = 30))
     OR (NOT bManualCameraOwner AND bVisionAcknowledgeResultsRquest
         AND bVisionGetResultsRequest
         AND NOT bVisionResetResultsRequest
@@ -679,6 +870,16 @@ IF (bManualCameraOwner AND (usiManualCameraStep = 30))
 ELSE
     fbVSCamera.RequestResultsAck(bEnable := FALSE);
 END_IF
+// Explicit operator recovery is the only manual owner of these clear outputs.
+// FB_VSCamera.Cyclic defaults them FALSE each scan; never clear a new/different error.
+IF bManualCameraRecoveryActive AND (usiManualCameraRecoveryStep = 1) THEN
+    GVL_EtherCAT.stVSKeyenceCamera.abErrorClear[1] := bManualCameraClearError0
+        AND GVL_EtherCAT.stVSKeyenceCamera.abError[1];
+    GVL_EtherCAT.stVSKeyenceCamera.abErrorClear[2] := bManualCameraClearError1
+        AND GVL_EtherCAT.stVSKeyenceCamera.abError[2];
+END_IF
+IF bManualCameraTransportReady THEN bManualCameraRecoveryFailed := FALSE; END_IF
+GVL_MASTER.bManualCameraRecoveryFailed := bManualCameraRecoveryFailed;
 //---------------------------------------------------------------------------------------------------
 
 // Patch feeding owns its axis commands; it does not own physical safety outputs.
@@ -814,7 +1015,8 @@ bVisionRequired :=
 // after Update() would lose the information needed to reject the affected part.
 bPatchDispenseProcessingBeforeUpdate := fbPatchDispense.IsBusy();
 bHeatStakeProcessingBeforeUpdate := fbHeatStake.IsBusy();
-bVisionProcessingBeforeUpdate := fbVision.IsBusy();
+bVisionProcessingBeforeUpdate := fbVision.IsBusy()
+    AND NOT fbVisionManualImages.bActive AND NOT bVisionImageOwnedBeforeUpdate;
 
 fbOperatorStation.Cyclic(bAutomaticActive := (eMachineState = E_MachineState.AutoCycle), bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy, stOperatorNest := stOperatorNest, bPartPresent := stInputs.bLoadingStationEaglePresent,
     bPbupPresent := stInputs.bLoadingStationPbupPresent, bTwoHandsSafe := stInputs.bTwoHandsSafe,
@@ -844,7 +1046,7 @@ bPatchStartAllowed := stInputs.bIndexReady AND stInputs.bIndexLocked
     AND NOT stCommand.bManualIndexForward AND NOT stInputs.bEventFault
     AND NOT stInputs.bEventCycleStopRequest AND NOT bRejectChuteStopRequestLatched
     AND NOT bAutoCycleStopRequestLatched AND NOT bProcessRequestIndex
-    AND NOT tpPatchManualVerticalUp.Q AND NOT tpPatchManualVerticalDown.Q
+    AND NOT bPatchManualVerticalDownHeld
 // TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
 //     AND NOT stCommand.bPatchVerticalUpRequest AND NOT stCommand.bPatchVerticalDownRequest
 //     AND NOT stCommand.bPatchSupportExtendRequest AND NOT stCommand.bPatchSupportRetractRequest;
@@ -924,14 +1126,6 @@ IF bProcessStartStations THEN
     END_IF
 END_IF
 
-rtPatchSupportExtend(
-    CLK := stCommand.bPatchSupportExtendRequest
-);
-
-rtPatchSupportRetract(
-    CLK := stCommand.bPatchSupportRetractRequest
-);
-
 bPatchManualAllowed :=
     (eMachineState = E_MachineState.Manual)
     AND stCommand.bPatchManualEnable
@@ -940,14 +1134,7 @@ bPatchManualAllowed :=
     AND NOT bRejectChuteStopRequestLatched
     AND bPatchDispenseCommissioned;
 
-IF bPatchManualAllowed THEN
-    // Toggle TRUE = Extend
-    // Toggle FALSE = Retract
-    bPatchSupportExtendDesired :=
-        stCommand.bPatchSupportExtendRequest;
-ELSE
-    bPatchSupportExtendDesired := FALSE;
-END_IF
+// Station 1 nest support removed; legacy support commands have no execution path.
 
 // Detect machine Initialising entry.
 // HOME requests are issued once per Initialising sequence.
@@ -971,12 +1158,12 @@ fbPatchDispense.Update(stProcessSettings := GVL_Persistent.stPatchProcessSetting
     bHoldUpRequired := bPatchDispenseCommissioned
         AND ((eMachineState = E_MachineState.AutoCycle)
             OR ((eMachineState = E_MachineState.Manual)
-                AND (stCommand.bPatchManualEnable OR stCommand.bIndexerManualEnable OR stIndexStatus.bBusy))
+                AND (NOT bPatchManualVerticalDownHeld OR stCommand.bIndexerManualEnable OR stIndexStatus.bBusy))
             OR ((eMachineState = E_MachineState.Stopping) AND stIndexStatus.bBusy)),
     bPatchOpticalLeft := stInputs.bPatchOpticalLeft,
     bPatchOpticalRight := stInputs.bPatchOpticalRight,
-    // TEMP: physical feedback is selected only when wiring is commissioned.
-    bUseVerticalFeedback := GVL_Motion.stPatchFeedSettings.bUsePatchVerticalFeedback,
+    // Dispense requires physical UP/DOWN feedback.
+    bUseVerticalFeedback := TRUE,
     tVerticalMoveTime := GVL_Motion.stPatchFeedSettings.tPatchVerticalMoveTime,
     bVerticalUpCommand := bPatchVerticalUpCommandPrevious,
     bVerticalDownCommand := bPatchVerticalDownCommandPrevious,
@@ -1009,8 +1196,8 @@ fbPatchDispense.Update(stProcessSettings := GVL_Persistent.stPatchProcessSetting
     bManualMode :=
         (eMachineState = E_MachineState.Manual),
 
-    bManualSupportExtendDesired :=
-        bPatchSupportExtendDesired,
+    // Removed support: compatibility-only pins are ignored by the station FB.
+    bManualSupportExtendDesired := FALSE,
 
     bCommissioned := bPatchDispenseCommissioned,
 
@@ -1030,22 +1217,12 @@ fbPatchDispense.Update(stProcessSettings := GVL_Persistent.stPatchProcessSetting
 
     bReset := stCommand.bReset,
 
-    bSupportRetracted :=
-        stInputs.bStation1SupportRetracted,
+    bSupportRetracted := FALSE,
+    bSupportExtended := FALSE,
 
-    bSupportExtended :=
-        stInputs.bStation1SupportExtended,
-
-    tSupportTimeout :=
-        stConfig.tStationSupportTimeout,
+    tSupportTimeout := T#5S,
 
     stStatus => stPatchDispenseStatus,
-
-    bSupportExtendRequest =>
-        bStation1SupportExtendRequest,
-
-    bSupportRetractRequest =>
-        bStation1SupportRetractRequest,
 
     bVerticalUpRequest =>
         bPatchHomeVerticalUpRequest
@@ -1055,25 +1232,20 @@ GVL_HMI.stCommands.bPatchDispenseRequest := FALSE;
 // =====================================================
 // PATCH DISPENSING - MANUAL VERTICAL
 // =====================================================
-// HMI commands are one-scan requests.
-// Same timed-pulse principle as Vision Horizontal.
-//
-// TODO: Replace provisional timed movement with
-// physical position feedback when sensors are installed.
-
-tpPatchManualVerticalUp(
-    IN := stCommand.bPatchVerticalUpRequest AND bPatchManualAllowed
-          AND NOT fbPatchDispense.IsBusy() AND NOT stIndexStatus.bBusy
-          AND NOT stCommand.bPatchVerticalDownRequest,
-    PT := T#1S
-);
-
-tpPatchManualVerticalDown(
-    IN := stCommand.bPatchVerticalDownRequest AND bPatchManualAllowed
-          AND NOT fbPatchDispense.IsBusy() AND NOT stIndexStatus.bBusy
-          AND NOT stCommand.bIndexerManualEnable AND NOT stCommand.bPatchVerticalUpRequest,
-    PT := T#1S
-);
+// HMI commands remain one-scan requests. Maintain the selected valve direction.
+// A lost permission cancels DOWN; a fresh request is required to descend again.
+IF NOT bPatchManualAllowed OR NOT stInputs.bMainDoorClosed
+    OR stCommand.bStop OR stCommand.bReset OR stInputs.bEventFault
+    OR stInputs.bEventCycleStopRequest OR stPatchDispenseStatus.bFault
+    OR fbPatchDispense.IsBusy() OR stIndexStatus.bBusy
+    OR stCommand.bIndexerManualEnable OR stCommand.bManualIndexForward
+    OR bProcessRequestIndex THEN
+    bPatchManualVerticalDownHeld := FALSE;
+ELSIF stCommand.bPatchVerticalUpRequest AND NOT stCommand.bPatchVerticalDownRequest THEN
+    bPatchManualVerticalDownHeld := FALSE;
+ELSIF stCommand.bPatchVerticalDownRequest AND NOT stCommand.bPatchVerticalUpRequest THEN
+    bPatchManualVerticalDownHeld := TRUE;
+END_IF
 
 
 
@@ -1157,23 +1329,35 @@ bHeatStakeManualEnableAllowed :=
     AND NOT bHeatStakeManualActionBusy;
 
 bHeatStakeManualUnlockAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     (eMachineState = E_MachineState.Manual)
+    AND stCommand.bHeatStakeManualEnable
     AND NOT bRejectChuteStopRequestLatched
     AND stInputs.stSafety.bSafetyOk
     AND NOT fbHeatStake.IsBusy()
     AND NOT bHeatStakeManualActionBusy
-    AND NOT bHeatStakeManualHeadUnlocked;
+    AND NOT bHeatStakeManualHeadUnlocked);
 
 bHeatStakeManualLockAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     (eMachineState = E_MachineState.Manual)
+    AND stCommand.bHeatStakeManualEnable
     AND NOT bRejectChuteStopRequestLatched
     AND stInputs.stSafety.bSafetyOk
     AND NOT fbHeatStake.IsBusy()
     AND NOT bHeatStakeManualActionBusy
-    AND bHeatStakeManualHeadUnlocked;
+    AND bHeatStakeManualHeadUnlocked);
 
 bHeatStakeManualHeadDownAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     (eMachineState = E_MachineState.Manual)
+    AND stCommand.bHeatStakeManualEnable
     AND NOT bRejectChuteStopRequestLatched
     AND stInputs.stSafety.bSafetyOk
     AND NOT fbHeatStake.IsBusy()
@@ -1184,22 +1368,30 @@ bHeatStakeManualHeadDownAllowed :=
     // Product protection also applies to a manual DOWN request with a loaded nest.
     AND (NOT stHeatStakeNest.bPartPresent OR stInputs.bHeatStakeEaglePresent)
     AND NOT (stHeatStakeNest.stHeatStakeResult.bValid
-        AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode));
+        AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode)));
 
 bHeatStakeManualHeadUpAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     (eMachineState = E_MachineState.Manual)
+    AND stCommand.bHeatStakeManualEnable
     AND NOT bRejectChuteStopRequestLatched
     AND stInputs.stSafety.bSafetyOk
     AND NOT fbHeatStake.IsBusy()
     AND NOT bHeatStakeManualActionBusy
     AND bHeatStakeManualHeadUnlocked
-    AND NOT stInputs.bHeatStakeHeadUp;
+    AND NOT stInputs.bHeatStakeHeadUp);
 
 bHeatStakeManualSupportAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     (eMachineState = E_MachineState.Manual)
+    AND stCommand.bHeatStakeManualEnable
     AND stInputs.stSafety.bSafetyOk
     AND NOT fbHeatStake.IsBusy()
-    AND NOT bHeatStakeManualActionBusy;
+    AND NOT bHeatStakeManualActionBusy);
 	
 	
 	
@@ -1255,49 +1447,77 @@ bVisionManualEnableAllowed :=
     (eMachineState = E_MachineState.Manual)
     AND stInputs.stSafety.bSafetyOk
     AND NOT bRejectChuteStopRequestLatched
-    AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus;
+    AND (GVL_EtherCAT.stVSKeyenceCamera.bRunStatus OR bVisionCameraStartBlocked
+        OR bManualCameraRecoveryActive OR fbVisionManualImages.bPrepared
+        OR (fbVisionManualImages.usiStep = 210) OR fbVisionManualImages.bCameraWarning);
+// Run Sequence keeps its separate NOT bVisionCameraStartBlocked admission.
+// Manual image recovery must remain operable while the camera reports an error.
 
 // Every individual Vision movement requires the general Vision Enable.
 bVisionHorizontalBackAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     bVisionManualEnableAllowed
     AND stCommand.bVisionManualEnable
-    AND stInputs.bVerticalMiniSlideRetracted;
+    AND stInputs.bVerticalMiniSlideRetracted);
 
 bVisionHorizontalFrontAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     bVisionManualEnableAllowed
     AND stCommand.bVisionManualEnable
-    AND stInputs.bVerticalMiniSlideRetracted;
+    AND stInputs.bVerticalMiniSlideRetracted);
 
 // Full UP is always the recovery direction once Vision manual control is enabled.
 bVisionVerticalUpAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     bVisionManualEnableAllowed
-    AND stCommand.bVisionManualEnable;
+    AND stCommand.bVisionManualEnable);
 
 
 
 // Full DOWN is the pick-side movement.
 bVisionVerticalFullDownAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     bVisionManualEnableAllowed AND stCommand.bVisionManualEnable
     AND ((stInputs.bHorizontalMiniSlideExtended AND NOT stInputs.bHorizontalMiniSlideRetracted)
-        OR (stInputs.bHorizontalMiniSlideRetracted AND NOT stInputs.bHorizontalMiniSlideExtended));
+        OR (stInputs.bHorizontalMiniSlideRetracted AND NOT stInputs.bHorizontalMiniSlideExtended)));
 
 bVisionGripOpenAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     bVisionManualEnableAllowed
-    AND stCommand.bVisionManualEnable;
+    AND stCommand.bVisionManualEnable);
 
 bVisionGripCloseAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     bVisionManualEnableAllowed
-    AND stCommand.bVisionManualEnable;
+    AND stCommand.bVisionManualEnable);
 
 bVisionRotate0Allowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     bVisionManualEnableAllowed
     AND stCommand.bVisionManualEnable
-    AND stInputs.bVerticalMiniSlideRetracted;
+    AND stInputs.bVerticalMiniSlideRetracted);
 
 bVisionRotate180Allowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     bVisionManualEnableAllowed
     AND stCommand.bVisionManualEnable
-    AND stInputs.bVerticalMiniSlideRetracted;
+    AND stInputs.bVerticalMiniSlideRetracted);
 
 // Do not use fbVision.IsBusy() here: moving away from the automatic home
 // position may make the Vision FB report Busy and would prevent recovery.
@@ -1306,14 +1526,19 @@ bVisionRotate180Allowed :=
 // RUN SEQUENCE:
 // Only allowed from the complete Vision HOME position.
 bVisionManualRunSequenceAllowed :=
-    bVisionManualEnableAllowed
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
+    NOT fbVisionManualImages.bActive AND NOT fbVisionManualImages.bFault
+    AND bVisionManualEnableAllowed
+    AND NOT bVisionCameraStartBlocked
     AND stCommand.bVisionManualEnable
     AND stInputs.bHorizontalMiniSlideExtended
     AND stInputs.bVerticalMiniSlideRetracted
     AND stInputs.bRotaryGripperOpened
     AND bVisionRotate0Confirmed
     AND NOT (stVisionNest.stHeatStakeResult.bValid
-        AND (stVisionNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode));
+        AND (stVisionNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode)));
 	
 	
 	// =====================================================
@@ -1321,10 +1546,15 @@ bVisionManualRunSequenceAllowed :=
 	// =====================================================
 	
 	bVisionManualHomeAllowed :=
-		bVisionManualEnableAllowed
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
+        NOT fbVisionManualImages.bActive AND NOT fbVisionManualImages.bFault
+		AND bVisionManualEnableAllowed
+        AND NOT bVisionCameraStartBlocked
 		AND stCommand.bVisionManualEnable
 		AND NOT bVisionManualSequenceActive
-		AND NOT bVisionManualHomeActive;	
+		AND NOT bVisionManualHomeActive);	
 
 	// =====================================================
 	// VISION MANUAL MODE - RUN SEQUENCE REQUEST
@@ -1369,7 +1599,11 @@ bVisionManualRunSequenceAllowed :=
 		bVisionManualHomeActive := FALSE;
 	END_IF;
 
+// Manual Mode Stake Pacth allowed permissive
 bHeatStakeManualStakeAllowed :=
+    NOT stIndexStatus.bBusy AND NOT stIndexStatus.bTwoHandRequired
+    AND NOT stInputs.bTwoHandsSafe AND NOT bManualCameraRecoveryActive
+    AND (
     (eMachineState = E_MachineState.Manual)
     AND NOT bRejectChuteStopRequestLatched
     AND stCommand.bHeatStakeManualEnable
@@ -1380,13 +1614,8 @@ bHeatStakeManualStakeAllowed :=
     AND bHeatStakeManualHomePosition
     AND stInputs.bHeatStakeEaglePresent
     AND NOT (stHeatStakeNest.stHeatStakeResult.bValid
-        AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode))
-    AND stInputs.bHeatStakePatchPresent
-    AND NOT stIndexStatus.bBusy;
-	
-	
-	
-	
+    AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode))
+    AND NOT stIndexStatus.bBusy);
 	
 
 // Stake Patch reuses the validated automatic station sequence.
@@ -1554,7 +1783,7 @@ IF (eMachineState = E_MachineState.Manual)
 END_IF
 
 // Support toggle: ON = UP/Extend, OFF = DOWN/Retract.
-// Independent from Heat Stake temperature Enable.
+// Heat Stake Enable is also required for normal manual support control.
 //
 // Reject-chute controlled stop:
 // if the support was already travelling when the stop request arrived,
@@ -1592,40 +1821,15 @@ THEN
     bHeatStakeManualStakeCycleActive := FALSE;
 END_IF
 
-// =====================================================
-// HEAT STAKE PRESSURE REGULATOR
-// Maintain configured pressure during operational states.
-// =====================================================
-fbHeatStakePressureRegulator.Cyclic(
-    bEnable :=
-        (eMachineState = E_MachineState.Initialising)
-        OR (eMachineState = E_MachineState.ReadyToStart)
-		OR (eMachineState = E_MachineState.Dwell)
-        OR (eMachineState = E_MachineState.AutoCycle)
-        OR (
-            (eMachineState = E_MachineState.Manual)
-            AND (
-                bHeatStakeManualActionBusy
-                OR bHeatStakeManualStakeCycleActive
-                OR fbHeatStake.IsBusy()
-            )
-        ),
-    rSetpointBar := rHeatStakePressureCommandBar,
-    rCommandBar => rHeatStakePressureScaledBar,
-    iOutputRaw => iHeatStakePressureRaw
-);
-stHeatStakeProcessStatus.tContactTimeSet := stHeatStakeProcessSettings.tContactTime;
-stHeatStakeProcessStatus.rContactTimeSetSeconds :=
-    TIME_TO_LREAL(stHeatStakeProcessSettings.tContactTime) / 1000.0;
-stHeatStakeProcessStatus.rPressureSetpointBar := stHeatStakeProcessSettings.rDownPressureBar;
-stHeatStakeProcessStatus.rPressureCommandBar := rHeatStakePressureScaledBar;
-stHeatStakeProcessStatus.iPressureOutputRaw := iHeatStakePressureRaw;
-stHeatStakeProcessStatus.bHeadLockCommand := bHeatStakeHeadLockRequest;
-stHeatStakeProcessStatus.bHeadUnlockCommand := bHeatStakeHeadUnlockRequest;
-stHeatStakeProcessStatus.bHeadDownCommand := bHeatStakeHeadDownRequest;
-stHeatStakeProcessStatus.bHeadUpCommand := bHeatStakeHeadUpRequest;
-stHeatStakeProcessStatus.bContactDwellActive := bHeatStakeContactDwellActive;
-stHeatStakeProcessStatus.usiSequenceStep := usiHeatStakeSequenceStep;
+stHeatStakeProcessStatus.tContactTimeSet 		:= stHeatStakeProcessSettings.tContactTime;
+stHeatStakeProcessStatus.rContactTimeSetSeconds := TIME_TO_LREAL(stHeatStakeProcessSettings.tContactTime) / 1000.0;
+stHeatStakeProcessStatus.rPressureSetpointBar 	:= stHeatStakeProcessSettings.rDownPressureBar;
+stHeatStakeProcessStatus.bHeadLockCommand 		:= bHeatStakeHeadLockRequest;
+stHeatStakeProcessStatus.bHeadUnlockCommand 	:= bHeatStakeHeadUnlockRequest;
+stHeatStakeProcessStatus.bHeadDownCommand 		:= bHeatStakeHeadDownRequest;
+stHeatStakeProcessStatus.bHeadUpCommand 		:= bHeatStakeHeadUpRequest;
+stHeatStakeProcessStatus.bContactDwellActive 	:= bHeatStakeContactDwellActive;
+stHeatStakeProcessStatus.usiSequenceStep 		:= usiHeatStakeSequenceStep;
 
 // =====================================================
 // VISION MANUAL MODE - EXECUTE HOME
@@ -1666,69 +1870,443 @@ fbVision.Update(stProcessSettings := GVL_Persistent.stVisionProcessSettings,
     // supply is still being established.
 	bEnable :=
 		((eMachineState = E_MachineState.Initialising) AND GVL_Safety.bAirSupplySafe)
-		OR (eMachineState = E_MachineState.ReadyToStart)
-		OR (eMachineState = E_MachineState.AutoCycle)
-		OR (
-			(eMachineState = E_MachineState.Manual)
-			AND (
-				bVisionManualSequenceActive
-				OR bVisionManualHomeActive
-			)
-		),
+		OR 	(eMachineState = E_MachineState.ReadyToStart)
+		OR 	(eMachineState = E_MachineState.AutoCycle)
+		OR 	(
+			( eMachineState = E_MachineState.Manual)
+			AND ( bVisionManualSequenceActive
+			OR bVisionManualHomeActive )
+			),
 		
-    bCommissioned := bVisionCommissioned,
-    bSafetyOk := stInputs.stSafety.bSafetyOk,
-    bSupervisionEnable := (eMachineState = E_MachineState.ReadyToStart)
-        OR (eMachineState = E_MachineState.AutoCycle)
-        OR (eMachineState = E_MachineState.Manual),
+    bCommissioned 		:= 	bVisionCommissioned,
+    bSafetyOk 			:= 	stInputs.stSafety.bSafetyOk,
+    bSupervisionEnable 	:= 	(eMachineState = E_MachineState.ReadyToStart) OR
+							(eMachineState = E_MachineState.AutoCycle) OR
+        					(eMachineState = E_MachineState.Manual),
+							
     bReset := stCommand.bReset,
 
-    bSupportRetracted := FALSE, // Removed hardware; ignored by Vision FB.
+    bSupportRetracted 	:= FALSE, // Removed hardware; ignored by Vision FB.
 
-    bSupportExtended := FALSE, // Removed hardware; ignored by Vision FB.
+    bSupportExtended 	:= FALSE, // Removed hardware; ignored by Vision FB.
 
     // Mechanical orientation is reversed relative to cylinder naming:
     // EXTENDED = slide BACK (home), RETRACTED = slide FRONT.
+    bHorizontalBack 		:= stInputs.bHorizontalMiniSlideExtended,
+    bHorizontalFront 		:= stInputs.bHorizontalMiniSlideRetracted,
+    bVerticalUp 			:= stInputs.bVerticalMiniSlideRetracted,
+    bVerticalDown 			:= stInputs.bVerticalMiniSlideExtended,
+
+    bLimitOff 				:= FALSE, // Removed hardware; ignored by Vision FB.
+
+    bLimitOn 				:= FALSE, // Removed hardware; ignored by Vision FB.
+    bGripOpened 			:= stInputs.bRotaryGripperOpened,
+    bGripClosed 			:= stInputs.bRotaryGripperClosed,
+    bRotate0 				:= bVisionRotate0Confirmed,
+    bRotate180 				:= bVisionRotate180Confirmed,
+    bRotate0Raw 			:= stInputs.bRotaryGripperPick0,
+    bRotate180Raw 			:= stInputs.bRotaryGripperPlace180,
+    bCameraTriggerAccepted 	:= bVisionTriggerAccepted,
+	
+    tSupportTimeout 		:= stConfig.tStationSupportTimeout,
+	nCurrentProgramNumber	:= bVisionGetCurrentProgram,
+	nVisionCameraResults	:= nVisionResults,
+	bResultsReady			:= bVisionGetResultsReadyRequest,
+
+    stStatus 				=> stVisionStatus,
+
+    bHorizontalBackRequest 	=> bVisionHorizontalBackRequest,
+    bHorizontalFrontRequest => bVisionHorizontalFrontRequest,
+    bVerticalUpRequest 		=> bVisionVerticalUpRequest,
+    bVerticalDownRequest 	=> bVisionVerticalDownRequest,
+
+    bGripCloseRequest 		=> bVisionGripCloseRequest,
+    bGripOpenRequest 		=> bVisionGripOpenRequest,
+    bRotate0Request 		=> bVisionRotate0Request,
+    bRotate180Request 		=> bVisionRotate180Request,
+	//camera
+	bTriggerRequest					=>		bVisionTriggerRequest,
+	bChangeProgramRequest			=>		bVisionChangeProgramRequest,
+	bGetResultsRequest				=>		bVisionGetResultsRequest,
+	bRequestResetResults			=>		bVisionResetResultsRequest,
+	bAcknowledgeResults				=> 		bVisionAcknowledgeResultsRquest,
+	nProgramNumber					=>		nVisionProgramNumber
+);
+
+// Manual image position owner. The automatic station keeps its public contract;
+// the following mux arbitrates its requests with the separate manual Vision FB.
+bVisionImageOwnedBeforeUpdate := fbVisionManualImages.bActive;
+bVisionImageJogBusy := stCommand.bVisionHorizontalBackRequest
+    OR stCommand.bVisionHorizontalFrontRequest OR stCommand.bVisionVerticalUpRequest
+    OR stCommand.bVisionVerticalFullDownRequest OR stCommand.bVisionGripOpenRequest
+    OR stCommand.bVisionGripCloseRequest OR stCommand.bVisionRotate0Request
+    OR stCommand.bVisionRotate180Request OR tpVisionManualHorizontalBack.Q
+    OR tpVisionManualHorizontalFront.Q OR bVisionManualVerticalUpActive
+    OR bVisionManualVerticalFullDownActive OR bVisionManualRotate0Active
+    OR bVisionManualRotate180Active;
+uiVisionPbupNest := 0;
+IF (stInputs.eIndexPosition = E_TablePosition.Unknown) AND NOT stIndexStatus.bBusy THEN
+    aVisionPbupReferenceKnown[1] := FALSE;
+    aVisionProductLocation[1] := 0;
+    aVisionPbupSource[1] := 0;
+    aVisionLoadEmptySeen[1] := FALSE;
+    aVisionLoadCandidate[1] := FALSE;
+    aVisionPbupReferenceKnown[2] := FALSE;
+    aVisionProductLocation[2] := 0;
+    aVisionPbupSource[2] := 0;
+    aVisionLoadEmptySeen[2] := FALSE;
+    aVisionLoadCandidate[2] := FALSE;
+    aVisionPbupReferenceKnown[3] := FALSE;
+    aVisionProductLocation[3] := 0;
+    aVisionPbupSource[3] := 0;
+    aVisionLoadEmptySeen[3] := FALSE;
+    aVisionLoadCandidate[3] := FALSE;
+    aVisionPbupReferenceKnown[4] := FALSE;
+    aVisionProductLocation[4] := 0;
+    aVisionPbupSource[4] := 0;
+    aVisionLoadEmptySeen[4] := FALSE;
+    aVisionLoadCandidate[4] := FALSE;
+END_IF
+IF stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy
+    AND (stInputs.eIndexPosition <> E_TablePosition.Unknown)
+    AND (stVisionNest.nId >= 1) AND (stVisionNest.nId <= 4) THEN
+    uiVisionPbupNest := stVisionNest.nId;
+END_IF
+
+// Assembly confidence and pickup location belong to the physical product.
+// 0=unknown, 1=single nest, 2=legacy alias for nest, 3=held by tooling.
+IF (stOperatorNest.nId >= 1) AND (stOperatorNest.nId <= 4)
+    AND stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy
+    AND (stInputs.eIndexPosition <> E_TablePosition.Unknown) THEN
+    IF uiVisionLoadObservedNest <> stOperatorNest.nId THEN
+        IF (uiVisionLoadObservedNest >= 1) AND (uiVisionLoadObservedNest <= 4) THEN
+            aVisionLoadCandidate[uiVisionLoadObservedNest] := FALSE;
+            aVisionLoadEmptySeen[uiVisionLoadObservedNest] := FALSE;
+        END_IF
+        tonVisionLoadEmpty(IN := FALSE);
+        tonVisionLoadPair(IN := FALSE);
+        uiVisionLoadObservedNest := stOperatorNest.nId;
+    END_IF
+    tonVisionLoadEmpty(IN := NOT stInputs.bLoadingStationEaglePresent
+        AND NOT stInputs.bLoadingStationPbupPresent, PT := T#200MS);
+    tonVisionLoadPair(IN := aVisionLoadCandidate[stOperatorNest.nId]
+        AND stInputs.bLoadingStationEaglePresent AND stInputs.bLoadingStationPbupPresent,
+        PT := T#200MS);
+    IF tonVisionLoadEmpty.Q THEN
+        aVisionLoadEmptySeen[stOperatorNest.nId] := TRUE;
+        aVisionLoadCandidate[stOperatorNest.nId] := FALSE;
+        aVisionPbupReferenceKnown[stOperatorNest.nId] := FALSE;
+        aVisionProductLocation[stOperatorNest.nId] := 0;
+        aVisionPbupSource[stOperatorNest.nId] := 0;
+    END_IF
+    IF aVisionLoadEmptySeen[stOperatorNest.nId]
+        AND (stInputs.bLoadingStationEaglePresent OR stInputs.bLoadingStationPbupPresent) THEN
+        aVisionLoadCandidate[stOperatorNest.nId] := TRUE;
+        aVisionLoadEmptySeen[stOperatorNest.nId] := FALSE;
+    END_IF
+    IF stOperatorNest.bPartLoadedPulse OR stOperatorNest.bPartRemovedPulse THEN
+        aVisionPbupReferenceKnown[stOperatorNest.nId] := FALSE;
+        aVisionProductLocation[stOperatorNest.nId] := 0;
+        aVisionPbupSource[stOperatorNest.nId] := 0;
+        IF stOperatorNest.bPartRemovedPulse THEN
+            aVisionLoadCandidate[stOperatorNest.nId] := FALSE;
+        END_IF
+        IF GVL_Persistent.aVisionPbupFitted[stOperatorNest.nId] THEN
+            GVL_Persistent.aVisionPbupFitted[stOperatorNest.nId] := FALSE;
+            GVL_HMI.bVisionPbupSaveRequest := TRUE;
+        END_IF
+    END_IF
+    IF tonVisionLoadPair.Q AND aVisionLoadCandidate[stOperatorNest.nId] THEN
+        aVisionPbupReferenceKnown[stOperatorNest.nId] := TRUE;
+        aVisionProductLocation[stOperatorNest.nId] := 1;
+        aVisionPbupSource[stOperatorNest.nId] := 1; // Qualified new paired load.
+        aVisionLoadCandidate[stOperatorNest.nId] := FALSE;
+        GVL_Persistent.aVisionPbupFitted[stOperatorNest.nId] := FALSE;
+        GVL_HMI.bVisionPbupSaveRequest := TRUE;
+    END_IF
+ELSE
+    IF (uiVisionLoadObservedNest >= 1) AND (uiVisionLoadObservedNest <= 4) THEN
+        aVisionLoadCandidate[uiVisionLoadObservedNest] := FALSE;
+        aVisionLoadEmptySeen[uiVisionLoadObservedNest] := FALSE;
+    END_IF
+    tonVisionLoadEmpty(IN := FALSE);
+    tonVisionLoadPair(IN := FALSE);
+    uiVisionLoadObservedNest := 0;
+END_IF
+
+// Automatic/full manual cycles invalidate confidence at start and establish fitted
+// only after a completed cycle. An aborted assembly remains unknown.
+rtVisionPbupAutoBusy(CLK := fbVision.IsBusy() AND NOT bVisionImageOwnedBeforeUpdate);
+rtVisionPbupAutoDone(CLK := fbVision.IsDone());
+IF (uiVisionPbupNest >= 1) AND (uiVisionPbupNest <= 4) THEN
+    IF rtVisionPbupAutoBusy.Q THEN
+        aVisionPbupReferenceKnown[uiVisionPbupNest] := FALSE;
+        aVisionProductLocation[uiVisionPbupNest] := 0;
+        aVisionPbupSource[uiVisionPbupNest] := 0;
+    END_IF
+    IF rtVisionPbupAutoDone.Q THEN
+        GVL_Persistent.aVisionPbupFitted[uiVisionPbupNest] := TRUE;
+        aVisionPbupReferenceKnown[uiVisionPbupNest] := TRUE;
+        aVisionProductLocation[uiVisionPbupNest] := 1;
+        aVisionPbupSource[uiVisionPbupNest] := 3;
+        GVL_HMI.bVisionPbupFittedEdit := TRUE;
+    END_IF
+    bVisionPbupFitted := GVL_Persistent.aVisionPbupFitted[uiVisionPbupNest];
+    bVisionPbupKnown := aVisionPbupReferenceKnown[uiVisionPbupNest];
+    // An old fitted boolean cannot establish a newly unknown pickup location.
+    IF aVisionProductLocation[uiVisionPbupNest] = 0 THEN
+        aVisionPbupReferenceKnown[uiVisionPbupNest] := FALSE;
+        bVisionPbupKnown := FALSE;
+    END_IF
+ELSE
+    bVisionPbupFitted := FALSE;
+    bVisionPbupKnown := FALSE;
+END_IF
+
+// Checkbox edit buffer is refreshed on nest change and PLC assembly completion.
+// A separate confirmation accepts an unchanged FALSE or TRUE value after restart.
+IF uiVisionPbupEditNest <> uiVisionPbupNest THEN
+    uiVisionPbupEditNest := uiVisionPbupNest;
+    GVL_HMI.bVisionPbupFittedEdit := bVisionPbupFitted;
+
+END_IF
+GVL_HMI.bVisionPbupEditAllowed := bManualCameraAllowed
+    AND NOT bVisionImageOwnedBeforeUpdate AND NOT fbVisionManualImages.bFault
+    AND (usiManualCameraStep = 0) AND NOT bVisionImageJogBusy
+    AND NOT stCommand.bManualIndexForward AND NOT stCommand.bStop AND NOT stCommand.bReset
+    AND (uiVisionPbupNest >= 1) AND (uiVisionPbupNest <= 4)
+    AND stVisionStatus.bHome AND stVisionNest.bPartPresent
+    AND NOT bManualCameraRecoveryActive;
+IF GVL_HMI.bVisionPbupConfirm THEN
+    IF GVL_HMI.bVisionPbupEditAllowed THEN
+        GVL_Persistent.aVisionPbupFitted[uiVisionPbupNest] := GVL_HMI.bVisionPbupFittedEdit;
+        aVisionPbupReferenceKnown[uiVisionPbupNest] := TRUE;
+        bVisionPbupFitted := GVL_HMI.bVisionPbupFittedEdit;
+        bVisionPbupKnown := TRUE;
+        aVisionPbupSource[uiVisionPbupNest] := 2; // Explicit operator confirmation.
+        aVisionProductLocation[uiVisionPbupNest] := 1; // The part is in the single nest.
+        GVL_HMI.bVisionPbupSaveRequest := TRUE;
+    ELSE
+        GVL_HMI.bVisionPbupFittedEdit := bVisionPbupFitted;
+    END_IF
+END_IF
+GVL_HMI.bVisionPbupConfirm := FALSE;
+
+bVisionImagePermit := bManualCameraAllowed AND bVisionManualEnableAllowed
+    AND NOT fbVision.IsFaulted()
+    AND (GVL_HMI.bCameraConnected OR (bVisionImageOwnedBeforeUpdate
+        AND (fbVisionManualImages.bPrepared OR (fbVisionManualImages.usiStep = 210))))
+    AND (bVisionImageOwnedBeforeUpdate OR NOT bVisionImageJogBusy)
+    AND ((uiVisionPbupNest >= 1) AND (uiVisionPbupNest <= 4))
+    AND stVisionNest.bPartPresent
+    AND (bVisionImageOwnedBeforeUpdate
+        OR (NOT bManualCameraRecoveryActive AND NOT stCommand.bManualIndexForward AND NOT stInputs.bTwoHandsSafe
+            AND NOT stIndexStatus.bTwoHandRequired AND (fbIndex.GetState() = E_IndexState.Idle)));
+IF NOT bVisionImageOwnedBeforeUpdate AND (uiVisionPbupNest >= 1) AND (uiVisionPbupNest <= 4) THEN
+    bVisionImagePermit := bVisionImagePermit
+        AND ((aVisionProductLocation[uiVisionPbupNest] = 1) OR (aVisionProductLocation[uiVisionPbupNest] = 2));
+END_IF
+IF NOT bVisionPbupFitted AND (GVL_HMI.udiCameraManualImageSelection <> 1) THEN
+    bVisionImagePermit := bVisionImagePermit AND stVisionNest.bLoadSetComplete;
+END_IF
+IF bVisionImageOwnedBeforeUpdate THEN
+    bVisionImagePermit := bVisionImagePermit
+        AND (uiVisionPbupNest = uiVisionImageOwnedNest)
+        AND (stInputs.eIndexPosition = eVisionImageOwnedIndex);
+END_IF
+
+// Retired compatibility symbols: no location selection exists on this machine.
+GVL_HMI.bVisionPickupFrontEdit := FALSE;
+GVL_HMI.bVisionPickupFrontApplied := FALSE;
+fbVisionManualImages(
+    bPermit := bVisionImagePermit,
+    bReset := stCommand.bReset,
+    bPrepare := GVL_HMI.bVisionImagePrepare AND GVL_HMI.bCameraConnected
+        AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus,
+    bRelease := GVL_HMI.bVisionImageRelease,
+    bTrigger := bManualImageTriggerCommand,
+    udiSelection := GVL_HMI.udiCameraManualImageSelection,
+    bFitted := bVisionPbupFitted,
+    bPickAtFront := FALSE, // Retired compatibility input; pickup derives from PBUP fitted state.
+    bReferenceKnown := bVisionPbupKnown,
     bHorizontalBack := stInputs.bHorizontalMiniSlideExtended,
     bHorizontalFront := stInputs.bHorizontalMiniSlideRetracted,
     bVerticalUp := stInputs.bVerticalMiniSlideRetracted,
     bVerticalDown := stInputs.bVerticalMiniSlideExtended,
-
-    bLimitOff := FALSE, // Removed hardware; ignored by Vision FB.
-
-    bLimitOn := FALSE, // Removed hardware; ignored by Vision FB.
-    bGripOpened := stInputs.bRotaryGripperOpened,
+    bGripOpen := stInputs.bRotaryGripperOpened,
     bGripClosed := stInputs.bRotaryGripperClosed,
     bRotate0 := bVisionRotate0Confirmed,
     bRotate180 := bVisionRotate180Confirmed,
     bRotate0Raw := stInputs.bRotaryGripperPick0,
     bRotate180Raw := stInputs.bRotaryGripperPlace180,
-    bCameraTriggerAccepted := bVisionTriggerAccepted,
-	
-    tSupportTimeout := stConfig.tStationSupportTimeout,
-	nCurrentProgramNumber	:= bVisionGetCurrentProgram,
-	nVisionCameraResults:= nVisionResults,
-	bResultsReady		:= bVisionGetResultsReadyRequest,
-
-    stStatus => stVisionStatus,
-
-    bHorizontalBackRequest => bVisionHorizontalBackRequest,
-    bHorizontalFrontRequest => bVisionHorizontalFrontRequest,
-    bVerticalUpRequest => bVisionVerticalUpRequest,
-    bVerticalDownRequest => bVisionVerticalDownRequest,
-
-    bGripCloseRequest => bVisionGripCloseRequest,
-    bGripOpenRequest => bVisionGripOpenRequest,
-    bRotate0Request => bVisionRotate0Request,
-    bRotate180Request => bVisionRotate180Request,
-	//camera
-	bTriggerRequest					=>		bVisionTriggerRequest,
-	bChangeProgramRequest			=>		bVisionChangeProgramRequest,
-	bGetResultsRequest				=>	bVisionGetResultsRequest,
-	bRequestResetResults				=>		bVisionResetResultsRequest,
-	bAcknowledgeResults				=> bVisionAcknowledgeResultsRquest,
-	nProgramNumber			=>		nVisionProgramNumber
+    bCameraReady := bManualCameraTransportReady,
+    bCameraAccepted := bVisionTriggerAccepted AND (usiManualCameraStep <> 0),
+    bCameraComplete := bManualCameraConsume,
+    bCameraFailed := bManualImageCameraFailed,
+    bCameraReset := bManualCameraRecoveredPulse,
+    bCameraBusy := (usiManualCameraStep <> 0),
+    tMovingTriggerDelay := UDINT_TO_TIME(GVL_Persistent.stVisionProcessSettings.udiMovingTriggerDelayMs)
 );
+GVL_HMI.bVisionImagePrepare := FALSE;
+GVL_HMI.bVisionImageRelease := FALSE;
+IF fbVisionManualImages.bActive AND NOT bVisionImageOwnedBeforeUpdate THEN
+    uiVisionImageOwnedNest := uiVisionPbupNest;
+    eVisionImageOwnedIndex := stInputs.eIndexPosition;
+END_IF
+IF fbVisionManualImages.bReferenceLostPulse THEN
+    IF NOT stVisionStatus.bHome THEN bVisionImageRecoveryRequired := TRUE; END_IF
+    IF (uiVisionImageOwnedNest >= 1) AND (uiVisionImageOwnedNest <= 4) THEN
+        aVisionPbupReferenceKnown[uiVisionImageOwnedNest] := FALSE;
+        aVisionProductLocation[uiVisionImageOwnedNest] := 0;
+        aVisionPbupSource[uiVisionImageOwnedNest] := 0;
+    END_IF
+    bVisionPbupKnown := FALSE;
+END_IF
+IF stVisionStatus.bHome AND NOT fbVisionManualImages.bActive AND NOT fbVisionManualImages.bFault THEN
+    bVisionImageRecoveryRequired := FALSE;
+END_IF
+IF fbVisionManualImages.bFittedPulse AND (uiVisionImageOwnedNest >= 1) AND (uiVisionImageOwnedNest <= 4) THEN
+    GVL_Persistent.aVisionPbupFitted[uiVisionImageOwnedNest] := TRUE;
+    aVisionPbupReferenceKnown[uiVisionImageOwnedNest] := TRUE;
+    aVisionPbupSource[uiVisionImageOwnedNest] := 3;
+    bVisionPbupFitted := TRUE;
+    bVisionPbupKnown := TRUE;
+    GVL_HMI.bVisionPbupFittedEdit := TRUE;
+    GVL_HMI.bVisionPbupSaveRequest := TRUE;
+END_IF
+
+IF (uiVisionImageOwnedNest >= 1) AND (uiVisionImageOwnedNest <= 4) AND fbVisionManualImages.bActive THEN
+    IF fbVisionManualImages.bPartHeld THEN
+        aVisionProductLocation[uiVisionImageOwnedNest] := 3;
+    ELSIF fbVisionManualImages.bPrepared THEN
+        aVisionProductLocation[uiVisionImageOwnedNest] := 1; // Images 1/4 both leave the part in its nest.
+    END_IF
+END_IF
+
+IF fbVisionManualImages.bActive OR bVisionImageOwnedBeforeUpdate OR fbVisionManualImages.bFault THEN
+    bVisionHorizontalBackRequest := fbVisionManualImages.bHorizontalBackRequest;
+    bVisionHorizontalFrontRequest := fbVisionManualImages.bHorizontalFrontRequest;
+    bVisionVerticalUpRequest := fbVisionManualImages.bVerticalUpRequest;
+    bVisionVerticalDownRequest := fbVisionManualImages.bVerticalDownRequest;
+    bVisionGripOpenRequest := fbVisionManualImages.bGripOpenRequest;
+    bVisionGripCloseRequest := fbVisionManualImages.bGripCloseRequest;
+    bVisionRotate0Request := fbVisionManualImages.bRotate0Request;
+    bVisionRotate180Request := fbVisionManualImages.bRotate180Request;
+END_IF
+
+GVL_HMI.bVisionImagePrepared := fbVisionManualImages.bPrepared;
+GVL_HMI.bVisionImage1Allowed := bVisionPbupKnown AND NOT bVisionPbupFitted;
+IF NOT GVL_HMI.bVisionImage1Allowed AND (GVL_HMI.udiCameraManualImageSelection = 1) THEN
+    GVL_HMI.udiCameraManualImageSelection := 0;
+END_IF
+GVL_HMI.bVisionPbupFittedApplied := bVisionPbupFitted;
+GVL_HMI.bVisionPbupReferenceKnown := bVisionPbupKnown;
+GVL_HMI.uiVisionPbupNest := uiVisionPbupNest;
+GVL_HMI.bVisionImagePrepareAllowed := bVisionImagePermit AND bVisionPbupKnown
+    AND NOT fbVisionManualImages.bBusy AND NOT fbVisionManualImages.bFault
+    AND (usiManualCameraStep = 0)
+    AND (fbVisionManualImages.bActive OR stVisionStatus.bHome)
+    AND NOT GVL_HMI.bCameraManualBusy AND GVL_HMI.bCameraConnected
+    AND GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
+    AND (GVL_HMI.udiCameraManualImageSelection >= 1) AND (GVL_HMI.udiCameraManualImageSelection <= 4)
+    AND ((GVL_HMI.udiCameraManualImageSelection <> 1) OR NOT bVisionPbupFitted);
+GVL_HMI.bVisionImageReleaseAllowed := fbVisionManualImages.bPrepared
+    AND NOT fbVisionManualImages.bPartHeld AND (usiManualCameraStep = 0);
+GVL_HMI.bCameraManualReady := bManualCameraTransportReady AND fbVisionManualImages.bPrepared
+    AND (GVL_HMI.udiCameraManualImageSelection = fbVisionManualImages.udiPreparedImage)
+    AND bVisionPbupKnown AND ((GVL_HMI.udiCameraManualImageSelection <> 1) OR NOT bVisionPbupFitted);
+GVL_HMI.bCameraManualReady := GVL_HMI.bCameraManualReady
+    OR (bManualCameraRecoveryAllowed AND NOT bManualCameraRecoveryActive);
+GVL_HMI.bCameraManualBusy := GVL_HMI.bCameraManualBusy OR fbVisionManualImages.bBusy;
+IF fbVisionManualImages.bActive OR fbVisionManualImages.bFault
+    OR ((eMachineState = E_MachineState.Manual) AND stCommand.bVisionManualEnable) THEN
+    GVL_HMI.sCameraManualMessage := fbVisionManualImages.sMessage;
+END_IF
+// One actionable reason. Prepared geometry is independent of camera transport.
+IF (eMachineState = E_MachineState.Manual) AND stCommand.bVisionManualEnable THEN
+    IF NOT stInputs.stSafety.bSafetyOk THEN
+        GVL_HMI.sCameraManualMessage := 'Vision blocked: safety not ready';
+    ELSIF NOT stInputs.bMainDoorClosed OR NOT GVL_Safety.bAirSupplySafe THEN
+        GVL_HMI.sCameraManualMessage := 'Vision blocked: close door / restore air';
+    ELSIF bManualCameraRecoveryActive OR bManualCameraRecoveryFailed THEN
+        GVL_HMI.sCameraManualMessage := sManualCameraRecoveryMessage;
+    ELSIF fbVisionManualImages.bCameraWarning AND fbVisionManualImages.bBusy THEN
+        GVL_HMI.sCameraManualMessage := fbVisionManualImages.sMessage;
+    ELSIF bVisionCameraStartBlocked THEN
+        GVL_HMI.sCameraManualMessage := 'Camera error - use Camera Reset or retry Trigger';
+    ELSIF NOT GVL_HMI.bCameraConnected OR NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus THEN
+        GVL_HMI.sCameraManualMessage := 'Camera not connected / not in RUN';
+    ELSIF stIndexStatus.bBusy OR stIndexStatus.bTwoHandRequired
+        OR (stInputs.bTwoHandsSafe AND NOT fbVisionManualImages.bActive)
+        OR NOT stInputs.bIndexReady OR NOT stInputs.bIndexLocked
+        OR (stInputs.eIndexPosition = E_TablePosition.Unknown) THEN
+        GVL_HMI.sCameraManualMessage := 'Wait for locked index; release two-hand';
+    ELSIF bRejectChuteStopRequestLatched OR stCommand.bStop OR stCommand.bReset THEN
+        GVL_HMI.sCameraManualMessage := 'Vision blocked: Stop/Reset active';
+    ELSIF NOT stVisionNest.bPartPresent THEN
+        GVL_HMI.sCameraManualMessage := 'No tracked product at Vision';
+    ELSIF fbVisionManualImages.bFault OR fbVisionManualImages.bBusy THEN
+        GVL_HMI.sCameraManualMessage := fbVisionManualImages.sMessage;
+    ELSIF bVisionImageJogBusy OR bVisionManualSequenceActive OR bVisionManualHomeActive THEN
+        GVL_HMI.sCameraManualMessage := 'Finish Vision jog / HOME / sequence first';
+    ELSIF fbVisionManualImages.bCameraWarning THEN
+        GVL_HMI.sCameraManualMessage := fbVisionManualImages.sMessage;
+    ELSIF NOT bVisionPbupKnown THEN
+        GVL_HMI.sCameraManualMessage := 'Confirm PBUP fitted state for this nest';
+    ELSIF (GVL_HMI.udiCameraManualImageSelection < 1) OR (GVL_HMI.udiCameraManualImageSelection > 4) THEN
+        GVL_HMI.sCameraManualMessage := 'Select an image';
+    ELSIF (GVL_HMI.udiCameraManualImageSelection <> 1) AND NOT bVisionPbupFitted
+        AND NOT stVisionNest.bLoadSetComplete THEN
+        GVL_HMI.sCameraManualMessage := 'Mounting requires a complete paired load';
+    ELSIF NOT fbVisionManualImages.bActive AND NOT stVisionStatus.bHome THEN
+        GVL_HMI.sCameraManualMessage := 'Return Vision tooling HOME before Prepare';
+    ELSIF bManualCameraDrainResult THEN
+        GVL_HMI.sCameraManualMessage := 'Camera: clearing previous result handshake';
+    ELSIF GVL_HMI.bCameraManualBusy THEN
+        GVL_HMI.sCameraManualMessage := 'Camera: loading program / capture in progress';
+    ELSIF fbVisionManualImages.bPrepared
+        AND (GVL_HMI.udiCameraManualImageSelection = fbVisionManualImages.udiPreparedImage) THEN
+        IF bManualCameraTransportReady THEN
+            GVL_HMI.sCameraManualMessage := 'Position ready - press Camera Trigger';
+        ELSE
+            GVL_HMI.sCameraManualMessage := 'Position ready - waiting for camera handshake';
+        END_IF
+    ELSE
+        GVL_HMI.sCameraManualMessage := 'Press Prepare Position for the selected image';
+    END_IF
+END_IF
+GVL_HMI.sVisionPbupStatus := CONCAT('Nest ', UINT_TO_STRING(uiVisionPbupNest));
+IF (uiVisionPbupNest < 1) OR (uiVisionPbupNest > 4) THEN
+    GVL_HMI.sVisionPbupStatus := 'Wait for a known, locked index position';
+ELSIF NOT stVisionNest.bPartPresent THEN
+    GVL_HMI.sVisionPbupStatus := CONCAT(GVL_HMI.sVisionPbupStatus, ': no tracked part; load at operator station');
+ELSIF NOT bVisionPbupKnown THEN
+    GVL_HMI.sVisionPbupStatus := CONCAT(GVL_HMI.sVisionPbupStatus, ': confirm saved PBUP state');
+ELSIF bVisionPbupFitted THEN
+    GVL_HMI.sVisionPbupStatus := CONCAT(GVL_HMI.sVisionPbupStatus, ': PBUP fitted');
+ELSE
+    GVL_HMI.sVisionPbupStatus := CONCAT(GVL_HMI.sVisionPbupStatus, ': PBUP not fitted');
+END_IF
+IF stVisionNest.bPartPresent AND bVisionPbupKnown AND (uiVisionPbupNest >= 1) AND (uiVisionPbupNest <= 4) THEN
+    IF aVisionPbupSource[uiVisionPbupNest] = 1 THEN
+        GVL_HMI.sVisionPbupStatus := CONCAT(GVL_HMI.sVisionPbupStatus, ' / new paired load');
+    ELSIF aVisionPbupSource[uiVisionPbupNest] = 2 THEN
+        GVL_HMI.sVisionPbupStatus := CONCAT(GVL_HMI.sVisionPbupStatus, ' / operator confirmed');
+    ELSE
+        GVL_HMI.sVisionPbupStatus := CONCAT(GVL_HMI.sVisionPbupStatus, ' / mounting completed');
+    END_IF
+END_IF
+
+
+// Native event grid is the single engineer-feedback presentation on this tab.
+GVL_MASTER.bVisionManualCameraWarning := (eMachineState = E_MachineState.Manual)
+    AND fbVisionManualImages.bCameraWarning;
+GVL_MASTER.bVisionManualGridActive := (eMachineState = E_MachineState.Manual)
+    AND stCommand.bVisionManualEnable;
+GVL_MASTER.bVisionManualGridWarning := GVL_MASTER.bVisionManualGridActive
+    AND NOT GVL_HMI.bCameraManualReady AND NOT GVL_HMI.bCameraManualBusy
+    AND NOT fbVisionManualImages.bFault AND NOT fbVisionManualImages.bCameraWarning
+    AND NOT bVisionCameraStartBlocked AND NOT bManualCameraRecoveryFailed;
 
 // =====================================================
 // VISION MANUAL MODE - HOME COMPLETION
@@ -1791,6 +2369,8 @@ END_IF;
 IF (eMachineState = E_MachineState.Manual)
     AND NOT bVisionManualSequenceActive
     AND NOT bVisionManualHomeActive
+    AND NOT fbVisionManualImages.bActive AND NOT bVisionImageOwnedBeforeUpdate
+    AND NOT fbVisionManualImages.bFault
 THEN
 
     // Start from a safe manual command image every scan.
@@ -2040,6 +2620,11 @@ ELSE
 
 END_IF
 
+stVisionStatus.bFault := stVisionStatus.bFault OR fbVisionManualImages.bFault;
+IF fbVisionManualImages.bActive OR fbVisionManualImages.bFault THEN
+    stVisionStatus.sDiagnostic := fbVisionManualImages.sMessage;
+END_IF
+
 // Current station/nest status for HMI.
 stPatchDispenseStatus.bPartPresent := bPatchDispenseRequired;
 stHeatStakeStatus.bPartPresent := bHeatStakeRequired;
@@ -2059,14 +2644,15 @@ IF eMachineState = E_MachineState.Manual THEN
     stVisionStatus.bBusy :=
         NOT stVisionStatus.bHome
         OR bVisionManualSequenceActive
-        OR bVisionManualHomeActive;
+        OR bVisionManualHomeActive
+        OR fbVisionManualImages.bActive;
 
     stVisionStatus.bReady :=
         stVisionStatus.bHome
         AND NOT stVisionStatus.bBusy
         AND bVisionManualEnableAllowed
         AND stCommand.bVisionManualEnable
-        AND NOT fbVision.IsFaulted();
+        AND NOT fbVision.IsFaulted() AND NOT fbVisionManualImages.bFault;
 END_IF
 
 // "Ready" on the Heat Stake HMI is an operational indication, not an
@@ -2580,8 +3166,8 @@ END_IF
 
 
 
-stOutputsInternal.bStation1SupportExtend := bStation1SupportExtendRequest;
-stOutputsInternal.bStation1SupportRetract := bStation1SupportRetractRequest;
+stOutputsInternal.bStation1SupportExtend := FALSE; // Removed Station 1 nest support.
+stOutputsInternal.bStation1SupportRetract := FALSE; // Reserved compatibility output.
 stOutputsInternal.bStation2SupportExtend := bStation2SupportExtendRequest;
 stOutputsInternal.bStation2SupportRetract := bStation2SupportRetractRequest;
 stOutputsInternal.bStation3SupportExtend := FALSE; // Removed hardware.
@@ -2600,7 +3186,6 @@ stOutputsInternal.bHeatStakeHeadLock := bHeatStakeHeadLockRequest;
 stOutputsInternal.bHeatStakeHeadUnlock := bHeatStakeHeadUnlockRequest;
 stOutputsInternal.bHeatStakeHeadDown := bHeatStakeHeadDownRequest;
 stOutputsInternal.bHeatStakeHeadUp := bHeatStakeHeadUpRequest;
-stOutputsInternal.iHeatStakePressureRaw := iHeatStakePressureRaw;
 stPermissives.bAirSupplyReady := GVL_Safety.bAirSupplySafe;
 
 
@@ -2609,10 +3194,7 @@ bPatchHoldUpAllowed := bPatchDispenseCommissioned AND stInputs.stSafety.bSafetyO
     AND stInputs.bMainDoorClosed AND GVL_Safety.bAirSupplySafe
     AND ((eMachineState = E_MachineState.AutoCycle)
         OR ((eMachineState = E_MachineState.Manual)
-            AND (stCommand.bIndexerManualEnable OR stIndexStatus.bBusy
-                OR (stCommand.bPatchManualEnable
-                    AND (bPatchVerticalUpCommandPrevious OR stInputs.bMembraneTransferRetracted)
-                    AND NOT tpPatchManualVerticalDown.Q)))
+            AND NOT bPatchManualVerticalDownHeld AND NOT stPatchDispenseStatus.bFault)
         OR ((eMachineState = E_MachineState.Stopping) AND stIndexStatus.bBusy));
 stOutputsInternal.bPatchVerticalUp := FALSE;
 stOutputsInternal.bPatchVerticalDown := FALSE;
@@ -2625,9 +3207,9 @@ IF stInputs.stSafety.bSafetyOk AND stInputs.bMainDoorClosed
             AND NOT bPatchSequenceDownRequest;
         stOutputsInternal.bPatchDispenserAir := bPatchSequenceAirRequest;
     ELSIF bPatchManualAllowed THEN
-        stOutputsInternal.bPatchVerticalDown := tpPatchManualVerticalDown.Q
-            AND NOT tpPatchManualVerticalUp.Q AND NOT stCommand.bIndexerManualEnable;
-        stOutputsInternal.bPatchVerticalUp := (tpPatchManualVerticalUp.Q OR bPatchHoldUpAllowed)
+        stOutputsInternal.bPatchVerticalDown := bPatchManualVerticalDownHeld
+            AND NOT stCommand.bIndexerManualEnable;
+        stOutputsInternal.bPatchVerticalUp := bPatchHoldUpAllowed
             AND NOT stOutputsInternal.bPatchVerticalDown;
         stOutputsInternal.bPatchDispenserAir := tpPatchAirBlow.Q;
     ELSE
@@ -2641,13 +3223,11 @@ stPermissives.bDoorInitialisationReady :=
     NOT fbMainDoorLock.IsFaulted()
     AND fbMainDoorLock.IsReadyForAutomatic();
 stPermissives.bIndexInitialisationReady := NOT fbIndex.IsFaulted();
-// A station is safe for indexing only when its DOWN/RETRACTED sensor is TRUE
-// AND its UP/EXTENDED sensor is FALSE. This prevents indexing on an ambiguous
-// or contradictory cylinder feedback condition.
+// Heat Stake is the only fitted nest support. Require its real retracted
+// feedback and reject contradictory feedback. Patch transfer vertical and
+// all other index permissives remain separate below.
 stPermissives.bStationsHome :=
-    stInputs.bStation1SupportRetracted
-    AND NOT stInputs.bStation1SupportExtended
-    AND stInputs.bStation2SupportRetracted
+    stInputs.bStation2SupportRetracted
     AND NOT stInputs.bStation2SupportExtended;
 
 stPermissives.bInitialisationAllowed := stInputs.stSafety.bSafetyOk
@@ -2667,8 +3247,13 @@ stPermissives.bStationsIndexPermissive := stPermissives.bStationsHome
     AND (GVL_Motion.stPatchFeedSettings.bUsePatchVerticalFeedback
         OR stOutputsInternal.bPatchVerticalUp)
     AND NOT fbPatchDispense.IsBusy() AND NOT fbPatchFeedManager.stStatus.bDriveBusy
-    AND NOT tpPatchManualVerticalDown.Q AND NOT tpPatchManualVerticalUp.Q
-    AND NOT stOutputsInternal.bPatchVerticalDown;
+    AND NOT bPatchManualVerticalDownHeld
+    AND NOT stOutputsInternal.bPatchVerticalDown
+    AND NOT fbVisionManualImages.bActive AND NOT bVisionImageRecoveryRequired
+    AND ((eMachineState <> E_MachineState.Manual)
+        OR (stVisionStatus.bHome AND bHeatStakeManualHomePosition AND NOT fbVisionManualImages.bFault
+            AND NOT bVisionImageJogBusy AND NOT bVisionManualHomeActive AND NOT bVisionManualSequenceActive
+            AND NOT bManualCameraRecoveryActive));
 // IMPORTANT:
 // The operator exchange permissive is a START permissive only.
 // Once the table starts moving, FB_OperatorStation intentionally leaves
@@ -2697,6 +3282,9 @@ sBlockReason => sAutoCycleBlockReason);
 IF NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus THEN
     bAutoCycleAllowed := FALSE;
     sAutoCycleBlockReason := 'Vision camera not in RUN - select RUN in VS Creator';
+ELSIF bVisionCameraStartBlocked THEN
+    bAutoCycleAllowed := FALSE;
+    sAutoCycleBlockReason := 'Vision camera error - follow camera recovery procedure before Start';
 END_IF
 
 stPermissives.bAutoCycleAllowed := bAutoCycleAllowed;
@@ -2910,15 +3498,9 @@ E_MachineState.Stopping:
     IF bStoppingTimeoutFault THEN
         bSafetyDropRequest := TRUE;
         eMachineState := E_MachineState.Fault;
+	// The removed Station 1 support no longer gates completion of Stopping.
 	ELSIF NOT stIndexStatus.bBusy
         AND NOT fbPatchFeedManager.stStatus.bBusy
-		AND (
-			NOT GVL_Safety.bAirSupplySafe
-			OR (
-				stInputs.bStation1SupportRetracted
-				AND NOT stInputs.bStation1SupportExtended
-			)
-		)
 	THEN
 		eMachineState := E_MachineState.Stopped;
 	END_IF
@@ -3167,16 +3749,61 @@ E_MachineState.Fault:
     END_IF
 END_CASE
 
-// Manual Index follows the validated Silicone Station behaviour:
-// enable the Indexer on the HMI, then a fresh two-hand actuation requests one move.
-rtManualIndexMove(CLK :=
-    (eMachineState = E_MachineState.Manual)
-    AND NOT bRejectChuteStopRequestLatched
-    AND stCommand.bIndexerManualEnable
-    AND stInputs.bTwoHandsSafe);
-
-IF rtManualIndexMove.Q THEN
-    bIndexMoveAccepted := fbIndex.RequestManualMove();
+// Do not queue a rejected start behind HOME or a reserved image position.
+// The raw two-hand edge was already sampled before Vision admission this scan.
+bManualIndexBlockVision := NOT stVisionStatus.bHome
+    OR fbVisionManualImages.bActive OR bVisionImageOwnedBeforeUpdate
+    OR bVisionImageJogBusy OR bVisionManualHomeActive OR bVisionManualSequenceActive
+    OR bVisionImageRecoveryRequired OR fbVisionManualImages.bFault OR bManualCameraRecoveryActive;
+bManualIndexBlockHeat := NOT bHeatStakeManualHomePosition OR fbHeatStake.IsBusy();
+bManualIndexBlockPatch := NOT bPatchVerticalIndexReady
+    OR NOT (GVL_Motion.stPatchFeedSettings.bUsePatchVerticalFeedback OR stOutputsInternal.bPatchVerticalUp)
+    OR fbPatchDispense.IsBusy() OR fbPatchFeedManager.stStatus.bDriveBusy
+    OR bPatchManualVerticalDownHeld OR stOutputsInternal.bPatchVerticalDown;
+bManualIndexBlockOther := NOT stInputs.stSafety.bMotionSafetyPermitted
+    OR NOT stInputs.bMainDoorClosed OR NOT GVL_Safety.bAirSupplySafe
+    OR bRejectChuteStopRequestLatched OR stCommand.bStop OR stCommand.bReset
+    OR NOT stInputs.bIndexReady OR NOT stInputs.bIndexLocked
+    OR (stInputs.eIndexPosition = E_TablePosition.Unknown)
+    OR (fbIndex.GetState() <> E_IndexState.Idle) OR stIndexStatus.bTwoHandRequired;
+bManualIndexStartAllowed := NOT bManualIndexBlockVision AND NOT bManualIndexBlockHeat
+    AND NOT bManualIndexBlockPatch AND NOT bManualIndexBlockOther
+    AND stPermissives.bIndexMoveAllowed;
+IF bManualIndexAttempt THEN
+    IF bManualIndexStartAllowed THEN
+        bIndexMoveAccepted := fbIndex.RequestManualMove();
+    ELSE
+        bManualIndexWarningActive := TRUE;
+    END_IF
+END_IF
+IF (eMachineState <> E_MachineState.Manual) OR bManualIndexStartAllowed THEN
+    bManualIndexWarningActive := FALSE;
+END_IF
+GVL_MASTER.bManualIndexBlockVision := bManualIndexWarningActive AND bManualIndexBlockVision;
+GVL_MASTER.bManualIndexBlockHeat := bManualIndexWarningActive AND bManualIndexBlockHeat;
+GVL_MASTER.bManualIndexBlockPatch := bManualIndexWarningActive AND bManualIndexBlockPatch;
+GVL_MASTER.bManualIndexBlockOther := bManualIndexWarningActive AND bManualIndexBlockOther;
+IF NOT stVisionStatus.bHome THEN
+    GVL_MASTER.sManualIndexVisionReason := 'Index blocked: Vision not HOME';
+ELSIF bVisionImageJogBusy OR bVisionManualHomeActive OR bVisionManualSequenceActive THEN
+    GVL_MASTER.sManualIndexVisionReason := 'Index blocked: Vision manual action active';
+ELSIF bManualCameraRecoveryActive THEN
+    GVL_MASTER.sManualIndexVisionReason := 'Index blocked: camera recovery in progress';
+ELSIF fbVisionManualImages.bActive OR bVisionImageOwnedBeforeUpdate THEN
+    GVL_MASTER.sManualIndexVisionReason := 'Index blocked: Vision position reserved';
+ELSE
+    GVL_MASTER.sManualIndexVisionReason := 'Index blocked: Vision recovery required';
+END_IF
+IF NOT stInputs.stSafety.bMotionSafetyPermitted THEN
+    GVL_MASTER.sManualIndexOtherReason := 'Index blocked: motion safety not ready';
+ELSIF NOT stInputs.bMainDoorClosed OR NOT GVL_Safety.bAirSupplySafe THEN
+    GVL_MASTER.sManualIndexOtherReason := 'Index blocked: door or air not ready';
+ELSIF bRejectChuteStopRequestLatched OR stCommand.bStop OR stCommand.bReset THEN
+    GVL_MASTER.sManualIndexOtherReason := 'Index blocked: Stop/Reset request active';
+ELSIF stInputs.eIndexPosition = E_TablePosition.Unknown THEN
+    GVL_MASTER.sManualIndexOtherReason := 'Index blocked: position unknown';
+ELSE
+    GVL_MASTER.sManualIndexOtherReason := 'Index blocked: table not locked/idle or request pending';
 END_IF
 
 fbIndex.Cyclic(bEnable := (eMachineState <> E_MachineState.PowerUp) AND (eMachineState <> E_MachineState.Fault), bReset := stCommand.bReset, bAutomaticMode := (eMachineState = E_MachineState.AutoCycle), bManualMode := (eMachineState = E_MachineState.Manual), bMovePermissive := stPermissives.bIndexMoveAllowed, bSafetyMotionPermitted := stInputs.stSafety.bMotionSafetyPermitted, bTwoHandsSafe := stInputs.bTwoHandsSafe, bStationsHome := stPermissives.bStationsHome, bProcessToolingRetracted := stPermissives.bStationsIndexPermissive, bTableReady := stInputs.bIndexReady, bTableLocked := stInputs.bIndexLocked, bCompletedSensor := stInputs.bIndexCompletedSensor, bSupportExtended := TRUE, bSupportRetracted := TRUE, eCurrentPosition := stInputs.eIndexPosition, tRotateDelay := stConfig.tIndexRotateDelay, tStopDelay := stConfig.tIndexStopDelay, tSupportTimeout := stConfig.tIndexSupportTimeout, tMovementTimeout := stConfig.tIndexTimeout, tTwoHandHold := stConfig.tTwoHandHold, tTwoHandRecoveryTimeout := stConfig.tTwoHandRecoveryTimeout, bRotatePortA => stOutputsInternal.bIndexRotatePortA, bStopPortB => stOutputsInternal.bIndexStopPortB, bSupportExtendRequest => stOutputsInternal.bIndexSupportExtend, bSupportRetractRequest => stOutputsInternal.bIndexSupportRetract);
@@ -3574,6 +4201,21 @@ stOutputsInternal.bHeatStakeHeadDown := bHeatStakeHeadDownHeld
     AND NOT bHeatStakeHeadUpRecoveryLatched;
 stOutputsInternal.bHeatStakeHeadUp := NOT stOutputsInternal.bHeatStakeHeadDown;
 
+// Maintain Down Pressure for the complete retained DOWN command, including
+// the manual hold after DOWN feedback ends the movement action.
+// Evaluate after final direction/recovery arbitration so UP removes pressure
+// in the same scan. Keep the regulator's existing limits and scaling.
+rHeatStakePressureCommandBar := stHeatStakeProcessSettings.rDownPressureBar;
+fbHeatStakePressureRegulator.Cyclic(
+    bEnable := stOutputsInternal.bHeatStakeHeadDown,
+    rSetpointBar := rHeatStakePressureCommandBar,
+    rCommandBar => rHeatStakePressureScaledBar,
+    iOutputRaw => iHeatStakePressureRaw
+);
+stOutputsInternal.iHeatStakePressureRaw := iHeatStakePressureRaw;
+stHeatStakeProcessStatus.rPressureCommandBar := rHeatStakePressureScaledBar;
+stHeatStakeProcessStatus.iPressureOutputRaw := iHeatStakePressureRaw;
+
 stOutputs := stOutputsInternal;
 stStatus.eMachineState := eMachineState;
 stStatus.eProcessCycleState := eProcessCycleState;
@@ -3599,6 +4241,19 @@ stStatus.bHeatStakeManualSupportAllowed := bHeatStakeManualSupportAllowed;
 stStatus.bHeatStakeManualActionBusy := bHeatStakeManualActionBusy;
 stStatus.bHeatStakeManualHeadUnlocked := bHeatStakeManualHeadUnlocked;
 stStatus.stVision := stVisionStatus;
+// Manual image presentation uses its actual owner, not the disabled automatic FB.
+// Physical HOME and all automatic result/stage semantics remain unchanged.
+IF (eMachineState = E_MachineState.Manual) AND stCommand.bVisionManualEnable
+    AND NOT bVisionManualSequenceActive AND NOT bVisionManualHomeActive THEN
+    stStatus.stVision.bBusy := GVL_HMI.bCameraManualBusy;
+    stStatus.stVision.bFault := stVisionStatus.bFault OR fbVisionManualImages.bFault;
+    // Station HOME is ready before Prepare; capture readiness remains a separate status.
+    stStatus.stVision.bReady := (stVisionStatus.bHome OR fbVisionManualImages.bPrepared)
+        AND stVisionStatus.bCommissioned AND stInputs.stSafety.bSafetyOk
+        AND GVL_Safety.bAirSupplySafe AND NOT GVL_HMI.bCameraManualBusy
+        AND NOT stStatus.stVision.bFault;
+    stStatus.stVision.sDiagnostic := GVL_HMI.sCameraManualMessage;
+END_IF
 stStatus.bReady := (eMachineState = E_MachineState.ReadyToStart);
 stStatus.bBusy := (eMachineState = E_MachineState.AutoCycle) OR stIndexStatus.bBusy;
 stStatus.bFaulted := (eMachineState = E_MachineState.Fault);
@@ -3639,6 +4294,16 @@ stStatus.bHeaterDwellTimeoutFault := bHeaterDwellTimeoutFault;
 // VISION MANUAL MODE - HMI STATUS
 // =====================================================
 stStatus.bVisionManualEnableAllowed := bVisionManualEnableAllowed;
+IF fbVisionManualImages.bActive OR fbVisionManualImages.bFault THEN
+    bVisionHorizontalBackAllowed := FALSE;
+    bVisionHorizontalFrontAllowed := FALSE;
+    bVisionVerticalUpAllowed := FALSE;
+    bVisionVerticalFullDownAllowed := FALSE;
+    bVisionGripOpenAllowed := FALSE;
+    bVisionGripCloseAllowed := FALSE;
+    bVisionRotate0Allowed := FALSE;
+    bVisionRotate180Allowed := FALSE;
+END_IF
 stStatus.bVisionManualRunSequenceAllowed :=bVisionManualRunSequenceAllowed;
 
 stStatus.bVisionManualHomeAllowed := bVisionManualHomeAllowed;

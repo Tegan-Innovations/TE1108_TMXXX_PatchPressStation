@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
   <GVL Name="GVL_MASTER" Id="{9970f182-028c-4164-bcf7-ddc50b57d0ed}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
@@ -14,6 +14,21 @@ VAR_GLOBAL
     sSystemDate       : STRING(255);
     bMachineFault     : BOOL;
     bCycleStopRequest : BOOL;
+    // Manual index warnings: presentation only, never Fault/Stop requests.
+    bManualIndexBlockVision : BOOL;
+    bManualIndexBlockHeat : BOOL;
+    bManualIndexBlockPatch : BOOL;
+    bManualIndexBlockOther : BOOL;
+    sManualIndexVisionReason : STRING(160);
+    sManualIndexOtherReason : STRING(160);
+    bManualCameraRecoveryFailed : BOOL;
+    bVisionManualCameraWarning : BOOL;
+    bVisionManualGridWarning : BOOL;
+    bVisionManualGridActive : BOOL;
+END_VAR
+VAR_GLOBAL CONSTANT
+    // Per-nest Heat Stake product-quality warning identity (not a machine fault).
+    udiHeatStakePatchMissingAlertCode : UDINT := 1201;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

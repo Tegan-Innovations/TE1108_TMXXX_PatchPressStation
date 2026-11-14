@@ -161,8 +161,10 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
     // =====================================================
 
 	GVL_MASTER.stCommand.bPatchManualEnable := GVL_HMI.stCommands.bPatchManualEnable;
-	GVL_MASTER.stCommand.bPatchSupportExtendRequest :=GVL_HMI.stCommands.bPatchSupportExtendRequest;
-	GVL_MASTER.stCommand.bPatchSupportRetractRequest := GVL_HMI.stCommands.bPatchSupportRetractRequest;
+	GVL_MASTER.stCommand.bPatchSupportExtendRequest := FALSE; // Removed nest support.
+	GVL_HMI.stCommands.bPatchSupportExtendRequest := FALSE; // Discard obsolete HMI/ADS requests.
+	GVL_MASTER.stCommand.bPatchSupportRetractRequest := FALSE; // Removed nest support.
+	GVL_HMI.stCommands.bPatchSupportRetractRequest := FALSE; // Discard obsolete HMI/ADS requests.
 	GVL_MASTER.stCommand.bPatchVerticalUpRequest :=GVL_HMI.stCommands.bPatchVerticalUpRequest;
 	GVL_MASTER.stCommand.bPatchVerticalDownRequest :=GVL_HMI.stCommands.bPatchVerticalDownRequest;
 	GVL_MASTER.stCommand.bPatchDispenseRequest :=GVL_HMI.stCommands.bPatchDispenseRequest;

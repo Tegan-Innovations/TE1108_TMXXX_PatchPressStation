@@ -1463,8 +1463,8 @@ External Setpoint Generation:
 			</Properties>
 		</DataType>
 		<DataType>
-			<Name GUID="{F16733BE-081D-0B6E-132B-5CA901D24D6A}" AutoDeleteType="true">ST_PhysicalInputs</Name>
-			<BitSize>672</BitSize>
+			<Name GUID="{2C16F09B-8FC1-EB9B-3D27-FCC862A1581A}" AutoDeleteType="true">ST_PhysicalInputs</Name>
+			<BitSize>704</BitSize>
 			<SubItem>
 				<Name>bEmergencyStopChannel1</Name>
 				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
@@ -1874,6 +1874,27 @@ External Setpoint Generation:
 				<BitSize>8</BitSize>
 				<BitOffs>648</BitOffs>
 			</SubItem>
+			<SubItem>
+				<Name>bPatchOpticalLeft</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[ Term19 Input6, consistent patch detection]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>656</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bLoadingStationPbupPresent</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[ Operator PBUP sensor; provisional Term19 Input1]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>664</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bPatchOpticalRight</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[ Term19 Input5, patch right optical sensor]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>672</BitOffs>
+			</SubItem>
 		</DataType>
 		<DataType>
 			<Name GUID="{3D778266-9CB6-A2BC-B908-FC747FC8D738}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..2] OF BOOL</Name>
@@ -2143,6 +2164,580 @@ External Setpoint Generation:
 			</SubItem>
 		</DataType>
 		<DataType>
+			<Name GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}" AutoDeleteType="true">ST_EventsHistory</Name>
+			<BitSize>8256</BitSize>
+			<SubItem>
+				<Name>sEventTex</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sType</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>2048</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sDate</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>4096</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>6144</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nEventsAmount</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>8192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>abType</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<Comment><![CDATA[1:Alarm]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>8224</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..200] OF ST_EventsHistory</Name>
+			<BitSize>1659456</BitSize>
+			<BaseType GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}">ST_EventsHistory</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>201</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..4] OF BOOL</Name>
+			<BitSize>32</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>1</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{3865B92D-E0AA-4CC0-BC36-652BC0C48B5C}" AutoDeleteType="true">ST_HeatStakeTemperatureSettings</Name>
+			<BitSize>640</BitSize>
+			<SubItem>
+				<Name>rSetpointC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rLowLimitC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>70</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rHighLimitC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>120</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rMaxTcDifferenceC</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>192</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tLowTemperatureTimeout</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+				<Default>
+					<DateTime>T#5M</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rKp</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<Comment><![CDATA[ Conservative initial tuning. FB_CTRL_PID is used with D disabled,
+ therefore the initial behaviour is PI.]]></Comment>
+				<BitSize>64</BitSize>
+				<BitOffs>320</BitOffs>
+				<Default>
+					<Value>4</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tTn</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>384</BitOffs>
+				<Default>
+					<DateTime>T#15S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tTv</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>416</BitOffs>
+				<Default>
+					<DateTime>T#0S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tTd</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>448</BitOffs>
+				<Default>
+					<DateTime>T#0S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>tControllerCycle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>480</BitOffs>
+				<Default>
+					<DateTime>T#100MS</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rOutputMinPercent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>512</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rOutputMaxPercent</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>576</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{140B09FC-1E31-6B4A-5929-9C5D94DE2671}" AutoDeleteType="true">ST_HeatStakeProcessSettings</Name>
+			<BitSize>128</BitSize>
+			<SubItem>
+				<Name>tContactTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<DateTime>T#3S</DateTime>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>rDownPressureBar</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>0.5</Value>
+				</Default>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{932F1814-5282-1BB1-311D-8F68B5F7DD9D}" AutoDeleteType="true">E_PartDisposition</Name>
+			<BitSize>16</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
+			<EnumInfo>
+				<Text><![CDATA[None]]></Text>
+				<Enum>0</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Pass]]></Text>
+				<Enum>10</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Reject]]></Text>
+				<Enum>20</Enum>
+			</EnumInfo>
+			<EnumInfo>
+				<Text><![CDATA[Reprocess]]></Text>
+				<Enum>30</Enum>
+			</EnumInfo>
+			<Properties>
+				<Property>
+					<Name>qualified_only</Name>
+				</Property>
+				<Property>
+					<Name>strict</Name>
+				</Property>
+				<Property>
+					<Name>to_string</Name>
+				</Property>
+				<Property>
+					<Name>generate_implicit_init_function</Name>
+				</Property>
+			</Properties>
+		</DataType>
+		<DataType>
+			<Name GUID="{8CFBBA40-6EB8-5316-EB2F-9CEF8D38360C}" AutoDeleteType="true">ST_VisionResults</Name>
+			<BitSize>2144</BitSize>
+			<SubItem>
+				<Name>sPatchNumber</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</Type>
+				<ArrayInfo>
+					<LBound>1</LBound>
+					<Elements>2</Elements>
+				</ArrayInfo>
+				<BitSize>1296</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sDate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</Type>
+				<BitSize>648</BitSize>
+				<BitOffs>1296</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nBluePartPresent</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>1952</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nClickPartPresent</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<ArrayInfo>
+					<LBound>1</LBound>
+					<Elements>2</Elements>
+				</ArrayInfo>
+				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL / bClickPartPresent[1] FIRST INSPECTION, bClickPartPresent[2] THIRD INSPECTION]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>1968</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nBottomPatchok</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>2000</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nTopPatchok</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>2016</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nPBUBOK</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>2032</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nPBUBMagnetOK</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
+				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>2048</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bGeneralPass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>2064</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bGeneralFail</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>2072</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>aInspectionCompleted</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<ArrayInfo>
+					<LBound>1</LBound>
+					<Elements>4</Elements>
+				</ArrayInfo>
+				<Comment><![CDATA[ Individual Keyence inspection results
+ [1] Program 0
+ [2] Program 1
+ [3] Program 2
+ [4] Program 3
+
+ Completed = FALSE              -> NOT TESTED
+ Completed = TRUE, Passed = TRUE  -> PASS
+ Completed = TRUE, Passed = FALSE -> FAIL]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>2080</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>aInspectionPassed</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<ArrayInfo>
+					<LBound>1</LBound>
+					<Elements>4</Elements>
+				</ArrayInfo>
+				<BitSize>32</BitSize>
+				<BitOffs>2112</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{99828FDC-815A-ECF5-6577-6CDB3923F934}" AutoDeleteType="true">ST_TestHistory</Name>
+			<BitSize>6992</BitSize>
+			<SubItem>
+				<Name>uiNestId</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>eResult</Name>
+				<Type GUID="{932F1814-5282-1BB1-311D-8F68B5F7DD9D}">E_PartDisposition</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bPatchDispenseValid</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bPatchDispensePass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>40</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bHeatStakeValid</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>48</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bHeatStakePass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>56</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bVisionValid</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>64</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bVisionPass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>72</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>80</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sPatchDispenseResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>248</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sHeatStakeResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>416</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sVisionResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>584</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>752</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sDate</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>2800</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>stVisionInspectionResults</Name>
+				<Type GUID="{8CFBBA40-6EB8-5316-EB2F-9CEF8D38360C}">ST_VisionResults</Type>
+				<BitSize>2144</BitSize>
+				<BitOffs>4848</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{EFB18A53-DEEB-ED40-5FE2-5704CF356AAF}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
+			<Comment><![CDATA[ =====================================================
+ TEST HISTORY
+ =====================================================
+ Circular buffer containing the last 2001 completed
+ product test results.
+
+ Production Statistics reset does NOT modify this data.]]></Comment>
+			<BitSize>13990992</BitSize>
+			<BaseType GUID="{99828FDC-815A-ECF5-6577-6CDB3923F934}">ST_TestHistory</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>2001</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{7200358D-65A9-7605-1ED8-73A5B9A47549}" AutoDeleteType="true">ST_CycleDataCSV</Name>
+			<BitSize>4784</BitSize>
+			<SubItem>
+				<Name>uiNestId</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sGeneralResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sPatchDispenseResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>184</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sHeatStakeResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>352</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sVisionResult</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
+				<BitSize>168</BitSize>
+				<BitOffs>520</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sDate</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>688</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sTime</Name>
+				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
+				<BitSize>2048</BitSize>
+				<BitOffs>2736</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{8F3B7FB9-5C17-FB97-2A2D-1B217720D3B3}" AutoDeleteType="true">ST_PatchProcessSettings</Name>
+			<BitSize>320</BitSize>
+			<SubItem>
+				<Name>lrDriveMotorVelocity</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>40</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>lrPatchFeedRollVelocity</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>200</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>lrWasteRollVelocity</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
+				<BitSize>64</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>50</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>udiReleaseMs</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>192</BitOffs>
+				<Default>
+					<Value>5000</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>udiAirBlowDelayMs</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>224</BitOffs>
+				<Default>
+					<Value>3000</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>udiDriveStopDelayMs</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[ M1 run-on after the left optical clears; milliseconds.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>256</BitOffs>
+				<Default>
+					<Value>2000</Value>
+				</Default>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{3EBC3CCC-CFFF-5888-BBCC-8595775B69A9}" AutoDeleteType="true">ST_CameraProcessSettings</Name>
+			<BitSize>64</BitSize>
+			<SubItem>
+				<Name>udiMovingTriggerDelayMs</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>udiRotaryConfirmMs</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<BitSize>32</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>1000</Value>
+				</Default>
+			</SubItem>
+		</DataType>
+		<DataType>
 			<Name GUID="{A774D1C0-AE9F-2D71-1BAC-8FDB05F09BCE}" AutoDeleteType="true">ST_MachineConfig</Name>
 			<BitSize>640</BitSize>
 			<SubItem>
@@ -2381,492 +2976,6 @@ External Setpoint Generation:
 					</SubItem>
 				</Default>
 			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}" AutoDeleteType="true">ST_EventsHistory</Name>
-			<BitSize>8256</BitSize>
-			<SubItem>
-				<Name>sEventTex</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sType</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>2048</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sDate</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>4096</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sTime</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>6144</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nEventsAmount</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>8192</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>abType</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
-				<Comment><![CDATA[1:Alarm]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>8224</BitOffs>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{385AF722-F2E3-E02B-BA4E-6FD795CA6941}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..200] OF ST_EventsHistory</Name>
-			<BitSize>1659456</BitSize>
-			<BaseType GUID="{FAFB0BC4-EEAC-70C9-2FC4-E0B82AF34D09}">ST_EventsHistory</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>201</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..4] OF BOOL</Name>
-			<BitSize>32</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>1</LBound>
-				<Elements>4</Elements>
-			</ArrayInfo>
-		</DataType>
-		<DataType>
-			<Name GUID="{3865B92D-E0AA-4CC0-BC36-652BC0C48B5C}" AutoDeleteType="true">ST_HeatStakeTemperatureSettings</Name>
-			<BitSize>640</BitSize>
-			<SubItem>
-				<Name>rSetpointC</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<BitSize>64</BitSize>
-				<BitOffs>0</BitOffs>
-				<Default>
-					<Value>100</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>rLowLimitC</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<BitSize>64</BitSize>
-				<BitOffs>64</BitOffs>
-				<Default>
-					<Value>70</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>rHighLimitC</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<BitSize>64</BitSize>
-				<BitOffs>128</BitOffs>
-				<Default>
-					<Value>120</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>rMaxTcDifferenceC</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<BitSize>64</BitSize>
-				<BitOffs>192</BitOffs>
-				<Default>
-					<Value>10</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tLowTemperatureTimeout</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>256</BitOffs>
-				<Default>
-					<DateTime>T#5M</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>rKp</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<Comment><![CDATA[ Conservative initial tuning. FB_CTRL_PID is used with D disabled,
- therefore the initial behaviour is PI.]]></Comment>
-				<BitSize>64</BitSize>
-				<BitOffs>320</BitOffs>
-				<Default>
-					<Value>4</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tTn</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>384</BitOffs>
-				<Default>
-					<DateTime>T#15S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tTv</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>416</BitOffs>
-				<Default>
-					<DateTime>T#0S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tTd</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>448</BitOffs>
-				<Default>
-					<DateTime>T#0S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>tControllerCycle</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>480</BitOffs>
-				<Default>
-					<DateTime>T#100MS</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>rOutputMinPercent</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<BitSize>64</BitSize>
-				<BitOffs>512</BitOffs>
-				<Default>
-					<Value>0</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>rOutputMaxPercent</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<BitSize>64</BitSize>
-				<BitOffs>576</BitOffs>
-				<Default>
-					<Value>100</Value>
-				</Default>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{140B09FC-1E31-6B4A-5929-9C5D94DE2671}" AutoDeleteType="true">ST_HeatStakeProcessSettings</Name>
-			<BitSize>128</BitSize>
-			<SubItem>
-				<Name>tContactTime</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000048}">TIME</Type>
-				<BitSize>32</BitSize>
-				<BitOffs>0</BitOffs>
-				<Default>
-					<DateTime>T#3S</DateTime>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>rDownPressureBar</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000E}">LREAL</Type>
-				<BitSize>64</BitSize>
-				<BitOffs>64</BitOffs>
-				<Default>
-					<Value>0.5</Value>
-				</Default>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{7200358D-65A9-7605-1ED8-73A5B9A47549}" AutoDeleteType="true">ST_CycleDataCSV</Name>
-			<BitSize>4784</BitSize>
-			<SubItem>
-				<Name>uiNestId</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sGeneralResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>16</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sPatchDispenseResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>184</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sHeatStakeResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>352</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sVisionResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>520</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sDate</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>688</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sTime</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>2736</BitOffs>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{932F1814-5282-1BB1-311D-8F68B5F7DD9D}" AutoDeleteType="true">E_PartDisposition</Name>
-			<BitSize>16</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
-			<EnumInfo>
-				<Text><![CDATA[None]]></Text>
-				<Enum>0</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[Pass]]></Text>
-				<Enum>10</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[Reject]]></Text>
-				<Enum>20</Enum>
-			</EnumInfo>
-			<EnumInfo>
-				<Text><![CDATA[Reprocess]]></Text>
-				<Enum>30</Enum>
-			</EnumInfo>
-			<Properties>
-				<Property>
-					<Name>qualified_only</Name>
-				</Property>
-				<Property>
-					<Name>strict</Name>
-				</Property>
-				<Property>
-					<Name>to_string</Name>
-				</Property>
-				<Property>
-					<Name>generate_implicit_init_function</Name>
-				</Property>
-			</Properties>
-		</DataType>
-		<DataType>
-			<Name GUID="{EE46EC2F-6B36-8180-D9E8-E7F6A4D1EA07}" AutoDeleteType="true">ST_VisionResults</Name>
-			<BitSize>2128</BitSize>
-			<SubItem>
-				<Name>sPatchNumber</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>2</Elements>
-				</ArrayInfo>
-				<BitSize>1296</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sDate</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</Type>
-				<BitSize>648</BitSize>
-				<BitOffs>1296</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nBluePartPresent</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>1952</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nClickPartPresent</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>2</Elements>
-				</ArrayInfo>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL / bClickPartPresent[1] FIRST INSPECTION, bClickPartPresent[2] THIRD INSPECTION]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>1968</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nBottomPatchok</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>2000</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nTopPatchok</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>2016</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nPBUBOK</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000006}">INT</Type>
-				<Comment><![CDATA[0: NO RESULT, 1: PASS, 2: FAIL]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>2032</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bGeneralPass</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>2048</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bGeneralFail</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>2056</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>aInspectionCompleted</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>4</Elements>
-				</ArrayInfo>
-				<Comment><![CDATA[ Individual Keyence inspection results
- [1] Program 0
- [2] Program 1
- [3] Program 2
- [4] Program 3
-
- Completed = FALSE              -> NOT TESTED
- Completed = TRUE, Passed = TRUE  -> PASS
- Completed = TRUE, Passed = FALSE -> FAIL]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>2064</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>aInspectionPassed</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<ArrayInfo>
-					<LBound>1</LBound>
-					<Elements>4</Elements>
-				</ArrayInfo>
-				<BitSize>32</BitSize>
-				<BitOffs>2096</BitOffs>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{F9A71F27-B340-167B-6A1C-C6A7C7647174}" AutoDeleteType="true">ST_TestHistory</Name>
-			<BitSize>6976</BitSize>
-			<SubItem>
-				<Name>uiNestId</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>eResult</Name>
-				<Type GUID="{932F1814-5282-1BB1-311D-8F68B5F7DD9D}">E_PartDisposition</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>16</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bPatchDispenseValid</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>32</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bPatchDispensePass</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>40</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bHeatStakeValid</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>48</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bHeatStakePass</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>56</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bVisionValid</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>64</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>bVisionPass</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>72</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>80</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sPatchDispenseResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>248</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sHeatStakeResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>416</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sVisionResult</Name>
-				<Type GUID="{18071995-0000-0000-0000-000100000014}">STRING(20)</Type>
-				<BitSize>168</BitSize>
-				<BitOffs>584</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sTime</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>752</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>sDate</Name>
-				<Type GUID="{18071995-0000-0000-0000-0001000000FF}">STRING(255)</Type>
-				<BitSize>2048</BitSize>
-				<BitOffs>2800</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>stVisionInspectionResults</Name>
-				<Type GUID="{EE46EC2F-6B36-8180-D9E8-E7F6A4D1EA07}">ST_VisionResults</Type>
-				<BitSize>2128</BitSize>
-				<BitOffs>4848</BitOffs>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{8264B377-2953-EC72-C6F2-6C3113F3B9C6}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..2000] OF ST_TestHistory</Name>
-			<Comment><![CDATA[ =====================================================
- TEST HISTORY
- =====================================================
- Circular buffer containing the last 2001 completed
- product test results.
-
- Production Statistics reset does NOT modify this data.]]></Comment>
-			<BitSize>13958976</BitSize>
-			<BaseType GUID="{F9A71F27-B340-167B-6A1C-C6A7C7647174}">ST_TestHistory</BaseType>
-			<ArrayInfo>
-				<LBound>0</LBound>
-				<Elements>2001</Elements>
-			</ArrayInfo>
 		</DataType>
 		<DataType>
 			<Name GUID="{2438F91B-E188-4ED7-8594-54354F9ED6A4}" Namespace="Safety" TcBaseType="true">FSOE_6</Name>
@@ -4462,7 +4571,7 @@ External Setpoint Generation:
 					</Encoder>
 					<Drive Name="Drive" DrvType="16">
 						<DrvPara MaxCount="#xffffffff" DriveControlDWord="#x00020000">
-							<Analog VeloReferenz="50" VeloScale="32" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
+							<Analog VeloReferenz="200" VeloScale="32" TorqueSetpointScale="10" ScaleFactorActTorque="0.1"/>
 							<TimeComp TaskDelayCycles="1"/>
 						</DrvPara>
 						<Vars VarGrpType="1">
@@ -4681,19 +4790,14 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{89E28F82-D31A-676D-B444-CF5D145F1289}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{0F18F9DC-AE1D-2573-3575-06848802F994}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
 						<Name>PlcTask Retains</Name>
 						<Var>
-							<Name>GVL_Config.rMainDoorHotTemperatureLimitC</Name>
-							<Type>REAL</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Config.stMachine</Name>
-							<Type GUID="{A774D1C0-AE9F-2D71-1BAC-8FDB05F09BCE}">ST_MachineConfig</Type>
+							<Name>GVL_Persistent.bCSVPendingRecord</Name>
+							<Type>BOOL</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
@@ -4724,6 +4828,18 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
+							<Name>GVL_Persistent.astTestHistory</Name>
+							<Comment><![CDATA[ =====================================================
+ TEST HISTORY
+ =====================================================
+ Circular buffer containing the last 2001 completed
+ product test results.
+
+ Production Statistics reset does NOT modify this data.]]></Comment>
+							<Type GUID="{EFB18A53-DEEB-ED40-5FE2-5704CF356AAF}">ARRAY [0..2000] OF ST_TestHistory</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
 							<Name>GVL_Persistent.uiTestHistoryCount</Name>
 							<Comment><![CDATA[ Number of valid history entries currently available.
  Saturates at 2001 when the buffer becomes full.]]></Comment>
@@ -4740,11 +4856,6 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
-							<Name>GVL_Persistent.bCSVPendingRecord</Name>
-							<Type>BOOL</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
 							<Name>GVL_Persistent.bCSVQueueOverflow</Name>
 							<Comment><![CDATA[ CSV diagnostics]]></Comment>
 							<Type>BOOL</Type>
@@ -4756,20 +4867,35 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
+							<Name>GVL_Persistent.stPatchProcessSettings</Name>
+							<Type GUID="{8F3B7FB9-5C17-FB97-2A2D-1B217720D3B3}">ST_PatchProcessSettings</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.stVisionProcessSettings</Name>
+							<Type GUID="{3EBC3CCC-CFFF-5888-BBCC-8595775B69A9}">ST_CameraProcessSettings</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Persistent.aVisionPbupFitted</Name>
+							<Comment><![CDATA[ Additive retained record, keyed by physical nest; confidence is non-retained.
+ Do not infer current part identity or resume a prepared position from this.]]></Comment>
+							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
+							<Name>GVL_Config.stMachine</Name>
+							<Type GUID="{A774D1C0-AE9F-2D71-1BAC-8FDB05F09BCE}">ST_MachineConfig</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
 							<Name>GVL_Config.aNestEnabled</Name>
 							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
-							<Name>GVL_Persistent.astTestHistory</Name>
-							<Comment><![CDATA[ =====================================================
- TEST HISTORY
- =====================================================
- Circular buffer containing the last 2001 completed
- product test results.
-
- Production Statistics reset does NOT modify this data.]]></Comment>
-							<Type GUID="{8264B377-2953-EC72-C6F2-6C3113F3B9C6}">ARRAY [0..2000] OF ST_TestHistory</Type>
+							<Name>GVL_Config.rMainDoorHotTemperatureLimitC</Name>
+							<Type>REAL</Type>
 							<InOut>7</InOut>
 						</Var>
 					</Vars>
@@ -5096,9 +5222,37 @@ External Setpoint Generation:
 							<Name>GVL_Safety.bMainDoorLockRequest</Name>
 							<Type>BOOL</Type>
 						</Var>
+						<Var>
+							<Name>GVL_Motion.AxisDriveMotor.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Motion.AxisPatchFeedRollMotor.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Motion.AxisWasteRollMotor.Axis.PlcToNc</Name>
+							<Type GUID="{96B75FEB-2D84-43BE-A3EC-D9A681F27D52}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
+						<Var>
+							<Name>GVL_IO.stInputs</Name>
+							<Comment><![CDATA[ Logical physical I/O. Link these members to the same EtherCAT/TwinSAFE channels used by Kistler.
+ Keeping terminal-specific names outside the core makes future hardware changes local to this GVL/mapper.]]></Comment>
+							<Type GUID="{2C16F09B-8FC1-EB9B-3D27-FCC862A1581A}">ST_PhysicalInputs</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.wVisionPnState</Name>
+							<Comment><![CDATA[ PROFINET Assignable Status, appended separately to preserve camera DUT.
+ Offline linked PROFINET diagnostics; invalid until valid I/O is received.]]></Comment>
+							<Type>WORD</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.wVisionPnDiag</Name>
+							<Type>WORD</Type>
+						</Var>
 						<Var>
 							<Name>GVL_Safety.bSafetyOk</Name>
 							<Comment><![CDATA[ ---------------------------------------------------------------------
@@ -5110,32 +5264,6 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>GVL_Safety.bEmergencyStopOk</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bMainDoorUnSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_IO.stInputs</Name>
-							<Comment><![CDATA[ Logical physical I/O. Link these members to the same EtherCAT/TwinSAFE channels used by Kistler.
- Keeping terminal-specific names outside the core makes future hardware changes local to this GVL/mapper.]]></Comment>
-							<Type GUID="{F16733BE-081D-0B6E-132B-5CA901D24D6A}">ST_PhysicalInputs</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bLeftFlapSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bRightFlapSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bFlapsSafe</Name>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bTwoHandSafe</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -5619,7 +5747,7 @@ External Setpoint Generation:
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_Safety.bAirSupplySafe</Name>
+							<Name>GVL_Safety.bMainDoorUnSafe</Name>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -5668,6 +5796,49 @@ External Setpoint Generation:
 							<Type GUID="{53AB2BCA-C5AB-B7CE-D17C-430953A42679}">ARRAY [0..127] OF BYTE</Type>
 						</Var>
 						<Var>
+							<Name>GVL_EtherCAT.udiVisionError0Code</Name>
+							<Type>UDINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.udiVisionError1Code</Name>
+							<Type>UDINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stFestoTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bLeftFlapSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bRightFlapSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bFlapsSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bTwoHandSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bAirSupplySafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>GVL_Safety.bFsoeOk</Name>
 							<Type>BOOL</Type>
 						</Var>
@@ -5701,16 +5872,16 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
-							<Name>GVL_EtherCAT.stTerm12_EL9410.stTerminalInfo.nTerminal_State</Name>
-							<Type>UINT</Type>
+							<Name>GVL_Motion.AxisDriveMotor.Axis.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>GVL_EtherCAT.stTerm14_EL9576.stTerminalInfo.nTerminal_State</Name>
-							<Type>UINT</Type>
+							<Name>GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 						<Var>
-							<Name>GVL_EtherCAT.stFestoTerminalInfo.nTerminal_State</Name>
-							<Type>UINT</Type>
+							<Name>GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc</Name>
+							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
 					</Vars>
 					<Contexts>
@@ -14623,14 +14794,14 @@ Submodule Info: Writes data to VS
 		<MappingInfo Identifier="{00000000-0010-0304-3000-040310000403}" Id="#x02030010"/>
 		<MappingInfo Identifier="{00000000-0020-0304-3000-040322000403}" Id="#x02030040"/>
 		<MappingInfo Identifier="{08502001-0020-0304-0020-500820000403}" Id="#x02030050" Watchdog="00000000000000000000000000000000"/>
+		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030070" Watchdog="14000000040000000400000004000000"/>
 		<MappingInfo Identifier="{03040040-0040-0304-4000-040340000403}" Id="#x02030020" Watchdog="04000000040000000400000004000000"/>
-
 		<OwnerA Name="TIID^Device 1 (EtherCAT)">
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 18 (EL2904)">
-				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionInputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 TxPDO" VarB="Module 1 (FSOES)^RxPDO^FSOE"/>
+				<Link VarA="Term 1 (EK1100)^Term 3 (EL6910)^ConnectionOutputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 RxPDO" VarB="Module 1 (FSOES)^TxPDO^FSOE"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)">
-				<Link VarA="Term 1 (EK1100)^Term 18 (EL2904)^Module 1 (FSOES)^TxPDO^FSOE" VarB="ConnectionOutputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 RxPDO"/>
+				<Link VarA="Term 1 (EK1100)^Term 18 (EL2904)^Module 1 (FSOES)^RxPDO^FSOE" VarB="ConnectionInputs^TwinSafeGroup1.Term 18 (EL2904) - Module 1 (FSOES)_6 TxPDO"/>
 				<Link VarA="Term 1 (EK1100)^Term 4 (EL1918)^Module 1 (FSOE)^FSoE Inputs^FSOE" VarB="ConnectionOutputs^TwinSafeGroup1.Term 4 (EL1918) - Module 1 (FSOE)_3 RxPDO"/>
 				<Link VarA="Term 1 (EK1100)^Term 5 (EL1918)^Module 1 (FSOE)^FSoE Inputs^FSOE" VarB="ConnectionOutputs^TwinSafeGroup1.Term 5 (EL1918) - Module 1 (FSOE)_4 RxPDO"/>
 				<Link VarA="Term 1 (EK1100)^Term 6 (EL2904)^Module 1 (FSOES)^RxPDO^FSOE" VarB="ConnectionInputs^TwinSafeGroup1.Term 6 (EL2904) - Module 1 (FSOES)_5 TxPDO"/>

@@ -40,7 +40,10 @@ STRUCT
 	bPatchManualHomeRequest         : BOOL;
 	bPatchManualRunSequence         : BOOL;
 
+	// =====================================================
     // Heat Stake Manual Mode
+	// =====================================================
+	
     bHeatStakeManualEnable        : BOOL;
     bHeatStakeManualStakePatch    : BOOL;
     bHeatStakeManualUnlock        : BOOL;

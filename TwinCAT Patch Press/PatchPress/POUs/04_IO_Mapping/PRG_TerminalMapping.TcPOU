@@ -58,7 +58,7 @@ GVL_IO.stInputs.bIndexReady 				:= GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch11;
 GVL_IO.stInputs.bLoadingStationEaglePresent := GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch12;
 GVL_IO.stInputs.bRejectChutePartPresent 	:= GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch13;
 GVL_IO.stInputs.bHeatStakeEaglePresent 		:= GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch14;
-GVL_IO.stInputs.bHeatStakePatchPresent 		:= GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15;
+GVL_IO.stInputs.bLoadingStationPbupPresent	:= GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch15;
 GVL_IO.stInputs.bPbupMagnetPresent 			:= GVL_EtherCAT.stTerm7_EL1809.iEL1809_Ch16;
 
 (*
@@ -92,8 +92,8 @@ END_IF
 ======================================================================================================================
 *)
 
-GVL_IO.stInputs.bStation1SupportRetracted 		:= GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch2; (*Inverted*)
-GVL_IO.stInputs.bStation1SupportExtended 		:= GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch1; (*Inverted*)
+GVL_IO.stInputs.bStation1SupportRetracted := FALSE; // Retired compatibility field; EL1809 Ch1/Ch2 reserved.
+GVL_IO.stInputs.bStation1SupportExtended := FALSE; // Retired compatibility field; EL1809 Ch1/Ch2 reserved.
 GVL_IO.stInputs.bStation2SupportRetracted 		:= GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch3;
 GVL_IO.stInputs.bStation2SupportExtended 		:= GVL_EtherCAT.stTerm8_EL1809.iEL1809_Ch4;
 GVL_IO.stInputs.bStation3SupportRetracted := FALSE; // Retired compatibility field; raw terminal stays diagnostic-only.
@@ -116,9 +116,9 @@ GVL_IO.stInputs.bRotaryGripperPlace180          := GVL_EtherCAT.stTerm8_EL1809.i
 *)
 
 // Provisional operator PBUP presence; move this mapping when the final terminal is assigned.
-GVL_IO.stInputs.bLoadingStationPbupPresent := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1;
-GVL_IO.stInputs.bPatchOpticalLeft := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6;
-GVL_IO.stInputs.bPatchOpticalRight := GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5;
+//GVL_IO.stInputs.bLoadingStationPbupPresent 	:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch1;
+GVL_IO.stInputs.bPatchOpticalLeft 			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch5;
+GVL_IO.stInputs.bPatchOpticalRight 			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch6;
 GVL_IO.stInputs.bHeatStakeHeadUp   			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch7;
 GVL_IO.stInputs.bHeatStakeHeadDown 			:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch8;
 GVL_IO.stInputs.bMembraneTransferRetracted 	:= GVL_EtherCAT.stTerm19_EL1809.iEL1809_Ch9;
@@ -202,12 +202,18 @@ GVL_EtherCAT.stTerm9_EL2809.iEL2809_Ch7 := GVL_IO.stOutputs.bHeatStakeHeadUp;
 *)
 // IMPORTANT - VALIDATED PHYSICAL MAPPING.
 // The heater channels are intentionally crossed relative to logical Heater 1 / Heater 2.
-// Do NOT "correct" this unless the physical wiring is changed.
 //
 // EL2502 Ch1 physically drives logical Heater 2.
 // EL2502 Ch2 physically drives logical Heater 1.
 GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch1 := GVL_IO.stOutputs.uiHeatStakePwm2Raw;
 GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2 := GVL_IO.stOutputs.uiHeatStakePwm1Raw;
+
+(*
+======================================================================================================================
+ Terminal 21 | EL4028 | VEAB Heat Stake Down Pressure
+======================================================================================================================
+*)
+GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1 := GVL_IO.stOutputs.iHeatStakePressureRaw;
 
 (*
 ======================================================================================================================
@@ -217,8 +223,8 @@ GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2 := GVL_IO.stOutputs.uiHeatStakePwm1Raw;
 
 // Module2.Coil0 = Index Table A - rotate index
 // Module2.Coil1 = Index Table B - return index cylinder to home
-// Module2.Coil2 = Support UP   - Dispense Station
-// Module2.Coil3 = Support DOWN - Dispense Station
+// Module2.Coil2 = RESERVED - removed Patch nest support UP
+// Module2.Coil3 = RESERVED - removed Patch nest support DOWN
 // Module2.Coil4 = Support UP   - Heat Stake Station
 // Module2.Coil5 = Support DOWN - Heat Stake Station
 // Module2.Coil6 = Support UP   - Vision Station
@@ -230,8 +236,8 @@ GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2 := GVL_IO.stOutputs.uiHeatStakePwm1Raw;
 GVL_EtherCAT.stFestoModule2_VABX.bCoil0 := GVL_IO.stOutputs.bIndexRotatePortA;
 GVL_EtherCAT.stFestoModule2_VABX.bCoil1 := GVL_IO.stOutputs.bIndexStopPortB;
 
-GVL_EtherCAT.stFestoModule2_VABX.bCoil2 := GVL_IO.stOutputs.bStation1SupportExtend;
-GVL_EtherCAT.stFestoModule2_VABX.bCoil3 := GVL_IO.stOutputs.bStation1SupportRetract;
+GVL_EtherCAT.stFestoModule2_VABX.bCoil2 := FALSE; // Removed Patch nest support; keep valve OFF.
+GVL_EtherCAT.stFestoModule2_VABX.bCoil3 := FALSE; // Reserved, not reassigned.
 
 GVL_EtherCAT.stFestoModule2_VABX.bCoil4 := GVL_IO.stOutputs.bStation2SupportExtend;
 GVL_EtherCAT.stFestoModule2_VABX.bCoil5 := GVL_IO.stOutputs.bStation2SupportRetract;
@@ -283,14 +289,7 @@ GVL_EtherCAT.stFestoModule4_VABX.bCoil3 := GVL_IO.stOutputs.bHeatStakeHeadUnlock
 GVL_EtherCAT.stFestoModule4_VABX.bCoil4 := FALSE; // Retired direction output.
 GVL_EtherCAT.stFestoModule4_VABX.bCoil5 := TRUE; // Continuous pilot supply; reservoir supports retraction.
 GVL_EtherCAT.stFestoModule4_VABX.bCoil6 := GVL_IO.stOutputs.bPatchVerticalDown;
-GVL_EtherCAT.stFestoModule4_VABX.bCoil7 := GVL_IO.stOutputs.bPatchVerticalUp;
-
-(*
-======================================================================================================================
- Terminal 21 | EL4028 | VEAB Heat Stake Down Pressure
-======================================================================================================================
-*)
-GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1 := GVL_IO.stOutputs.iHeatStakePressureRaw;]]></ST>
+GVL_EtherCAT.stFestoModule4_VABX.bCoil7 := GVL_IO.stOutputs.bPatchVerticalUp;]]></ST>
       </Implementation>
     </Method>
   </POU>

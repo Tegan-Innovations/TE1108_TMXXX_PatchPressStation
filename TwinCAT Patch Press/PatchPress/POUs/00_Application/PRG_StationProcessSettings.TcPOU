@@ -10,6 +10,10 @@ VAR
     fbWritePersistentData : FB_WritePersistentData;
     stDefaultPatch : ST_PatchProcessSettings;
     stDefaultVision : ST_CameraProcessSettings;
+    bSafetySaveAcceptedPending : BOOL;
+    bSafetySettingsInitialised : BOOL;
+    bVisionPbupSavePending : BOOL;
+    bVisionPbupSaveInFlight : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF NOT bInitialised THEN
@@ -35,6 +39,20 @@ END_VAR]]></Declaration>
     END_IF
     GVL_HMI.stVisionProcessEdit := GVL_Persistent.stVisionProcessSettings;
     bInitialised := TRUE;
+END_IF
+
+// Initialize the new boundary independently, including after an online source change.
+IF NOT bSafetySettingsInitialised THEN
+    // Reuse the existing retained door threshold; do not reset other process settings.
+    IF NOT ((GVL_Config.rMainDoorHotTemperatureLimitC >= 20.0)
+        AND (GVL_Config.rMainDoorHotTemperatureLimitC <= 40.0)) THEN
+        GVL_Config.rMainDoorHotTemperatureLimitC := 40.0;
+        GVL_HMI.sSafetySettingsMessage := 'Stored limit invalid: 40 C loaded. Review and Apply.';
+    ELSE
+        GVL_HMI.sSafetySettingsMessage := 'Ready';
+    END_IF
+    GVL_HMI.rSafetyDoorHotLimitEditC := GVL_Config.rMainDoorHotTemperatureLimitC;
+    bSafetySettingsInitialised := TRUE;
 END_IF
 
 // Use existing machine status; apply before PRG_Main starts any new process.
@@ -103,17 +121,69 @@ GVL_HMI.bVisionSettingsApply := FALSE;
 GVL_HMI.bVisionSettingsCancel := FALSE;
 GVL_HMI.stVisionProcessApplied := GVL_Persistent.stVisionProcessSettings;
 
+// Safety settings are accepted only while Stopped and all existing settings/motion gates are clear.
+GVL_HMI.bSafetySettingsAllowed := GVL_HMI.bStationSettingsAllowed
+    AND (GVL_MASTER.stStatus.eMachineState = E_MachineState.Stopped)
+    AND NOT GVL_MASTER.stCommand.bReset;
+IF GVL_HMI.bSafetySettingsCancel THEN
+    GVL_HMI.rSafetyDoorHotLimitEditC := GVL_Config.rMainDoorHotTemperatureLimitC;
+    GVL_HMI.sSafetySettingsMessage := 'Edits cancelled';
+ELSIF GVL_HMI.bSafetySettingsApply THEN
+    IF NOT GVL_HMI.bSafetySettingsAllowed THEN
+        GVL_HMI.sSafetySettingsMessage := 'Apply rejected: machine must be Stopped and idle';
+    ELSIF GVL_HMI.bStationSettingsSaving THEN
+        GVL_HMI.sSafetySettingsMessage := 'Apply rejected: save in progress';
+    ELSIF NOT ((GVL_HMI.rSafetyDoorHotLimitEditC >= 20.0)
+        AND (GVL_HMI.rSafetyDoorHotLimitEditC <= 40.0)) THEN
+        GVL_HMI.sSafetySettingsMessage := 'Apply rejected: allowed range 20 to 40 C';
+    ELSE
+        GVL_Config.rMainDoorHotTemperatureLimitC := GVL_HMI.rSafetyDoorHotLimitEditC;
+        bWritePending := TRUE;
+        bSafetySaveAcceptedPending := TRUE;
+        GVL_HMI.bStationSettingsSaveError := FALSE;
+        GVL_HMI.udiStationSettingsSaveErrorId := 0;
+        GVL_HMI.sSafetySettingsMessage := 'Applied - saving';
+    END_IF
+END_IF
+GVL_HMI.bSafetySettingsApply := FALSE;
+GVL_HMI.bSafetySettingsCancel := FALSE;
+GVL_HMI.rSafetyDoorHotLimitAppliedC := GVL_Config.rMainDoorHotTemperatureLimitC;
+
+// Request is latched by PRG_Main after this program; consume it on the next scan.
+IF GVL_HMI.bVisionPbupSaveRequest THEN
+    GVL_HMI.bVisionPbupSaveRequest := FALSE;
+    bWritePending := TRUE;
+    bVisionPbupSavePending := TRUE;
+    GVL_HMI.bVisionPbupSaveError := FALSE;
+    GVL_HMI.udiVisionPbupSaveErrorId := 0;
+    GVL_HMI.sVisionPbupSaveStatus := 'PBUP state: save pending';
+END_IF
 IF bWritePending AND NOT fbWritePersistentData.BUSY THEN
     bWriteStart := TRUE;
     bWritePending := FALSE;
     bWriteBusySeen := FALSE;
 END_IF
+IF bWriteStart AND bVisionPbupSavePending THEN
+    bVisionPbupSavePending := FALSE;
+    bVisionPbupSaveInFlight := TRUE;
+    GVL_HMI.sVisionPbupSaveStatus := 'PBUP state: saving';
+END_IF
 fbWritePersistentData(NETID := '', PORT := 851, START := bWriteStart,
     TMOUT := T#2S, MODE := SPDM_VAR_BOOST);
 IF fbWritePersistentData.BUSY THEN bWriteBusySeen := TRUE; END_IF
 IF fbWritePersistentData.ERR THEN
+    IF bVisionPbupSaveInFlight THEN
+        bVisionPbupSaveInFlight := FALSE;
+        GVL_HMI.bVisionPbupSaveError := TRUE;
+        GVL_HMI.udiVisionPbupSaveErrorId := fbWritePersistentData.ERRID;
+        GVL_HMI.sVisionPbupSaveStatus := 'PBUP state: SAVE FAILED; confirm state again to retry';
+    END_IF
     GVL_HMI.bStationSettingsSaveError := TRUE;
     GVL_HMI.udiStationSettingsSaveErrorId := fbWritePersistentData.ERRID;
+    IF bSafetySaveAcceptedPending THEN
+        GVL_HMI.sSafetySettingsMessage := 'Applied, SAVE FAILED. Correct cause and Apply again.';
+        bSafetySaveAcceptedPending := FALSE;
+    END_IF
     IF GVL_HMI.sPatchSettingsMessage = 'Applied - saving' THEN
         GVL_HMI.sPatchSettingsMessage := 'Applied, SAVE FAILED. Correct cause and Apply again.';
     END_IF
@@ -121,7 +191,15 @@ IF fbWritePersistentData.ERR THEN
         GVL_HMI.sVisionSettingsMessage := 'Applied, SAVE FAILED. Correct cause and Apply again.';
     END_IF
 ELSIF bWriteBusySeen AND NOT fbWritePersistentData.BUSY THEN
+    IF bVisionPbupSaveInFlight THEN
+        bVisionPbupSaveInFlight := FALSE;
+        GVL_HMI.sVisionPbupSaveStatus := 'PBUP state: saved';
+    END_IF
     bWriteBusySeen := FALSE;
+    IF bSafetySaveAcceptedPending THEN
+        GVL_HMI.sSafetySettingsMessage := 'Applied and saved';
+        bSafetySaveAcceptedPending := FALSE;
+    END_IF
     IF GVL_HMI.sPatchSettingsMessage = 'Applied - saving' THEN
         GVL_HMI.sPatchSettingsMessage := 'Applied and saved';
     END_IF
@@ -137,6 +215,9 @@ GVL_Motion.stPatchFeedSettings.lrWasteRollVelocity := GVL_Persistent.stPatchProc
 
 // Patch vertical sensors are fitted: physical feedback is mandatory, including after an online change.
 GVL_Motion.stPatchFeedSettings.bUsePatchVerticalFeedback := TRUE;
+
+GVL_HMI.bVisionPbupSaving := bVisionPbupSavePending OR bVisionPbupSaveInFlight
+    OR GVL_HMI.bVisionPbupSaveRequest;
 ]]></ST>
     </Implementation>
   </POU>

@@ -1971,12 +1971,72 @@
 
         <!-- CAMERA CONFIGURATION -->
 
-        <div id="CameraConfiguration" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-left="5" data-tchmi-top="20" data-tchmi-width="370" data-tchmi-height="266">
-
-            <div id="TcHmiTextblock_CameraConfiguration" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="5" data-tchmi-top="6" data-tchmi-width="185" data-tchmi-height="25" data-tchmi-text="Program Selection" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Center">
+        <div id="CameraConfiguration" data-tchmi-type="TcHmi.Controls.System.TcHmiContainer" data-tchmi-left="5" data-tchmi-top="20" data-tchmi-width="370" data-tchmi-height="259">
+<div id="TcHmiButton_VisionPrepareImage" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="5" data-tchmi-top="75" data-tchmi-width="160" data-tchmi-height="45" data-tchmi-text="Prepare Position" data-tchmi-text-font-size="14" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.bVisionImagePrepareAllowed%/s%">
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.bVisionImagePrepare%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+<div id="TcHmiButton_VisionReleasePosition" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="205" data-tchmi-top="75" data-tchmi-width="160" data-tchmi-height="45" data-tchmi-text="Release Position" data-tchmi-text-font-size="14" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.bVisionImageReleaseAllowed%/s%">
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.bVisionImageRelease%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+<div id="TcHmiCheckbox_VisionPbupFitted" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCheckbox" data-tchmi-left="5" data-tchmi-top="143" data-tchmi-width="160" data-tchmi-height="45" data-tchmi-text="PBUP fitted" data-tchmi-text-font-size="15" data-tchmi-state-symbol="%s%ADS.PLC1.GVL_HMI.bVisionPbupFittedEdit|BindingMode=TwoWay%/s%" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.bVisionPbupEditAllowed%/s%"></div>
+<div id="TcHmiButton_VisionConfirmPbup" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="205" data-tchmi-top="143" data-tchmi-width="160" data-tchmi-height="45" data-tchmi-text="Confirm PBUP State" data-tchmi-text-font-size="14" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.bVisionPbupEditAllowed%/s%">
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.bVisionPbupConfirm%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script>
+</div>
+<div id="TcHmiTextblock_CameraConfiguration" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="5" data-tchmi-top="6" data-tchmi-width="185" data-tchmi-height="25" data-tchmi-text="Program Selection" data-tchmi-text-font-size="16" data-tchmi-text-font-weight="Bold" data-tchmi-text-horizontal-alignment="Center">
             </div>
 
-            <div id="TcHmiButton_CameraOpenInterface" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="65" data-tchmi-top="125" data-tchmi-width="237" data-tchmi-height="50" data-tchmi-text="Open Interface" data-tchmi-text-font-size="18"><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+            <div id="TcHmiButton_CameraOpenInterface" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="5" data-tchmi-top="211" data-tchmi-width="160" data-tchmi-height="45" data-tchmi-text="Open Interface" data-tchmi-text-font-size="18"><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
     "actions": [
@@ -1990,11 +2050,29 @@
     ]
   }
 ]</script></div>
-<div id="TcHmiPopup_VisionCamera" data-tchmi-type="TcHmi.Controls.System.TcHmiPopup" data-tchmi-left="183" data-tchmi-top="40" data-tchmi-width="1000" data-tchmi-height="680" data-tchmi-modal="True" data-tchmi-close-on-background="False" data-tchmi-movable="False" data-tchmi-scrolling="No" data-tchmi-header-text="Keyence VS - Camera" data-tchmi-target-file-host-preload="False" data-tchmi-target-file-host-keep-alive="False" data-tchmi-zindex="10">
+<div id="TcHmiButton_CameraReset" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="205" data-tchmi-top="211" data-tchmi-width="160" data-tchmi-height="45" data-tchmi-text="Camera Reset" data-tchmi-text-font-size="16" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.bCameraResetAllowed%/s%"><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.bCameraReset%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script></div>
+<div id="TcHmiPopup_VisionCamera" data-tchmi-type="TcHmi.Controls.System.TcHmiPopup" data-tchmi-left="383" data-tchmi-top="40" data-tchmi-width="1000" data-tchmi-height="680" data-tchmi-modal="True" data-tchmi-close-on-background="False" data-tchmi-movable="False" data-tchmi-scrolling="No" data-tchmi-header-text="Keyence VS - Camera" data-tchmi-target-file-host-preload="False" data-tchmi-target-file-host-keep-alive="False" data-tchmi-zindex="10">
 <script data-tchmi-target-attribute="data-tchmi-target-file" type="application/json">{"path":"Contents/Screens/popups/Content_Popup_VisionCamera.content"}</script>
 <script data-tchmi-target-attribute="data-tchmi-buttons" type="application/json">[{"name":"close","text":"Close","value":null,"keepPopupOpen":false,"width":120,"height":40}]</script>
 </div>
-<div id="TcHmiTextblock_CameraManualMessage" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="0" data-tchmi-top="244" data-tchmi-width="367" data-tchmi-height="20" data-tchmi-text="%s%ADS.PLC1.GVL_HMI.sCameraManualMessage%/s%" data-tchmi-text-font-size="12"></div>
+
 
             <div id="TcHmiButton_CameraTrigger" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="205" data-tchmi-top="5" data-tchmi-width="160" data-tchmi-height="52" data-tchmi-text="Camera Trigger" data-tchmi-text-font-size="16" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.bCameraManualReady%/s%">
             <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
@@ -2017,7 +2095,7 @@
 ]</script>
 </div>
 
-        <div id="TcHmiCombobox_CameraProgramSelection" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCombobox" data-tchmi-auto-focus-out="True" data-tchmi-combobox-text="Select" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="5" data-tchmi-left-unit="px" data-tchmi-top="32" data-tchmi-top-unit="px" data-tchmi-width="185" data-tchmi-width-unit="px" data-tchmi-selected-index="%s%ADS.PLC1.GVL_HMI.udiCameraManualImageSelection|BindingMode=TwoWay%/s%" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.bCameraManualAllowed%/s% &amp;&amp; !%s%ADS.PLC1.GVL_HMI.bCameraManualBusy%/s%%/f%">
+        <div id="TcHmiCombobox_CameraProgramSelection" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiCombobox" data-tchmi-auto-focus-out="True" data-tchmi-combobox-text="Select" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="5" data-tchmi-left-unit="px" data-tchmi-top="32" data-tchmi-top-unit="px" data-tchmi-width="185" data-tchmi-width-unit="px" data-tchmi-selected-id="%s%ADS.PLC1.GVL_HMI.udiCameraManualImageSelection|BindingMode=TwoWay%/s%" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.bCameraManualAllowed%/s% &amp;&amp; !%s%ADS.PLC1.GVL_HMI.bCameraManualBusy%/s%%/f%" data-tchmi-src-data="%f%%s%ADS.PLC1.GVL_HMI.bVisionImage1Allowed%/s% ? [{&quot;id&quot;:0,&quot;text&quot;:&quot;Select&quot;,&quot;value&quot;:0},{&quot;id&quot;:1,&quot;text&quot;:&quot;Image 1&quot;,&quot;value&quot;:0},{&quot;id&quot;:2,&quot;text&quot;:&quot;Image 2&quot;,&quot;value&quot;:1},{&quot;id&quot;:3,&quot;text&quot;:&quot;Image 3&quot;,&quot;value&quot;:2},{&quot;id&quot;:4,&quot;text&quot;:&quot;Image 4&quot;,&quot;value&quot;:3}] : [{&quot;id&quot;:0,&quot;text&quot;:&quot;Select&quot;,&quot;value&quot;:0},{&quot;id&quot;:2,&quot;text&quot;:&quot;Image 2&quot;,&quot;value&quot;:1},{&quot;id&quot;:3,&quot;text&quot;:&quot;Image 3&quot;,&quot;value&quot;:2},{&quot;id&quot;:4,&quot;text&quot;:&quot;Image 4&quot;,&quot;value&quot;:3}]%/f%">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -2027,33 +2105,7 @@
 }
 </script>
 
-<script data-tchmi-target-attribute="data-tchmi-src-data" type="application/json">[
-  {
-    "id": 0,
-    "text": "Selecione",
-    "value": 0
-  },
-  {
-    "id": 1,
-    "text": "Imagem 1",
-    "value": 0
-  },
-  {
-    "id": 2,
-    "text": "Imagem 2",
-    "value": 1
-  },
-  {
-    "id": 3,
-    "text": "Imagem 3",
-    "value": 2
-  },
-  {
-    "id": 4,
-    "text": "Imagem 4",
-    "value": 3
-  }
-]</script>
+
 </div>
 </div>
 
@@ -2119,7 +2171,7 @@
 ]</script>
 </div>
 
-
+        
     <div id="TcHmiButton_VisionRunSequence_129" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="192" data-tchmi-top="35" data-tchmi-width="130" data-tchmi-height="50" data-tchmi-text="Run Sequence" data-tchmi-text-font-size="18" data-tchmi-is-enabled="%s%ADS.PLC1.GVL_HMI.stStatus.bVisionManualRunSequenceAllowed%/s%">
 <script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {

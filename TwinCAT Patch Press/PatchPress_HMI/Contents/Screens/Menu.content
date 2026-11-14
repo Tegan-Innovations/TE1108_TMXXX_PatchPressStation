@@ -105,33 +105,77 @@
 }
 </script>
 <div id="TcHmiButton_10" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-height="60" data-tchmi-height-unit="px" data-tchmi-left="30" data-tchmi-left-unit="px" data-tchmi-text="Manual Mode" data-tchmi-top="40" data-tchmi-top-unit="px" data-tchmi-width="160" data-tchmi-width-unit="px" data-tchmi-word-wrap="true" data-tchmi-text-font-size="20" data-tchmi-zindex="1" data-tchmi-opacity="1" data-tchmi-visibility="Visible" data-tchmi-creator-locked="True">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
     "actions": [
       {
-        "objectType": "WriteToSymbol",
+        "objectType": "Condition",
         "active": true,
-        "symbolExpression": "%ctrl%Main_Popup::TargetFile%/ctrl%",
-        "value": {
-          "objectType": "StaticValue",
-          "valueType": "tchmi:framework#/definitions/TcHmi.Controls.System.TcHmiPopup.TargetFile",
-          "value": {
-            "path": "Contents/Screens/popups/Content_Popup_ManualMode.content"
+        "parts": [
+          {
+            "if": [
+              {
+                "compare1": {
+                  "objectType": "Symbol",
+                  "valueType": "tchmi:server#/definitions/ADS-PLC1.E_MachineState",
+                  "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stStatus.eMachineState%/s%"
+                },
+                "compare2": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:server#/definitions/ADS-PLC1.E_MachineState",
+                  "value": 7
+                },
+                "compareOperator": "==",
+                "logic": null
+              }
+            ],
+            "then": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Main_Region::TargetContent%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/ContentPath",
+                  "value": "Contents/Screens/Manual_Mode.content"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "else": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%Main_Popup::TargetFile%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/TcHmi.Controls.System.TcHmiPopup.TargetFile",
+                  "value": {
+                    "path": "Contents/Screens/popups/Content_Popup_ManualMode.content"
+                  }
+                },
+                "asyncWait": true
+              },
+              {
+                "objectType": "ControlApiFunction",
+                "active": true,
+                "control": "Main_Popup",
+                "fn": "open",
+                "asyncWait": true
+              }
+            ]
           }
-        },
-        "asyncWait": true
-      },
-      {
-        "objectType": "ControlApiFunction",
-        "active": true,
-        "control": "Main_Popup",
-        "fn": "open",
+        ],
         "asyncWait": true
       }
     ]
   }
-]</script>
+]
+</script>
 
 
 

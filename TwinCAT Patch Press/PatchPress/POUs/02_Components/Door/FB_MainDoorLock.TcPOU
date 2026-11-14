@@ -80,6 +80,9 @@ END_IF
 // -----------------------------------------------------------------------------
 IF bDoorUnsafe THEN
 
+    IF eState <> E_MainDoorLockState.Fault THEN
+        stStatusInternal.sMessage := 'Door unsafe signal received';
+    END_IF
     eFault := E_MainDoorLockFault.FeedbackMismatch;
     eState := E_MainDoorLockState.Fault;
 
@@ -142,6 +145,20 @@ CASE eState OF
             eFault := E_MainDoorLockFault.FeedbackMismatch;
             eState := E_MainDoorLockState.Fault;
 
+        ELSIF NOT bEnableAutomatic
+            AND NOT (bManualEnable AND bManualLockRequest)
+            AND (bStopRequest OR (bManualEnable AND bManualUnlockRequest))
+            AND stStatusInternal.bUnlockPermissive
+        THEN
+            // The safe-stop/unlock owner has withdrawn the previous lock demand.
+            // Cancel its timer; retain supervision of any actual unlock transition.
+            tonTransition(IN := FALSE);
+            IF bDoorLocked THEN
+                eState := E_MainDoorLockState.Unlocking;
+            ELSE
+                eState := E_MainDoorLockState.Unlocked;
+            END_IF
+
         ELSIF NOT bDoorClosed THEN
 
             // The door was opened before locking was confirmed.
@@ -168,6 +185,7 @@ CASE eState OF
 		// Door feedback inconsistency reported by TwinSAFE.
 		IF bDoorUnsafe THEN
 	
+			stStatusInternal.sMessage := 'Door unsafe signal received';
 			eFault := E_MainDoorLockFault.FeedbackMismatch;
 			eState := E_MainDoorLockState.Fault;
 	
@@ -180,7 +198,11 @@ CASE eState OF
 				OR NOT bDoorLocked
 			)
 		THEN
-	
+            IF NOT bDoorClosed THEN
+                stStatusInternal.sMessage := 'Door closed feedback lost';
+            ELSE
+                stStatusInternal.sMessage := 'Door lock lost while required';
+            END_IF
 			eFault := E_MainDoorLockFault.FeedbackMismatch;
 			eState := E_MainDoorLockState.Fault;
 	
@@ -219,6 +241,16 @@ CASE eState OF
             eFault := E_MainDoorLockFault.FeedbackMismatch;
             eState := E_MainDoorLockState.Fault;
 
+        ELSIF bEnableAutomatic THEN
+            // A renewed lock demand cancels the obsolete unlock transition.
+            // Do not let its elapsed timer become a new lock timeout.
+            tonTransition(IN := FALSE);
+            IF bDoorClosed AND bDoorLocked THEN
+                eState := E_MainDoorLockState.Locked;
+            ELSE
+                eState := E_MainDoorLockState.Unlocked;
+            END_IF
+
         ELSIF NOT bDoorLocked THEN
 
             eState := E_MainDoorLockState.Unlocked;
@@ -248,6 +280,7 @@ CASE eState OF
     // -------------------------------------------------------------------------
     ELSE
 
+        stStatusInternal.sMessage := 'Door supervisor invalid state';
         eFault := E_MainDoorLockFault.FeedbackMismatch;
         eState := E_MainDoorLockState.Fault;
 
@@ -318,7 +351,7 @@ stStatusInternal.bFaulted :=
 // -----------------------------------------------------------------------------
 // Diagnostic message
 // -----------------------------------------------------------------------------
-IF bDoorUnsafe THEN
+IF bDoorUnsafe AND (eState <> E_MainDoorLockState.Fault) THEN
 
     stStatusInternal.sMessage :=
         'Unsafe main door feedback';
@@ -348,8 +381,21 @@ ELSE
                 'Waiting for main door to unlock';
 
         E_MainDoorLockState.Fault:
-            stStatusInternal.sMessage :=
-                'Main door supervision fault';
+            CASE eFault OF
+                E_MainDoorLockFault.LockTimeout:
+                    stStatusInternal.sMessage := 'Main door lock timeout';
+                E_MainDoorLockFault.UnlockTimeout:
+                    stStatusInternal.sMessage := 'Main door unlock timeout';
+                E_MainDoorLockFault.DoorNotClosed:
+                    stStatusInternal.sMessage := 'Main door not closed';
+                E_MainDoorLockFault.FeedbackMismatch:
+                    // Retain the first mismatch cause captured at the fault transition.
+                    IF stStatusInternal.sMessage = '' THEN
+                        stStatusInternal.sMessage := 'Door feedback fault';
+                    END_IF
+                ELSE
+                    stStatusInternal.sMessage := 'Main door supervision fault';
+            END_CASE
 
         ELSE
             stStatusInternal.sMessage :=

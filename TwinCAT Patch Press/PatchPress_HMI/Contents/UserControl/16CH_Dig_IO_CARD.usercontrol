@@ -259,7 +259,8 @@
 
 
 
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
+[
   {
     "event": "%pp%CardOperational%/pp%",
     "actions": [
@@ -296,11 +297,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(255, 0, 0, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(255, 0, 0, 1)",
+                        "color": "rgba(159, 0, 0, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -323,11 +324,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -342,7 +343,8 @@
       }
     ]
   }
-]</script>
+]
+</script>
 
 
 
@@ -434,12 +436,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -461,11 +463,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -566,12 +568,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -593,11 +595,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -698,12 +700,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -725,11 +727,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -830,12 +832,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -857,11 +859,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -962,12 +964,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -989,11 +991,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -1094,12 +1096,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -1121,11 +1123,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -1226,12 +1228,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -1253,11 +1255,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -1358,12 +1360,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -1385,11 +1387,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -1490,12 +1492,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -1517,11 +1519,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -1622,12 +1624,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -1649,11 +1651,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -1754,12 +1756,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -1781,11 +1783,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -1886,12 +1888,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -1913,11 +1915,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -2018,12 +2020,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -2045,11 +2047,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -2150,12 +2152,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -2177,11 +2179,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -2282,12 +2284,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -2309,11 +2311,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]
@@ -2414,12 +2416,12 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(187, 187, 187, 1)",
                         "stop": "15.3%"
                       },
                       {
-                        "color": "rgba(130, 121, 121, 1)",
-                        "stop": "35.07%"
+                        "color": "rgba(83, 81, 81, 1)",
+                        "stop": "50%"
                       }
                     ]
                   }
@@ -2441,11 +2443,11 @@
                     "angle": 110.0,
                     "stopPoints": [
                       {
-                        "color": "rgba(255, 255, 255, 1)",
+                        "color": "rgba(38, 219, 38, 1)",
                         "stop": "7.5%"
                       },
                       {
-                        "color": "rgba(0, 255, 9, 1)",
+                        "color": "rgba(25, 158, 25, 1)",
                         "stop": "100%"
                       }
                     ]

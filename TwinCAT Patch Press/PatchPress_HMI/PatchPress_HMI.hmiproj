@@ -305,6 +305,9 @@
     <Content Include="Contents\Screens\popups\Content_Popup_Reject_Part.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Contents\Screens\Settings\Safety.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Contents\Screens\Settings\settings_PatchDispense.content">
       <SubType>Content</SubType>
     </Content>
@@ -416,6 +419,16 @@
     <Content Include="Contents\UserControl\HeightTest\HeightTestManual.usercontrol.json">
       <SubType>Content</SubType>
       <DependentUpon>Contents\UserControl\HeightTest\HeightTestManual.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="Contents\UserControl\SettingsTimespan.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\UserControl\SettingsTimespan.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Contents\UserControl\SettingsTimespan.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="Images\SettingsTimePicker.svg">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\UserControl\LED_Green.usercontrol">
       <SubType>Content</SubType>

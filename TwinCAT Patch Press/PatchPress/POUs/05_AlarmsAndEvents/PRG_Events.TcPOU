@@ -68,6 +68,13 @@ GVL_MASTER.stStationEvents[0].aEvents[6].bEventText := 'System stopping timeout'
 GVL_MASTER.stStationEvents[0].aEvents[6].sSolution := 'Check index and machine safe state';
 
 
+// Main-door supervision already causes immediate Fault; expose its actual cause.
+GVL_MASTER.stStationEvents[0].aEvents[22].bFault := TRUE;
+GVL_MASTER.stStationEvents[0].aEvents[22].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[0].aEvents[22].bEventFlag := GVL_MASTER.stStatus.stMainDoorLock.bFaulted;
+GVL_MASTER.stStationEvents[0].aEvents[22].bEventText := CONCAT('Main door: ', GVL_MASTER.stStatus.stMainDoorLock.sMessage);
+GVL_MASTER.stStationEvents[0].aEvents[22].sSolution := 'Check door/lock feedback and requested lock state; correct cause before Reset.';
+
 tonUpSupplyLost(IN := NOT GVL_MASTER.stInputs.bUp24VPowerSupplyOk AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp), PT := T#1S);
 
 GVL_MASTER.stStationEvents[0].aEvents[7].bFault := TRUE;
@@ -614,6 +621,154 @@ GVL_MASTER.stStationEvents[1].aEvents[3].sSolution :=
 IF NOT GVL_MASTER.stStationEvents[1].aEvents[3].bEventFlag THEN
     GVL_MASTER.stStationEvents[1].aEvents[3].bActive := FALSE;
 END_IF
+
+// Per-physical-nest live warnings; never request Fault or cycle stop.
+aWarningEvents[3, 36] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[36].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[36].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[36].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[36].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[36].bEventFlag :=
+    GVL_MASTER.stStatus.aNest[1].stHeatStakeResult.bValid
+    AND (GVL_MASTER.stStatus.aNest[1].stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode);
+GVL_MASTER.stStationEvents[3].aEvents[36].bEventText := 'Nest 1: patch not detected at Heat Stake';
+GVL_MASTER.stStationEvents[3].aEvents[36].sSolution := 'Heat Stake FAIL / Vision NOT TESTED. Reject this product at Operator; warning clears on confirmed reject.';
+
+aWarningEvents[3, 37] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[37].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[37].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[37].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[37].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[37].bEventFlag :=
+    GVL_MASTER.stStatus.aNest[2].stHeatStakeResult.bValid
+    AND (GVL_MASTER.stStatus.aNest[2].stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode);
+GVL_MASTER.stStationEvents[3].aEvents[37].bEventText := 'Nest 2: patch not detected at Heat Stake';
+GVL_MASTER.stStationEvents[3].aEvents[37].sSolution := 'Heat Stake FAIL / Vision NOT TESTED. Reject this product at Operator; warning clears on confirmed reject.';
+
+aWarningEvents[3, 38] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[38].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[38].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[38].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[38].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[38].bEventFlag :=
+    GVL_MASTER.stStatus.aNest[3].stHeatStakeResult.bValid
+    AND (GVL_MASTER.stStatus.aNest[3].stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode);
+GVL_MASTER.stStationEvents[3].aEvents[38].bEventText := 'Nest 3: patch not detected at Heat Stake';
+GVL_MASTER.stStationEvents[3].aEvents[38].sSolution := 'Heat Stake FAIL / Vision NOT TESTED. Reject this product at Operator; warning clears on confirmed reject.';
+
+aWarningEvents[3, 39] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[39].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[39].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[39].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[39].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[39].bEventFlag :=
+    GVL_MASTER.stStatus.aNest[4].stHeatStakeResult.bValid
+    AND (GVL_MASTER.stStatus.aNest[4].stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode);
+GVL_MASTER.stStationEvents[3].aEvents[39].bEventText := 'Nest 4: patch not detected at Heat Stake';
+GVL_MASTER.stStationEvents[3].aEvents[39].sSolution := 'Heat Stake FAIL / Vision NOT TESTED. Reject this product at Operator; warning clears on confirmed reject.';
+
+// Live camera startup warning: Reset cannot hide an error still active in the camera.
+aWarningEvents[3, 40] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[40].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[40].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[40].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[40].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[40].bEventFlag :=
+    PRG_Main.fbMachine.bVisionCameraStartBlocked;
+GVL_MASTER.stStationEvents[3].aEvents[40].bEventText :=
+    'Vision camera requires recovery - new capture blocked';
+GVL_MASTER.stStationEvents[3].aEvents[40].sSolution :=
+    CONCAT('Camera Error0=', UDINT_TO_STRING(GVL_EtherCAT.udiVisionError0Code));
+GVL_MASTER.stStationEvents[3].aEvents[40].sSolution :=
+    CONCAT(GVL_MASTER.stStationEvents[3].aEvents[40].sSolution, ' Error1=');
+GVL_MASTER.stStationEvents[3].aEvents[40].sSolution :=
+    CONCAT(GVL_MASTER.stStationEvents[3].aEvents[40].sSolution, UDINT_TO_STRING(GVL_EtherCAT.udiVisionError1Code));
+GVL_MASTER.stStationEvents[3].aEvents[40].sSolution :=
+    CONCAT(GVL_MASTER.stStationEvents[3].aEvents[40].sSolution, '. Manual: use Camera Reset, verify RUN and retry. AutoCycle keeps its existing stop/fault recovery; mechanical faults require machine recovery.');
+
+// Live warnings after an attempted manual index; clear with their conditions.
+aWarningEvents[3, 41] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[41].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[41].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[41].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[41].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[41].bEventFlag := GVL_MASTER.bManualIndexBlockVision;
+GVL_MASTER.stStationEvents[3].aEvents[41].bEventText := GVL_MASTER.sManualIndexVisionReason;
+GVL_MASTER.stStationEvents[3].aEvents[41].sSolution := 'Return Vision HOME; if holding a part, prepare Image 4, then Release Position. Release two-hand and actuate again.';
+
+aWarningEvents[3, 42] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[42].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[42].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[42].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[42].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[42].bEventFlag := GVL_MASTER.bManualIndexBlockHeat;
+GVL_MASTER.stStationEvents[3].aEvents[42].bEventText := 'Index blocked: Heat Stake not HOME';
+GVL_MASTER.stStationEvents[3].aEvents[42].sSolution := 'Return Heat Stake head UP/locked and nest support DOWN. Release two-hand and actuate again.';
+
+aWarningEvents[3, 43] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[43].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[43].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[43].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[43].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[43].bEventFlag := GVL_MASTER.bManualIndexBlockPatch;
+GVL_MASTER.stStationEvents[3].aEvents[43].bEventText := 'Index blocked: Patch tooling/feed not ready';
+GVL_MASTER.stStationEvents[3].aEvents[43].sSolution := 'Return Patch transfer vertical UP and finish feeding/manual strokes. Release two-hand and actuate again.';
+
+aWarningEvents[3, 44] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[44].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[44].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[44].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[44].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[44].bEventFlag := GVL_MASTER.bManualIndexBlockOther;
+GVL_MASTER.stStationEvents[3].aEvents[44].bEventText := GVL_MASTER.sManualIndexOtherReason;
+GVL_MASTER.stStationEvents[3].aEvents[44].sSolution := 'Correct the displayed index condition. No start is queued; release two-hand and actuate again.';
+
+aWarningEvents[3, 45] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[45].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[45].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[45].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[45].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[45].bEventFlag := GVL_MASTER.bManualCameraRecoveryFailed;
+GVL_MASTER.stStationEvents[3].aEvents[45].bEventText := 'Manual camera recovery failed - no capture sent';
+GVL_MASTER.stStationEvents[3].aEvents[45].sSolution := 'Check camera error/RUN/handshake. Camera Reset recovers only; Camera Trigger may recover then capture. Machine Reset is not used.';
+
+aWarningEvents[3, 46] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[46].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[46].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[46].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[46].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[46].bEventFlag := GVL_MASTER.bVisionManualCameraWarning;
+GVL_MASTER.stStationEvents[3].aEvents[46].bEventText := 'Manual capture incomplete - camera recovery required';
+GVL_MASTER.stStationEvents[3].aEvents[46].sSolution := 'Image 2: wait for return to 0 deg, then Camera Reset and retry Trigger. Tooling faults still require machine recovery.';
+
+aWarningEvents[3, 47] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[47].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[47].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[47].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[47].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[47].bEventFlag := GVL_MASTER.bVisionManualGridWarning;
+GVL_MASTER.stStationEvents[3].aEvents[47].bEventText := GVL_HMI.sCameraManualMessage;
+GVL_MASTER.stStationEvents[3].aEvents[47].sSolution := CONCAT(GVL_HMI.sVisionPbupStatus, CONCAT(' | ', GVL_HMI.sVisionPbupSaveStatus));
+
+aWarningEvents[3, 48] := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[48].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[48].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[48].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[48].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[48].bEventFlag := GVL_MASTER.bVisionManualGridActive AND NOT GVL_MASTER.bVisionManualGridWarning
+    AND NOT GVL_MASTER.bVisionManualCameraWarning AND NOT GVL_MASTER.bManualCameraRecoveryFailed
+    AND (NOT PRG_Main.fbMachine.bVisionCameraStartBlocked OR PRG_Main.fbMachine.bManualCameraRecoveryActive);
+GVL_MASTER.stStationEvents[3].aEvents[48].bEventText := GVL_HMI.sCameraManualMessage;
+GVL_MASTER.stStationEvents[3].aEvents[48].sSolution := CONCAT(GVL_HMI.sVisionPbupStatus, CONCAT(' | ', GVL_HMI.sVisionPbupSaveStatus));
+
+aWarningEvents[3, 49] := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[49].bFault := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[49].bCycleStopRequest := FALSE;
+GVL_MASTER.stStationEvents[3].aEvents[49].bMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[49].bPersistentMessage := TRUE;
+GVL_MASTER.stStationEvents[3].aEvents[49].bEventFlag := GVL_HMI.bVisionPbupSaveError;
+GVL_MASTER.stStationEvents[3].aEvents[49].bEventText := 'PBUP state not saved';
+GVL_MASTER.stStationEvents[3].aEvents[49].sSolution := GVL_HMI.sVisionPbupSaveStatus;
 
 fbEventsManager(	aWarningEvents := aWarningEvents,
                     bPulse := TRUE,

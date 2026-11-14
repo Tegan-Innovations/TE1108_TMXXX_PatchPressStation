@@ -13,8 +13,8 @@ GVL_IO.stOutputs.bMainDoorLockRequest := GVL_MASTER.stOutputs.bMainDoorLockReque
 GVL_IO.stOutputs.bIndexRotatePortA := GVL_MASTER.stOutputs.bIndexRotatePortA;
 GVL_IO.stOutputs.bIndexStopPortB := GVL_MASTER.stOutputs.bIndexStopPortB;
 
-GVL_IO.stOutputs.bStation1SupportExtend := GVL_MASTER.stOutputs.bStation1SupportExtend;
-GVL_IO.stOutputs.bStation1SupportRetract := GVL_MASTER.stOutputs.bStation1SupportRetract;
+GVL_IO.stOutputs.bStation1SupportExtend := FALSE; // Removed Station 1 nest support.
+GVL_IO.stOutputs.bStation1SupportRetract := FALSE; // Retired compatibility output.
 GVL_IO.stOutputs.bStation2SupportExtend := GVL_MASTER.stOutputs.bStation2SupportExtend;
 GVL_IO.stOutputs.bStation2SupportRetract := GVL_MASTER.stOutputs.bStation2SupportRetract;
 GVL_IO.stOutputs.bStation3SupportExtend := FALSE; // Retired output.

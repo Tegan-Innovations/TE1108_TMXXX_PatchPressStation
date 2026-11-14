@@ -140,7 +140,7 @@
 }
 </script>
 </div>
-<div id="TcHmiTextblock_1381" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="171" data-tchmi-height-unit="px" data-tchmi-left="39" data-tchmi-left-unit="px" data-tchmi-top="86" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="200" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="2" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-weight="Bold" data-tchmi-text="The heater temperature is above the recommended safe level for opening the main door.  Press ACKNOWLEDGE if you understand the risk and wish to unlock the door." data-tchmi-ignore-escape-sequences="False">
+<div id="TcHmiTextblock_1381" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="171" data-tchmi-height-unit="px" data-tchmi-left="39" data-tchmi-left-unit="px" data-tchmi-top="86" data-tchmi-top-unit="px" data-tchmi-width="400" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="200" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-horizontal-alignment="Center" data-tchmi-zindex="2" data-tchmi-text-font-size-unit="%" data-tchmi-text-font-weight="Bold" data-tchmi-text="The head temperature is at or above the configured door-unlock limit.  Press ACKNOWLEDGE if you understand the risk and wish to unlock the door." data-tchmi-ignore-escape-sequences="False">
 <script data-tchmi-target-attribute="data-tchmi-text-color" type="application/json">
 {
   "color": "rgba(0, 0, 0, 1)"

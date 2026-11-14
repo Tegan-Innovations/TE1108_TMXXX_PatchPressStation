@@ -89,7 +89,7 @@
 </div>
 
 
-<div id="TcHmiTextbox_43" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="665" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Neste Features" data-tchmi-top="64" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="28" data-tchmi-creator-visibility="Visible">
+<div id="TcHmiTextbox_43" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextbox" data-tchmi-height="30" data-tchmi-height-unit="px" data-tchmi-horizontal-scroll="Auto" data-tchmi-left="665" data-tchmi-left-unit="px" data-tchmi-reset-to-last-valid-value="True" data-tchmi-text="Nest Features" data-tchmi-top="64" data-tchmi-top-unit="px" data-tchmi-vertical-scroll="Auto" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-text-horizontal-alignment="Center" data-tchmi-text-font-size="20" data-tchmi-text-font-weight="Bold" data-tchmi-auto-select-text="True" data-tchmi-auto-focus-out="False" data-tchmi-max-text-length="20" data-tchmi-zindex="28" data-tchmi-creator-visibility="Visible">
 <script data-tchmi-target-attribute="data-tchmi-content-padding" type="application/json">
 {
   "top": 3,
@@ -551,6 +551,6 @@
   }
 ]</script>
 </div>
-<div id="TcHmiImage_40" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="325" data-tchmi-height-unit="px" data-tchmi-left="86" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/SiliconeIndexTableV4.png" data-tchmi-top="60" data-tchmi-top-unit="px" data-tchmi-width="325" data-tchmi-width-unit="px" data-tchmi-zindex="0">
+<div id="TcHmiImage_40" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="325" data-tchmi-height-unit="px" data-tchmi-left="86" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/PatchIndexTableV2.png" data-tchmi-top="60" data-tchmi-top-unit="px" data-tchmi-width="325" data-tchmi-width-unit="px" data-tchmi-zindex="0">
 </div>
 </div>

@@ -39,6 +39,9 @@
         "Name": "Vision Station"
       },
       {
+        "Name": "Safety"
+      },
+      {
         "Name": "Others"
       }
     ]
@@ -172,6 +175,26 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/ContentPath",
                   "value": "Contents/Screens/Settings/Settings_HeatStake_1.content"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "caseValue": {
+              "objectType": "StaticValue",
+              "valueType": "tchmi:general#/definitions/Any",
+              "value": "Safety"
+            },
+            "actions": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%IO_Region_18::TargetContent%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/ContentPath",
+                  "value": "Contents/Screens/Settings/Safety.content"
                 },
                 "asyncWait": true
               }

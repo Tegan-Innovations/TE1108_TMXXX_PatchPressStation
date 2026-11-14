@@ -36,6 +36,25 @@ VAR_GLOBAL
     bCameraManualFail : BOOL;
     udiCameraManualCaptureCount : UDINT;
     sCameraManualMessage : STRING(160);
+    // Manual image preparation and explicit PBUP state confirmation.
+    bVisionImagePrepare : BOOL;
+    bVisionImageRelease : BOOL;
+    bVisionImagePrepareAllowed : BOOL;
+    bVisionImageReleaseAllowed : BOOL;
+    bVisionImagePrepared : BOOL;
+    bVisionImage1Allowed : BOOL;
+    bVisionPbupFittedEdit : BOOL;
+    bVisionPbupFittedApplied : BOOL;
+    bVisionPbupConfirm : BOOL;
+    bVisionPbupEditAllowed : BOOL;
+    bVisionPbupReferenceKnown : BOOL;
+    uiVisionPbupNest : UINT;
+    sVisionPbupStatus : STRING(160);
+    bVisionPbupSaveRequest : BOOL; // PLC-internal, not an HMI write command.
+    bVisionPbupSaving : BOOL;
+    bVisionPbupSaveError : BOOL;
+    udiVisionPbupSaveErrorId : UDINT;
+    sVisionPbupSaveStatus : STRING(160);
     stPatchProcessEdit : ST_PatchProcessSettings;
     stPatchProcessApplied : ST_PatchProcessSettings;
     bPatchSettingsApply : BOOL;
@@ -50,8 +69,22 @@ VAR_GLOBAL
     bStationSettingsSaving : BOOL;
     bStationSettingsSaveError : BOOL;
     udiStationSettingsSaveErrorId : UDINT;
+    // Main-door head-temperature setting: edit/Apply boundary, not a TwinSAFE parameter.
+    rSafetyDoorHotLimitEditC : REAL := 40.0;
+    rSafetyDoorHotLimitAppliedC : REAL := 40.0;
+    bSafetySettingsApply : BOOL;
+    bSafetySettingsCancel : BOOL;
+    bSafetySettingsAllowed : BOOL;
+    sSafetySettingsMessage : STRING(160);
+    // Read-only explanation of the existing manual Stake Patch permission.
+    sHeatStakeManualStakeMessage : STRING(160);
+    bVisionPickupFrontEdit : BOOL;
+    bVisionPickupFrontApplied : BOOL;
+    bCameraReset : BOOL; // One-shot local camera recovery; never triggers a capture.
+    bCameraResetAllowed : BOOL;
 END_VAR
 VAR_GLOBAL CONSTANT
+	// Colors
     sWHITE 					: STRING(40) := '{"color":"rgba(255,255,255,255)"}';
     sBLACK 					: STRING(40) := '{"color":"rgba(0,0,0,1)"}';
     sYELLOW 				: STRING(40) := '{"color":"rgba(255,255,0,1)"}';
@@ -63,10 +96,16 @@ VAR_GLOBAL CONSTANT
     sDARKGREY 				: STRING(40) := '{"color":"rgba(50,50,50,1)"}';
     sTRANSP 				: STRING(40) := '{"color":"rgba(255,255,255,0)"}';
     sREDFail 				: STRING(40) := '{"color":"rgba(244,68,68,255)"}';
-    sSystemName 			: STRING := 'Patch Press';
+	
+	// System Info
+    sSystemName 			: STRING := 'TM431-EP3R2/25 - Patch Press';
     sApplication 			: STRING := 'Patch Press Machine';
     sProjectID 				: STRING := 'TE1108';
     sSoftwareVersion 		: STRING := 'v0.1.0-foundation';
+	sTwincat				: STRING := 'TwinCAT 3.1.4026.22';
+	sTwincatHMI				: STRING := 'TE2000 v14.13.0';
+	sHMIServer				: STRING := 'TF2000 v14.13.0';
+	sSoftwareDate			: STRING := 'November 2026';
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

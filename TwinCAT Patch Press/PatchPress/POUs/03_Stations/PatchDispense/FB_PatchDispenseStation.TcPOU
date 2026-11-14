@@ -94,6 +94,7 @@ VAR
     tonVerticalTimedUp : TON;
     tonVerticalTimedDown : TON;
     bPatchRightOffSeenInternal : BOOL; // Fresh OFF then ON required for each feed.
+    usiManualVerticalTargetInternal : USINT; // 0 none, 10 UP, 20 DOWN.
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -103,7 +104,9 @@ END_VAR]]></Declaration>
 VAR_INPUT
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// Real dispense: support UP -> feed -> M1 stopped -> vertical DOWN -> release -> UP -> support DOWN.
+        <ST><![CDATA[// TEMP_NO_PATCH_NEST_SUPPORT: commissioning trial, nest physically DOWN.
+// Support outputs stay FALSE; station support feedbacks are diagnostic only.
+// Real dispense: support UP -> feed -> M1 stopped -> vertical DOWN -> release -> UP -> support DOWN.
 bSupportExtendRequestInternal := FALSE;
 bSupportRetractRequestInternal := FALSE;
 bVerticalUpRequestInternal := FALSE;
@@ -151,7 +154,9 @@ bHomeExecutionAllowedInternal := bHomeRequestInternal AND bSafetyOkInternal
     AND (eStateInternal <> E_PatchStationState.Fault);
 IF NOT bHomeExecutionAllowedInternal THEN usiHomeStepInternal := 0; END_IF
 
-tonHomeSupportRetract(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 10), PT := T#300MS);
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+// tonHomeSupportRetract(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 10), PT := T#300MS);
+tonHomeSupportRetract(IN := FALSE);
 tonHomeVerticalUp(IN := bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 30)
     AND NOT bVerticalUpReadyInternal, PT := tSupportMoveTimeout);
 // Vacuum starts on the rising edge AFTER the first real RIGHT falling edge.
@@ -179,6 +184,27 @@ tonFeed(IN := bSafetyOkInternal AND (eStateInternal = E_PatchStationState.Proces
     AND ((usiStepInternal = 20) OR (usiStepInternal = 21) OR (usiStepInternal = 23)), PT := T#30S);
 tonRelease(IN := bSafetyOkInternal AND (eStateInternal = E_PatchStationState.Processing)
     AND (usiStepInternal = 50), PT := UDINT_TO_TIME(stProcessSettingsInternal.udiReleaseMs));
+// Maintained Manual valve commands are supervised against their own destination.
+// An intentional DOWN is not a missing-UP fault.
+IF NOT bManualModeInternal OR NOT bEnableInternal OR NOT bCommissionedInternal
+    OR NOT bSafetyOkInternal OR bStopRequestInternal OR bHomeRequestInternal
+    OR (eStateInternal = E_PatchStationState.Processing)
+    OR (eStateInternal = E_PatchStationState.Fault) THEN
+    usiManualVerticalTargetInternal := 0;
+ELSE
+    IF bVerticalDownCommandInternal AND NOT bVerticalUpCommandInternal THEN
+        IF usiManualVerticalTargetInternal <> 20 THEN tonVertical(IN := FALSE); END_IF
+        usiManualVerticalTargetInternal := 20;
+    ELSIF bVerticalUpCommandInternal AND NOT bVerticalDownCommandInternal THEN
+        IF usiManualVerticalTargetInternal <> 10 THEN tonVertical(IN := FALSE); END_IF
+        usiManualVerticalTargetInternal := 10;
+    END_IF
+    IF ((usiManualVerticalTargetInternal = 20) AND bVerticalDownReadyInternal AND NOT bVerticalUpReadyInternal)
+        OR ((usiManualVerticalTargetInternal = 10) AND bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal) THEN
+        usiManualVerticalTargetInternal := 0;
+    END_IF
+END_IF
+
 tonVertical(IN := bSafetyOkInternal AND
     (((eStateInternal = E_PatchStationState.Processing) AND
       (((usiStepInternal = 40) AND NOT bVerticalDownReadyInternal)
@@ -186,7 +212,10 @@ tonVertical(IN := bSafetyOkInternal AND
      OR (bStopRequestInternal AND (usiStepInternal = 100) AND NOT bVerticalUpReadyInternal)
      OR ((eStateInternal = E_PatchStationState.Homing) AND NOT bHomeRequestInternal
          AND NOT bStopRequestInternal AND NOT bVerticalUpReadyInternal)
-     OR (bHoldUpRequiredInternal AND (eStateInternal <> E_PatchStationState.Processing)
+     OR (usiManualVerticalTargetInternal <> 0)
+     OR (bHoldUpRequiredInternal
+         AND (NOT bManualModeInternal OR (bVerticalUpCommandInternal AND NOT bVerticalDownCommandInternal))
+         AND (eStateInternal <> E_PatchStationState.Processing)
          AND NOT bHomeRequestInternal AND NOT bStopRequestInternal AND NOT bVerticalUpReadyInternal)),
     PT := tSupportMoveTimeout);
 
@@ -199,23 +228,27 @@ ELSIF bSafetyOkInternal AND (bEnableInternal OR bStopRequestInternal)
     eStateInternal := E_PatchStationState.Fault;
     stResultInternal.udiFaultCode := 4;
     sDiagnosticInternal := 'Patch: vertical sensor conflict';
-ELSIF bSupervisionEnableInternal AND bSafetyOkInternal
-    AND bSupportRetractedInternal AND bSupportExtendedInternal THEN
-    eStateInternal := E_PatchStationState.Fault;
-    eSupportFaultInternal := E_SupportCylinderFault.ContradictorySensors;
-    sDiagnosticInternal := 'Patch: support sensor conflict';
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+// ELSIF bSupervisionEnableInternal AND bSafetyOkInternal
+//     AND bSupportRetractedInternal AND bSupportExtendedInternal THEN
+//     eStateInternal := E_PatchStationState.Fault;
+//     eSupportFaultInternal := E_SupportCylinderFault.ContradictorySensors;
+//     sDiagnosticInternal := 'Patch: support sensor conflict';
+
 ELSIF (eStateInternal = E_PatchStationState.Processing) AND NOT bFeedOnlyInternal
     AND ((usiStepInternal = 20) OR (usiStepInternal = 21) OR (usiStepInternal = 23) OR (usiStepInternal = 22) OR (usiStepInternal = 30))
     AND (NOT bVerticalUpReadyInternal OR bVerticalDownReadyInternal) THEN
     eStateInternal := E_PatchStationState.Fault;
     stResultInternal.udiFaultCode := 8;
     sDiagnosticInternal := 'Patch: vertical UP feedback lost during feed';
-ELSIF (eStateInternal = E_PatchStationState.Processing) AND NOT bFeedOnlyInternal
-    AND (usiStepInternal <> 10) AND (usiStepInternal <> 30)
-    AND (NOT bSupportExtendedInternal OR bSupportRetractedInternal) THEN
-    eStateInternal := E_PatchStationState.Fault;
-    stResultInternal.udiFaultCode := 9;
-    sDiagnosticInternal := 'Patch: nest UP feedback lost during dispense';
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+// ELSIF (eStateInternal = E_PatchStationState.Processing) AND NOT bFeedOnlyInternal
+//     AND (usiStepInternal <> 10) AND (usiStepInternal <> 30)
+//     AND (NOT bSupportExtendedInternal OR bSupportRetractedInternal) THEN
+//     eStateInternal := E_PatchStationState.Fault;
+//     stResultInternal.udiFaultCode := 9;
+//     sDiagnosticInternal := 'Patch: nest UP feedback lost during dispense';
+
 ELSIF (eStateInternal = E_PatchStationState.Processing) AND (usiStepInternal = 50)
     AND (NOT bVerticalDownReadyInternal OR bVerticalUpReadyInternal) THEN
     eStateInternal := E_PatchStationState.Fault;
@@ -271,9 +304,12 @@ ELSIF bStopRequestInternal THEN
             IF bVerticalIndexReadyInternal THEN usiStepInternal := 110; END_IF
         110:
             bVerticalUpRequestInternal := TRUE;
-            bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-            sDiagnosticInternal := 'Patch: stop recovery support DOWN';
-            IF bSupportRetractedInternal AND NOT bSupportExtendedInternal THEN
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//             bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+//             sDiagnosticInternal := 'Patch: stop recovery support DOWN';
+//             IF bSupportRetractedInternal AND NOT bSupportExtendedInternal THEN
+            sDiagnosticInternal := 'Patch: stop recovery vertical UP complete';
+            IF bVerticalIndexReadyInternal THEN
                 bStopRequestInternal := FALSE;
                 bFeedOnlyInternal := FALSE;
                 usiStepInternal := 0;
@@ -285,14 +321,18 @@ ELSIF bHomeRequestInternal THEN
     eStateInternal := E_PatchStationState.Homing;
     IF bHomeExecutionAllowedInternal THEN
         CASE usiHomeStepInternal OF
-            0: usiHomeStepInternal := 10;
-            10:
-                bSupportRetractRequestInternal := NOT tonHomeSupportRetract.Q;
-                sDiagnosticInternal := 'Patch HOME: support DOWN pulse';
-                IF tonHomeSupportRetract.Q THEN usiHomeStepInternal := 20; END_IF
-            20:
-                sDiagnosticInternal := 'Patch HOME: waiting support DOWN';
-                IF bSupportRetractedInternal AND NOT bSupportExtendedInternal THEN usiHomeStepInternal := 30; END_IF
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//             0: usiHomeStepInternal := 10;
+//             10:
+//                 bSupportRetractRequestInternal := NOT tonHomeSupportRetract.Q;
+//                 sDiagnosticInternal := 'Patch HOME: support DOWN pulse';
+//                 IF tonHomeSupportRetract.Q THEN usiHomeStepInternal := 20; END_IF
+//             20:
+//                 sDiagnosticInternal := 'Patch HOME: waiting support DOWN';
+//                 IF bSupportRetractedInternal AND NOT bSupportExtendedInternal THEN usiHomeStepInternal := 30; END_IF
+            0: usiHomeStepInternal := 30;
+            10: usiHomeStepInternal := 30; // Recover legacy online step without support actuation.
+            20: usiHomeStepInternal := 30;
             30:
                 bVerticalUpRequestInternal := TRUE;
                 sDiagnosticInternal := 'Patch HOME: waiting vertical UP';
@@ -324,11 +364,14 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
     CASE usiStepInternal OF
         10:
             bVerticalUpRequestInternal := TRUE;
-            bSupportExtendRequestInternal := bVerticalIndexReadyInternal
-                AND NOT bSupportExtendedInternal;
-            sDiagnosticInternal := 'Patch: raising nest';
-            IF bSupportExtendedInternal AND NOT bSupportRetractedInternal
-                AND bVerticalIndexReadyInternal THEN usiStepInternal := 20; END_IF
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//             bSupportExtendRequestInternal := bVerticalIndexReadyInternal
+//                 AND NOT bSupportExtendedInternal;
+//             sDiagnosticInternal := 'Patch: raising nest';
+//             IF bSupportExtendedInternal AND NOT bSupportRetractedInternal
+//                 AND bVerticalIndexReadyInternal THEN usiStepInternal := 20; END_IF
+            sDiagnosticInternal := 'Patch: nest DOWN trial - checking vertical clearance';
+            IF bVerticalIndexReadyInternal THEN usiStepInternal := 20; END_IF
         20:
             bDriveRunRequestInternal := TRUE;
             sDiagnosticInternal := 'Patch: M1 waiting RIGHT falling then rising edge';
@@ -380,8 +423,8 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
                 usiStepInternal := 50;
             END_IF
         50:
-            // Bistable valve retains DOWN; do not energise UP during the release dwell.
-            bVerticalDownRequestInternal := FALSE;
+            // Maintain DOWN throughout the release dwell; UP remains mutually exclusive.
+            bVerticalDownRequestInternal := TRUE;
             sDiagnosticInternal := 'Patch: release dwell';
             IF tonRelease.Q THEN usiStepInternal := 60; END_IF
         60:
@@ -390,9 +433,12 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
             IF bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal THEN usiStepInternal := 30; END_IF
         30:
             bVerticalUpRequestInternal := TRUE;
-            bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-            sDiagnosticInternal := 'Patch: lowering nest';
-            IF bSupportRetractedInternal AND NOT bSupportExtendedInternal THEN
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//             bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+//             sDiagnosticInternal := 'Patch: lowering nest';
+//             IF bSupportRetractedInternal AND NOT bSupportExtendedInternal THEN
+            sDiagnosticInternal := 'Patch: nest DOWN trial - completing dispense';
+            IF bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal THEN
                 // Manual dispense has returned to its confirmed idle position.
                 // Restore HOME cleared during DOWN so the HMI can show Ready again.
                 IF bManualModeInternal THEN bHomeConfirmedInternal := TRUE; END_IF
@@ -421,52 +467,63 @@ ELSIF eStateInternal = E_PatchStationState.Processing THEN
         AND (eStateInternal = E_PatchStationState.Processing) THEN
         bVerticalUpRequestInternal := TRUE;
     END_IF
-    IF NOT bFeedOnlyInternal AND (usiStepInternal <> 30) AND (usiStepInternal <> 10)
-        AND (eStateInternal = E_PatchStationState.Processing) THEN
-        bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
-    END_IF
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//     IF NOT bFeedOnlyInternal AND (usiStepInternal <> 30) AND (usiStepInternal <> 10)
+//         AND (eStateInternal = E_PatchStationState.Processing) THEN
+//         bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
+//     END_IF
+
 
 ELSE
     IF bManualModeInternal THEN
-        IF bManualSupportExtendDesiredInternal THEN
-            bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
-        ELSE
-            bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-        END_IF
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//         IF bManualSupportExtendDesiredInternal THEN
+//             bSupportExtendRequestInternal := NOT bSupportExtendedInternal;
+//         ELSE
+//             bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+//         END_IF
+        // Support manual actuation is disabled for this trial.
         IF eStateInternal <> E_PatchStationState.Complete THEN eStateInternal := E_PatchStationState.Ready; END_IF
     ELSIF (eStateInternal <> E_PatchStationState.Complete) THEN
-        IF bSupportRetractedInternal AND NOT bSupportExtendedInternal
-            AND bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal THEN
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//         IF bSupportRetractedInternal AND NOT bSupportExtendedInternal
+//             AND bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal THEN
+        IF bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal THEN
             eStateInternal := E_PatchStationState.Ready;
         ELSE
             eStateInternal := E_PatchStationState.Homing;
             // Restore vertical clearance before retracting support.
             bVerticalUpRequestInternal := TRUE;
-            IF bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal THEN
-                bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
-            END_IF
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//             IF bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal THEN
+//                 bSupportRetractRequestInternal := NOT bSupportRetractedInternal;
+//             END_IF
+
         END_IF
     END_IF
     sDiagnosticInternal := 'Patch: idle';
 END_IF
 
-tonSupportExtendTimeout(IN := (bSupervisionEnableInternal OR bStopRequestInternal)
-    AND bSafetyOkInternal AND bSupportExtendRequestInternal AND NOT bSupportExtendedInternal,
-    PT := tSupportMoveTimeout);
-tonSupportRetractTimeout(IN := (bSupervisionEnableInternal OR bStopRequestInternal OR bHomeRequestInternal)
-    AND bSafetyOkInternal AND NOT bSupportRetractedInternal
-    AND (bSupportRetractRequestInternal OR (bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 20))),
-    PT := tSupportMoveTimeout);
-IF tonSupportExtendTimeout.Q OR tonSupportRetractTimeout.Q THEN
-    eStateInternal := E_PatchStationState.Fault;
-    IF tonSupportExtendTimeout.Q THEN
-        eSupportFaultInternal := E_SupportCylinderFault.ExtendTimeout;
-        sDiagnosticInternal := 'Patch: support UP feedback timeout';
-    ELSE
-        eSupportFaultInternal := E_SupportCylinderFault.RetractTimeout;
-        sDiagnosticInternal := 'Patch: support DOWN feedback timeout';
-    END_IF
-END_IF
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+// tonSupportExtendTimeout(IN := (bSupervisionEnableInternal OR bStopRequestInternal)
+//     AND bSafetyOkInternal AND bSupportExtendRequestInternal AND NOT bSupportExtendedInternal,
+//     PT := tSupportMoveTimeout);
+// tonSupportRetractTimeout(IN := (bSupervisionEnableInternal OR bStopRequestInternal OR bHomeRequestInternal)
+//     AND bSafetyOkInternal AND NOT bSupportRetractedInternal
+//     AND (bSupportRetractRequestInternal OR (bHomeExecutionAllowedInternal AND (usiHomeStepInternal = 20))),
+//     PT := tSupportMoveTimeout);
+// IF tonSupportExtendTimeout.Q OR tonSupportRetractTimeout.Q THEN
+//     eStateInternal := E_PatchStationState.Fault;
+//     IF tonSupportExtendTimeout.Q THEN
+//         eSupportFaultInternal := E_SupportCylinderFault.ExtendTimeout;
+//         sDiagnosticInternal := 'Patch: support UP feedback timeout';
+//     ELSE
+//         eSupportFaultInternal := E_SupportCylinderFault.RetractTimeout;
+//         sDiagnosticInternal := 'Patch: support DOWN feedback timeout';
+//     END_IF
+// END_IF
+tonSupportExtendTimeout(IN := FALSE);
+tonSupportRetractTimeout(IN := FALSE);
 
 bFaultInternal := (eStateInternal = E_PatchStationState.Fault);
 IF bFaultInternal THEN
@@ -478,12 +535,24 @@ IF bFaultInternal THEN
     bAirBlowRequestInternal := FALSE;
     stResultInternal.bValid := FALSE;
 END_IF
+// This station has only the transfer vertical: a sensor-confirmed Manual UP
+// under the final UP command restores HOME after an individual DOWN/UP action.
+IF bManualModeInternal AND bSafetyOkInternal AND bCommissionedInternal
+    AND NOT bFaultInternal AND NOT bBusyInternal AND NOT bStopRequestInternal AND NOT bHomeRequestInternal
+    AND (eStateInternal <> E_PatchStationState.Processing)
+    AND bVerticalUpCommandInternal AND NOT bVerticalDownCommandInternal
+    AND bVerticalIndexReadyInternal THEN bHomeConfirmedInternal := TRUE; END_IF
 IF NOT bVerticalUpReadyInternal OR bVerticalDownReadyInternal OR bFaultInternal THEN bHomeConfirmedInternal := FALSE; END_IF
-bHomeInternal := bHomeConfirmedInternal AND bSupportRetractedInternal
-    AND NOT bSupportExtendedInternal AND bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal AND NOT bFaultInternal;
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+// bHomeInternal := bHomeConfirmedInternal AND bSupportRetractedInternal
+//     AND NOT bSupportExtendedInternal AND bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal AND NOT bFaultInternal;
+bHomeInternal := bHomeConfirmedInternal
+    AND bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal AND NOT bFaultInternal;
 bReadyInternal := bEnableInternal AND bSafetyOkInternal AND bCommissionedInternal
     AND ((eStateInternal = E_PatchStationState.Ready) OR (bManualModeInternal AND (eStateInternal = E_PatchStationState.Complete)))
-    AND bSupportRetractedInternal AND NOT bSupportExtendedInternal
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//     AND bSupportRetractedInternal AND NOT bSupportExtendedInternal
+
     AND (NOT bUseVerticalFeedbackInternal OR (bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal))
     AND bDriveStandstillInternal AND NOT bDriveBusyInternal AND NOT bDriveFaultInternal;
 bBusyInternal := (eStateInternal = E_PatchStationState.Processing) OR bStopRequestInternal
@@ -506,7 +575,9 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[usiVerticalEstimatedPosition := 0;
+        <ST><![CDATA[// TEMP_NO_PATCH_NEST_SUPPORT: Cyclic skips retained support HOME steps 10/20.
+// No support command or support sensor confirmation is used in this trial.
+usiVerticalEstimatedPosition := 0;
 bVerticalIndexReadyInternal := FALSE;
 tonVerticalTimedUp(IN := FALSE);
 tonVerticalTimedDown(IN := FALSE);
@@ -623,7 +694,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[// TRUE only after the requested HOME sequence is completed
+        <ST><![CDATA[// TEMP_NO_PATCH_NEST_SUPPORT: station HOME uses vertical feedback only.
+// TRUE only after the requested HOME sequence is completed
 // and the available support feedbacks are valid.
 //
 // FUTURE IMPLEMENTATION:
@@ -631,8 +703,10 @@ END_VAR
 
 IsHome :=
     bHomeConfirmedInternal
-    AND bSupportRetractedInternal
-    AND NOT bSupportExtendedInternal
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//     AND bSupportRetractedInternal
+//     AND NOT bSupportExtendedInternal
+
     AND NOT bFaultInternal;]]></ST>
       </Implementation>
     </Method>
@@ -679,7 +753,9 @@ stResultInternal.udiAlertCode := 0;
 stResultInternal.sDetail := '';
 
 IF bEnableInternal AND bCommissionedInternal AND bSafetyOkInternal THEN
-    IF bSupportRetractedInternal THEN
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//     IF bSupportRetractedInternal THEN
+    IF bVerticalUpReadyInternal AND NOT bVerticalDownReadyInternal THEN
         eStateInternal := E_PatchStationState.Ready;
         usiStepInternal := 0;
     ELSE
@@ -708,7 +784,9 @@ IF bEnableInternal
     AND bStartPermittedInternal
     AND NOT bStopRequestInternal
     AND NOT bDriveFaultInternal
-    AND bSupportRetractedInternal
+// TEMP_NO_PATCH_NEST_SUPPORT: original code retained for restoration.
+//     AND bSupportRetractedInternal
+
 THEN
     bFeedOnlyInternal := FALSE;
     bPatchDetectedInternal := FALSE;
@@ -782,13 +860,13 @@ END_VAR]]></Declaration>
 
 bEnableInternal := bEnable;
 bManualModeInternal := bManualMode;
-bManualSupportExtendDesiredInternal := bManualSupportExtendDesired;
+// Removed nest support: bManualSupportExtendDesired is compatibility-only and ignored.
 bCommissionedInternal := bCommissioned;
 bSafetyOkInternal := bSafetyOk;
 bHomingAllowedInternal := bHomingAllowed;
 bSupervisionEnableInternal := bSupervisionEnable;
-bSupportRetractedInternal := bSupportRetracted;
-bSupportExtendedInternal := bSupportExtended;
+// Removed hardware: bSupportRetracted/bSupportExtended are ignored.
+// Keep tSupportTimeout: it also supervises the fitted transfer vertical.
 tSupportMoveTimeout := tSupportTimeout;
 
 bStartPermittedInternal := bStartPermitted;
@@ -843,14 +921,14 @@ stStatus.bReady := bReadyInternal;
 stStatus.bBusy := bBusyInternal;
 stStatus.bComplete := bCompleteInternal;
 stStatus.bFault := bFaultInternal;
-stStatus.eSupportFault := eSupportFaultInternal;
+stStatus.eSupportFault := E_SupportCylinderFault.None; // No nest support is fitted.
 stStatus.sDiagnostic := sDiagnosticInternal;
 IF NOT bUseVerticalFeedbackInternal THEN
     stStatus.sDiagnostic := CONCAT('TEMP timed vertical: ', sDiagnosticInternal);
 END_IF
 
-bSupportExtendRequest := bSupportExtendRequestInternal;
-bSupportRetractRequest := bSupportRetractRequestInternal;
+bSupportExtendRequest := FALSE; // Retired public output; never actuate.
+bSupportRetractRequest := FALSE;
 bVerticalUpRequest := bVerticalUpRequestInternal;
 ]]></ST>
       </Implementation>

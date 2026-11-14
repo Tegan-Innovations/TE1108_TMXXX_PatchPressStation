@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_VisionManualImages" Id="{ff4fb982-8399-43be-8b9b-3383825e777a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_VisionManualImages
+VAR_INPUT
+    bPermit : BOOL;
+    bReset : BOOL;
+    bPrepare : BOOL;
+    bRelease : BOOL;
+    bTrigger : BOOL;
+    udiSelection : UDINT;
+    bFitted : BOOL;
+    bPickAtFront : BOOL; // Retired compatibility input; ignored. There is one nest.
+    bReferenceKnown : BOOL;
+    bHorizontalBack : BOOL;
+    bHorizontalFront : BOOL;
+    bVerticalUp : BOOL;
+    bVerticalDown : BOOL;
+    bGripOpen : BOOL;
+    bGripClosed : BOOL;
+    bRotate0 : BOOL;
+    bRotate180 : BOOL;
+    bRotate0Raw : BOOL;
+    bRotate180Raw : BOOL;
+    bCameraReady : BOOL;
+    bCameraAccepted : BOOL;
+    bCameraComplete : BOOL;
+    bCameraFailed : BOOL;
+    bCameraReset : BOOL; // Clears only the camera warning, never a tooling fault.
+    bCameraBusy : BOOL;
+    tMovingTriggerDelay : TIME;
+END_VAR
+VAR_OUTPUT
+    bActive : BOOL;
+    bBusy : BOOL;
+    bPrepared : BOOL;
+    bFault : BOOL;
+    bCameraWarning : BOOL;
+    bPartHeld : BOOL;
+    bFittedPulse : BOOL;
+    bReferenceLostPulse : BOOL;
+    bCaptureRequest : BOOL;
+    bMovingCapture : BOOL;
+    udiPreparedImage : UDINT;
+    usiStep : USINT;
+    sMessage : STRING(160);
+    bHorizontalBackRequest : BOOL;
+    bHorizontalFrontRequest : BOOL;
+    bVerticalUpRequest : BOOL;
+    bVerticalDownRequest : BOOL;
+    bGripOpenRequest : BOOL;
+    bGripCloseRequest : BOOL;
+    bRotate0Request : BOOL;
+    bRotate180Request : BOOL;
+END_VAR
+VAR
+    rtPrepare : R_TRIG;
+    rtRelease : R_TRIG;
+    rtTrigger : R_TRIG;
+    rtMarker : R_TRIG;
+    tonDeparture : TON;
+    tonMovingDelay : TON;
+    tonSettle : TON;
+    tonMove : TON;
+    tonCapture : TON;
+    tonConflict : TON;
+    bHome : BOOL;
+    bPickFront : BOOL;
+    bSessionFitted : BOOL;
+    bStepReached : BOOL;
+    usiNext : USINT;
+    usiStepAtEntry : USINT;
+    tSettle : TIME;
+    bPreparedPosition : BOOL;
+    bLeft0 : BOOL;
+    bMarkerSeen : BOOL;
+    bTriggerLatched : BOOL;
+    bAccepted : BOOL;
+    bCaptured : BOOL;
+    bRotationStarted : BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Independent manual positioning; never produces a production station result.
+// Inputs/requests are sampled once each scan; camera owner consumes the preceding
+// scan's bCaptureRequest. All motions use current feedback and final interlocks.
+rtPrepare(CLK := bPrepare);
+rtRelease(CLK := bRelease);
+rtTrigger(CLK := bTrigger);
+rtMarker(CLK := bRotate0Raw);
+bFittedPulse := FALSE;
+IF bCameraReset THEN bCameraWarning := FALSE; END_IF
+bReferenceLostPulse := FALSE;
+bCaptureRequest := FALSE;
+bHorizontalBackRequest := FALSE;
+bHorizontalFrontRequest := FALSE;
+bVerticalUpRequest := FALSE;
+bVerticalDownRequest := FALSE;
+bGripOpenRequest := FALSE;
+bGripCloseRequest := FALSE;
+bRotate0Request := FALSE;
+bRotate180Request := FALSE;
+bStepReached := FALSE;
+usiNext := usiStep;
+usiStepAtEntry := usiStep;
+tSettle := T#100MS;
+bHome := bHorizontalBack AND NOT bHorizontalFront
+    AND bVerticalUp AND NOT bVerticalDown
+    AND bGripOpen AND NOT bGripClosed AND bRotate0 AND NOT bRotate180;
+bPreparedPosition := ((udiPreparedImage = 1) OR (udiPreparedImage = 4)) AND bHome;
+IF (udiPreparedImage = 2) OR (udiPreparedImage = 3) THEN
+    bPreparedPosition := bHorizontalFront AND NOT bHorizontalBack
+        AND bVerticalUp AND NOT bVerticalDown AND bGripClosed AND NOT bGripOpen
+        AND (((udiPreparedImage = 2) AND bRotate0 AND NOT bRotate180)
+            OR ((udiPreparedImage = 3) AND bRotate180 AND NOT bRotate0));
+END_IF
+
+tonConflict(IN := bActive AND bPermit AND
+    ((bHorizontalBack AND bHorizontalFront) OR (bVerticalUp AND bVerticalDown)
+    OR (bGripOpen AND bGripClosed) OR (bRotate0Raw AND bRotate180Raw)), PT := T#300MS);
+
+IF bReset THEN
+    bReferenceLostPulse := bActive;
+    bActive := FALSE;
+    bFault := FALSE;
+    bPartHeld := FALSE;
+    usiStep := 0;
+    sMessage := 'Position reset; confirm PBUP state and prepare again';
+ELSIF NOT bPermit THEN
+    bReferenceLostPulse := bActive;
+    bActive := FALSE;
+    bPartHeld := FALSE;
+    usiStep := 0;
+    IF NOT bFault THEN sMessage := 'Enable Vision Manual; disable Indexer/jogs; check air, safety, locked index and camera'; END_IF
+ELSIF bFault THEN
+    bActive := FALSE;
+ELSIF tonConflict.Q OR (bActive AND bCameraFailed
+    AND (usiStep <> 100) AND (usiStep <> 110)
+    AND (((usiStep <> 200) AND (usiStep <> 210)) OR NOT bPreparedPosition))
+    OR (bActive AND NOT bReferenceKnown) THEN
+    bFault := TRUE;
+    sMessage := 'Manual image aborted: feedback, PBUP reference or camera fault; Reset required';
+ELSE
+    IF bActive AND bCameraFailed THEN
+        bCameraWarning := TRUE;
+        bCaptured := FALSE;
+        bCaptureRequest := FALSE;
+        // Image 2 keeps the existing outbound-to-180 then return-to-0 path.
+        // Camera failure never invents an endpoint or releases the grip.
+        IF (usiStep = 200) OR (usiStep = 210) THEN usiStep := 200; END_IF
+    END_IF
+    IF NOT bActive AND NOT bPrepare AND NOT bRelease AND NOT bTrigger THEN
+        sMessage := 'Confirm PBUP state, select an image and press Prepare Position';
+    END_IF
+    // Prepare wins over Trigger. No motion follows a selection change alone.
+    IF rtPrepare.Q AND NOT bCameraBusy AND ((usiStep = 0) OR (usiStep = 200)) THEN
+        IF NOT bReferenceKnown THEN
+            sMessage := 'Confirm PBUP state for the current nest first';
+        ELSIF (udiSelection < 1) OR (udiSelection > 4) THEN
+            sMessage := 'Select an image first';
+        ELSIF (udiSelection = 1) AND (bFitted OR bPartHeld) THEN
+            sMessage := 'Image 1 unavailable: PBUP already fitted';
+        ELSIF NOT bActive AND NOT bHome THEN
+            sMessage := 'Return tooling HOME before starting a new preparation';
+        ELSE
+            bActive := TRUE;
+            bSessionFitted := bFitted;
+            udiPreparedImage := udiSelection;
+            IF bPartHeld THEN
+                IF udiSelection = 3 THEN usiStep := 90; ELSE usiStep := 120; END_IF
+            ELSIF (udiSelection = 1) OR ((udiSelection = 4) AND bFitted) THEN
+                usiStep := 200;
+            ELSE
+                bPickFront := bSessionFitted; // Fitted part: approach the single nest before lowering; no remount.
+                IF bPickFront THEN usiStep := 20; ELSE usiStep := 30; END_IF
+            END_IF
+        END_IF
+    ELSIF rtRelease.Q AND (usiStep = 200) AND NOT bPartHeld AND bHome AND NOT bCameraBusy THEN
+        bActive := FALSE;
+        usiStep := 0;
+        sMessage := 'Position released; tooling HOME';
+    ELSIF rtTrigger.Q AND (usiStep = 200) AND (udiSelection = udiPreparedImage)
+        AND bPreparedPosition AND ((udiPreparedImage <> 1) OR NOT bFitted)
+        AND bCameraReady AND NOT bCameraBusy THEN
+        bCameraWarning := FALSE;
+        bCaptured := FALSE;
+        bAccepted := FALSE;
+        IF udiPreparedImage = 2 THEN usiStep := 100; ELSE usiStep := 210; END_IF
+    END_IF
+
+    // Held positions are proved every scan; loss never starts an automatic regrip.
+    bPreparedPosition := ((udiPreparedImage = 1) OR (udiPreparedImage = 4)) AND bHome;
+    IF (udiPreparedImage = 2) OR (udiPreparedImage = 3) THEN
+        bPreparedPosition := bHorizontalFront AND NOT bHorizontalBack
+            AND bVerticalUp AND NOT bVerticalDown AND bGripClosed AND NOT bGripOpen
+            AND (((udiPreparedImage = 2) AND bRotate0 AND NOT bRotate180)
+                OR ((udiPreparedImage = 3) AND bRotate180 AND NOT bRotate0));
+    END_IF
+
+    IF bActive THEN
+        IF usiStep = 20 THEN
+            bHorizontalFrontRequest := NOT bHorizontalFront;
+            bStepReached := bHorizontalFront AND NOT bHorizontalBack;
+            usiNext := 30;
+            sMessage := 'Repeat pickup: horizontal FRONT';
+        ELSIF usiStep = 30 THEN
+            bVerticalDownRequest := NOT bVerticalDown;
+            bStepReached := bVerticalDown AND NOT bVerticalUp AND bRotate0 AND NOT bRotate180
+                AND ((bPickFront AND bHorizontalFront AND NOT bHorizontalBack)
+                    OR (NOT bPickFront AND bHorizontalBack AND NOT bHorizontalFront));
+            usiNext := 40;
+            sMessage := 'Pickup: vertical DOWN';
+        ELSIF usiStep = 40 THEN
+            bGripCloseRequest := NOT bGripClosed;
+            bStepReached := bGripClosed AND NOT bGripOpen AND bVerticalDown AND NOT bVerticalUp;
+            usiNext := 50;
+            sMessage := 'Pickup: grip CLOSE at DOWN';
+            IF bStepReached THEN bPartHeld := TRUE; END_IF
+        ELSIF usiStep = 50 THEN
+            bVerticalUpRequest := NOT bVerticalUp;
+            bStepReached := bVerticalUp AND NOT bVerticalDown;
+            IF NOT bSessionFitted THEN usiNext := 60;
+            ELSIF NOT bPickFront THEN usiNext := 60;
+            ELSIF udiPreparedImage = 3 THEN usiNext := 90;
+            ELSE usiNext := 200; END_IF
+            sMessage := 'Pickup: vertical UP with part';
+        ELSIF usiStep = 60 THEN
+            bHorizontalFrontRequest := NOT bHorizontalFront;
+            bStepReached := bHorizontalFront AND NOT bHorizontalBack;
+            IF NOT bSessionFitted THEN usiNext := 70;
+            ELSIF udiPreparedImage = 3 THEN usiNext := 90;
+            ELSIF udiPreparedImage = 4 THEN usiNext := 140;
+            ELSE usiNext := 200; END_IF
+            sMessage := 'Transfer: horizontal FRONT';
+        ELSIF usiStep = 70 THEN
+            bVerticalDownRequest := NOT bVerticalDown;
+            bStepReached := bVerticalDown AND NOT bVerticalUp AND bHorizontalFront AND NOT bHorizontalBack;
+            tSettle := T#1S;
+            usiNext := 80;
+            sMessage := 'PBUP mounting: hold confirmed DOWN for 1 s';
+        ELSIF usiStep = 80 THEN
+            bVerticalUpRequest := NOT bVerticalUp;
+            bStepReached := bVerticalUp AND NOT bVerticalDown;
+            IF udiPreparedImage = 3 THEN usiNext := 90;
+            ELSIF udiPreparedImage = 4 THEN usiNext := 140;
+            ELSE usiNext := 200; END_IF
+            sMessage := 'PBUP fitted: vertical UP';
+        ELSIF usiStep = 90 THEN
+            bRotate180Request := NOT bRotate180;
+            bStepReached := bRotate180 AND NOT bRotate0;
+            usiNext := 200;
+            sMessage := 'Prepare Image 3: rotate to qualified 180 deg';
+        ELSIF usiStep = 100 THEN
+            IF bCameraWarning THEN
+                sMessage := 'Camera warning: finishing rotation to qualified 180 deg';
+            ELSE sMessage := 'Image 2: outbound rotation and marker capture'; END_IF
+            // Outbound moving capture only. A 0-degree raw sensor also marks 90.
+            IF NOT bRotationStarted THEN
+                bRotationStarted := TRUE;
+                bLeft0 := FALSE;
+                bMarkerSeen := FALSE;
+                bTriggerLatched := FALSE;
+                IF NOT bRotate0 OR bRotate180Raw THEN
+                    bFault := TRUE;
+                    sMessage := 'Image 2: qualified 0 deg reference missing';
+                END_IF
+            END_IF
+            bRotate180Request := NOT bRotate180;
+            IF tonDeparture.Q THEN bLeft0 := TRUE; END_IF
+            IF bLeft0 AND rtMarker.Q AND NOT bRotate180Raw THEN bMarkerSeen := TRUE; END_IF
+            IF tonMovingDelay.Q AND NOT bRotate180Raw THEN bTriggerLatched := TRUE; END_IF
+            IF bCameraAccepted THEN bAccepted := TRUE; END_IF
+            IF bCameraComplete AND NOT bCameraWarning THEN bCaptured := TRUE; END_IF
+            bCaptureRequest := bTriggerLatched AND NOT bCaptured AND NOT bCameraWarning;
+            IF bRotate180Raw AND NOT bAccepted THEN
+                bCameraWarning := TRUE;
+                bCaptureRequest := FALSE;
+                sMessage := 'Image 2: capture window missed; waiting for qualified 180 deg';
+            END_IF
+            bStepReached := bRotate180 AND NOT bRotate0 AND (bCaptured OR bCameraWarning);
+            usiNext := 110;
+        ELSIF usiStep = 110 THEN
+            bRotate0Request := NOT bRotate0;
+            bStepReached := bRotate0 AND NOT bRotate180;
+            usiNext := 200;
+            IF bCameraWarning THEN
+                sMessage := 'Camera warning: returning to qualified 0 deg before Camera Reset';
+            ELSE sMessage := 'Image 2: returning to qualified 0 deg'; END_IF
+        ELSIF usiStep = 120 THEN
+            bRotate0Request := NOT bRotate0;
+            bStepReached := bRotate0 AND NOT bRotate180;
+            IF udiPreparedImage = 4 THEN usiNext := 140; ELSE usiNext := 200; END_IF
+            sMessage := 'Prepare: rotate to qualified 0 deg';
+        ELSIF usiStep = 140 THEN
+            bVerticalDownRequest := NOT bVerticalDown;
+            bStepReached := bVerticalDown AND NOT bVerticalUp AND bHorizontalFront AND NOT bHorizontalBack;
+            usiNext := 150;
+            sMessage := 'Replace: vertical DOWN at FRONT';
+        ELSIF usiStep = 150 THEN
+            bGripOpenRequest := bVerticalDown AND NOT bVerticalUp AND NOT bGripOpen;
+            bStepReached := bGripOpen AND NOT bGripClosed AND bVerticalDown AND NOT bVerticalUp;
+            usiNext := 160;
+            IF bStepReached THEN bPartHeld := FALSE; END_IF
+            sMessage := 'Replace: release at confirmed DOWN';
+        ELSIF usiStep = 160 THEN
+            bVerticalUpRequest := NOT bVerticalUp;
+            bStepReached := bVerticalUp AND NOT bVerticalDown;
+            usiNext := 170;
+            sMessage := 'Replace: vertical UP';
+        ELSIF usiStep = 170 THEN
+            bHorizontalBackRequest := NOT bHorizontalBack;
+            bStepReached := bHome;
+            usiNext := 200;
+            sMessage := 'Prepare Image 4: return HOME';
+        ELSIF usiStep = 200 THEN
+            IF NOT bPreparedPosition THEN
+                bFault := TRUE;
+                sMessage := 'Prepared position lost; Reset and recover tooling';
+            ELSIF udiSelection <> udiPreparedImage THEN
+                sMessage := 'Selection changed; press Prepare Position before Camera Trigger';
+            ELSIF bCameraWarning THEN
+                sMessage := 'Capture incomplete; Camera Reset or retry Trigger';
+            ELSE sMessage := 'Position prepared; Camera Trigger may be repeated'; END_IF
+        ELSIF usiStep = 210 THEN
+            sMessage := 'Camera capture in progress - position held';
+            bCaptureRequest := TRUE;
+            IF NOT bPreparedPosition THEN
+                bFault := TRUE;
+                sMessage := 'Position lost during capture; Reset required';
+            ELSIF bCameraComplete THEN
+                bCaptureRequest := FALSE;
+                usiStep := 200;
+                sMessage := 'Capture complete; position held';
+            END_IF
+        ELSE
+            bFault := TRUE;
+            sMessage := 'Invalid manual image sequence step';
+        END_IF
+    END_IF
+END_IF
+
+IF bActive AND bPartHeld AND (usiStep <> 150) AND (NOT bGripClosed OR bGripOpen) THEN
+    bFault := TRUE;
+    sMessage := 'Part grip feedback lost; Reset and recover tooling';
+END_IF
+
+// Timers execute exactly once per scan, except explicit rearming on transition.
+tonDeparture(IN := bActive AND (usiStep = 100) AND NOT bLeft0
+    AND NOT bRotate0Raw AND NOT bRotate180Raw, PT := T#20MS);
+tonMovingDelay(IN := bActive AND (usiStep = 100) AND bMarkerSeen, PT := tMovingTriggerDelay);
+tonSettle(IN := bActive AND bStepReached, PT := tSettle);
+tonMove(IN := bActive AND (usiStep <> 200) AND (usiStep <> 210) AND NOT bStepReached, PT := T#30S);
+tonCapture(IN := bActive AND NOT bCameraWarning AND ((usiStep = 100) OR (usiStep = 210)), PT := T#10S);
+IF tonCapture.Q AND (usiStep = 100) THEN
+    bCameraWarning := TRUE;
+    bCaptureRequest := FALSE;
+    sMessage := 'Image 2: capture timeout; finish rotation and return to 0 deg';
+ELSIF tonCapture.Q AND (usiStep = 210) AND bPreparedPosition THEN
+    bCameraWarning := TRUE;
+    bCaptureRequest := FALSE;
+    usiStep := 200;
+    sMessage := 'Capture timeout; position retained - Camera Reset';
+ELSIF tonMove.Q OR tonCapture.Q THEN
+    bFault := TRUE;
+    sMessage := 'Manual image movement/capture timeout; Reset required';
+ELSIF tonSettle.Q THEN
+    IF usiStep = 70 THEN
+        bFittedPulse := TRUE;
+        bSessionFitted := TRUE;
+    END_IF
+    usiStep := usiNext;
+    tonSettle(IN := FALSE);
+    tonMove(IN := FALSE);
+END_IF
+IF usiStep <> 100 THEN
+    bRotationStarted := FALSE;
+    bLeft0 := FALSE;
+    bMarkerSeen := FALSE;
+    bTriggerLatched := FALSE;
+END_IF
+
+IF bFault THEN
+    bFittedPulse := FALSE;
+    bReferenceLostPulse := bReferenceLostPulse OR bActive;
+    bActive := FALSE;
+    bPartHeld := FALSE;
+    usiStep := 0;
+END_IF
+
+// Final mechanical permissives. Unknown horizontal endpoints cannot permit DOWN.
+IF NOT bVerticalUp OR bVerticalDown THEN
+    bHorizontalBackRequest := FALSE;
+    bHorizontalFrontRequest := FALSE;
+    bRotate0Request := FALSE;
+    bRotate180Request := FALSE;
+END_IF
+IF NOT bHorizontalFront OR bHorizontalBack OR NOT bGripClosed OR bGripOpen THEN
+    bRotate0Request := FALSE;
+    bRotate180Request := FALSE;
+END_IF
+IF NOT (((bHorizontalBack AND NOT bHorizontalFront)
+    OR (bHorizontalFront AND NOT bHorizontalBack)) AND bRotate0 AND NOT bRotate180) THEN
+    bVerticalDownRequest := FALSE;
+END_IF
+IF (usiStep = 30) AND NOT ((bPickFront AND bHorizontalFront AND NOT bHorizontalBack)
+    OR (NOT bPickFront AND bHorizontalBack AND NOT bHorizontalFront)) THEN
+    bVerticalDownRequest := FALSE;
+END_IF
+IF ((usiStep = 70) OR (usiStep = 140)) AND (NOT bHorizontalFront OR bHorizontalBack) THEN
+    bVerticalDownRequest := FALSE;
+END_IF
+IF NOT bVerticalDown OR bVerticalUp OR NOT bRotate0 OR bRotate180
+    OR NOT ((bHorizontalBack AND NOT bHorizontalFront) OR (bHorizontalFront AND NOT bHorizontalBack)) THEN
+    bGripOpenRequest := FALSE;
+    bGripCloseRequest := FALSE;
+END_IF
+IF NOT bActive OR NOT bPermit OR bFault THEN
+    bCaptureRequest := FALSE;
+    bHorizontalBackRequest := FALSE;
+    bHorizontalFrontRequest := FALSE;
+    bVerticalUpRequest := FALSE;
+    bVerticalDownRequest := FALSE;
+    bGripOpenRequest := FALSE;
+    bGripCloseRequest := FALSE;
+    bRotate0Request := FALSE;
+    bRotate180Request := FALSE;
+END_IF
+IF bHorizontalBackRequest AND bHorizontalFrontRequest THEN
+    bHorizontalBackRequest := FALSE; bHorizontalFrontRequest := FALSE;
+END_IF
+IF bVerticalUpRequest AND bVerticalDownRequest THEN
+    bVerticalUpRequest := FALSE; bVerticalDownRequest := FALSE;
+END_IF
+IF bGripOpenRequest AND bGripCloseRequest THEN
+    bGripOpenRequest := FALSE; bGripCloseRequest := FALSE;
+END_IF
+IF bRotate0Request AND bRotate180Request THEN
+    bRotate0Request := FALSE; bRotate180Request := FALSE;
+END_IF
+bPrepared := bActive AND (usiStep = 200) AND bPreparedPosition AND NOT bFault;
+bBusy := bActive AND NOT bPrepared;
+bMovingCapture := bActive AND (usiStep = 100);]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

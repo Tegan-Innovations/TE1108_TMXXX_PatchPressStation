@@ -399,6 +399,9 @@
     <Compile Include="POUs\03_Stations\PatchDispense\FB_PatchFeedManager.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\03_Stations\Vision\FB_VisionManualImages.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\03_Stations\Vision\FB_VisionStation.TcPOU">
       <SubType>Code</SubType>
     </Compile>

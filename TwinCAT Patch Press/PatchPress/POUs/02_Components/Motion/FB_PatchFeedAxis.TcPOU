@@ -167,20 +167,20 @@ END_CASE
 // No MC_Power/Move/Halt call in monitor-only mode, except the release scan.
 IF (usiState <> 0) OR fbPower.Status OR fbPower.Busy OR fbVelocity.Busy OR fbHalt.Busy
     OR fbPower.Error OR fbVelocity.Error OR fbHalt.Error THEN
-
+	
     fbPower(Axis := stAxis.Axis, Enable := bPowerRequest,
         Enable_Positive := bPowerRequest, Enable_Negative := bPowerRequest,
         Override := 100.0, BufferMode := MC_Aborting);
-
+		
     fbVelocity(Axis := stAxis.Axis, Execute := bMoveExecute,
         Velocity := lrCommandVelocity, Direction := eCommandDirection,
         Acceleration := stSettings.lrAcceleration, Deceleration := stSettings.lrDeceleration,
         Jerk := stSettings.lrJerk, BufferMode := MC_Aborting);
-
+		
     fbHalt(Axis := stAxis.Axis, Execute := bHaltExecute,
         Deceleration := stSettings.lrDeceleration, Jerk := stSettings.lrJerk,
         BufferMode := MC_Aborting);
-
+		
     stAxis.bEnabled := fbPower.Status;
     stAxis.bOperational := fbPower.Status;
 END_IF

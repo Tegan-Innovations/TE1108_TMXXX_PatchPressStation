@@ -7,6 +7,8 @@ VAR
     bBlinkTimerQOld : BOOL;
     bFlash          : BOOL;
     fbEL6910Diagnostics : FB_EL6910Diagnostics;
+    uiHeatStakeReasonNestId : UINT;
+    bHeatStakeReasonRejectPending : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[// Same 500 ms toggle used by the validated Silicone Station banner.
@@ -56,8 +58,8 @@ GVL_HMI.stStatus.bRightFlapSafe := GVL_MASTER.stInputs.stSafety.bRightFlapSafe;
 GVL_HMI.stStatus.bEnableSettings := GVL_MASTER.stStatus.bEnableSetting;
 GVL_HMI.stStatus.bAllStationsCommissioned := GVL_MASTER.stStatus.bAllStationsCommissioned;
 GVL_HMI.stStatus.bAutoCycleAllowed := GVL_MASTER.stStatus.bAutoCycleAllowed;
-GVL_HMI.stStatus.bPatchSupportRetracted :=GVL_MASTER.stInputs.bStation1SupportRetracted;
-GVL_HMI.stStatus.bPatchSupportExtended :=GVL_MASTER.stInputs.bStation1SupportExtended;
+GVL_HMI.stStatus.bPatchSupportRetracted := FALSE; // Retired status; no sensor is fitted.
+GVL_HMI.stStatus.bPatchSupportExtended := FALSE; // Retired status; no sensor is fitted.
 
 
 GVL_HMI.stStatus.bNest1Blocked := NOT GVL_Persistent.aNestEnabled[1];
@@ -83,7 +85,16 @@ GVL_HMI.stStatus.bHeatStakeHeadDownTimeoutFault := GVL_MASTER.stStatus.bHeatStak
 GVL_HMI.stStatus.bHeatStakeHeadUpTimeoutFault := GVL_MASTER.stStatus.bHeatStakeHeadUpTimeoutFault;
 GVL_HMI.stStatus.bHeatStakeHeadSensorConflictFault := GVL_MASTER.stStatus.bHeatStakeHeadSensorConflictFault;
 
-GVL_HMI.bUnlockDoorVisible := (GVL_HMI.Ststatus.eMachineState = E_MachineState.Stopped);
+// Use the same TC3/head criterion as the machine's hot-door lock demand.
+GVL_HMI.bUnlockDoorVisible :=
+    (GVL_MASTER.stStatus.eMachineState = E_MachineState.Stopped)
+    AND GVL_MASTER.stStatus.stMainDoorLock.bLockRequest
+    AND NOT (GVL_MASTER.stStatus.stHeatStakeTemperature.rOverTempTemperatureC <
+        GVL_Config.rMainDoorHotTemperatureLimitC);
+// A stale hot-door popup must not remain open once the head cools or the state changes.
+IF NOT GVL_HMI.bUnlockDoorVisible THEN
+    GVL_HMI.bUnlockDoorPopupRequest := FALSE;
+END_IF
 
 
 IF (GVL_MASTER.stStatus.uiDisabledNestPartPopupNestId >= 1)
@@ -115,14 +126,11 @@ IF GVL_MASTER.stStatus.eMachineState = E_MachineState.Manual THEN
         OR NOT GVL_MASTER.stStatus.stPatchDispense.bHome
         OR GVL_Motion.stPatchFeedStatus.bBusy
         OR GVL_Motion.AxisDriveMotor.bMoving
-        OR GVL_MASTER.stOutputs.bStation1SupportExtend
-        OR GVL_MASTER.stOutputs.bStation1SupportRetract
         OR GVL_MASTER.stOutputs.bPatchVerticalDown
         OR GVL_MASTER.stOutputs.bPatchDispenserAir;
     GVL_HMI.stStatus.stPatchDispense.bReady :=
-        GVL_MASTER.stStatus.stPatchDispense.bReady
+        GVL_MASTER.stStatus.stPatchDispense.bCommissioned
         AND GVL_MASTER.stStatus.stPatchDispense.bHome
-        AND GVL_HMI.stCommands.bPatchManualEnable
         AND NOT GVL_HMI.stStatus.stPatchDispense.bBusy
         AND NOT GVL_HMI.stStatus.stPatchDispense.bFault;
 END_IF
@@ -177,6 +185,68 @@ GVL_HMI.stStatus.bHeatStakeManualHeadUpAllowed := GVL_MASTER.stStatus.bHeatStake
 GVL_HMI.stStatus.bHeatStakeManualSupportAllowed := GVL_MASTER.stStatus.bHeatStakeManualSupportAllowed;
 GVL_HMI.stStatus.bHeatStakeManualActionBusy := GVL_MASTER.stStatus.bHeatStakeManualActionBusy;
 GVL_HMI.stStatus.bHeatStakeManualHeadUnlocked := GVL_MASTER.stStatus.bHeatStakeManualHeadUnlocked;
+
+// Explain the published Stake Patch permission without changing control logic.
+// Resolve the physical nest safely; do not index the array with an unknown ID.
+uiHeatStakeReasonNestId := GVL_MASTER.stStatus.uiHeatStakeNestId;
+bHeatStakeReasonRejectPending := FALSE;
+IF (uiHeatStakeReasonNestId >= 1) AND (uiHeatStakeReasonNestId <= 4) THEN
+    bHeatStakeReasonRejectPending :=
+        GVL_MASTER.stStatus.aNest[uiHeatStakeReasonNestId].stHeatStakeResult.bValid
+        AND (GVL_MASTER.stStatus.aNest[uiHeatStakeReasonNestId].stHeatStakeResult.udiAlertCode
+            = GVL_MASTER.udiHeatStakePatchMissingAlertCode);
+END_IF
+
+// The permission is authoritative. Show one actionable blocking reason at a
+// time; clearing it reveals the next remaining blocker. Never request a reset,
+// acknowledge a reject or generate a movement from this presentation program.
+IF GVL_MASTER.stStatus.bHeatStakeManualStakeAllowed THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Ready - press Stake Patch';
+ELSIF GVL_MASTER.stStatus.eMachineState <> E_MachineState.Manual THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Machine not in Manual mode';
+ELSIF NOT GVL_MASTER.stInputs.stSafety.bSafetyOk THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Safety not ready';
+ELSIF NOT GVL_MASTER.stCommand.bHeatStakeManualEnable THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Enable Heat Stake';
+ELSIF GVL_MASTER.stStatus.bRejectChuteStopRequest THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Reject chute stop active';
+ELSIF NOT GVL_MASTER.stStatus.stHeatStakeTemperature.bIndexTemperatureReady THEN
+    IF GVL_MASTER.stStatus.stHeatStakeTemperature.bFault THEN
+        GVL_HMI.sHeatStakeManualStakeMessage := 'Temperature fault - see alarms';
+    ELSE
+        GVL_HMI.sHeatStakeManualStakeMessage := 'Temperature not ready';
+    END_IF
+ELSIF GVL_MASTER.stStatus.stHeatStake.bFault THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Heat Stake fault - see alarms';
+ELSIF NOT GVL_MASTER.stStatus.stHeatStake.bCommissioned THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Heat Stake disabled - engineering check';
+ELSIF GVL_MASTER.stStatus.bHeatStakeManualActionBusy THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Manual head action running';
+ELSIF GVL_MASTER.stStatus.stHeatStake.eState = E_PatchStationState.Processing THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Heat Stake cycle running';
+ELSIF NOT GVL_MASTER.stInputs.bStation2SupportRetracted THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Retract nest support';
+ELSIF NOT GVL_MASTER.stInputs.bHeatStakeHeadUp OR GVL_MASTER.stInputs.bHeatStakeHeadDown THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Head not confirmed UP';
+ELSIF GVL_MASTER.stStatus.bHeatStakeManualHeadUnlocked THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Head marked UNLOCKED - use Lock';
+ELSIF bHeatStakeReasonRejectPending THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := CONCAT(
+        CONCAT('Nest ', UINT_TO_STRING(uiHeatStakeReasonNestId)), ': reject confirmation pending');
+ELSIF NOT GVL_MASTER.stInputs.bHeatStakeEaglePresent THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Part not detected at Heat Stake';
+ELSIF GVL_MASTER.stStatus.stIndexStatus.bBusy THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Index table busy';
+ELSIF GVL_MASTER.stStatus.stHeatStake.eState = E_PatchStationState.Complete THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Cycle complete - awaiting reset';
+ELSIF GVL_MASTER.stStatus.stHeatStake.bBusy THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Heat Stake busy - see diagnostics';
+ELSIF NOT GVL_MASTER.stStatus.stHeatStake.bReady THEN
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Heat Stake not ready - see diagnostics';
+ELSE
+    // Publication and permission may straddle a one-scan state transition.
+    GVL_HMI.sHeatStakeManualStakeMessage := 'Permissive updating - wait';
+END_IF
 
 
 // =====================================================
