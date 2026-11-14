@@ -322,7 +322,8 @@ VAR
 	// =====================================================
 	// PATCH DISPENSING - MANUAL VERTICAL
 	// =====================================================
-    bPatchManualVerticalDownHeld : BOOL; // Volatile target; never replay DOWN after permission loss.
+    bPatchManualVerticalUpHeld : BOOL := TRUE; // Retain the selected UP direction while manual control is permitted.
+    bPatchManualVerticalDownHeld : BOOL; // Retain the selected DOWN direction while manual control is permitted.
 	
 	bPatchVerticalUpAllowed   : BOOL;
 	bPatchVerticalDownAllowed : BOOL;
@@ -1232,19 +1233,26 @@ GVL_HMI.stCommands.bPatchDispenseRequest := FALSE;
 // =====================================================
 // PATCH DISPENSING - MANUAL VERTICAL
 // =====================================================
-// HMI commands remain one-scan requests. Maintain the selected valve direction.
-// A lost permission cancels DOWN; a fresh request is required to descend again.
+// HMI sends one-scan direction requests; retain the selected valve command.
 IF NOT bPatchManualAllowed OR NOT stInputs.bMainDoorClosed
     OR stCommand.bStop OR stCommand.bReset OR stInputs.bEventFault
     OR stInputs.bEventCycleStopRequest OR stPatchDispenseStatus.bFault
     OR fbPatchDispense.IsBusy() OR stIndexStatus.bBusy
     OR stCommand.bIndexerManualEnable OR stCommand.bManualIndexForward
     OR bProcessRequestIndex THEN
+    bPatchManualVerticalUpHeld := FALSE;
     bPatchManualVerticalDownHeld := FALSE;
 ELSIF stCommand.bPatchVerticalUpRequest AND NOT stCommand.bPatchVerticalDownRequest THEN
+    bPatchManualVerticalUpHeld := TRUE;
     bPatchManualVerticalDownHeld := FALSE;
 ELSIF stCommand.bPatchVerticalDownRequest AND NOT stCommand.bPatchVerticalUpRequest THEN
+    bPatchManualVerticalUpHeld := FALSE;
     bPatchManualVerticalDownHeld := TRUE;
+ELSIF bPatchManualAllowed
+    AND NOT bPatchManualVerticalUpHeld
+    AND NOT bPatchManualVerticalDownHeld THEN
+    // Re-enable manual control at the default UP direction.
+    bPatchManualVerticalUpHeld := TRUE;
 END_IF
 
 
@@ -3209,7 +3217,7 @@ IF stInputs.stSafety.bSafetyOk AND stInputs.bMainDoorClosed
     ELSIF bPatchManualAllowed THEN
         stOutputsInternal.bPatchVerticalDown := bPatchManualVerticalDownHeld
             AND NOT stCommand.bIndexerManualEnable;
-        stOutputsInternal.bPatchVerticalUp := bPatchHoldUpAllowed
+        stOutputsInternal.bPatchVerticalUp := bPatchManualVerticalUpHeld
             AND NOT stOutputsInternal.bPatchVerticalDown;
         stOutputsInternal.bPatchDispenserAir := tpPatchAirBlow.Q;
     ELSE
