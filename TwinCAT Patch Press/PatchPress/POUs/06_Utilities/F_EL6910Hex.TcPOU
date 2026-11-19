@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<POU Name="F_EL6910Hex" Id="{a0834846-d5f7-4ed9-a8a0-1ba7d0ec7432}"><Declaration><![CDATA[FUNCTION F_EL6910Hex : STRING(16)
+VAR_INPUT
+    uliValue : ULINT;
+    uiDigits : UINT;
+END_VAR
+VAR
+    i : INT;
+    n : USINT;
+END_VAR]]></Declaration><Implementation><ST><![CDATA[F_EL6910Hex := '';
+FOR i := UINT_TO_INT(MIN(uiDigits, 16)) - 1 TO 0 BY -1 DO
+    n := ULINT_TO_USINT(SHR(uliValue, INT_TO_UINT(i) * 4) AND 15);
+    F_EL6910Hex := CONCAT(F_EL6910Hex, MID('0123456789ABCDEF', 1, n + 1));
+END_FOR]]></ST></Implementation></POU></TcPlcObject>

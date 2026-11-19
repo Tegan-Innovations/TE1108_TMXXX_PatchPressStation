@@ -366,7 +366,11 @@ IF bPulse THEN
 
                 aWarningConditionSeen[k[0], k[1]] :=
                     stStationEvents[k[0]].aEvents[k[1]].bEventFlag;
-                IF bResetFaults THEN
+                // Live owner-latched warnings cannot be acknowledged by machine Reset.
+                IF stStationEvents[k[0]].aEvents[k[1]].bPersistentMessage THEN
+                    stStationEvents[k[0]].aEvents[k[1]].bActive :=
+                        stStationEvents[k[0]].aEvents[k[1]].bEventFlag;
+                ELSIF bResetFaults THEN
                     stStationEvents[k[0]].aEvents[k[1]].bActive := FALSE;
                 END_IF
 

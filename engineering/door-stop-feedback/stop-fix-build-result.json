@@ -1,0 +1,456 @@
+{
+  "buildOperation": "SolutionBuild.BuildProject",
+  "platform": "TwinCAT RT (x64)",
+  "solutionConfiguration": "Release|TwinCAT RT (x64)",
+  "buildConfigurationArgument": "Release|TwinCAT RT (x64)",
+  "projectConfiguration": "Release",
+  "projectPlatform": "TwinCAT RT (x64)",
+  "projectShouldBuild": true,
+  "buildTarget": "TwinCAT Patch Press\\TwinCAT Patch Press.tsproj",
+  "visualStudioProcessId": 56836,
+  "buildStartedAtUtc": "2026-11-10T12:17:19.1259347+00:00",
+  "buildFinishedAtUtc": "2026-11-10T12:17:24.9818857+00:00",
+  "buildInvocationReturned": true,
+  "buildStateBefore": "vsBuildStateDone",
+  "buildStateAfter": "vsBuildStateDone",
+  "completionValidation": "BuildProject(wait=true) returned and BuildState is Done; no per-invocation build event correlation.",
+  "buildStateReadRetryCount": 0,
+  "lastBuildStateReadError": "",
+  "diagnosticsComplete": true,
+  "diagnosticsCollectionErrors": [],
+  "reportingWarnings": [],
+  "rawDiagnostics": [
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:18 568 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:18 584 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:18 600 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:18 820 ms | 'Term 3 (EL6910)': (0x3410) All groups will enter the ERROR-state because the safe logic program has been restarted",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:54 058 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:54 062 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:54 068 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:52:32 494 ms | 'Term 3 (EL6910)': (0x3813) FB 3 (MON): An EDM-fault (0x10) was detected in state START",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:53:32 138 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:53:32 142 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:53:32 148 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:54:07 258 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:54:07 262 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:54:07 268 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:06:46 336 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:06:46 340 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:06:46 348 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:07:34 998 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:07:35 004 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:07:35 010 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:11:10 116 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:11:10 120 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:11:10 128 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:12:11 158 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:12:11 162 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:12:11 168 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    }
+  ],
+  "buildStarted": true,
+  "buildCompleted": true,
+  "success": true,
+  "solutionFullName": "C:\\SharedFolder\\Projects\\TE1108\\Patch_Press\\GitTemp\\TwinCAT Patch Press\\TE1108_PatchPress.sln",
+  "projectName": "TwinCAT Patch Press",
+  "projectFullName": "C:\\SharedFolder\\Projects\\TE1108\\Patch_Press\\GitTemp\\TwinCAT Patch Press\\TwinCAT Patch Press\\TwinCAT Patch Press.tsproj",
+  "projectUniqueName": "TwinCAT Patch Press\\TwinCAT Patch Press.tsproj",
+  "configuration": "Release",
+  "durationMs": 7918,
+  "failedProjectCount": 0,
+  "errorCount": 26,
+  "warningCount": 0,
+  "messageCount": 0,
+  "diagnostics": [
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:18 568 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:18 584 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:18 600 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:18 820 ms | 'Term 3 (EL6910)': (0x3410) All groups will enter the ERROR-state because the safe logic program has been restarted",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:54 058 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:54 062 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:51:54 068 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:52:32 494 ms | 'Term 3 (EL6910)': (0x3813) FB 3 (MON): An EDM-fault (0x10) was detected in state START",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:53:32 138 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:53:32 142 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:53:32 148 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:54:07 258 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:54:07 262 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 11:54:07 268 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:06:46 336 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:06:46 340 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:06:46 348 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:07:34 998 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:07:35 004 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:07:35 010 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:11:10 116 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:11:10 120 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:11:10 128 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:12:11 158 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 02 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:12:11 162 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 04 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    },
+    {
+      "severity": "Error",
+      "description": "10/11/2026 12:12:11 168 ms | 'Box 1 (VABX-A-S-EL-E12-CTED-ECM' (1023): CoE - Emergency (Hex: 3082, 05, '06 01 03 00 00').",
+      "project": "",
+      "fileName": "",
+      "line": 0,
+      "column": 0
+    }
+  ],
+  "error": ""
+}

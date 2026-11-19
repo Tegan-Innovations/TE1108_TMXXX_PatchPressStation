@@ -4,7 +4,8 @@
     <Declaration><![CDATA[PROGRAM PRG_ReadInputs
 VAR
 END_VAR]]></Declaration>
-    <Implementation><ST><![CDATA[GVL_MASTER.stInputs.bStartButton := GVL_IO.stInputs.bStartButton;
+    <Implementation>
+      <ST><![CDATA[GVL_MASTER.stInputs.bStartButton := GVL_IO.stInputs.bStartButton;
 GVL_MASTER.stInputs.bStopButton := GVL_IO.stInputs.bStopButton;
 GVL_MASTER.stInputs.bResetButton := GVL_IO.stInputs.bResetButton;
 GVL_MASTER.stInputs.bTwoHandsSafe := GVL_IO.stInputs.bTwoHandsSafe;
@@ -51,14 +52,14 @@ GVL_MASTER.stInputs.bStation1SupportRetracted := GVL_IO.stInputs.bStation1Suppor
 GVL_MASTER.stInputs.bStation1SupportExtended := GVL_IO.stInputs.bStation1SupportExtended;
 GVL_MASTER.stInputs.bStation2SupportRetracted := GVL_IO.stInputs.bStation2SupportRetracted;
 GVL_MASTER.stInputs.bStation2SupportExtended := GVL_IO.stInputs.bStation2SupportExtended;
-GVL_MASTER.stInputs.bStation3SupportRetracted := GVL_IO.stInputs.bStation3SupportRetracted;
-GVL_MASTER.stInputs.bStation3SupportExtended := GVL_IO.stInputs.bStation3SupportExtended;
+GVL_MASTER.stInputs.bStation3SupportRetracted := FALSE; // Retired input.
+GVL_MASTER.stInputs.bStation3SupportExtended := FALSE; // Retired input.
 GVL_MASTER.stInputs.bHorizontalMiniSlideRetracted := GVL_IO.stInputs.bHorizontalMiniSlideRetracted;
 GVL_MASTER.stInputs.bHorizontalMiniSlideExtended := GVL_IO.stInputs.bHorizontalMiniSlideExtended;
 GVL_MASTER.stInputs.bVerticalMiniSlideRetracted := GVL_IO.stInputs.bVerticalMiniSlideRetracted;
 GVL_MASTER.stInputs.bVerticalMiniSlideExtended := GVL_IO.stInputs.bVerticalMiniSlideExtended;
-GVL_MASTER.stInputs.bIntermediateModuleRetracted := GVL_IO.stInputs.bIntermediateModuleRetracted;
-GVL_MASTER.stInputs.bIntermediateModuleExtended := GVL_IO.stInputs.bIntermediateModuleExtended;
+GVL_MASTER.stInputs.bIntermediateModuleRetracted := FALSE; // Retired input.
+GVL_MASTER.stInputs.bIntermediateModuleExtended := FALSE; // Retired input.
 GVL_MASTER.stInputs.bRotaryGripperOpened := GVL_IO.stInputs.bRotaryGripperOpened;
 GVL_MASTER.stInputs.bRotaryGripperClosed := GVL_IO.stInputs.bRotaryGripperClosed;
 GVL_MASTER.stInputs.bRotaryGripperPick0 := GVL_IO.stInputs.bRotaryGripperPick0;
@@ -75,6 +76,11 @@ GVL_MASTER.stInputs.uiMainAirPressureRaw := GVL_IO.stInputs.uiMainAirPressureRaw
 GVL_MASTER.stInputs.uiPressureRegulatorActualRaw := GVL_IO.stInputs.uiPressureRegulatorActualRaw;
 GVL_MASTER.stInputs.diHeatStakeTc1Raw := GVL_IO.stInputs.diHeatStakeTc1Raw;
 GVL_MASTER.stInputs.diHeatStakeTc2Raw := GVL_IO.stInputs.diHeatStakeTc2Raw;
-GVL_MASTER.stInputs.diHeatStakeTc3Raw := GVL_IO.stInputs.diHeatStakeTc3Raw;]]></ST></Implementation>
+GVL_MASTER.stInputs.diHeatStakeTc3Raw := GVL_IO.stInputs.diHeatStakeTc3Raw;
+GVL_MASTER.stInputs.bPatchOpticalLeft := GVL_IO.stInputs.bPatchOpticalLeft;
+GVL_MASTER.stInputs.bPatchOpticalRight := GVL_IO.stInputs.bPatchOpticalRight;
+GVL_MASTER.stInputs.bLoadingStationPbupPresent := GVL_IO.stInputs.bLoadingStationPbupPresent;
+]]></ST>
+    </Implementation>
   </POU>
 </TcPlcObject>

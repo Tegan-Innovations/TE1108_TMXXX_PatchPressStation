@@ -194,25 +194,10 @@
     <Content Include="Contents\CSS_JAVA\RowClassesProvider.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Hardware\C6010-0010.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\EL1809T12.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\EL9188.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\EL9189.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T00_EL6652.content">
+    <Content Include="Contents\Hardware\EL4028.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T01_EK1100.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T02_EL6070_0033.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T03_EL6910.content">
@@ -225,9 +210,6 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T07_EL1809.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T00_EL3064.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T10_EL2809.content">
@@ -273,9 +255,6 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Hardware\T09_EL2809.content">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="Contents\Hardware\T00_EL2809.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\IOs\Main_IOs.content">
@@ -326,6 +305,12 @@
     <Content Include="Contents\Screens\popups\Content_Popup_Reject_Part.content">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Contents\Screens\Settings\Safety.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\Screens\Settings\settings_PatchDispense.content">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Contents\Screens\Settings\settings_Puck.content">
       <SubType>Content</SubType>
     </Content>
@@ -341,7 +326,7 @@
     <Content Include="Contents\Screens\Alarms.content">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Contents\Screens\Settings\settings_PatchDispense.content">
+    <Content Include="Contents\Screens\Settings\settings_VisionStation.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Screens\Settings\settings_HeatStake.content">
@@ -357,6 +342,9 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Screens\popups\Content_Popup_AutoCyclePause.content">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\Screens\popups\Content_Popup_VisionCamera.content">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\Screens\popups\Content_Popup_Countdown.content">
@@ -431,6 +419,16 @@
     <Content Include="Contents\UserControl\HeightTest\HeightTestManual.usercontrol.json">
       <SubType>Content</SubType>
       <DependentUpon>Contents\UserControl\HeightTest\HeightTestManual.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="Contents\UserControl\SettingsTimespan.usercontrol">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Contents\UserControl\SettingsTimespan.usercontrol.json">
+      <SubType>Content</SubType>
+      <DependentUpon>Contents\UserControl\SettingsTimespan.usercontrol</DependentUpon>
+    </Content>
+    <Content Include="Images\SettingsTimePicker.svg">
+      <SubType>Content</SubType>
     </Content>
     <Content Include="Contents\UserControl\LED_Green.usercontrol">
       <SubType>Content</SubType>
@@ -703,10 +701,16 @@
     <Content Include="Images\IO\EL3064_Detail.PNG">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Images\IO\EL3314-0092.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Images\IO\EL4004.PNG">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\IO\EL4024.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\IO\EL4028.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\IO\EL6002.png">
@@ -811,6 +815,12 @@
     <Content Include="Images\Project\Cylinders\SiliconeCylinderRetracted_V2.png">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Images\Project\DispenseCylinder.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\Project\DriveMotor.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Images\Project\HeatStakeStation.png">
       <SubType>Content</SubType>
     </Content>
@@ -844,10 +854,16 @@
     <Content Include="Images\Project\nest_pos_4.PNG">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Images\Project\PatchDispense.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Images\Project\PatchIndexTable.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\Project\PatchIndexTableV2.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Images\Project\VisionStation.png">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Images\TeganInfo.png">
@@ -1179,4 +1195,59 @@
     <Error Condition="!Exists('packages\Microsoft.TypeScript.MSBuild.5.9.2\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.TypeScript.MSBuild.5.9.2\build\Microsoft.TypeScript.MSBuild.targets'))" />
   </Target>
   <Import Project="packages\Microsoft.TypeScript.MSBuild.5.9.2\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('packages\Microsoft.TypeScript.MSBuild.5.9.2\build\Microsoft.TypeScript.MSBuild.targets')" />
+  <ItemGroup>
+    <Content Include="Contents\Hardware\T02_EL6070.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\Hardware\T23_EL9011.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\Hardware\Festo_Module2.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\Hardware\Festo_Module3.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\Hardware\Festo_Module4.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\Hardware\T20_EL4028.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\UserControl\1CH_Motion_Interface_CARD.usercontrol">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\UserControl\1CH_Motion_Interface_CARD.usercontrol.json">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\Hardware\EL6910_Connections.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\Hardware\EL6910_Blocks.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\Hardware\EL6910_History.content">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
 </Project>

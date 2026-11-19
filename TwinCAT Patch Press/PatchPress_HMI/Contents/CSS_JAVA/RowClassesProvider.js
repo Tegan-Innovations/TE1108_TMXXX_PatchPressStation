@@ -53,6 +53,7 @@
 
                         case "3":
                         case "cycle stop request":
+                        case "warning":
                         case "alert":
                             typeNumber = 3;
                             break;

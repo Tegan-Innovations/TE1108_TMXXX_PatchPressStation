@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Name>Drive Manager 2</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{c98f8b23-9b9c-417a-a75b-33d239fbc7ac}</ProjectGuid>
+    <TcPath>..\TwinCAT Patch Press\TwinCAT Patch Press.tsproj</TcPath>
+    <AssemblyName>TwinCAT Drive Manager 2 Project</AssemblyName>
+    <RootNamespace>TwinCAT Drive Manager 2 Project</RootNamespace>
+    <SaveDriveDataAsFiles>False</SaveDriveDataAsFiles>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Term 15 %28EL7201-9014%29.tcdmdrv">
+      <SubType>Content</SubType>
+      <IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)</IoItemPathName>
+    </Content>
+    <Content Include="Term 16 %28EL7201-9014%29.tcdmdrv">
+      <SubType>Content</SubType>
+      <IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)</IoItemPathName>
+    </Content>
+    <Content Include="Term 17 %28EL7201-9014%29.tcdmdrv">
+      <SubType>Content</SubType>
+      <IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)</IoItemPathName>
+    </Content>
+  </ItemGroup>
+</Project>

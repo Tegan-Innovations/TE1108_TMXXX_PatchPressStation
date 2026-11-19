@@ -1,0 +1,516 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_EL6910Diagnostics" Id="{b14565a6-3d53-43f6-b7f7-b2573576456c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EL6910Diagnostics
+VAR_INPUT
+    bEnable : BOOL;
+    sMasterNetId : T_AmsNetId;
+    uiSlaveAddress : UINT;
+END_VAR
+VAR_IN_OUT
+    stStatus : ST_EL6910Diagnostics;
+END_VAR
+VAR
+    fbRead : FB_EcCoeSdoRead;
+    tonGap : TON;
+    tonSweep : TON;
+    tonHistoryAge : TON;
+    bHistoryPublished : BOOL;
+    bSweepFinished : BOOL;
+    bSweepHadError : BOOL;
+    bInitialized : BOOL;
+    bExecute : BOOL;
+    bGood, bSkip : BOOL;
+    usiPhase : USINT;
+    uiJob : UINT;
+    uiHistoryRow : UINT;
+    iSlot : INT;
+    wIndex : WORD;
+    bySub : BYTE;
+    udiExpected, udiRaw : UDINT;
+    usiNewest, usiCapacity : USINT;
+    bHistorySweepOk : BOOL;
+    aBuffer : ARRAY[0..255] OF BYTE;
+    aHistoryPending : ARRAY[1..8] OF ST_EL6910HistoryRow;
+    i : INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Read-only mailbox uploads; never used as a safety or process permissive.
+IF NOT bInitialized THEN
+stStatus.aConnections[1].sName := 'CoE connection slot 1';
+stStatus.aConnections[2].sName := 'CoE connection slot 2';
+stStatus.aConnections[3].sName := 'CoE connection slot 3';
+stStatus.aConnections[4].sName := 'CoE connection slot 4';
+stStatus.aConnections[5].sName := 'CoE connection slot 5';
+stStatus.aConnections[6].sName := 'CoE connection slot 6';
+stStatus.aBlocks[1].sName := 'CoE FB 1';
+stStatus.aBlocks[2].sName := 'CoE FB 2';
+stStatus.aBlocks[3].sName := 'CoE FB 3';
+stStatus.aBlocks[4].sName := 'CoE FB 4';
+stStatus.aBlocks[5].sName := 'CoE FB 5';
+stStatus.aBlocks[6].sName := 'CoE FB 6';
+stStatus.aBlocks[7].sName := 'CoE FB 7';
+stStatus.aBlocks[8].sName := 'CoE FB 8';
+stStatus.aBlocks[9].sName := 'CoE FB 9';
+stStatus.aBlocks[10].sName := 'CoE FB 10';
+stStatus.aBlocks[11].sName := 'CoE FB 11';
+stStatus.aBlocks[12].sName := 'CoE FB 12';
+stStatus.aBlocks[13].sName := 'CoE FB 13';
+stStatus.aBlocks[14].sName := 'CoE FB 14';
+stStatus.aBlocks[15].sName := 'CoE FB 15';
+stStatus.aBlocks[16].sName := 'CoE FB 16';
+stStatus.aBlocks[17].sName := 'CoE FB 17';
+stStatus.aBlocks[18].sName := 'CoE FB 18';
+stStatus.aBlocks[19].sName := 'CoE FB 19';
+stStatus.aBlocks[20].sName := 'CoE FB 20';
+stStatus.aBlocks[21].sName := 'CoE FB 21';
+stStatus.aBlocks[22].sName := 'CoE FB 22';
+stStatus.aBlocks[23].sName := 'CoE FB 23';
+stStatus.aBlocks[24].sName := 'CoE FB 24';
+    bInitialized := TRUE;
+END_IF
+tonSweep(IN := bEnable AND NOT bSweepFinished, PT := T#30S);
+bSweepFinished := FALSE;
+tonHistoryAge(IN := bEnable AND NOT bHistoryPublished, PT := T#30S);
+bHistoryPublished := FALSE;
+IF NOT bEnable OR tonSweep.Q THEN
+    stStatus.sReaderStatus := 'Unavailable - terminal not OP or diagnostic sweep stale';
+    stStatus.sLogicState := 'Unavailable';
+    stStatus.sCycleCounter := 'Unavailable';
+    stStatus.sGroupState := 'Unavailable';
+    stStatus.sGroupDiagnostic := 'Unavailable';
+    FOR i := 1 TO 6 DO
+        stStatus.aConnections[i].sState := 'Unavailable';
+        stStatus.aConnections[i].sDiagnostic := 'Unavailable';
+        stStatus.aConnections[i].sQuality := 'Unavailable';
+    END_FOR
+    FOR i := 1 TO 24 DO
+        stStatus.aBlocks[i].sState := 'Unavailable';
+        stStatus.aBlocks[i].sDiagnostic := 'Unavailable';
+        stStatus.aBlocks[i].sQuality := 'Unavailable';
+    END_FOR
+END_IF
+IF NOT bEnable OR tonHistoryAge.Q THEN
+    stStatus.sHistoryStatus := 'History unavailable/stale';
+    FOR i := 1 TO 8 DO
+        stStatus.aHistory[i].sSeverity := '';
+        stStatus.aHistory[i].sTimestamp := '';
+        stStatus.aHistory[i].sMessage := '';
+        stStatus.aHistory[i].sDetail := '';
+    END_FOR
+END_IF
+// Finish an in-flight read even if OP is lost; its result is discarded.
+IF NOT bEnable AND NOT fbRead.bBusy THEN
+    usiPhase := 0; uiJob := 0;
+END_IF
+bExecute := FALSE;
+tonGap(IN := usiPhase = 0 AND bEnable, PT := T#50MS);
+IF (usiPhase = 0) AND tonGap.Q THEN
+    CASE uiJob OF
+ 0: wIndex := 16#F100; bySub := 1; udiExpected := 1;
+ 1: wIndex := 16#F100; bySub := 2; udiExpected := 1;
+ 2: wIndex := 16#F192; bySub := 1; udiExpected := 1;
+ 3: wIndex := 16#F193; bySub := 1; udiExpected := 1;
+ 4: wIndex := 16#F190; bySub := 1; udiExpected := 1;
+ 5: wIndex := 16#F190; bySub := 2; udiExpected := 1;
+ 6: wIndex := 16#F190; bySub := 3; udiExpected := 1;
+ 7: wIndex := 16#F190; bySub := 4; udiExpected := 1;
+ 8: wIndex := 16#F190; bySub := 5; udiExpected := 1;
+ 9: wIndex := 16#F190; bySub := 6; udiExpected := 1;
+ 10: wIndex := 16#F191; bySub := 1; udiExpected := 1;
+ 11: wIndex := 16#F191; bySub := 2; udiExpected := 1;
+ 12: wIndex := 16#F191; bySub := 3; udiExpected := 1;
+ 13: wIndex := 16#F191; bySub := 4; udiExpected := 1;
+ 14: wIndex := 16#F191; bySub := 5; udiExpected := 1;
+ 15: wIndex := 16#F191; bySub := 6; udiExpected := 1;
+ 16: wIndex := 16#F188; bySub := 1; udiExpected := 1;
+ 17: wIndex := 16#F188; bySub := 2; udiExpected := 1;
+ 18: wIndex := 16#F188; bySub := 3; udiExpected := 1;
+ 19: wIndex := 16#F188; bySub := 4; udiExpected := 1;
+ 20: wIndex := 16#F188; bySub := 5; udiExpected := 1;
+ 21: wIndex := 16#F188; bySub := 6; udiExpected := 1;
+ 22: wIndex := 16#F188; bySub := 7; udiExpected := 1;
+ 23: wIndex := 16#F188; bySub := 8; udiExpected := 1;
+ 24: wIndex := 16#F188; bySub := 9; udiExpected := 1;
+ 25: wIndex := 16#F188; bySub := 10; udiExpected := 1;
+ 26: wIndex := 16#F188; bySub := 11; udiExpected := 1;
+ 27: wIndex := 16#F188; bySub := 12; udiExpected := 1;
+ 28: wIndex := 16#F188; bySub := 13; udiExpected := 1;
+ 29: wIndex := 16#F188; bySub := 14; udiExpected := 1;
+ 30: wIndex := 16#F188; bySub := 15; udiExpected := 1;
+ 31: wIndex := 16#F188; bySub := 16; udiExpected := 1;
+ 32: wIndex := 16#F188; bySub := 17; udiExpected := 1;
+ 33: wIndex := 16#F188; bySub := 18; udiExpected := 1;
+ 34: wIndex := 16#F188; bySub := 19; udiExpected := 1;
+ 35: wIndex := 16#F188; bySub := 20; udiExpected := 1;
+ 36: wIndex := 16#F188; bySub := 21; udiExpected := 1;
+ 37: wIndex := 16#F188; bySub := 22; udiExpected := 1;
+ 38: wIndex := 16#F188; bySub := 23; udiExpected := 1;
+ 39: wIndex := 16#F188; bySub := 24; udiExpected := 1;
+ 40: wIndex := 16#F18C; bySub := 1; udiExpected := 2;
+ 41: wIndex := 16#F18C; bySub := 2; udiExpected := 2;
+ 42: wIndex := 16#F18C; bySub := 3; udiExpected := 2;
+ 43: wIndex := 16#F18C; bySub := 4; udiExpected := 2;
+ 44: wIndex := 16#F18C; bySub := 5; udiExpected := 2;
+ 45: wIndex := 16#F18C; bySub := 6; udiExpected := 2;
+ 46: wIndex := 16#F18C; bySub := 7; udiExpected := 2;
+ 47: wIndex := 16#F18C; bySub := 8; udiExpected := 2;
+ 48: wIndex := 16#F18C; bySub := 9; udiExpected := 2;
+ 49: wIndex := 16#F18C; bySub := 10; udiExpected := 2;
+ 50: wIndex := 16#F18C; bySub := 11; udiExpected := 2;
+ 51: wIndex := 16#F18C; bySub := 12; udiExpected := 2;
+ 52: wIndex := 16#F18C; bySub := 13; udiExpected := 2;
+ 53: wIndex := 16#F18C; bySub := 14; udiExpected := 2;
+ 54: wIndex := 16#F18C; bySub := 15; udiExpected := 2;
+ 55: wIndex := 16#F18C; bySub := 16; udiExpected := 2;
+ 56: wIndex := 16#F18C; bySub := 17; udiExpected := 2;
+ 57: wIndex := 16#F18C; bySub := 18; udiExpected := 2;
+ 58: wIndex := 16#F18C; bySub := 19; udiExpected := 2;
+ 59: wIndex := 16#F18C; bySub := 20; udiExpected := 2;
+ 60: wIndex := 16#F18C; bySub := 21; udiExpected := 2;
+ 61: wIndex := 16#F18C; bySub := 22; udiExpected := 2;
+ 62: wIndex := 16#F18C; bySub := 23; udiExpected := 2;
+ 63: wIndex := 16#F18C; bySub := 24; udiExpected := 2;
+ 64: wIndex := 16#10F3; bySub := 1; udiExpected := 1;
+ 65: wIndex := 16#10F3; bySub := 2; udiExpected := 1;
+ 66: wIndex := 16#10F3; bySub := 0; udiExpected := 0;
+ 67: wIndex := 16#10F3; bySub := 0; udiExpected := 0;
+ 68: wIndex := 16#10F3; bySub := 0; udiExpected := 0;
+ 69: wIndex := 16#10F3; bySub := 0; udiExpected := 0;
+ 70: wIndex := 16#10F3; bySub := 0; udiExpected := 0;
+ 71: wIndex := 16#10F3; bySub := 0; udiExpected := 0;
+ 72: wIndex := 16#10F3; bySub := 0; udiExpected := 0;
+ 73: wIndex := 16#10F3; bySub := 0; udiExpected := 0;
+ 74: wIndex := 16#10F3; bySub := 2; udiExpected := 1;
+    END_CASE
+    bSkip := FALSE;
+    IF (uiJob >= 66) AND (uiJob <= 73) THEN
+        uiHistoryRow := uiJob - 66 + 1;
+        bSkip := (usiNewest = 0) OR (usiCapacity = 0) OR (uiHistoryRow > usiCapacity);
+        IF NOT bSkip THEN
+            iSlot := USINT_TO_INT(usiNewest) - UINT_TO_INT(uiHistoryRow) + 1;
+            IF iSlot < 6 THEN iSlot := iSlot + USINT_TO_INT(usiCapacity); END_IF
+            IF (iSlot < 6) OR (iSlot > USINT_TO_INT(usiCapacity)+5) THEN
+                bSkip := TRUE; bHistorySweepOk := FALSE;
+            ELSE bySub := INT_TO_BYTE(iSlot); END_IF
+        END_IF
+    END_IF
+    MEMSET(ADR(aBuffer),0,SIZEOF(aBuffer));
+    bExecute := NOT bSkip;
+    usiPhase := 1;
+END_IF
+fbRead(sNetId := sMasterNetId, nSlaveAddr := uiSlaveAddress,
+    nIndex := wIndex, nSubIndex := bySub, pDstBuf := ADR(aBuffer),
+    cbBufLen := SIZEOF(aBuffer), bExecute := bExecute, tTimeout := T#1S);
+IF (usiPhase = 1) AND NOT bExecute AND NOT fbRead.bBusy THEN
+    bGood := bEnable AND NOT bSkip AND NOT fbRead.bError
+        AND ((udiExpected = fbRead.cbRead) OR ((udiExpected = 0) AND (fbRead.cbRead >= 16) AND (fbRead.cbRead <= 256)));
+    udiRaw := 0;
+    IF bGood THEN MEMCPY(ADR(udiRaw),ADR(aBuffer),MIN(fbRead.cbRead,4)); END_IF
+    IF bEnable THEN
+        CASE uiJob OF
+0:
+IF bGood THEN
+CASE aBuffer[0] OF
+ 0: stStatus.sLogicState := 'OFFLINE';
+ 1: stStatus.sLogicState := 'RUN';
+ 2: stStatus.sLogicState := 'STOP';
+ 3: stStatus.sLogicState := 'SAFE';
+ 6: stStatus.sLogicState := 'START';
+ 8: stStatus.sLogicState := 'PREPARE';
+ 10: stStatus.sLogicState := 'RESTORE';
+ 11: stStatus.sLogicState := 'PROJECT-CRC-OK';
+ 254: stStatus.sLogicState := 'GLOBAL-SHUTDOWN';
+ 255: stStatus.sLogicState := 'GLOBAL-FAULT';
+ELSE stStatus.sLogicState := CONCAT('Unknown state ',BYTE_TO_STRING(aBuffer[0]));
+END_CASE
+ELSE stStatus.sLogicState := 'Unavailable'; END_IF;
+1:
+IF bGood THEN stStatus.sCycleCounter := BYTE_TO_STRING(aBuffer[0]); ELSE stStatus.sCycleCounter := 'Unavailable'; END_IF;
+2:
+IF bGood THEN
+CASE aBuffer[0] OF
+ 1: stStatus.sGroupState := 'RUN';
+ 2: stStatus.sGroupState := 'STOP';
+ 4: stStatus.sGroupState := 'ERROR';
+ 5: stStatus.sGroupState := 'RESET';
+ 6: stStatus.sGroupState := 'START';
+ 7: stStatus.sGroupState := 'STOPERROR';
+ 16: stStatus.sGroupState := 'DEACTIVE';
+ 17: stStatus.sGroupState := 'WAITCOMERROR';
+ELSE stStatus.sGroupState := CONCAT('Unknown state ',BYTE_TO_STRING(aBuffer[0]));
+END_CASE
+ELSE stStatus.sGroupState := 'Unavailable'; END_IF;
+3:
+IF bGood THEN
+CASE aBuffer[0] OF
+ 0: stStatus.sGroupDiagnostic := 'No group error';
+ 1: stStatus.sGroupDiagnostic := 'FBERROR - function block fault';
+ 2: stStatus.sGroupDiagnostic := 'COMERROR - connection fault';
+ 3: stStatus.sGroupDiagnostic := 'MODULEERROR';
+ 4: stStatus.sGroupDiagnostic := 'CMPERROR - analog comparison';
+ 5: stStatus.sGroupDiagnostic := 'DEACTIVATE ERROR';
+ 6: stStatus.sGroupDiagnostic := 'RESTARTERROR';
+ELSE stStatus.sGroupDiagnostic := CONCAT('Unknown diagnostic ',BYTE_TO_STRING(aBuffer[0]));
+END_CASE
+ELSE stStatus.sGroupDiagnostic := 'Unavailable'; END_IF;
+4:
+IF bGood THEN stStatus.aConnections[1].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[1].sState := 'Unavailable'; END_IF;
+5:
+IF bGood THEN stStatus.aConnections[2].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[2].sState := 'Unavailable'; END_IF;
+6:
+IF bGood THEN stStatus.aConnections[3].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[3].sState := 'Unavailable'; END_IF;
+7:
+IF bGood THEN stStatus.aConnections[4].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[4].sState := 'Unavailable'; END_IF;
+8:
+IF bGood THEN stStatus.aConnections[5].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[5].sState := 'Unavailable'; END_IF;
+9:
+IF bGood THEN stStatus.aConnections[6].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[6].sState := 'Unavailable'; END_IF;
+10:
+IF bGood THEN stStatus.aConnections[1].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[1].sDiagnostic := 'Unavailable'; END_IF;
+11:
+IF bGood THEN stStatus.aConnections[2].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[2].sDiagnostic := 'Unavailable'; END_IF;
+12:
+IF bGood THEN stStatus.aConnections[3].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[3].sDiagnostic := 'Unavailable'; END_IF;
+13:
+IF bGood THEN stStatus.aConnections[4].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[4].sDiagnostic := 'Unavailable'; END_IF;
+14:
+IF bGood THEN stStatus.aConnections[5].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[5].sDiagnostic := 'Unavailable'; END_IF;
+15:
+IF bGood THEN stStatus.aConnections[6].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aConnections[6].sDiagnostic := 'Unavailable'; END_IF;
+16:
+IF bGood THEN stStatus.aBlocks[1].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[1].sState := 'Unavailable'; END_IF;
+17:
+IF bGood THEN stStatus.aBlocks[2].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[2].sState := 'Unavailable'; END_IF;
+18:
+IF bGood THEN stStatus.aBlocks[3].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[3].sState := 'Unavailable'; END_IF;
+19:
+IF bGood THEN stStatus.aBlocks[4].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[4].sState := 'Unavailable'; END_IF;
+20:
+IF bGood THEN stStatus.aBlocks[5].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[5].sState := 'Unavailable'; END_IF;
+21:
+IF bGood THEN stStatus.aBlocks[6].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[6].sState := 'Unavailable'; END_IF;
+22:
+IF bGood THEN stStatus.aBlocks[7].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[7].sState := 'Unavailable'; END_IF;
+23:
+IF bGood THEN stStatus.aBlocks[8].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[8].sState := 'Unavailable'; END_IF;
+24:
+IF bGood THEN stStatus.aBlocks[9].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[9].sState := 'Unavailable'; END_IF;
+25:
+IF bGood THEN stStatus.aBlocks[10].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[10].sState := 'Unavailable'; END_IF;
+26:
+IF bGood THEN stStatus.aBlocks[11].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[11].sState := 'Unavailable'; END_IF;
+27:
+IF bGood THEN stStatus.aBlocks[12].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[12].sState := 'Unavailable'; END_IF;
+28:
+IF bGood THEN stStatus.aBlocks[13].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[13].sState := 'Unavailable'; END_IF;
+29:
+IF bGood THEN stStatus.aBlocks[14].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[14].sState := 'Unavailable'; END_IF;
+30:
+IF bGood THEN stStatus.aBlocks[15].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[15].sState := 'Unavailable'; END_IF;
+31:
+IF bGood THEN stStatus.aBlocks[16].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[16].sState := 'Unavailable'; END_IF;
+32:
+IF bGood THEN stStatus.aBlocks[17].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[17].sState := 'Unavailable'; END_IF;
+33:
+IF bGood THEN stStatus.aBlocks[18].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[18].sState := 'Unavailable'; END_IF;
+34:
+IF bGood THEN stStatus.aBlocks[19].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[19].sState := 'Unavailable'; END_IF;
+35:
+IF bGood THEN stStatus.aBlocks[20].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[20].sState := 'Unavailable'; END_IF;
+36:
+IF bGood THEN stStatus.aBlocks[21].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[21].sState := 'Unavailable'; END_IF;
+37:
+IF bGood THEN stStatus.aBlocks[22].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[22].sState := 'Unavailable'; END_IF;
+38:
+IF bGood THEN stStatus.aBlocks[23].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[23].sState := 'Unavailable'; END_IF;
+39:
+IF bGood THEN stStatus.aBlocks[24].sState := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),2)); ELSE stStatus.aBlocks[24].sState := 'Unavailable'; END_IF;
+40:
+IF bGood THEN stStatus.aBlocks[1].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[1].sDiagnostic := 'Unavailable'; END_IF;
+41:
+IF bGood THEN stStatus.aBlocks[2].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[2].sDiagnostic := 'Unavailable'; END_IF;
+42:
+IF bGood THEN stStatus.aBlocks[3].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[3].sDiagnostic := 'Unavailable'; END_IF;
+43:
+IF bGood THEN stStatus.aBlocks[4].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[4].sDiagnostic := 'Unavailable'; END_IF;
+44:
+IF bGood THEN stStatus.aBlocks[5].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[5].sDiagnostic := 'Unavailable'; END_IF;
+45:
+IF bGood THEN stStatus.aBlocks[6].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[6].sDiagnostic := 'Unavailable'; END_IF;
+46:
+IF bGood THEN stStatus.aBlocks[7].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[7].sDiagnostic := 'Unavailable'; END_IF;
+47:
+IF bGood THEN stStatus.aBlocks[8].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[8].sDiagnostic := 'Unavailable'; END_IF;
+48:
+IF bGood THEN stStatus.aBlocks[9].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[9].sDiagnostic := 'Unavailable'; END_IF;
+49:
+IF bGood THEN stStatus.aBlocks[10].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[10].sDiagnostic := 'Unavailable'; END_IF;
+50:
+IF bGood THEN stStatus.aBlocks[11].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[11].sDiagnostic := 'Unavailable'; END_IF;
+51:
+IF bGood THEN stStatus.aBlocks[12].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[12].sDiagnostic := 'Unavailable'; END_IF;
+52:
+IF bGood THEN stStatus.aBlocks[13].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[13].sDiagnostic := 'Unavailable'; END_IF;
+53:
+IF bGood THEN stStatus.aBlocks[14].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[14].sDiagnostic := 'Unavailable'; END_IF;
+54:
+IF bGood THEN stStatus.aBlocks[15].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[15].sDiagnostic := 'Unavailable'; END_IF;
+55:
+IF bGood THEN stStatus.aBlocks[16].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[16].sDiagnostic := 'Unavailable'; END_IF;
+56:
+IF bGood THEN stStatus.aBlocks[17].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[17].sDiagnostic := 'Unavailable'; END_IF;
+57:
+IF bGood THEN stStatus.aBlocks[18].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[18].sDiagnostic := 'Unavailable'; END_IF;
+58:
+IF bGood THEN stStatus.aBlocks[19].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[19].sDiagnostic := 'Unavailable'; END_IF;
+59:
+IF bGood THEN stStatus.aBlocks[20].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[20].sDiagnostic := 'Unavailable'; END_IF;
+60:
+IF bGood THEN stStatus.aBlocks[21].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[21].sDiagnostic := 'Unavailable'; END_IF;
+61:
+IF bGood THEN stStatus.aBlocks[22].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[22].sDiagnostic := 'Unavailable'; END_IF;
+62:
+IF bGood THEN stStatus.aBlocks[23].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[23].sDiagnostic := 'Unavailable'; END_IF;
+63:
+IF bGood THEN stStatus.aBlocks[24].sDiagnostic := CONCAT('0x', F_EL6910Hex(UDINT_TO_ULINT(udiRaw),4)); ELSE stStatus.aBlocks[24].sDiagnostic := 'Unavailable'; END_IF;
+64:
+IF bGood AND (aBuffer[0] <= 64) THEN usiCapacity := aBuffer[0]; ELSE usiCapacity := 0; END_IF
+bHistorySweepOk := bGood;;
+65:
+IF bGood THEN usiNewest := aBuffer[0]; ELSE usiNewest := 0; END_IF
+bHistorySweepOk := bHistorySweepOk AND bGood;;
+66:
+IF bSkip THEN
+    aHistoryPending[1].sSeverity := '';
+    aHistoryPending[1].sTimestamp := '';
+    aHistoryPending[1].sMessage := '';
+    aHistoryPending[1].sDetail := '';
+ELSIF bGood THEN
+    aHistoryPending[1] := F_EL6910DecodeMessage(aBuffer,fbRead.cbRead);
+ELSE
+    bHistorySweepOk := FALSE;
+END_IF;
+67:
+IF bSkip THEN
+    aHistoryPending[2].sSeverity := '';
+    aHistoryPending[2].sTimestamp := '';
+    aHistoryPending[2].sMessage := '';
+    aHistoryPending[2].sDetail := '';
+ELSIF bGood THEN
+    aHistoryPending[2] := F_EL6910DecodeMessage(aBuffer,fbRead.cbRead);
+ELSE
+    bHistorySweepOk := FALSE;
+END_IF;
+68:
+IF bSkip THEN
+    aHistoryPending[3].sSeverity := '';
+    aHistoryPending[3].sTimestamp := '';
+    aHistoryPending[3].sMessage := '';
+    aHistoryPending[3].sDetail := '';
+ELSIF bGood THEN
+    aHistoryPending[3] := F_EL6910DecodeMessage(aBuffer,fbRead.cbRead);
+ELSE
+    bHistorySweepOk := FALSE;
+END_IF;
+69:
+IF bSkip THEN
+    aHistoryPending[4].sSeverity := '';
+    aHistoryPending[4].sTimestamp := '';
+    aHistoryPending[4].sMessage := '';
+    aHistoryPending[4].sDetail := '';
+ELSIF bGood THEN
+    aHistoryPending[4] := F_EL6910DecodeMessage(aBuffer,fbRead.cbRead);
+ELSE
+    bHistorySweepOk := FALSE;
+END_IF;
+70:
+IF bSkip THEN
+    aHistoryPending[5].sSeverity := '';
+    aHistoryPending[5].sTimestamp := '';
+    aHistoryPending[5].sMessage := '';
+    aHistoryPending[5].sDetail := '';
+ELSIF bGood THEN
+    aHistoryPending[5] := F_EL6910DecodeMessage(aBuffer,fbRead.cbRead);
+ELSE
+    bHistorySweepOk := FALSE;
+END_IF;
+71:
+IF bSkip THEN
+    aHistoryPending[6].sSeverity := '';
+    aHistoryPending[6].sTimestamp := '';
+    aHistoryPending[6].sMessage := '';
+    aHistoryPending[6].sDetail := '';
+ELSIF bGood THEN
+    aHistoryPending[6] := F_EL6910DecodeMessage(aBuffer,fbRead.cbRead);
+ELSE
+    bHistorySweepOk := FALSE;
+END_IF;
+72:
+IF bSkip THEN
+    aHistoryPending[7].sSeverity := '';
+    aHistoryPending[7].sTimestamp := '';
+    aHistoryPending[7].sMessage := '';
+    aHistoryPending[7].sDetail := '';
+ELSIF bGood THEN
+    aHistoryPending[7] := F_EL6910DecodeMessage(aBuffer,fbRead.cbRead);
+ELSE
+    bHistorySweepOk := FALSE;
+END_IF;
+73:
+IF bSkip THEN
+    aHistoryPending[8].sSeverity := '';
+    aHistoryPending[8].sTimestamp := '';
+    aHistoryPending[8].sMessage := '';
+    aHistoryPending[8].sDetail := '';
+ELSIF bGood THEN
+    aHistoryPending[8] := F_EL6910DecodeMessage(aBuffer,fbRead.cbRead);
+ELSE
+    bHistorySweepOk := FALSE;
+END_IF;
+74:
+IF bHistorySweepOk AND bGood AND (aBuffer[0] = usiNewest) THEN
+    stStatus.aHistory := aHistoryPending;
+    IF usiNewest = 0 THEN stStatus.sHistoryStatus := 'No stored diagnostics';
+    ELSE stStatus.sHistoryStatus := 'Latest 8 stored records (historical, not active alarms)'; END_IF
+    bHistoryPublished := TRUE;
+ELSE
+    stStatus.sHistoryStatus := 'History unavailable or changed during read - retrying';
+    bHistoryPublished := FALSE;
+END_IF;
+        END_CASE
+        IF NOT bGood AND NOT bSkip THEN
+            bSweepHadError := TRUE;
+            stStatus.sReaderStatus := CONCAT(CONCAT('Read unavailable at 0x',F_EL6910Hex(WORD_TO_ULINT(wIndex),4)),CONCAT(':',F_EL6910Hex(BYTE_TO_ULINT(bySub),2)));
+            stStatus.sReaderStatus := CONCAT(stStatus.sReaderStatus,CONCAT(' / ADS ',UDINT_TO_STRING(fbRead.nErrId)));
+        END_IF
+    END_IF
+    uiJob := uiJob + 1;
+    IF uiJob >= 75 THEN
+        uiJob := 0;
+        bSweepFinished := TRUE;
+        IF bEnable THEN
+        IF bSweepHadError THEN stStatus.sReaderStatus := 'Partial diagnostics - unavailable/unsupported fields are marked';
+        ELSE stStatus.sReaderStatus := 'Read-only CoE diagnostics - last sweep complete'; END_IF
+        END_IF
+        bSweepHadError := FALSE;
+    END_IF
+    usiPhase := 0;
+END_IF
+// Each field is displayed only after its own read succeeds. No inferred safe state.
+FOR i := 1 TO 6 DO
+    IF (stStatus.aConnections[i].sState = '') OR (stStatus.aConnections[i].sDiagnostic = '')
+        OR (stStatus.aConnections[i].sState = 'Unavailable') OR (stStatus.aConnections[i].sDiagnostic = 'Unavailable') THEN
+        stStatus.aConnections[i].sQuality := 'Unavailable / pending';
+    ELSE stStatus.aConnections[i].sQuality := 'Read'; END_IF
+END_FOR
+FOR i := 1 TO 24 DO
+    IF (stStatus.aBlocks[i].sState = '') OR (stStatus.aBlocks[i].sDiagnostic = '')
+        OR (stStatus.aBlocks[i].sState = 'Unavailable') OR (stStatus.aBlocks[i].sDiagnostic = 'Unavailable') THEN
+        stStatus.aBlocks[i].sQuality := 'Unavailable / pending';
+    ELSE stStatus.aBlocks[i].sQuality := 'Read'; END_IF
+END_FOR
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

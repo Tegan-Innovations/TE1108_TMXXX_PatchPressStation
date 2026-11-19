@@ -178,8 +178,7 @@
 </script>
 </div>
 <div id="PatchIndexTable" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiImage" data-tchmi-height="250" data-tchmi-height-unit="px" data-tchmi-left="21" data-tchmi-left-unit="px" data-tchmi-src="Images/Project/PatchIndexTableV2.png" data-tchmi-top="25" data-tchmi-top-unit="px" data-tchmi-width="255" data-tchmi-width-unit="px" data-tchmi-zindex="7">
-<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">
-[
+<script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
   {
     "event": "%s%ADS.PLC1.GVL_HMI.stStatus.uiPatchDispenseNestId%/s%",
     "actions": [
@@ -258,9 +257,9 @@
           "                var startAngle = window[angleKey];",
           "                var startNormalized = ((startAngle % 360) + 360) % 360;",
           "                // Use the shortest signed quarter-turn so the image",
-"                // follows the real index direction instead of taking",
-"                // the long 270-degree path.",
-"                var delta = ((targetNormalized - startNormalized + 540) % 360) - 180;",
+          "                // follows the real index direction instead of taking",
+          "                // the long 270-degree path.",
+          "                var delta = ((targetNormalized - startNormalized + 540) % 360) - 180;",
           "",
           "                if (delta === 0) {",
           "                    control.setTransform([",
@@ -317,8 +316,7 @@
       }
     ]
   }
-]
-</script>
+]</script>
 </div>
 <div id="TcHmiTextblock_1392" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-height="26" data-tchmi-height-unit="px" data-tchmi-left="21" data-tchmi-left-unit="px" data-tchmi-text="Patch Dispense" data-tchmi-top="288" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-word-wrap="True" data-tchmi-text-font-size="18" data-tchmi-text-font-weight="Bold">
 </div>

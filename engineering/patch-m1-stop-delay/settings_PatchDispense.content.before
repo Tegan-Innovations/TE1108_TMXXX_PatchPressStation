@@ -1,0 +1,129 @@
+<div id="PatchProcessSettings" data-tchmi-type="TcHmi.Controls.System.TcHmiContent" data-tchmi-width="1080" data-tchmi-height="480" data-tchmi-left="0" data-tchmi-top="0">
+<div id="PatchSettingsTitle" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="10" data-tchmi-top-unit="px" data-tchmi-width="1030" data-tchmi-width-unit="px" data-tchmi-height="34" data-tchmi-height-unit="px" data-tchmi-text="PATCH DISPENSE - PROCESS SETTINGS" data-tchmi-text-font-size="23" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-weight="Bold"></div>
+<div id="PatchSettingsHint" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="46" data-tchmi-top-unit="px" data-tchmi-width="1030" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-text="Apply in Stopped or Ready to Start. Values are saved after Apply." data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchHead24" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="82" data-tchmi-top-unit="px" data-tchmi-width="420" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-text="PARAMETER" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-weight="Bold"></div>
+<div id="PatchHead450" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="450" data-tchmi-left-unit="px" data-tchmi-top="82" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-text="EDIT" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-weight="Bold"></div>
+<div id="PatchHead600" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="600" data-tchmi-left-unit="px" data-tchmi-top="82" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-text="APPLIED" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-weight="Bold"></div>
+<div id="PatchHead750" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="750" data-tchmi-left-unit="px" data-tchmi-top="82" data-tchmi-top-unit="px" data-tchmi-width="280" data-tchmi-width-unit="px" data-tchmi-height="28" data-tchmi-height-unit="px" data-tchmi-text="UNIT / ALLOWED RANGE" data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center" data-tchmi-text-font-weight="Bold"></div>
+<div id="PatchLabellrDriveMotorVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="116" data-tchmi-top-unit="px" data-tchmi-width="420" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="M1 Drive Motor" data-tchmi-text-font-size="17" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchEditlrDriveMotorVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="450" data-tchmi-left-unit="px" data-tchmi-top="116" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.lrDriveMotorVelocity|BindingMode=TwoWay%/s%" data-tchmi-decimal-digits="1" data-tchmi-min-value="0.1" data-tchmi-max-value="40" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.bStationSettingsAllowed%/s% &amp;&amp; !%s%ADS.PLC1.GVL_HMI.bStationSettingsSaving%/s%%/f%"></div>
+<div id="PatchAppliedlrDriveMotorVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="600" data-tchmi-left-unit="px" data-tchmi-top="116" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessApplied.lrDriveMotorVelocity%/s%" data-tchmi-decimal-digits="1" data-tchmi-min-value="0.1" data-tchmi-max-value="40" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="False"></div>
+<div id="PatchUnitlrDriveMotorVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="750" data-tchmi-left-unit="px" data-tchmi-top="116" data-tchmi-top-unit="px" data-tchmi-width="290" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="mm/s   0.1 - 40" data-tchmi-text-font-size="16" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchLabellrPatchFeedRollVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="161" data-tchmi-top-unit="px" data-tchmi-width="420" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="M2 Patch Feed Roll" data-tchmi-text-font-size="17" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchEditlrPatchFeedRollVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="450" data-tchmi-left-unit="px" data-tchmi-top="161" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.lrPatchFeedRollVelocity|BindingMode=TwoWay%/s%" data-tchmi-decimal-digits="1" data-tchmi-min-value="0.1" data-tchmi-max-value="200" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.bStationSettingsAllowed%/s% &amp;&amp; !%s%ADS.PLC1.GVL_HMI.bStationSettingsSaving%/s%%/f%"></div>
+<div id="PatchAppliedlrPatchFeedRollVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="600" data-tchmi-left-unit="px" data-tchmi-top="161" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessApplied.lrPatchFeedRollVelocity%/s%" data-tchmi-decimal-digits="1" data-tchmi-min-value="0.1" data-tchmi-max-value="200" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="False"></div>
+<div id="PatchUnitlrPatchFeedRollVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="750" data-tchmi-left-unit="px" data-tchmi-top="161" data-tchmi-top-unit="px" data-tchmi-width="290" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="mm/s   0.1 - 200" data-tchmi-text-font-size="16" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchLabellrWasteRollVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="206" data-tchmi-top-unit="px" data-tchmi-width="420" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="M3 Waste Roll" data-tchmi-text-font-size="17" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchEditlrWasteRollVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="450" data-tchmi-left-unit="px" data-tchmi-top="206" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.lrWasteRollVelocity|BindingMode=TwoWay%/s%" data-tchmi-decimal-digits="1" data-tchmi-min-value="0.1" data-tchmi-max-value="50" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.bStationSettingsAllowed%/s% &amp;&amp; !%s%ADS.PLC1.GVL_HMI.bStationSettingsSaving%/s%%/f%"></div>
+<div id="PatchAppliedlrWasteRollVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="600" data-tchmi-left-unit="px" data-tchmi-top="206" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessApplied.lrWasteRollVelocity%/s%" data-tchmi-decimal-digits="1" data-tchmi-min-value="0.1" data-tchmi-max-value="50" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="False"></div>
+<div id="PatchUnitlrWasteRollVelocity" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="750" data-tchmi-left-unit="px" data-tchmi-top="206" data-tchmi-top-unit="px" data-tchmi-width="290" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="mm/s   0.1 - 50" data-tchmi-text-font-size="16" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchLabeludiReleaseMs" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="251" data-tchmi-top-unit="px" data-tchmi-width="420" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="Patch release dwell" data-tchmi-text-font-size="17" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchEditudiReleaseMs" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="450" data-tchmi-left-unit="px" data-tchmi-top="251" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiReleaseMs|BindingMode=TwoWay%/s%" data-tchmi-decimal-digits="0" data-tchmi-min-value="100" data-tchmi-max-value="15000" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.bStationSettingsAllowed%/s% &amp;&amp; !%s%ADS.PLC1.GVL_HMI.bStationSettingsSaving%/s%%/f%"></div>
+<div id="PatchAppliedudiReleaseMs" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="600" data-tchmi-left-unit="px" data-tchmi-top="251" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiReleaseMs%/s%" data-tchmi-decimal-digits="0" data-tchmi-min-value="100" data-tchmi-max-value="15000" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="False"></div>
+<div id="PatchUnitudiReleaseMs" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="750" data-tchmi-left-unit="px" data-tchmi-top="251" data-tchmi-top-unit="px" data-tchmi-width="290" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="ms   100 - 15000" data-tchmi-text-font-size="16" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchLabeludiAirBlowDelayMs" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="296" data-tchmi-top-unit="px" data-tchmi-width="420" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="Airblow delay after detection" data-tchmi-text-font-size="17" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchEditudiAirBlowDelayMs" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="450" data-tchmi-left-unit="px" data-tchmi-top="296" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiAirBlowDelayMs|BindingMode=TwoWay%/s%" data-tchmi-decimal-digits="0" data-tchmi-min-value="0" data-tchmi-max-value="5000" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.bStationSettingsAllowed%/s% &amp;&amp; !%s%ADS.PLC1.GVL_HMI.bStationSettingsSaving%/s%%/f%"></div>
+<div id="PatchAppliedudiAirBlowDelayMs" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="600" data-tchmi-left-unit="px" data-tchmi-top="296" data-tchmi-top-unit="px" data-tchmi-width="120" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.stPatchProcessApplied.udiAirBlowDelayMs%/s%" data-tchmi-decimal-digits="0" data-tchmi-min-value="0" data-tchmi-max-value="5000" data-tchmi-reset-to-last-valid-value="True" data-tchmi-auto-focus-out="True" data-tchmi-value-font-size="18" data-tchmi-is-enabled="False"></div>
+<div id="PatchUnitudiAirBlowDelayMs" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="750" data-tchmi-left-unit="px" data-tchmi-top="296" data-tchmi-top-unit="px" data-tchmi-width="290" data-tchmi-width-unit="px" data-tchmi-height="32" data-tchmi-height-unit="px" data-tchmi-text="ms   0 - 5000" data-tchmi-text-font-size="16" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchSettingsDirectionHint" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="345" data-tchmi-top-unit="px" data-tchmi-width="1020" data-tchmi-width-unit="px" data-tchmi-height="25" data-tchmi-height-unit="px" data-tchmi-text="Directions fixed: M1 negative / M2 positive / M3 negative. Feed-only keeps airblow off." data-tchmi-text-font-size="15" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchSettings_Apply" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="395" data-tchmi-top-unit="px" data-tchmi-width="140" data-tchmi-width-unit="px" data-tchmi-height="42" data-tchmi-height-unit="px" data-tchmi-text="APPLY" data-tchmi-text-font-size="18" data-tchmi-is-enabled="%f%%s%ADS.PLC1.GVL_HMI.bStationSettingsAllowed%/s% &amp;&amp; !%s%ADS.PLC1.GVL_HMI.bStationSettingsSaving%/s%%/f%"><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.lrDriveMotorVelocity%/s%",
+        "value": {
+          "objectType": "Symbol",
+          "valueType": "tchmi:general#/definitions/LREAL",
+          "symbolExpression": "%ctrl%PatchEditlrDriveMotorVelocity::Value%/ctrl%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.lrPatchFeedRollVelocity%/s%",
+        "value": {
+          "objectType": "Symbol",
+          "valueType": "tchmi:general#/definitions/LREAL",
+          "symbolExpression": "%ctrl%PatchEditlrPatchFeedRollVelocity::Value%/ctrl%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.lrWasteRollVelocity%/s%",
+        "value": {
+          "objectType": "Symbol",
+          "valueType": "tchmi:general#/definitions/LREAL",
+          "symbolExpression": "%ctrl%PatchEditlrWasteRollVelocity::Value%/ctrl%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiReleaseMs%/s%",
+        "value": {
+          "objectType": "Symbol",
+          "valueType": "tchmi:general#/definitions/UDINT",
+          "symbolExpression": "%ctrl%PatchEditudiReleaseMs::Value%/ctrl%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.stPatchProcessEdit.udiAirBlowDelayMs%/s%",
+        "value": {
+          "objectType": "Symbol",
+          "valueType": "tchmi:general#/definitions/UDINT",
+          "symbolExpression": "%ctrl%PatchEditudiAirBlowDelayMs::Value%/ctrl%"
+        },
+        "asyncWait": true
+      },
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.bPatchSettingsApply%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script></div>
+<div id="PatchSettings_Cancel" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiButton" data-tchmi-left="180" data-tchmi-left-unit="px" data-tchmi-top="395" data-tchmi-top-unit="px" data-tchmi-width="140" data-tchmi-width-unit="px" data-tchmi-height="42" data-tchmi-height-unit="px" data-tchmi-text="CANCEL" data-tchmi-text-font-size="18" data-tchmi-is-enabled="True"><script data-tchmi-target-attribute="data-tchmi-trigger" type="application/json">[
+  {
+    "event": "%ctx%owner::Id|EventRegistrationMode=Resolve%/ctx%.onPressed",
+    "actions": [
+      {
+        "objectType": "WriteToSymbol",
+        "active": true,
+        "symbolExpression": "%s%ADS.PLC1.GVL_HMI.bPatchSettingsCancel%/s%",
+        "value": {
+          "objectType": "StaticValue",
+          "valueType": "tchmi:general#/definitions/BOOL",
+          "value": true
+        },
+        "asyncWait": true
+      }
+    ]
+  }
+]</script></div>
+<div id="PatchSettingsMessage" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="350" data-tchmi-left-unit="px" data-tchmi-top="395" data-tchmi-top-unit="px" data-tchmi-width="700" data-tchmi-width-unit="px" data-tchmi-height="44" data-tchmi-height-unit="px" data-tchmi-text="%s%ADS.PLC1.GVL_HMI.sPatchSettingsMessage%/s%" data-tchmi-text-font-size="16" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchSettingsSaveError" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiTextblock" data-tchmi-left="24" data-tchmi-left-unit="px" data-tchmi-top="445" data-tchmi-top-unit="px" data-tchmi-width="150" data-tchmi-width-unit="px" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-text="Save error ID:" data-tchmi-text-font-size="14" data-tchmi-text-vertical-alignment="Center"></div>
+<div id="PatchSettingsSaveErrorId" data-tchmi-type="TcHmi.Controls.Beckhoff.TcHmiNumericInput" data-tchmi-left="175" data-tchmi-left-unit="px" data-tchmi-top="445" data-tchmi-top-unit="px" data-tchmi-width="110" data-tchmi-width-unit="px" data-tchmi-height="24" data-tchmi-height-unit="px" data-tchmi-value="%s%ADS.PLC1.GVL_HMI.udiStationSettingsSaveErrorId%/s%" data-tchmi-is-enabled="False" data-tchmi-decimal-digits="0"></div>
+
+<script data-tchmi-target-attribute="data-tchmi-background-color" type="application/json">
+{
+  "color": "rgba(255, 255, 255, 1)"
+}
+</script>
+</div>

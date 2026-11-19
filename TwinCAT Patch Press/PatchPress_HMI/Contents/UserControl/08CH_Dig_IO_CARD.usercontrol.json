@@ -322,6 +322,23 @@
       "readOnly": false,
       "heritable": true,
       "propertyName": "CardOperational"
+    },
+    {
+      "name": "data-tchmi-channelfeedbackavailable",
+      "displayName": "ChannelFeedbackAvailable",
+      "propertyName": "ChannelFeedbackAvailable",
+      "propertySetterName": "setChannelFeedbackAvailable",
+      "propertyGetterName": "getChannelFeedbackAvailable",
+      "type": "tchmi:general#/definitions/BOOL",
+      "defaultValue": true,
+      "defaultValueInternal": true,
+      "bindable": true,
+      "visible": true,
+      "heritable": true,
+      "readOnly": false,
+      "requiredOnCompile": false,
+      "allowSymbolExpressionsInObject": false,
+      "description": "Read-only diagnostic display availability"
     }
   ],
   "virtualRights": [],

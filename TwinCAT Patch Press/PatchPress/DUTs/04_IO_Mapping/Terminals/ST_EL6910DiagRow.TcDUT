@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+<DUT Name="ST_EL6910DiagRow" Id="{9a4db31c-c8fe-43c5-802a-3375a298f152}"><Declaration><![CDATA[TYPE ST_EL6910DiagRow :
+STRUCT
+    sName : STRING(80);
+    sState : STRING(80);
+    sDiagnostic : STRING(255);
+    sQuality : STRING(80);
+END_STRUCT
+END_TYPE]]></Declaration></DUT></TcPlcObject>

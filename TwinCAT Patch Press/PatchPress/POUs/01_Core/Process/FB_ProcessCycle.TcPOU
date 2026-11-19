@@ -241,6 +241,10 @@ CASE eStateInternal OF
 			// No index movement has been requested yet.
 			eStateInternal := E_CycleState.WaitingForProcessCycleTrigger;
 
+        ELSIF NOT bOperatorIndexPermissive THEN
+            // A load change cancels this attempt; correction alone cannot reuse held hands.
+            eStateInternal := E_CycleState.WaitingForProcessCycleTrigger;
+
         ELSIF bSafetyOk
             AND bStationsIndexPermissive
             AND bOperatorIndexPermissive
@@ -254,11 +258,20 @@ CASE eStateInternal OF
         END_IF
 
     E_CycleState.RequestingIndexMove:
-        // One-scan request. FB_IndexTable4 still requires Two-Hand Safe before
-        // it energises Coil0/Coil1.
-        bRequestIndex := TRUE;
-        bIndexRequestIssued := TRUE;
-        eStateInternal := E_CycleState.WaitingForIndexStart;
+        IF bStopPending THEN
+            eStateInternal := E_CycleState.ControlledStop;
+        ELSIF bSafetyOk AND bStationsIndexPermissive AND bOperatorIndexPermissive
+            AND bTemperatureIndexPermissive AND bNestEnableIndexPermissive
+            AND bIndexReady AND bIndexLocked AND NOT bIndexBusy AND bTwoHandsSafe
+            AND NOT bHeaterDwellPending THEN
+            bRequestIndex := TRUE;
+            bIndexRequestIssued := TRUE;
+            eStateInternal := E_CycleState.WaitingForIndexStart;
+        ELSE
+            // No request is queued with an invalid load or stale two-hand actuation.
+            bIndexRequestIssued := FALSE;
+            eStateInternal := E_CycleState.WaitingForProcessCycleTrigger;
+        END_IF
 
     E_CycleState.WaitingForIndexStart:
 

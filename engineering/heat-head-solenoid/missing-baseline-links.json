@@ -1,0 +1,50 @@
+[
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_Motion.AxisPatchFeedRollMotor.Axis.PlcToNc",
+      "VarB": "Inputs^FromPlc"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Outputs^GVL_Motion.AxisWasteRollMotor.Axis.PlcToNc",
+      "VarB": "Inputs^FromPlc"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc",
+      "VarB": "Outputs^ToPlc"
+    }
+  },
+  {
+    "a": {
+      "Name": "TIPC^PatchPress^PatchPress Instance"
+    },
+    "b": {
+      "Name": "TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor"
+    },
+    "link": {
+      "VarA": "PlcTask Inputs^GVL_Motion.AxisPatchFeedRollMotor.Axis.NcToPlc",
+      "VarB": "Outputs^ToPlc"
+    }
+  }
+]
