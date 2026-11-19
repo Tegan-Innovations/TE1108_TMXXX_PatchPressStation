@@ -4151,10 +4151,9 @@ ELSE
 END_IF
 
 // Lighting:
-// - Internal machine light remains ON continuously for now.
-//   A future revision may interlock this light with the main-door state.
+// - Internal machine light is on while the main door is open.
 // - Operator/nest light is controlled by the Main-screen LIGHT toggle.
-stOutputsInternal.bInternalLight := TRUE;
+stOutputsInternal.bInternalLight := NOT stInputs.bMainDoorClosed;
 stOutputsInternal.bNestLight := stCommand.bOperatorLight;
 // -------------------------------------------------------------------------
 // Heat Stake HMI status - Manual Mode tooling position
