@@ -1,0 +1,44 @@
+﻿[
+    {
+        "Source":  "TIPC^PatchPress^PatchPress Instance^PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch1",
+        "Target":  "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)^TC Inputs Channel 1^Value",
+        "Type":  "DINT",
+        "Bits":  32
+    },
+    {
+        "Source":  "TIPC^PatchPress^PatchPress Instance^PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch2",
+        "Target":  "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)^TC Inputs Channel 2^Value",
+        "Type":  "DINT",
+        "Bits":  32
+    },
+    {
+        "Source":  "TIPC^PatchPress^PatchPress Instance^PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch3",
+        "Target":  "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)^TC Inputs Channel 3^Value",
+        "Type":  "DINT",
+        "Bits":  32
+    },
+    {
+        "Source":  "TIPC^PatchPress^PatchPress Instance^PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch4",
+        "Target":  "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)^TC Inputs Channel 4^Value",
+        "Type":  "DINT",
+        "Bits":  32
+    },
+    {
+        "Source":  "TIPC^PatchPress^PatchPress Instance^PlcTask Inputs^GVL_EtherCAT.stTerm20_EL4022.stTerminalInfo.nTerminal_State",
+        "Target":  "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL4022)^InfoData^State",
+        "Type":  "UINT",
+        "Bits":  16
+    },
+    {
+        "Source":  "TIPC^PatchPress^PatchPress Instance^PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.stTerminalInfo.nTerminal_State",
+        "Target":  "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)^InfoData^State",
+        "Type":  "UINT",
+        "Bits":  16
+    },
+    {
+        "Source":  "TIPC^PatchPress^PatchPress Instance^PlcTask Inputs^GVL_EtherCAT.stTerm22_EL6633.stTerminalInfo.nTerminal_State",
+        "Target":  "TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 22 (EL6633)^InfoData^State",
+        "Type":  "UINT",
+        "Bits":  16
+    }
+]

@@ -4790,7 +4790,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{F9BA1B9F-D0CB-4288-8142-DBD9BC04A2A5}" Name="PatchPress" PrjFilePath="PatchPress\PatchPress.plcproj" TmcFilePath="PatchPress\PatchPress.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{0F18F9DC-AE1D-2573-3575-06848802F994}" TmcPath="PatchPress\PatchPress.tmc">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{33C7DBFF-9BE3-D7CA-4A81-DDF01A4603D7}" TmcPath="PatchPress\PatchPress.tmc">
 					<Name>PatchPress Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="8" AreaNo="4">
@@ -4798,12 +4798,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>GVL_Persistent.bCSVPendingRecord</Name>
 							<Type>BOOL</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Persistent.uiTestHistoryWriteIndex</Name>
-							<Comment><![CDATA[ Next position to be written in the circular buffer.]]></Comment>
-							<Type>UINT</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
@@ -4840,6 +4834,12 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
+							<Name>GVL_Persistent.uiTestHistoryWriteIndex</Name>
+							<Comment><![CDATA[ Next position to be written in the circular buffer.]]></Comment>
+							<Type>UINT</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
 							<Name>GVL_Persistent.uiTestHistoryCount</Name>
 							<Comment><![CDATA[ Number of valid history entries currently available.
  Saturates at 2001 when the buffer becomes full.]]></Comment>
@@ -4867,6 +4867,13 @@ External Setpoint Generation:
 							<InOut>7</InOut>
 						</Var>
 						<Var>
+							<Name>GVL_Persistent.aVisionPbupFitted</Name>
+							<Comment><![CDATA[ Additive retained record, keyed by physical nest; confidence is non-retained.
+ Do not infer current part identity or resume a prepared position from this.]]></Comment>
+							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
+							<InOut>7</InOut>
+						</Var>
+						<Var>
 							<Name>GVL_Persistent.stPatchProcessSettings</Name>
 							<Type GUID="{8F3B7FB9-5C17-FB97-2A2D-1B217720D3B3}">ST_PatchProcessSettings</Type>
 							<InOut>7</InOut>
@@ -4874,13 +4881,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>GVL_Persistent.stVisionProcessSettings</Name>
 							<Type GUID="{3EBC3CCC-CFFF-5888-BBCC-8595775B69A9}">ST_CameraProcessSettings</Type>
-							<InOut>7</InOut>
-						</Var>
-						<Var>
-							<Name>GVL_Persistent.aVisionPbupFitted</Name>
-							<Comment><![CDATA[ Additive retained record, keyed by physical nest; confidence is non-retained.
- Do not infer current part identity or resume a prepared position from this.]]></Comment>
-							<Type GUID="{064EA673-04B6-D0C1-CD14-82E56022843A}">ARRAY [1..4] OF BOOL</Type>
 							<InOut>7</InOut>
 						</Var>
 						<Var>
@@ -5042,35 +5042,11 @@ External Setpoint Generation:
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1</Name>
+							<Name>GVL_EtherCAT.stTerm20_EL4022.iEL4028_Ch1</Name>
 							<Type>INT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2</Name>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3</Name>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4</Name>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5</Name>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6</Name>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7</Name>
-							<Type>INT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8</Name>
+							<Name>GVL_EtherCAT.stTerm20_EL4022.iEL4028_Ch2</Name>
 							<Type>INT</Type>
 						</Var>
 						<Var>
@@ -5238,33 +5214,20 @@ External Setpoint Generation:
 					<Vars VarGrpType="1">
 						<Name>PlcTask Inputs</Name>
 						<Var>
-							<Name>GVL_IO.stInputs</Name>
-							<Comment><![CDATA[ Logical physical I/O. Link these members to the same EtherCAT/TwinSAFE channels used by Kistler.
- Keeping terminal-specific names outside the core makes future hardware changes local to this GVL/mapper.]]></Comment>
-							<Type GUID="{2C16F09B-8FC1-EB9B-3D27-FCC862A1581A}">ST_PhysicalInputs</Type>
-						</Var>
-						<Var>
 							<Name>GVL_EtherCAT.wVisionPnState</Name>
 							<Comment><![CDATA[ PROFINET Assignable Status, appended separately to preserve camera DUT.
  Offline linked PROFINET diagnostics; invalid until valid I/O is received.]]></Comment>
 							<Type>WORD</Type>
 						</Var>
 						<Var>
+							<Name>GVL_IO.stInputs</Name>
+							<Comment><![CDATA[ Logical physical I/O. Link these members to the same EtherCAT/TwinSAFE channels used by Kistler.
+ Keeping terminal-specific names outside the core makes future hardware changes local to this GVL/mapper.]]></Comment>
+							<Type GUID="{2C16F09B-8FC1-EB9B-3D27-FCC862A1581A}">ST_PhysicalInputs</Type>
+						</Var>
+						<Var>
 							<Name>GVL_EtherCAT.wVisionPnDiag</Name>
 							<Type>WORD</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bSafetyOk</Name>
-							<Comment><![CDATA[ ---------------------------------------------------------------------
- TwinSAFE -> standard PLC aliases (link as PLC inputs in the Safety
- project). These are validated statuses/diagnostics, not reconstructed
- safety logic in the standard PLC.
- ---------------------------------------------------------------------]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bEmergencyStopOk</Name>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>GVL_EtherCAT.stTerm1_EK1100.stTerminalInfo.nTerminal_State</Name>
@@ -5712,42 +5675,17 @@ External Setpoint Generation:
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1</Name>
-							<Comment><![CDATA[ EL3314 channel 1]]></Comment>
-							<Type>DINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2</Name>
-							<Comment><![CDATA[ EL3314 channel 2]]></Comment>
-							<Type>DINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3</Name>
-							<Comment><![CDATA[ EL3314 channel 3]]></Comment>
-							<Type>DINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4</Name>
-							<Comment><![CDATA[ EL3314 channel 4]]></Comment>
-							<Type>DINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.nTerminal_State</Name>
+							<Name>GVL_EtherCAT.stTerm20_EL4022.stTerminalInfo.nTerminal_State</Name>
 							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.nTerminal_State</Name>
-							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State</Name>
-							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
-							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>GVL_Safety.bMainDoorUnSafe</Name>
+							<Name>GVL_Safety.bSafetyOk</Name>
+							<Comment><![CDATA[ ---------------------------------------------------------------------
+ TwinSAFE -> standard PLC aliases (link as PLC inputs in the Safety
+ project). These are validated statuses/diagnostics, not reconstructed
+ safety logic in the standard PLC.
+ ---------------------------------------------------------------------]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -5819,6 +5757,14 @@ External Setpoint Generation:
 							<Type>UINT</Type>
 						</Var>
 						<Var>
+							<Name>GVL_Safety.bEmergencyStopOk</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL_Safety.bMainDoorUnSafe</Name>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>GVL_Safety.bLeftFlapSafe</Name>
 							<Type>BOOL</Type>
 						</Var>
@@ -5883,7 +5829,51 @@ External Setpoint Generation:
 							<Name>GVL_Motion.AxisWasteRollMotor.Axis.NcToPlc</Name>
 							<Type GUID="{25521FAA-EA5F-4C7F-8864-BBCCDACD2E98}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch1</Name>
+							<Comment><![CDATA[ EL3314 channel 1]]></Comment>
+							<Type>DINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch2</Name>
+							<Comment><![CDATA[ EL3314 channel 2]]></Comment>
+							<Type>DINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch3</Name>
+							<Comment><![CDATA[ EL3314 channel 3]]></Comment>
+							<Type>DINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch4</Name>
+							<Comment><![CDATA[ EL3314 channel 4]]></Comment>
+							<Type>DINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm21_EL3314.stTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>GVL_EtherCAT.stTerm22_EL6633.stTerminalInfo.nTerminal_State</Name>
+							<Comment><![CDATA[ Terminal State from IO Terminal Info Data]]></Comment>
+							<Type>UINT</Type>
+						</Var>
 					</Vars>
+					<UnrestoredVarLinks ImportTime="2026-11-19T09:55:35">
+						<OwnerA Name="InputDst" Prefix="TIPC^PatchPress^PatchPress Instance" Type="1">
+							<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)">
+								<Link VarA="GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1" TypeA="DINT" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000009}" VarB="TC Inputs Channel 1^Value" RestoreInfo="ANotFound"/>
+								<Link VarA="GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2" TypeA="DINT" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000009}" VarB="TC Inputs Channel 2^Value" RestoreInfo="ANotFound"/>
+								<Link VarA="GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3" TypeA="DINT" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000009}" VarB="TC Inputs Channel 3^Value" RestoreInfo="ANotFound"/>
+								<Link VarA="GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4" TypeA="DINT" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000009}" VarB="TC Inputs Channel 4^Value" RestoreInfo="ANotFound"/>
+								<Link VarA="GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.nTerminal_State" TypeA="UINT" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000005}" VarB="InfoData^State" RestoreInfo="ANotFound"/>
+							</OwnerB>
+							<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 22 (EL6633)">
+								<Link VarA="GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State" TypeA="UINT" InOutA="0" GuidA="{18071995-0000-0000-0000-000000000005}" VarB="InfoData^State" RestoreInfo="ANotFound"/>
+							</OwnerB>
+						</OwnerA>
+					</UnrestoredVarLinks>
 					<Contexts>
 						<Context>
 							<Id>0</Id>
@@ -6742,7 +6732,7 @@ External Setpoint Generation:
 							</Pdo>
 						</EtherCAT>
 					</Box>
-					<Box Id="10" BoxType="9099">
+					<Box Id="19" BoxType="9099">
 						<Name>Term 10 (EL2809-0015)</Name>
 						<ImageId>1004</ImageId>
 						<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x0af93052" RevisionNo="#x0010000f" RepeatSupport="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL2809-0015 16Ch. Dig. Output 24V DC, 0.35A, not short-circuit proof" Desc="EL2809-0015" PortABoxInfo="#x01000009">
@@ -6831,10 +6821,10 @@ External Setpoint Generation:
 							</Pdo>
 						</EtherCAT>
 					</Box>
-					<Box Id="11" BoxType="9099" BoxFlags="#x00000020">
+					<Box Id="20" BoxType="9099" BoxFlags="#x00000020">
 						<Name>Term 11 (EL3058)</Name>
 						<ImageId>1005</ImageId>
-						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="7" FoeType="1" VendorId="#x00000002" ProductCode="#x0bf23052" RevisionNo="#x00150000" BIC="1P068992SBTN999dhzsu1KEL3058                        Q1    2P102322160021" InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" SdoUploadWithMaxLength="true" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL3058 8Ch. Ana. Input 4-20mA" Desc="EL3058" PortABoxInfo="#x0100000a">
+						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="7" FoeType="1" VendorId="#x00000002" ProductCode="#x0bf23052" RevisionNo="#x00150000" BIC="1P068992SBTN999dhzsu1KEL3058                        Q1    2P102322160021" InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" SdoUploadWithMaxLength="true" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL3058 8Ch. Ana. Input 4-20mA" Desc="EL3058" PortABoxInfo="#x01000013">
 							<SyncMan>001080002600010001000000800080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000800080008000801022010000</SyncMan>
 							<SyncMan>001100000400000003000000000000000000001104000000</SyncMan>
@@ -7236,10 +7226,10 @@ Bit1: Value bigger/equal Limit2]]></Comment>
 							<CoeProfile ProfileNo="19665801"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="12" BoxType="9099">
+					<Box Id="21" BoxType="9099">
 						<Name>Term 12 (EL9410)</Name>
 						<ImageId>1006</ImageId>
-						<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x24c23052" RevisionNo="#x00110000" BIC="1P064397SBTN999lhv391KEL9410                        Q1    2P062600210017" RepeatSupport="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9410 E-Bus Power Supplier  (Diagnostics)" Desc="EL9410" PortABoxInfo="#x0100000b">
+						<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x24c23052" RevisionNo="#x00110000" BIC="1P064397SBTN999lhv391KEL9410                        Q1    2P062600210017" RepeatSupport="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9410 E-Bus Power Supplier  (Diagnostics)" Desc="EL9410" PortABoxInfo="#x01000014">
 							<SyncMan>001001000000010004000000000000000000001000000000</SyncMan>
 							<Fmmu>0000000000000000001000010100000002000000000000000000000000000000</Fmmu>
 							<Pdo Name="Status Us" Index="#x1a00" Flags="#x0011" SyncMan="0">
@@ -7254,10 +7244,10 @@ Bit1: Value bigger/equal Limit2]]></Comment>
 							</Pdo>
 						</EtherCAT>
 					</Box>
-					<Box Id="13" BoxType="9099" BoxFlags="#x00000020">
+					<Box Id="23" BoxType="9099" BoxFlags="#x00000020">
 						<Name>Term 13 (EL2502)</Name>
 						<ImageId>1004</ImageId>
-						<EtherCAT SlaveType="2" PdiType="#x0005" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="7" FoeType="1" VendorId="#x00000002" ProductCode="#x09c63052" RevisionNo="#x001a0000" BIC="1P052628SBTN999di7rs1KEL2502                        Q1    2P122314140026" InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL2502 2Ch. PWM output, 24V" Desc="EL2502" PortABoxInfo="#x0100000c">
+						<EtherCAT SlaveType="2" PdiType="#x0005" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="7" FoeType="1" VendorId="#x00000002" ProductCode="#x09c63052" RevisionNo="#x001a0000" BIC="1P052628SBTN999di7rs1KEL2502                        Q1    2P122314140026" InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL2502 2Ch. PWM output, 24V" Desc="EL2502" PortABoxInfo="#x01000015">
 							<SyncMan>001080002600010001000000800080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000800080008000801022010000</SyncMan>
 							<SyncMan>001104002400010003000000000000000400001124010000</SyncMan>
@@ -7323,10 +7313,10 @@ Bit1: Value bigger/equal Limit2]]></Comment>
 							<CoeProfile ProfileNo="16389001"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="14" BoxType="9099" BoxFlags="#x00000020">
+					<Box Id="24" BoxType="9099" BoxFlags="#x00000020">
 						<Name>Term 14 (EL9576)</Name>
 						<ImageId>1006</ImageId>
-						<EtherCAT SlaveType="2" PdiType="#x0005" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="7" FoeType="1" VendorId="#x00000002" ProductCode="#x25683052" RevisionNo="#x00160000" BIC="1P118866SBTN999lb5jp1KEL9576                        Q1    2P422516040022" InfoDataAddr="true" RepeatSupport="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9576 Brake chopper terminal" Desc="EL9576" PortABoxInfo="#x0100000d">
+						<EtherCAT SlaveType="2" PdiType="#x0005" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="7" FoeType="1" VendorId="#x00000002" ProductCode="#x25683052" RevisionNo="#x00160000" BIC="1P118866SBTN999lb5jp1KEL9576                        Q1    2P422516040022" InfoDataAddr="true" RepeatSupport="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9576 Brake chopper terminal" Desc="EL9576" PortABoxInfo="#x01000017">
 							<SyncMan>001080002600010001000000800080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000800080008000801022010000</SyncMan>
 							<SyncMan>001100000400000003000000000000000000001104000000</SyncMan>
@@ -7381,7 +7371,7 @@ Bit1: Value bigger/equal Limit2]]></Comment>
 							<CoeProfile ProfileNo="58987401"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="15" BoxType="9099" BoxFlags="#x00000020">
+					<Box Id="25" BoxType="9099" BoxFlags="#x00000020">
 						<Name>Term 15 (EL7201-9014)</Name>
 						<ImageId>1007</ImageId>
 						<Xml>
@@ -7391,8 +7381,8 @@ Bit1: Value bigger/equal Limit2]]></Comment>
 								<TcLink ProtocalType="11">
 									<TcPrjPath>..\TwinCAT Patch Press\TwinCAT Patch Press.tsproj</TcPrjPath>
 									<IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)</IoItemPathName>
-									<ItemId>15</ItemId>
-									<ObjectId>#x0302000f</ObjectId>
+									<ItemId>25</ItemId>
+									<ObjectId>#x03020019</ObjectId>
 								</TcLink>
 								<OrderCode>EL7201-9014</OrderCode>
 								<Name>Term 15 (EL7201-9014)</Name>
@@ -7449,7 +7439,7 @@ Bit1: Value bigger/equal Limit2]]></Comment>
 										<TcLink>
 											<TcPrjPath>..\TwinCAT Patch Press\TwinCAT Patch Press.tsproj</TcPrjPath>
 											<IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 15 (EL7201-9014)</IoItemPathName>
-											<NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^M1</NcItemPathName>
+											<NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^M1_DriveMotor</NcItemPathName>
 										</TcLink>
 										<SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
 										<Block Id="0">
@@ -7962,7 +7952,7 @@ Bit1: Value bigger/equal Limit2]]></Comment>
 								</Inverter>
 							</TcDMDrive>
 						</Xml>
-						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CfgModeSafeOp="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1c213052" RevisionNo="#x00202336" BIC="1P143002SBTN99ajmmpw1KEL7201-9014                   Q1    2P172630090032" InfoDataAddr="true" InfoDataSoeDS401="true" InfoDataDcTimes="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" SdoUploadWithMaxLength="true" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL7201-9014 1Ch. MDP742 Servo motor output stage with OCT (50V, 2.8A RMS) and STO input" Desc="EL7201-9014" PortABoxInfo="#x0100000e">
+						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CfgModeSafeOp="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1c213052" RevisionNo="#x00202336" BIC="1P143002SBTN99ajmmpw1KEL7201-9014                   Q1    2P172630090032" InfoDataAddr="true" InfoDataSoeDS401="true" InfoDataDcTimes="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" SdoUploadWithMaxLength="true" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL7201-9014 1Ch. MDP742 Servo motor output stage with OCT (50V, 2.8A RMS) and STO input" Desc="EL7201-9014" PortABoxInfo="#x01000018">
 							<SyncMan>001080002600010001000000500080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000500080008000801022010000</SyncMan>
 							<SyncMan>001106002400010003000000000000000600001124010000</SyncMan>
@@ -8619,7 +8609,7 @@ Bit 8 - 15 : reserved]]></Comment>
 							<CoeProfile ProfileNo="49157001"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="16" BoxType="9099" BoxFlags="#x00000020">
+					<Box Id="26" BoxType="9099" BoxFlags="#x00000020">
 						<Name>Term 16 (EL7201-9014)</Name>
 						<ImageId>1007</ImageId>
 						<Xml>
@@ -8629,8 +8619,8 @@ Bit 8 - 15 : reserved]]></Comment>
 								<TcLink ProtocalType="11">
 									<TcPrjPath>..\TwinCAT Patch Press\TwinCAT Patch Press.tsproj</TcPrjPath>
 									<IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)</IoItemPathName>
-									<ItemId>16</ItemId>
-									<ObjectId>#x03020010</ObjectId>
+									<ItemId>26</ItemId>
+									<ObjectId>#x0302001a</ObjectId>
 								</TcLink>
 								<OrderCode>EL7201-9014</OrderCode>
 								<Name>Term 16 (EL7201-9014)</Name>
@@ -8687,7 +8677,7 @@ Bit 8 - 15 : reserved]]></Comment>
 										<TcLink>
 											<TcPrjPath>..\TwinCAT Patch Press\TwinCAT Patch Press.tsproj</TcPrjPath>
 											<IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 16 (EL7201-9014)</IoItemPathName>
-											<NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^M2</NcItemPathName>
+											<NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^M2_PatchFeedRollMotor</NcItemPathName>
 										</TcLink>
 										<SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
 										<Block Id="0">
@@ -9200,7 +9190,7 @@ Bit 8 - 15 : reserved]]></Comment>
 								</Inverter>
 							</TcDMDrive>
 						</Xml>
-						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CfgModeSafeOp="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1c213052" RevisionNo="#x00202336" BIC="1P143002SBTN99ajlqxo1KEL7201-9014                   Q1    2P172630090032" InfoDataAddr="true" InfoDataSoeDS401="true" InfoDataDcTimes="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" SdoUploadWithMaxLength="true" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL7201-9014 1Ch. MDP742 Servo motor output stage with OCT (50V, 2.8A RMS) and STO input" Desc="EL7201-9014" PortABoxInfo="#x0100000f">
+						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CfgModeSafeOp="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1c213052" RevisionNo="#x00202336" BIC="1P143002SBTN99ajlqxo1KEL7201-9014                   Q1    2P172630090032" InfoDataAddr="true" InfoDataSoeDS401="true" InfoDataDcTimes="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" SdoUploadWithMaxLength="true" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL7201-9014 1Ch. MDP742 Servo motor output stage with OCT (50V, 2.8A RMS) and STO input" Desc="EL7201-9014" PortABoxInfo="#x01000019">
 							<SyncMan>001080002600010001000000500080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000500080008000801022010000</SyncMan>
 							<SyncMan>001106002400010003000000000000000600001124010000</SyncMan>
@@ -9857,7 +9847,7 @@ Bit 8 - 15 : reserved]]></Comment>
 							<CoeProfile ProfileNo="49157001"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="17" BoxType="9099" BoxFlags="#x00000020">
+					<Box Id="27" BoxType="9099" BoxFlags="#x00000020">
 						<Name>Term 17 (EL7201-9014)</Name>
 						<ImageId>1007</ImageId>
 						<Xml>
@@ -9867,8 +9857,8 @@ Bit 8 - 15 : reserved]]></Comment>
 								<TcLink ProtocalType="11">
 									<TcPrjPath>..\TwinCAT Patch Press\TwinCAT Patch Press.tsproj</TcPrjPath>
 									<IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)</IoItemPathName>
-									<ItemId>17</ItemId>
-									<ObjectId>#x03020011</ObjectId>
+									<ItemId>27</ItemId>
+									<ObjectId>#x0302001b</ObjectId>
 								</TcLink>
 								<OrderCode>EL7201-9014</OrderCode>
 								<Name>Term 17 (EL7201-9014)</Name>
@@ -9925,7 +9915,7 @@ Bit 8 - 15 : reserved]]></Comment>
 										<TcLink>
 											<TcPrjPath>..\TwinCAT Patch Press\TwinCAT Patch Press.tsproj</TcPrjPath>
 											<IoItemPathName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 17 (EL7201-9014)</IoItemPathName>
-											<NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^M3</NcItemPathName>
+											<NcItemPathName AxisType="1">TINC^NC-Task 1 SAF^Axes^M3_WasteRollMotor</NcItemPathName>
 										</TcLink>
 										<SelectedModifyOptPDOsMode>0</SelectedModifyOptPDOsMode>
 										<Block Id="0">
@@ -10438,7 +10428,7 @@ Bit 8 - 15 : reserved]]></Comment>
 								</Inverter>
 							</TcDMDrive>
 						</Xml>
-						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CfgModeSafeOp="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1c213052" RevisionNo="#x00202336" BIC="1P143002SBTN99ajmmp91KEL7201-9014                   Q1    2P172630090032" InfoDataAddr="true" InfoDataSoeDS401="true" InfoDataDcTimes="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" SdoUploadWithMaxLength="true" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL7201-9014 1Ch. MDP742 Servo motor output stage with OCT (50V, 2.8A RMS) and STO input" Desc="EL7201-9014" PortABoxInfo="#x01000010">
+						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CfgModeSafeOp="true" CycleMBoxPollingTime="0" CoeType="39" FoeType="1" VendorId="#x00000002" ProductCode="#x1c213052" RevisionNo="#x00202336" BIC="1P143002SBTN99ajmmp91KEL7201-9014                   Q1    2P172630090032" InfoDataAddr="true" InfoDataSoeDS401="true" InfoDataDcTimes="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" SdoUploadWithMaxLength="true" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL7201-9014 1Ch. MDP742 Servo motor output stage with OCT (50V, 2.8A RMS) and STO input" Desc="EL7201-9014" PortABoxInfo="#x0100001a">
 							<SyncMan>001080002600010001000000500080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000500080008000801022010000</SyncMan>
 							<SyncMan>001106002400010003000000000000000600001124010000</SyncMan>
@@ -11095,10 +11085,10 @@ Bit 8 - 15 : reserved]]></Comment>
 							<CoeProfile ProfileNo="49157001"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="18" BoxType="9099" BoxFlags="#x00000020">
+					<Box Id="28" BoxType="9099" BoxFlags="#x00000020">
 						<Name>Term 18 (EL2904)</Name>
 						<ImageId>118</ImageId>
-						<EtherCAT SlaveType="2" PdiType="#x0005" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="3" FoeType="1" VendorId="#x00000002" ProductCode="#x0b583052" RevisionNo="#x00130000" BIC="1P070933SBTNsee COE!1KEL2904                        Q1    " InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="2" Type="EL2904, 4 Ch. Safety Output 24V, 0.5A, TwinSAFE" Desc="EL2904" PortABoxInfo="#x01000011">
+						<EtherCAT SlaveType="2" PdiType="#x0005" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="3" FoeType="1" VendorId="#x00000002" ProductCode="#x0b583052" RevisionNo="#x00130000" BIC="1P070933SBTNsee COE!1KEL2904                        Q1    " InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="2" Type="EL2904, 4 Ch. Safety Output 24V, 0.5A, TwinSAFE" Desc="EL2904" PortABoxInfo="#x0100001b">
 							<SyncMan>001000012600010001000000400000010001001026010000</SyncMan>
 							<SyncMan>001100012200010002000000400000010001001122010000</SyncMan>
 							<SyncMan>001208002400010003000000000000000800001224010000</SyncMan>
@@ -11169,7 +11159,7 @@ Bit 8 - 15 : reserved]]></Comment>
 							<Slot Name="">
 								<SlotData>0000010001000400000000000000000000000000000000000000000000000000</SlotData>
 								<ModuleIdent>290</ModuleIdent>
-								<Module Id="#x03090007" Type="FSOES" Class="290">
+								<Module Id="#x0309000d" Type="FSOES" Class="290">
 									<Name>Module 1 (FSOES)</Name>
 									<ImageId>118</ImageId>
 									<ModuleData>020000002201000000000c000000000000000000000000000000000000000000</ModuleData>
@@ -11181,7 +11171,7 @@ Bit 8 - 15 : reserved]]></Comment>
 							<Slot Name="">
 								<SlotData>0000010001000400000000000000000000000000000000000000000000000000</SlotData>
 								<ModuleIdent>200</ModuleIdent>
-								<Module Id="#x03090008" Type="DO" Class="200">
+								<Module Id="#x0309000e" Type="DO" Class="200">
 									<Name>Module 2 (DO)</Name>
 									<ImageId>118</ImageId>
 									<ModuleData>02000000c8000000000004000000000000000000000000000000000000000000</ModuleData>
@@ -11190,10 +11180,10 @@ Bit 8 - 15 : reserved]]></Comment>
 							</Slot>
 						</EtherCAT>
 					</Box>
-					<Box Id="19" BoxType="9099">
+					<Box Id="29" BoxType="9099">
 						<Name>Term 19 (EL1809)</Name>
 						<ImageId>1003</ImageId>
-						<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x07113052" RevisionNo="#x00120000" BIC="1P072222SBTN99aj05fr1KEL1809                        Q1    2P162600100018" RepeatSupport="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortABoxInfo="#x01000012">
+						<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x07113052" RevisionNo="#x00120000" BIC="1P072222SBTN99aj05fr1KEL1809                        Q1    2P162600100018" RepeatSupport="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL1809 16Ch. Dig. Input 24V, 3ms" Desc="EL1809" PortABoxInfo="#x0100001c">
 							<SyncMan>001002000000010004000000000000000200001000010000</SyncMan>
 							<Fmmu>0000000000000000001000010100000002000000000000000000000000000000</Fmmu>
 							<Pdo Name="Channel 1" Index="#x1a00" Flags="#x0011" SyncMan="0">
@@ -11279,12 +11269,12 @@ Bit 8 - 15 : reserved]]></Comment>
 						</EtherCAT>
 					</Box>
 					<Box Id="43" BoxType="9099" BoxFlags="#x00000020">
-						<Name>Term 20 (EL4028)</Name>
+						<Name>Term 20 (EL4022)</Name>
 						<ImageId>1008</ImageId>
-						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="3" FoeType="1" VendorId="#x00000002" ProductCode="#x0fbc3052" RevisionNo="#x00160000" BIC="1P050604SBTN99ajf4s11KEL4028                        Q1    2P172610160022" InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL4028 8Ch. Ana. Output 4-20mA, 12bit" Desc="EL4028" PortABoxInfo="#x01000013">
+						<EtherCAT SlaveType="2" PdiType="#x0405" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="3" FoeType="1" VendorId="#x00000002" ProductCode="#x0fb63052" RevisionNo="#x00160000" BIC="1P050600SBTN999y3x5c1KEL4022                        Q1    2P422610190022" InfoDataAddr="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL4022 2Ch. Ana. Output 4-20mA, 12bit" Desc="EL4022" PortABoxInfo="#x0100001d">
 							<SyncMan>001080002600010001000000800080008000001026010000</SyncMan>
 							<SyncMan>801080002200010002000000800080008000801022010000</SyncMan>
-							<SyncMan>001110002400010003000000000000001000001124010000</SyncMan>
+							<SyncMan>001104002400010003000000000000000400001124010000</SyncMan>
 							<SyncMan>801100000000000004000000000000000000801100000000</SyncMan>
 							<Fmmu>0000000000000000001100020100000001000000000000000000000000000000</Fmmu>
 							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
@@ -11301,47 +11291,11 @@ Bit 8 - 15 : reserved]]></Comment>
 									<Type>INT</Type>
 								</Entry>
 							</Pdo>
-							<Pdo Name="AO Outputs Channel 3" Index="#x1602" InOut="1" Flags="#x0011" SyncMan="2">
-								<Entry Name="Analog output" Index="#x7020" Sub="#x11" Flags="#x00040000">
-									<Type>INT</Type>
-								</Entry>
-							</Pdo>
-							<Pdo Name="AO Outputs Channel 4" Index="#x1603" InOut="1" Flags="#x0011" SyncMan="2">
-								<Entry Name="Analog output" Index="#x7030" Sub="#x11" Flags="#x00040000">
-									<Type>INT</Type>
-								</Entry>
-							</Pdo>
-							<Pdo Name="AO Outputs Channel 5" Index="#x1604" InOut="1" Flags="#x0011" SyncMan="2">
-								<Entry Name="Analog output" Index="#x7040" Sub="#x11" Flags="#x00040000">
-									<Type>INT</Type>
-								</Entry>
-							</Pdo>
-							<Pdo Name="AO Outputs Channel 6" Index="#x1605" InOut="1" Flags="#x0011" SyncMan="2">
-								<Entry Name="Analog output" Index="#x7050" Sub="#x11" Flags="#x00040000">
-									<Type>INT</Type>
-								</Entry>
-							</Pdo>
-							<Pdo Name="AO Outputs Channel 7" Index="#x1606" InOut="1" Flags="#x0011" SyncMan="2">
-								<Entry Name="Analog output" Index="#x7060" Sub="#x11" Flags="#x00040000">
-									<Type>INT</Type>
-								</Entry>
-							</Pdo>
-							<Pdo Name="AO Outputs Channel 8" Index="#x1607" InOut="1" Flags="#x0011" SyncMan="2">
-								<Entry Name="Analog output" Index="#x7070" Sub="#x11" Flags="#x00040000">
-									<Type>INT</Type>
-								</Entry>
-							</Pdo>
-							<CoeProfile ProfileNo="26219401"/>
-							<CoeProfile ProfileNo="26219401"/>
-							<CoeProfile ProfileNo="26219401"/>
-							<CoeProfile ProfileNo="26219401"/>
-							<CoeProfile ProfileNo="26219401"/>
-							<CoeProfile ProfileNo="26219401"/>
 							<CoeProfile ProfileNo="26219401"/>
 							<CoeProfile ProfileNo="26219401"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="20" BoxType="9099" BoxFlags="#x00000020">
+					<Box Id="31" BoxType="9099" BoxFlags="#x00000020">
 						<Name>Term 21 (EL3314-0092)</Name>
 						<ImageId>1009</ImageId>
 						<EtherCAT SlaveType="2" PdiType="#x0005" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="15" FoeType="1" VendorId="#x00000002" ProductCode="#x0cf23052" RevisionNo="#x0010005c" BIC="1P258522SBTN999kcir31KEL3314-0092                   Q1    2P262501000016" InfoDataAddr="true" RepeatSupport="true" TimeoutMailbox2="2000" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="1" Type="EL3314-0092 4Ch. Ana Input Thermocouple (TC), TwinSAFE SC" Desc="EL3314-0092" PortABoxInfo="#x0100002b">
@@ -11499,10 +11453,10 @@ Bit 8 - 15 : reserved]]></Comment>
 							</Slot>
 						</EtherCAT>
 					</Box>
-					<Box Id="21" BoxType="9171" BoxFlags="#x00000020">
+					<Box Id="32" BoxType="9171" BoxFlags="#x00000020">
 						<Name>Term 22 (EL6633)</Name>
 						<ImageId>1001</ImageId>
-						<EtherCAT SlaveType="8" AdsServerAddress="ac12ef1b03010000" FixedAdsServerNetId="true" PdiType="#x0408" ExecIo="true" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="47" FoeType="1" VendorId="#x00000002" ProductCode="#x19e93052" RevisionNo="#x00110000" InfoDataAddr="true" InfoDataNetId="true" OwnAddrExtern="true" TimeoutStateChange1="60000" TimeoutStateChange2="30000" TimeoutStateChange3="30000" TimeoutStateChange4="300" TimeoutMailbox2="2000" GenerateOwnNetId="true" InitializeOwnNetId="true" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6633 PROFINET IO Controller" Desc="EL6633" PortABoxInfo="#x01000014">
+						<EtherCAT SlaveType="8" AdsServerAddress="ac12ef1b03010000" FixedAdsServerNetId="true" PdiType="#x0408" ExecIo="true" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="47" FoeType="1" VendorId="#x00000002" ProductCode="#x19e93052" RevisionNo="#x00110000" InfoDataAddr="true" InfoDataNetId="true" OwnAddrExtern="true" TimeoutStateChange1="60000" TimeoutStateChange2="30000" TimeoutStateChange3="30000" TimeoutStateChange4="300" TimeoutMailbox2="2000" GenerateOwnNetId="true" InitializeOwnNetId="true" CheckRevisionNoType="3" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6633 PROFINET IO Controller" Desc="EL6633" PortABoxInfo="#x0100001f">
 							<SyncMan>001000042600010001000000400000040004001026010000</SyncMan>
 							<SyncMan>001400042200010002000000400000040004001422010000</SyncMan>
 							<SyncMan>001832016400010003000000000000000000001864010000</SyncMan>
@@ -11515,8 +11469,8 @@ Bit 8 - 15 : reserved]]></Comment>
 							<Fmmu>0000000000000000000000010000000002000000060000000500010000000000</Fmmu>
 							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
 							<BootStrapData>0010140200181402</BootStrapData>
-							<SuName>Term 21 (EL6633)_0</SuName>
-							<SuName>Term 21 (EL6633)_1</SuName>
+							<SuName>Term 46 (EL6633)_0</SuName>
+							<SuName>Term 46 (EL6633)_1</SuName>
 							<Pdo Name="vs-01_Inputs" Index="#x1a00" Flags="#x0001" SyncMan="3">
 								<Entry Name="vs-01_PnIoBoxState" Index="#x6000" Sub="#x01" Flags="#x00000100">
 									<DefaultDataMask>1f001f00</DefaultDataMask>
@@ -11662,10 +11616,10 @@ Bit 8 - 15 : reserved]]></Comment>
 							<CoeProfile ProfileNo="5001"/>
 						</EtherCAT>
 					</Box>
-					<Box Id="23" BoxType="9099">
+					<Box Id="48" BoxType="9099">
 						<Name>Term 23 (EL9011)</Name>
 						<ImageId>1010</ImageId>
-						<EtherCAT CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x23333050" InfoDataState="false" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9011 End Terminal" Desc="EL9011" PortABoxInfo="#x01000015"/>
+						<EtherCAT CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x23333050" InfoDataState="false" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9011 End Terminal" Desc="EL9011" PortABoxInfo="#x01000020"/>
 					</Box>
 				</Box>
 				<Box Id="44" BoxType="9099" BoxFlags="#x00000020">
@@ -13880,7 +13834,7 @@ Bit 8 - 15 : reserved]]></Comment>
 				<Name>Device 2 (EL6633)</Name>
 				<AddressInfo>
 					<Ecat>
-						<EtherCATDeviceId>21</EtherCATDeviceId>
+						<EtherCATDeviceId>32</EtherCATDeviceId>
 						<EtherCATDeviceName>TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 22 (EL6633)</EtherCATDeviceName>
 					</Ecat>
 				</AddressInfo>
@@ -13950,7 +13904,7 @@ SW Release Version: 1.0]]></Comment>
 							<Type>WORD</Type>
 						</Var>
 					</Vars>
-					<Profinet DeviceId="5013" VendorId="509" FrameOffset="32768" IPAdd="c0a8001e" ProtocolType="3" BoxOnDeviceTyp="164" MaxPhysSlotNr="16" AvailableSlots="0..16" InstanceServerPort="50000" InstanceClientPort="50001" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="16" SendClockFaktor="32" MaxInputLen="1440" MaxOutputLen="1440" SendClockFactorData="200040008000" RedRatio="0100020004000800100020004000800000010002" BoxTypeInfo="VS-XXXX Series Machine Vision System" MacAdd5="6" PDOmapping="1" OutputErrorBehavior="2" GSDMLPath="$(TWINCAT3DIR)Config\Io\Profinet\GSDML-V2.42-Keyence-VS-XXXX-20230509.xml" ImagePath="$(TWINCAT3DIR)Config\Io\Profinet\GSDML-01FD-1395-VS-XXXX.bmp" MainFamily="Sensors" ProductFamily="Keyence Machine Vision System" OrderNr="VS-XXXX" DefaultDNSName="vs-xxxx" VendorName="Keyence" FamDescription="VS Series Machine Vision System" GraphicFile="GSDML-01FD-1395-VS-XXXX" SWVersion="1.0" HWVersion="1.0" AltLanguage="7">
+					<Profinet DeviceId="5013" VendorId="509" FrameOffset="32768" Flags="16" IPAdd="c0a8001e" ProtocolType="3" BoxOnDeviceTyp="164" MaxPhysSlotNr="16" AvailableSlots="0..16" InstanceServerPort="61000" InstanceClientPort="60000" InstanceId="1" InstanceNumberOfARs="1" InstanceNumberOfAPIs="1" MinDeviceInterval="32" SavePnIoBoxValues="0100" MultipleWriteSupported="true" Phase="1" WatchdogFaktor="3" ReductionRatio="16" SendClockFaktor="32" MaxInputLen="1440" MaxOutputLen="1440" SendClockFactorData="200040008000" RedRatio="0100020004000800100020004000800000010002" BoxTypeInfo="VS-XXXX Series Machine Vision System" MacAdd5="6" PDOmapping="1" OutputErrorBehavior="2" GSDMLPath="$(TWINCAT3DIR)Config\Io\Profinet\GSDML-V2.42-Keyence-VS-XXXX-20230509.xml" ImagePath="$(TWINCAT3DIR)Config\Io\Profinet\GSDML-01FD-1395-VS-XXXX.bmp" MainFamily="Sensors" ProductFamily="Keyence Machine Vision System" OrderNr="VS-XXXX" DefaultDNSName="vs-xxxx" VendorName="Keyence" FamDescription="VS Series Machine Vision System" GraphicFile="GSDML-01FD-1395-VS-XXXX" SWVersion="1.0" HWVersion="1.0" AltLanguage="7">
 						<UsedGsdmlModule ModuleIdentNumber="1" ModuleName="DAP Module" InfoText="VS-XXXX Series Machine Vision System" OrderNumber="VS-XXXX">
 							<Slot>0</Slot>
 						</UsedGsdmlModule>
@@ -14973,26 +14927,20 @@ Submodule Info: Writes data to VS
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 2 (EL6070-0033)">
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm2_EL6070.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
-			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL4028)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
-				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1" VarB="AO Outputs Channel 1^Analog output"/>
-				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch2" VarB="AO Outputs Channel 2^Analog output"/>
-				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch3" VarB="AO Outputs Channel 3^Analog output"/>
-				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch4" VarB="AO Outputs Channel 4^Analog output"/>
-				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch5" VarB="AO Outputs Channel 5^Analog output"/>
-				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch6" VarB="AO Outputs Channel 6^Analog output"/>
-				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch7" VarB="AO Outputs Channel 7^Analog output"/>
-				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch8" VarB="AO Outputs Channel 8^Analog output"/>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 20 (EL4022)">
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL4022.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm20_EL4022.iEL4028_Ch1" VarB="AO Outputs Channel 1^Analog output"/>
+				<Link VarA="PlcTask Outputs^GVL_EtherCAT.stTerm20_EL4022.iEL4028_Ch2" VarB="AO Outputs Channel 2^Analog output"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 21 (EL3314-0092)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1" VarB="TC Inputs Channel 1^Value"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2" VarB="TC Inputs Channel 2^Value"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3" VarB="TC Inputs Channel 3^Value"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch4" VarB="TC Inputs Channel 4^Value"/>
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch1" VarB="TC Inputs Channel 1^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch2" VarB="TC Inputs Channel 2^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch3" VarB="TC Inputs Channel 3^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch4" VarB="TC Inputs Channel 4^Value"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL3314.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 22 (EL6633)">
-				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
+				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm22_EL6633.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>
 			</OwnerB>
 			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1100)^Term 3 (EL6910)">
 				<Link VarA="PlcTask Inputs^GVL_EtherCAT.stTerm3_EL6910.stTerminalInfo.nTerminal_State" VarB="InfoData^State"/>

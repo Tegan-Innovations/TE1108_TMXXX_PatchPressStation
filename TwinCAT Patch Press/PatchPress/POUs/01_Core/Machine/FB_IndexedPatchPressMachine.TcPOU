@@ -607,7 +607,7 @@ bManualIndexAttempt := rtManualIndexMove.Q AND (eMachineState = E_MachineState.M
 // Manual camera commands are consumed once; camera output ownership remains here.
 GVL_HMI.bCameraConnected := (GVL_EtherCAT.wVisionPnState = 0)
     AND (GVL_EtherCAT.wVisionPnDiag = 2)
-    AND GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational;
+    AND GVL_EtherCAT.stTerm22_EL6633.stTerminalInfo.bTerminalOperational;
 bManualCameraAllowed := (eMachineState = E_MachineState.Manual)
     AND stCommand.bVisionManualEnable AND stInputs.stSafety.bSafetyOk
     AND (GVL_EtherCAT.stVSKeyenceCamera.bRunStatus OR fbVSCamera.IsFaulted()

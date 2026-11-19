@@ -20,9 +20,9 @@ VAR_GLOBAL
 	stTerm17_EL7201  : ST_EL7201;
 	stTerm18_EL2904  : ST_EL2904;
     stTerm19_EL1809  : ST_EL1809;
-	stTerm20_EL3314  : ST_EL3314;
-	stTerm21_EL4028  : ST_EL4028;
-	stTerm21_EL6633  : ST_EL6633;
+	stTerm21_EL3314  : ST_EL3314;
+	stTerm20_EL4022  : ST_EL4022;
+	stTerm22_EL6633  : ST_EL6633;
 
     // Festo VABX EtherCAT manifold - Module 2 valve outputs.
     stFestoModule2_VABX : ST_VABX_A_S_BV_V4A;

@@ -143,9 +143,9 @@ GVL_IO.stInputs.uiPressureRegulatorActualRaw := GVL_EtherCAT.stTerm11_EL3058.iEL
  Terminal 20 | EL3314-0092 | Heat Stake Thermocouples
 ======================================================================================================================
 *)
-GVL_IO.stInputs.diHeatStakeTc1Raw := GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch1;
-GVL_IO.stInputs.diHeatStakeTc2Raw := GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch2;
-GVL_IO.stInputs.diHeatStakeTc3Raw := GVL_EtherCAT.stTerm20_EL3314.iEL3314_Ch3;
+GVL_IO.stInputs.diHeatStakeTc1Raw := GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch1;
+GVL_IO.stInputs.diHeatStakeTc2Raw := GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch2;
+GVL_IO.stInputs.diHeatStakeTc3Raw := GVL_EtherCAT.stTerm21_EL3314.iEL3314_Ch3;
 
 (*
 ======================================================================================================================
@@ -213,7 +213,7 @@ GVL_EtherCAT.stTerm13_EL2502.iEL2502_Ch2 := GVL_IO.stOutputs.uiHeatStakePwm1Raw;
  Terminal 21 | EL4028 | VEAB Heat Stake Down Pressure
 ======================================================================================================================
 *)
-GVL_EtherCAT.stTerm21_EL4028.iEL4028_Ch1 := GVL_IO.stOutputs.iHeatStakePressureRaw;
+GVL_EtherCAT.stTerm20_EL4022.iEL4028_Ch1 := GVL_IO.stOutputs.iHeatStakePressureRaw;
 
 (*
 ======================================================================================================================

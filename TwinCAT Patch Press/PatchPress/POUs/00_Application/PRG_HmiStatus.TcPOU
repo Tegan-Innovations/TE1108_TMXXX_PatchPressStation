@@ -508,18 +508,18 @@ GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.fbTerminalInfo(
     nTerminalState := GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.nTerminal_State,
     sTerminalState => GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.sTerminalInfo,
     bTerminalOperational => GVL_EtherCAT.stTerm19_EL1809.stTerminalInfo.bTerminalOperational);
-GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.fbTerminalInfo(
-    nTerminalState := GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.nTerminal_State,
-    sTerminalState => GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.sTerminalInfo,
-    bTerminalOperational => GVL_EtherCAT.stTerm21_EL4028.stTerminalInfo.bTerminalOperational);
-GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.fbTerminalInfo(
-    nTerminalState := GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.nTerminal_State,
-    sTerminalState => GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.sTerminalInfo,
-    bTerminalOperational => GVL_EtherCAT.stTerm20_EL3314.stTerminalInfo.bTerminalOperational);
-GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.fbTerminalInfo(
-    nTerminalState := GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.nTerminal_State,
-    sTerminalState => GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.sTerminalInfo,
-    bTerminalOperational => GVL_EtherCAT.stTerm21_EL6633.stTerminalInfo.bTerminalOperational);
+GVL_EtherCAT.stTerm20_EL4022.stTerminalInfo.fbTerminalInfo(
+    nTerminalState := GVL_EtherCAT.stTerm20_EL4022.stTerminalInfo.nTerminal_State,
+    sTerminalState => GVL_EtherCAT.stTerm20_EL4022.stTerminalInfo.sTerminalInfo,
+    bTerminalOperational => GVL_EtherCAT.stTerm20_EL4022.stTerminalInfo.bTerminalOperational);
+GVL_EtherCAT.stTerm21_EL3314.stTerminalInfo.fbTerminalInfo(
+    nTerminalState := GVL_EtherCAT.stTerm21_EL3314.stTerminalInfo.nTerminal_State,
+    sTerminalState => GVL_EtherCAT.stTerm21_EL3314.stTerminalInfo.sTerminalInfo,
+    bTerminalOperational => GVL_EtherCAT.stTerm21_EL3314.stTerminalInfo.bTerminalOperational);
+GVL_EtherCAT.stTerm22_EL6633.stTerminalInfo.fbTerminalInfo(
+    nTerminalState := GVL_EtherCAT.stTerm22_EL6633.stTerminalInfo.nTerminal_State,
+    sTerminalState => GVL_EtherCAT.stTerm22_EL6633.stTerminalInfo.sTerminalInfo,
+    bTerminalOperational => GVL_EtherCAT.stTerm22_EL6633.stTerminalInfo.bTerminalOperational);
 GVL_EtherCAT.stFestoTerminalInfo.fbTerminalInfo(
     nTerminalState := GVL_EtherCAT.stFestoTerminalInfo.nTerminal_State,
     sTerminalState => GVL_EtherCAT.stFestoTerminalInfo.sTerminalInfo,
