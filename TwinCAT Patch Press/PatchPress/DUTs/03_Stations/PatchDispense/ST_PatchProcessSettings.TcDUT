@@ -7,7 +7,7 @@ STRUCT
     lrPatchFeedRollVelocity : LREAL := 200.0;
     lrWasteRollVelocity : LREAL := 50.0;
     udiReleaseMs : UDINT := 5000;
-    udiAirBlowDelayMs : UDINT := 3000;
+    udiAirBlowDelayMs : UDINT := 1500;
     // M1 run-on after the left optical clears; milliseconds.
     udiDriveStopDelayMs : UDINT := 2000;
 END_STRUCT
