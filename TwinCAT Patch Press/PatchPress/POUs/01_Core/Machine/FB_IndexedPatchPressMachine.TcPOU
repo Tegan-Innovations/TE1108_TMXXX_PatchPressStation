@@ -3331,7 +3331,8 @@ fbProcessCycle.Cyclic(
         fbPatchDispense.IsFaulted()
         OR fbHeatStake.IsFaulted()
         OR fbVision.IsFaulted(),
-    tSequenceTimeout := T#2M,
+    tSequenceTimeout := UDINT_TO_TIME(
+        UINT_TO_UDINT(LIMIT(UINT#1, GVL_Persistent.uiAutoCycleIdleTimeoutMin, UINT#1440)) * UDINT#60000),
     bStartStations => bProcessStartStations,
     bStopStations => bProcessStopStations,
     bRequestIndex => bProcessRequestIndex,
@@ -3351,7 +3352,7 @@ fbProcessCycle.Cyclic(
 // Sources:
 // - physical/HMI Stop command;
 // - existing Events-cycle Stop Request;
-// - 2-minute automatic inactivity request from FB_ProcessCycle.
+// - Configured automatic inactivity request from FB_ProcessCycle.
 //
 // The existing Events/DataGrid logic is intentionally untouched, so the
 // operator Stop Request indication continues to appear immediately as before.

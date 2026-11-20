@@ -18050,6 +18050,16 @@
             },
             "USEMAPPING": true
         },
+        "ADS.PLC1.GVL_Persistent.uiAutoCycleIdleTimeoutMin": {
+            "ACCESS": 3,
+            "DOMAIN": "ADS",
+            "DYNAMIC": true,
+            "MAPPING": "PLC1::GVL_Persistent::uiAutoCycleIdleTimeoutMin",
+            "SCHEMA": {
+                "$ref": "tchmi:general#/definitions/UINT"
+            },
+            "USEMAPPING": true
+        },
         "ADS.PLC1.GVL_Persistent.astEventsHistory": {
             "ACCESS": 3,
             "DOMAIN": "ADS",
@@ -23195,6 +23205,7 @@
                 "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.lrActTorque": 1,
                 "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.lrActVelocity": 1,
                 "ADS.PLC1.GVL_Motion.AxisWasteRollMotor.udiErrorId": 1,
+                "ADS.PLC1.GVL_Persistent.uiAutoCycleIdleTimeoutMin": 3,
                 "ADS.PLC1.GVL_Persistent.astEventsHistory": 3,
                 "ADS.PLC1.GVL_Persistent.stStatistics.udiTotalFail": 3,
                 "ADS.PLC1.PRG_MachineControl.bKistlerReady": 3,

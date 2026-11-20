@@ -43,6 +43,9 @@
       },
       {
         "Name": "Others"
+      },
+      {
+        "Name": "Machine Settings"
       }
     ]
   }
@@ -175,6 +178,26 @@
                   "objectType": "StaticValue",
                   "valueType": "tchmi:framework#/definitions/ContentPath",
                   "value": "Contents/Screens/Settings/Settings_HeatStake_1.content"
+                },
+                "asyncWait": true
+              }
+            ]
+          },
+          {
+            "caseValue": {
+              "objectType": "StaticValue",
+              "valueType": "tchmi:general#/definitions/Any",
+              "value": "Machine Settings"
+            },
+            "actions": [
+              {
+                "objectType": "WriteToSymbol",
+                "active": true,
+                "symbolExpression": "%ctrl%IO_Region_18::TargetContent%/ctrl%",
+                "value": {
+                  "objectType": "StaticValue",
+                  "valueType": "tchmi:framework#/definitions/ContentPath",
+                  "value": "Contents/Screens/Settings/settings_setttings.content"
                 },
                 "asyncWait": true
               }

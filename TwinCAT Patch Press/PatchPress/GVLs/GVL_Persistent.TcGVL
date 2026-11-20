@@ -45,6 +45,8 @@ VAR_GLOBAL PERSISTENT RETAIN
     // Additive retained record, keyed by physical nest; confidence is non-retained.
     // Do not infer current part identity or resume a prepared position from this.
     aVisionPbupFitted : ARRAY[1..4] OF BOOL;
+
+    uiAutoCycleIdleTimeoutMin : UINT := 2;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
