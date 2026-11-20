@@ -418,7 +418,7 @@ GVL_MASTER.stStationEvents[3].aEvents[25].bEventFlag :=
 GVL_MASTER.stStationEvents[3].aEvents[25].bEventText :=
     'Camera not in RUN mode';
 GVL_MASTER.stStationEvents[3].aEvents[25].sSolution :=
-    'In Manual Mode, open the camera interface and select RUN.';
+    'In Manual Mode/Vision, click "Open Interface" and select RUN.';
 
 
 
