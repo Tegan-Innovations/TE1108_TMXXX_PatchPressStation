@@ -339,7 +339,10 @@ VAR uiId : UINT; END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 uiId := GetNestIdAtPosition(ePosition);
-IF uiId >= 1 AND uiId <= 4 THEN
+IF (uiId >= 1) AND (uiId <= 4) THEN
+    IF aNestInternal[uiId].eHeatStakeStage <> E_NestStageStatus.Waiting THEN
+        RETURN;
+    END_IF
     aNestInternal[uiId].stHeatStakeResult.bValid := FALSE;
     aNestInternal[uiId].stHeatStakeResult.bPassed := FALSE;
     aNestInternal[uiId].stHeatStakeResult.eCode := E_ProcessResultCode.None;
@@ -355,7 +358,10 @@ VAR uiId : UINT; END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 uiId := GetNestIdAtPosition(ePosition);
-IF uiId >= 1 AND uiId <= 4 THEN
+IF (uiId >= 1) AND (uiId <= 4) THEN
+    IF aNestInternal[uiId].ePatchDispenseStage <> E_NestStageStatus.Waiting THEN
+        RETURN;
+    END_IF
     aNestInternal[uiId].stPatchDispenseResult.bValid := FALSE;
     aNestInternal[uiId].stPatchDispenseResult.bPassed := FALSE;
     aNestInternal[uiId].stPatchDispenseResult.eCode := E_ProcessResultCode.None;
@@ -435,7 +441,10 @@ VAR uiId : UINT; END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[
 uiId := GetNestIdAtPosition(ePosition);
-IF uiId >= 1 AND uiId <= 4 THEN
+IF (uiId >= 1) AND (uiId <= 4) THEN
+    IF aNestInternal[uiId].eVisionStage <> E_NestStageStatus.Waiting THEN
+        RETURN;
+    END_IF
     aNestInternal[uiId].stVisionResult.bValid := FALSE;
     aNestInternal[uiId].stVisionResult.bPassed := FALSE;
     aNestInternal[uiId].stVisionResult.eCode := E_ProcessResultCode.None;

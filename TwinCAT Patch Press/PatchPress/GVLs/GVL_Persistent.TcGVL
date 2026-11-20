@@ -47,6 +47,10 @@ VAR_GLOBAL PERSISTENT RETAIN
     aVisionPbupFitted : ARRAY[1..4] OF BOOL;
 
     uiAutoCycleIdleTimeoutMin : UINT := 2;
+
+    // Buffer additional results when several stations finish in one scan.
+    aCSVAdditionalPendingRecords : ARRAY[0..1] OF ST_CycleDataCSV;
+    uiCSVAdditionalPendingCount : UINT := 0;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

@@ -69,9 +69,8 @@ VAR
     stHeatStakePresenceResult : ST_ProcessResult;
     stEmptyHeatStakePresenceResult : ST_ProcessResult;
     stVisionNest : ST_Nest;
-	stHistoryNest : ST_Nest;
 	stPatchDispenseCycleResult : ST_ProcessResult;
-	uiHistoryNestId : UINT := 0;
+    stHeatStakeCycleResult : ST_ProcessResult;
 
     bPatchDispenseRequired : BOOL;
     bHeatStakeRequired : BOOL;
@@ -89,10 +88,7 @@ VAR
     // Required to know which physical parts were actually being processed if
     // Safety is lost, because Update() immediately disables the station when
     // Safety_OK goes FALSE.
-    bPatchDispenseProcessingBeforeUpdate 	: BOOL;
-    bHeatStakeProcessingBeforeUpdate 		: BOOL;
     bVisionProcessingBeforeUpdate 			: BOOL;
-	bHeatStakeHeadDownStarted 				: BOOL;
 
     // Machine-state transition tracking for one-shot product disposition.
     ePreviousMachineState 					: E_MachineState := E_MachineState.PowerUp;
@@ -1014,16 +1010,13 @@ bVisionRequired :=
 // Capture active-process state BEFORE station Update(). On Safety loss the
 // station FB deliberately goes Disabled in the same scan, so querying IsBusy()
 // after Update() would lose the information needed to reject the affected part.
-bPatchDispenseProcessingBeforeUpdate := fbPatchDispense.IsBusy();
-bHeatStakeProcessingBeforeUpdate := fbHeatStake.IsBusy();
-bVisionProcessingBeforeUpdate := fbVision.IsBusy()
+bVisionProcessingBeforeUpdate :=
+    (fbVision.IsBusy() OR (bProcessStartStations AND bVisionRequired))
     AND NOT fbVisionManualImages.bActive AND NOT bVisionImageOwnedBeforeUpdate;
 
 fbOperatorStation.Cyclic(bAutomaticActive := (eMachineState = E_MachineState.AutoCycle), bIndexStable := stInputs.bIndexReady AND stInputs.bIndexLocked AND NOT stIndexStatus.bBusy, stOperatorNest := stOperatorNest, bPartPresent := stInputs.bLoadingStationEaglePresent,
     bPbupPresent := stInputs.bLoadingStationPbupPresent, bTwoHandsSafe := stInputs.bTwoHandsSafe,
-    bResetRequest := stCommand.bReset, bRejectChutePartPresent := stInputs.bRejectChutePartPresent, bRequireRejectConfirm := stConfig.bRequireRejectConfirm
-        OR (stOperatorNest.stHeatStakeResult.bValid
-            AND (stOperatorNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode)), bAllowEmptyNestIndex := stConfig.bAllowEmptyNestIndex);
+    bResetRequest := stCommand.bReset, bRejectChutePartPresent := stInputs.bRejectChutePartPresent, bRequireRejectConfirm := TRUE, bAllowEmptyNestIndex := stConfig.bAllowEmptyNestIndex);
 stOperatorStatus := fbOperatorStation.GetStatus();
 
 // Acknowledge only this physical nest's warning on the operator's accepted reject edge.
@@ -1105,6 +1098,7 @@ IF bProcessStartStations THEN
                 fbNestManager.StoreHeatStakeResultAtPosition(
                     ePosition := stConfig.eHeatStakePosition,
                     stResult := stHeatStakePresenceResult);
+                FinaliseAndRecordAtPosition(stConfig.eHeatStakePosition);
                 // Reclassify immediately so completion/fault handling cannot overwrite this FAIL.
                 stHeatStakeNest := fbNestManager.GetNestAtPosition(stConfig.eHeatStakePosition);
                 bHeatStakeRequired := FALSE;
@@ -1113,11 +1107,7 @@ IF bProcessStartStations THEN
             fbHeatStake.RequestStart();
         END_IF
     ELSE
-        // Keep this product FAIL across cycle restarts until its reject is confirmed.
-        IF NOT (stHeatStakeNest.stHeatStakeResult.bValid
-            AND (stHeatStakeNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode)) THEN
-            fbNestManager.MarkHeatStakeNotTestedAtPosition(stConfig.eHeatStakePosition);
-        END_IF
+        fbNestManager.MarkHeatStakeNotTestedAtPosition(stConfig.eHeatStakePosition);
     END_IF
 
     IF bVisionRequired THEN
@@ -1289,7 +1279,6 @@ fbHeatStake.Update(
     bContactDwellActive => bHeatStakeContactDwellActive,
     usiSequenceStep => usiHeatStakeSequenceStep,
     bHeadDownTimeoutFault => bHeatStakeStationHeadDownTimeoutFault,
-	bHeadDownStarted => bHeatStakeHeadDownStarted,
     bHeadUpTimeoutFault => bHeatStakeStationHeadUpTimeoutFault,
     bHeadSensorConflictFault => bHeatStakeStationHeadSensorConflictFault
 );
@@ -2762,28 +2751,21 @@ THEN
 			stResult := stPatchDispenseCycleResult
 		);
 	
-		// -----------------------------------------------------
-		// PATCH DISPENSE FAILED
-		// -----------------------------------------------------
-		// Patch failure is not a definitive product Reject.
-		// The part must return to the operator for reprocessing.
-		IF stPatchDispenseCycleResult.bValid
-			AND NOT stPatchDispenseCycleResult.bPassed
-		THEN
-	
-			fbNestManager.MarkReprocessAtPosition(
-				ePosition := stConfig.ePatchDispensePosition
-			);
-	
+		IF stPatchDispenseCycleResult.bValid AND NOT stPatchDispenseCycleResult.bPassed THEN
+			FinaliseAndRecordAtPosition(stConfig.ePatchDispensePosition);
 		END_IF
-	
+
 	END_IF
 
     IF bHeatStakeRequired THEN
+        stHeatStakeCycleResult := fbHeatStake.GetResult();
         fbNestManager.StoreHeatStakeResultAtPosition(
             ePosition := stConfig.eHeatStakePosition,
-            stResult := fbHeatStake.GetResult()
+            stResult := stHeatStakeCycleResult
         );
+        IF stHeatStakeCycleResult.bValid AND NOT stHeatStakeCycleResult.bPassed THEN
+            FinaliseAndRecordAtPosition(stConfig.eHeatStakePosition);
+        END_IF
     END_IF
 
     IF bVisionRequired THEN
@@ -2793,295 +2775,7 @@ THEN
         );
     END_IF
 	
-// =====================================================
-// FINALISE PRODUCT RESULT
-// =====================================================
-
-// Read the Vision nest before finalisation.
-// Reprocess parts must never be converted into a final Reject.
-stHistoryNest :=
-    fbNestManager.GetNestAtPosition(
-        stConfig.eVisionPosition
-    );
-
-IF (stHistoryNest.eDisposition <> E_PartDisposition.Reprocess)
-    AND fbNestManager.FinaliseResultAtPosition(
-        ePosition := stConfig.eVisionPosition
-    )
-THEN
-
-    // Read the finalised nest immediately.
-    // At this point the final result and statistics are already valid.
-    stHistoryNest :=
-        fbNestManager.GetNestAtPosition(
-            stConfig.eVisionPosition
-        );
-
-    uiHistoryNestId := stHistoryNest.nId;
-
-
-    // =================================================
-    // TEST HISTORY
-    // =================================================
-
-    IF stHistoryNest.bPartPresent
-        AND stHistoryNest.stResult.bValid
-    THEN
-
-        // ---------------------------------------------
-        // GENERAL RESULT
-        // ---------------------------------------------
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].uiNestId := uiHistoryNestId;
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].eResult := stHistoryNest.eDisposition;
-
-
-        // ---------------------------------------------
-        // PATCH DISPENSE
-        // ---------------------------------------------
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].bPatchDispenseValid :=
-            stHistoryNest.stPatchDispenseResult.bValid;
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].bPatchDispensePass :=
-            stHistoryNest.stPatchDispenseResult.bPassed;
-
-
-        // ---------------------------------------------
-        // HEAT STAKE
-        // ---------------------------------------------
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].bHeatStakeValid :=
-            stHistoryNest.stHeatStakeResult.bValid;
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].bHeatStakePass :=
-            stHistoryNest.stHeatStakeResult.bPassed;
-
-
-        // ---------------------------------------------
-        // VISION
-        // ---------------------------------------------
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].bVisionValid :=
-            stHistoryNest.stVisionResult.bValid;
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].bVisionPass :=
-            stHistoryNest.stVisionResult.bPassed;
-		
-		// Store individual Vision inspection results
-		// for persistent history and future CSV integration.
-		
-		GVL_Persistent.astTestHistory[
-			GVL_Persistent.uiTestHistoryWriteIndex
-		].stVisionInspectionResults :=
-			stHistoryNest.stVisionResult.CameraResults;
-
-
-        // ---------------------------------------------
-        // DATE / TIME
-        // ---------------------------------------------
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].sDate := GVL_MASTER.sSystemDate;
-
-        GVL_Persistent.astTestHistory[
-            GVL_Persistent.uiTestHistoryWriteIndex
-        ].sTime := GVL_MASTER.sSystemTime;
-
-
-        // ---------------------------------------------
-        // FINAL RESULT TEXT
-        // ---------------------------------------------
-
-        IF stHistoryNest.stResult.bPassed THEN
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sResult := 'PASS';
-
-        ELSE
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sResult := 'FAIL';
-
-        END_IF;
-
-
-        // ---------------------------------------------
-        // PATCH DISPENSE RESULT TEXT
-        // ---------------------------------------------
-
-        IF NOT stHistoryNest.stPatchDispenseResult.bValid THEN
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sPatchDispenseResult := 'NOT TESTED';
-
-        ELSIF stHistoryNest.stPatchDispenseResult.bPassed THEN
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sPatchDispenseResult := 'PASS';
-
-        ELSE
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sPatchDispenseResult := 'FAIL';
-
-        END_IF;
-
-
-        // ---------------------------------------------
-        // HEAT STAKE RESULT TEXT
-        // ---------------------------------------------
-
-        IF NOT stHistoryNest.stHeatStakeResult.bValid THEN
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sHeatStakeResult := 'NOT TESTED';
-
-        ELSIF stHistoryNest.stHeatStakeResult.bPassed THEN
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sHeatStakeResult := 'PASS';
-
-        ELSE
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sHeatStakeResult := 'FAIL';
-
-        END_IF;
-
-
-        // ---------------------------------------------
-        // VISION RESULT TEXT
-        // ---------------------------------------------
-
-        IF NOT stHistoryNest.stVisionResult.bValid THEN
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sVisionResult := 'NOT TESTED';
-
-        ELSIF stHistoryNest.stVisionResult.bPassed THEN
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sVisionResult := 'PASS';
-
-        ELSE
-
-            GVL_Persistent.astTestHistory[
-                GVL_Persistent.uiTestHistoryWriteIndex
-            ].sVisionResult := 'FAIL';
-
-        END_IF;
-
-
-		// =====================================================
-		// CSV - CAPTURE FINAL PRODUCT RESULT
-		// =====================================================
-		// Capture the final validated Test History record.
-		// REPROCESS is excluded by the existing finalisation.
-		// =====================================================
-		
-		IF NOT GVL_Persistent.bCSVPendingRecord THEN
-		
-			GVL_Persistent.stCSVPendingRecord.uiNestId :=
-				GVL_Persistent.astTestHistory[
-					GVL_Persistent.uiTestHistoryWriteIndex
-				].uiNestId;
-		
-			GVL_Persistent.stCSVPendingRecord.sGeneralResult :=
-				GVL_Persistent.astTestHistory[
-					GVL_Persistent.uiTestHistoryWriteIndex
-				].sResult;
-		
-			GVL_Persistent.stCSVPendingRecord.sPatchDispenseResult :=
-				GVL_Persistent.astTestHistory[
-					GVL_Persistent.uiTestHistoryWriteIndex
-				].sPatchDispenseResult;
-		
-			GVL_Persistent.stCSVPendingRecord.sHeatStakeResult :=
-				GVL_Persistent.astTestHistory[
-					GVL_Persistent.uiTestHistoryWriteIndex
-				].sHeatStakeResult;
-		
-			GVL_Persistent.stCSVPendingRecord.sVisionResult :=
-				GVL_Persistent.astTestHistory[
-					GVL_Persistent.uiTestHistoryWriteIndex
-				].sVisionResult;
-		
-			GVL_Persistent.stCSVPendingRecord.sDate :=
-				GVL_Persistent.astTestHistory[
-					GVL_Persistent.uiTestHistoryWriteIndex
-				].sDate;
-		
-			GVL_Persistent.stCSVPendingRecord.sTime :=
-				GVL_Persistent.astTestHistory[
-					GVL_Persistent.uiTestHistoryWriteIndex
-				].sTime;
-		
-			GVL_Persistent.bCSVPendingRecord := TRUE;
-		
-		ELSE
-		
-			// Previous record has not yet been consumed.
-			GVL_Persistent.udiCSVRecordsDropped :=
-				GVL_Persistent.udiCSVRecordsDropped + 1;
-		
-			GVL_Persistent.bCSVQueueOverflow := TRUE;
-		
-		END_IF
-		
-		// ---------------------------------------------
-        // ADVANCE HISTORY BUFFER
-        // ---------------------------------------------
-
-        IF GVL_Persistent.uiTestHistoryCount < 2001 THEN
-
-            GVL_Persistent.uiTestHistoryCount :=
-                GVL_Persistent.uiTestHistoryCount + 1;
-
-        END_IF;
-
-        IF GVL_Persistent.uiTestHistoryWriteIndex < 2000 THEN
-
-            GVL_Persistent.uiTestHistoryWriteIndex :=
-                GVL_Persistent.uiTestHistoryWriteIndex + 1;
-
-        ELSE
-
-            GVL_Persistent.uiTestHistoryWriteIndex := 0;
-
-        END_IF;
-
-    END_IF;
-
-END_IF;
+    FinaliseAndRecordAtPosition(stConfig.eVisionPosition);
 
 // Prevent this cycle result from being stored/finalised again.
 bCycleResultsStored := TRUE;
@@ -3948,159 +3642,41 @@ THEN
     eMachineState := E_MachineState.Fault;
 END_IF
 
-// =========================================================
-// PRODUCT DISPOSITION ON MACHINE FAULT DURING PROCESS
-// =========================================================
-// A product whose active process is interrupted by a machine
-// Fault can no longer continue as a valid production part.
-//
-// Rules:
-// - A completed upstream process remains Complete.
-// - The process interrupted by the Fault becomes Fail.
-// - Downstream processes become NotTested.
-// - The affected product must never reach the operator with
-//   an undefined final disposition.
-//
-// Products that were only waiting for their next process and
-// were not actively being processed are preserved and may
-// continue normally after machine recovery.
-
+// Finalise the affected parts before automatic operation resumes.
 IF (eMachineState = E_MachineState.Fault)
     AND (ePreviousMachineState = E_MachineState.AutoCycle)
 THEN
-
     stProcessFaultResult.bValid := TRUE;
     stProcessFaultResult.bPassed := FALSE;
     stProcessFaultResult.eCode := E_ProcessResultCode.Aborted;
     stProcessFaultResult.udiFaultCode := 0;
     stProcessFaultResult.udiAlertCode := 0;
 
+    stPatchDispenseNest := fbNestManager.GetNestAtPosition(stConfig.ePatchDispensePosition);
+    stHeatStakeNest := fbNestManager.GetNestAtPosition(stConfig.eHeatStakePosition);
+    stVisionNest := fbNestManager.GetNestAtPosition(stConfig.eVisionPosition);
 
-    // =====================================================
-	// PATCH DISPENSE INCOMPLETE / INTERRUPTED
-	// =====================================================
-	// If a part is physically at Patch Dispense and its Patch
-	// process was still required when AutoCycle entered Fault,
-	// the part must be removed for Reprocess.
-	//
-	// This also covers a Fault occurring before the Patch
-	// station actually became Busy.
-	//
-	// A Patch already completed successfully is preserved because
-	// bPatchDispenseRequired will already be FALSE.
-	
-	IF stPatchDispenseNest.bPartPresent
-		AND bPatchDispenseRequired
-	THEN
-	
-		// Record why the Patch process did not complete.
-		stProcessFaultResult.bValid := TRUE;
-		stProcessFaultResult.bPassed := FALSE;
-		stProcessFaultResult.eCode := E_ProcessResultCode.Aborted;
-		stProcessFaultResult.udiFaultCode := 0;
-		stProcessFaultResult.udiAlertCode := 0;
-		stProcessFaultResult.sDetail :=
-			'Patch Dispense incomplete - part requires reprocess';
-	
-		fbNestManager.StorePatchDispenseResultAtPosition(
-			ePosition := stConfig.ePatchDispensePosition,
-			stResult := stProcessFaultResult
-		);
-	
-		// IMPORTANT:
-		// Do not finalise as FAIL/Reject.
-		// Do not count Good/Bad.
-		// Do not create a Data History result.
-		fbNestManager.MarkReprocessAtPosition(
-			ePosition := stConfig.ePatchDispensePosition
-		);
-	
-	END_IF
-
-   	// =====================================================
-	// HEAT STAKE INTERRUPTED
-	// =====================================================
-	// Before head-down: Reprocess.
-	// After head-down: Reject.
-	// Preserve the completed Patch Dispense result.
-	
-	IF stHeatStakeNest.bPartPresent
-		AND bHeatStakeRequired
-	THEN
-	
-		stProcessFaultResult.bValid := TRUE;
-		stProcessFaultResult.bPassed := FALSE;
-		stProcessFaultResult.eCode := E_ProcessResultCode.Aborted;
-		stProcessFaultResult.udiFaultCode := 0;
-		stProcessFaultResult.udiAlertCode := 0;
-	
-		IF bHeatStakeHeadDownStarted THEN
-	
-			// Physical process started: Reject.
-			stProcessFaultResult.sDetail :=
-				'Heat Stake interrupted after head-down - Reject';
-	
-			fbNestManager.StoreHeatStakeResultAtPosition(
-				ePosition := stConfig.eHeatStakePosition,
-				stResult := stProcessFaultResult
-			);
-	
-			fbNestManager.MarkVisionNotTestedAtPosition(
-				stConfig.eHeatStakePosition
-			);
-	
-			fbNestManager.FinaliseResultAtPosition(
-				stConfig.eHeatStakePosition
-			);
-	
-		ELSE
-	
-			// Physical process not started: Reprocess.
-			stProcessFaultResult.sDetail :=
-				'Heat Stake interrupted before head-down - Reprocess';
-	
-			fbNestManager.StoreHeatStakeResultAtPosition(
-				ePosition := stConfig.eHeatStakePosition,
-				stResult := stProcessFaultResult
-			);
-	
-			fbNestManager.MarkReprocessAtPosition(
-				ePosition := stConfig.eHeatStakePosition
-			);
-	
-		END_IF
-	
-	END_IF
-
-    // =====================================================
-    // VISION INTERRUPTED
-    // =====================================================
-    // Patch and Heat Stake results are preserved.
-    // Vision becomes Fail.
-
-    IF stVisionNest.bPartPresent
-        AND NOT (stVisionNest.stHeatStakeResult.bValid
-            AND (stVisionNest.stHeatStakeResult.udiAlertCode = GVL_MASTER.udiHeatStakePatchMissingAlertCode))
-        AND (
-            bVisionProcessingBeforeUpdate
-            OR (bProcessStartStations AND bVisionRequired)
-        )
-    THEN
-
-        stProcessFaultResult.sDetail :=
-            'Vision aborted by machine fault during process';
-
-        fbNestManager.StoreVisionResultAtPosition(
-            ePosition := stConfig.eVisionPosition,
-            stResult := stProcessFaultResult
-        );
-
-        fbNestManager.FinaliseResultAtPosition(
-            stConfig.eVisionPosition
-        );
-
+    IF bPatchDispenseRequired AND (stPatchDispenseNest.ePatchDispenseStage = E_NestStageStatus.Waiting) THEN
+        stProcessFaultResult.sDetail := 'Patch Dispense incomplete - Reject';
+        fbNestManager.StorePatchDispenseResultAtPosition(stConfig.ePatchDispensePosition, stProcessFaultResult);
+        FinaliseAndRecordAtPosition(stConfig.ePatchDispensePosition);
     END_IF
 
+    IF bHeatStakeRequired AND (stHeatStakeNest.eHeatStakeStage = E_NestStageStatus.Waiting) THEN
+        stProcessFaultResult.sDetail := 'Heat Stake interrupted - Reject';
+        fbNestManager.StoreHeatStakeResultAtPosition(stConfig.eHeatStakePosition, stProcessFaultResult);
+        FinaliseAndRecordAtPosition(stConfig.eHeatStakePosition);
+    END_IF
+
+    IF stVisionNest.bPartPresent
+        AND (stVisionNest.eVisionStage = E_NestStageStatus.Waiting)
+        AND (bVisionProcessingBeforeUpdate
+            OR (bVisionRequired AND fbVision.IsFaulted()))
+    THEN
+        stProcessFaultResult.sDetail := 'Vision interrupted - Reject';
+        fbNestManager.StoreVisionResultAtPosition(stConfig.eVisionPosition, stProcessFaultResult);
+        FinaliseAndRecordAtPosition(stConfig.eVisionPosition);
+    END_IF
 END_IF
 
 // Validated Silicone-station handshake:
@@ -4466,6 +4042,250 @@ bPatchVerticalDownCommandPrevious := stOutputs.bPatchVerticalDown;
 bVisionRotate0CommandPrevious := stOutputs.bVisionRotate0;
 bVisionRotate180CommandPrevious := stOutputs.bVisionRotate180;
 ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FinaliseAndRecordAtPosition" Id="{dbe17950-e44a-40e0-8569-211937468bbf}">
+      <Declaration><![CDATA[METHOD PRIVATE FinaliseAndRecordAtPosition
+VAR_INPUT
+    ePosition : E_TablePosition;
+END_VAR
+VAR
+    stHistoryNest : ST_Nest;
+    stCSVRecord : ST_CycleDataCSV;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stHistoryNest := fbNestManager.GetNestAtPosition(ePosition);
+IF NOT stHistoryNest.bPartPresent OR stHistoryNest.bStatisticsCounted THEN
+    RETURN;
+END_IF
+
+IF fbNestManager.FinaliseResultAtPosition(ePosition) THEN
+    stHistoryNest := fbNestManager.GetNestAtPosition(ePosition);
+    // =================================================
+    // TEST HISTORY
+    // =================================================
+
+    IF stHistoryNest.bPartPresent
+        AND stHistoryNest.stResult.bValid
+    THEN
+
+        // ---------------------------------------------
+        // GENERAL RESULT
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].uiNestId := stHistoryNest.nId;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].eResult := stHistoryNest.eDisposition;
+
+
+        // ---------------------------------------------
+        // PATCH DISPENSE
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bPatchDispenseValid :=
+            stHistoryNest.stPatchDispenseResult.bValid;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bPatchDispensePass :=
+            stHistoryNest.stPatchDispenseResult.bPassed;
+
+
+        // ---------------------------------------------
+        // HEAT STAKE
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bHeatStakeValid :=
+            stHistoryNest.stHeatStakeResult.bValid;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bHeatStakePass :=
+            stHistoryNest.stHeatStakeResult.bPassed;
+
+
+        // ---------------------------------------------
+        // VISION
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bVisionValid :=
+            stHistoryNest.stVisionResult.bValid;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].bVisionPass :=
+            stHistoryNest.stVisionResult.bPassed;
+
+		// Store individual Vision inspection results
+		// for persistent history and future CSV integration.
+
+		GVL_Persistent.astTestHistory[
+			GVL_Persistent.uiTestHistoryWriteIndex
+		].stVisionInspectionResults :=
+			stHistoryNest.stVisionResult.CameraResults;
+
+
+        // ---------------------------------------------
+        // DATE / TIME
+        // ---------------------------------------------
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].sDate := GVL_MASTER.sSystemDate;
+
+        GVL_Persistent.astTestHistory[
+            GVL_Persistent.uiTestHistoryWriteIndex
+        ].sTime := GVL_MASTER.sSystemTime;
+
+
+        // ---------------------------------------------
+        // FINAL RESULT TEXT
+        // ---------------------------------------------
+
+        IF stHistoryNest.stResult.bPassed THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sResult := 'PASS';
+
+        ELSE
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sResult := 'FAIL';
+
+        END_IF;
+
+
+        // ---------------------------------------------
+        // PATCH DISPENSE RESULT TEXT
+        // ---------------------------------------------
+
+        IF NOT stHistoryNest.stPatchDispenseResult.bValid THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sPatchDispenseResult := 'NOT TESTED';
+
+        ELSIF stHistoryNest.stPatchDispenseResult.bPassed THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sPatchDispenseResult := 'PASS';
+
+        ELSE
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sPatchDispenseResult := 'FAIL';
+
+        END_IF;
+
+
+        // ---------------------------------------------
+        // HEAT STAKE RESULT TEXT
+        // ---------------------------------------------
+
+        IF NOT stHistoryNest.stHeatStakeResult.bValid THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sHeatStakeResult := 'NOT TESTED';
+
+        ELSIF stHistoryNest.stHeatStakeResult.bPassed THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sHeatStakeResult := 'PASS';
+
+        ELSE
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sHeatStakeResult := 'FAIL';
+
+        END_IF;
+
+
+        // ---------------------------------------------
+        // VISION RESULT TEXT
+        // ---------------------------------------------
+
+        IF NOT stHistoryNest.stVisionResult.bValid THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sVisionResult := 'NOT TESTED';
+
+        ELSIF stHistoryNest.stVisionResult.bPassed THEN
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sVisionResult := 'PASS';
+
+        ELSE
+
+            GVL_Persistent.astTestHistory[
+                GVL_Persistent.uiTestHistoryWriteIndex
+            ].sVisionResult := 'FAIL';
+
+        END_IF;
+
+
+        // Hand off the recorded result to the CSV writer in FIFO order.
+        stCSVRecord.uiNestId := GVL_Persistent.astTestHistory[GVL_Persistent.uiTestHistoryWriteIndex].uiNestId;
+        stCSVRecord.sGeneralResult := GVL_Persistent.astTestHistory[GVL_Persistent.uiTestHistoryWriteIndex].sResult;
+        stCSVRecord.sPatchDispenseResult := GVL_Persistent.astTestHistory[GVL_Persistent.uiTestHistoryWriteIndex].sPatchDispenseResult;
+        stCSVRecord.sHeatStakeResult := GVL_Persistent.astTestHistory[GVL_Persistent.uiTestHistoryWriteIndex].sHeatStakeResult;
+        stCSVRecord.sVisionResult := GVL_Persistent.astTestHistory[GVL_Persistent.uiTestHistoryWriteIndex].sVisionResult;
+        stCSVRecord.sDate := GVL_Persistent.astTestHistory[GVL_Persistent.uiTestHistoryWriteIndex].sDate;
+        stCSVRecord.sTime := GVL_Persistent.astTestHistory[GVL_Persistent.uiTestHistoryWriteIndex].sTime;
+
+        IF NOT GVL_Persistent.bCSVPendingRecord THEN
+            GVL_Persistent.stCSVPendingRecord := stCSVRecord;
+            GVL_Persistent.bCSVPendingRecord := TRUE;
+        ELSIF GVL_Persistent.uiCSVAdditionalPendingCount < 2 THEN
+            GVL_Persistent.aCSVAdditionalPendingRecords[GVL_Persistent.uiCSVAdditionalPendingCount] := stCSVRecord;
+            GVL_Persistent.uiCSVAdditionalPendingCount := GVL_Persistent.uiCSVAdditionalPendingCount + 1;
+        ELSE
+            GVL_Persistent.udiCSVRecordsDropped := GVL_Persistent.udiCSVRecordsDropped + 1;
+            GVL_Persistent.bCSVQueueOverflow := TRUE;
+        END_IF
+
+		// ---------------------------------------------
+        // ADVANCE HISTORY BUFFER
+        // ---------------------------------------------
+
+        IF GVL_Persistent.uiTestHistoryCount < 2001 THEN
+
+            GVL_Persistent.uiTestHistoryCount :=
+                GVL_Persistent.uiTestHistoryCount + 1;
+
+        END_IF;
+
+        IF GVL_Persistent.uiTestHistoryWriteIndex < 2000 THEN
+
+            GVL_Persistent.uiTestHistoryWriteIndex :=
+                GVL_Persistent.uiTestHistoryWriteIndex + 1;
+
+        ELSE
+
+            GVL_Persistent.uiTestHistoryWriteIndex := 0;
+
+        END_IF;
+
+    END_IF;
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="ResetCyclicOutputs" Id="{2afcae24-43c4-4871-871e-9348e38cf5c0}">

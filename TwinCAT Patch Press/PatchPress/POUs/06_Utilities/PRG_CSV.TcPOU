@@ -85,8 +85,14 @@ IF GVL_Persistent.bCSVPendingRecord THEN
 
         uiQueueCount := uiQueueCount + 1;
 
-        // Release handoff only after successful enqueue.
-        GVL_Persistent.bCSVPendingRecord := FALSE;
+        // Promote the oldest additional record only after successful enqueue.
+        IF GVL_Persistent.uiCSVAdditionalPendingCount > 0 THEN
+            GVL_Persistent.stCSVPendingRecord := GVL_Persistent.aCSVAdditionalPendingRecords[0];
+            GVL_Persistent.aCSVAdditionalPendingRecords[0] := GVL_Persistent.aCSVAdditionalPendingRecords[1];
+            GVL_Persistent.uiCSVAdditionalPendingCount := GVL_Persistent.uiCSVAdditionalPendingCount - 1;
+        ELSE
+            GVL_Persistent.bCSVPendingRecord := FALSE;
+        END_IF
 
     ELSE
 
