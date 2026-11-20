@@ -38,8 +38,8 @@ GVL_MASTER.stStationEvents[0].aEvents[2].bEventFlag :=
     (NOT GVL_MASTER.stInputs.bLeftFlapChannel1 OR NOT GVL_MASTER.stInputs.bLeftFlapChannel2)
     AND NOT GVL_MASTER.stInputs.stSafety.bSafetyOk
     AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp);
-GVL_MASTER.stStationEvents[0].aEvents[2].bEventText := 'Left safety flap active';
-GVL_MASTER.stStationEvents[0].aEvents[2].sSolution := 'Clear left flap and reset Safety';
+GVL_MASTER.stStationEvents[0].aEvents[2].bEventText := 'Right safety flap active';
+GVL_MASTER.stStationEvents[0].aEvents[2].sSolution := 'Clear right flap and reset Safety';
 
 
 GVL_MASTER.stStationEvents[0].aEvents[3].bFault := TRUE;
@@ -47,8 +47,8 @@ GVL_MASTER.stStationEvents[0].aEvents[3].bEventFlag :=
     (NOT GVL_MASTER.stInputs.bRightFlapChannel1 OR NOT GVL_MASTER.stInputs.bRightFlapChannel2)
     AND NOT GVL_MASTER.stInputs.stSafety.bSafetyOk
     AND (GVL_MASTER.stStatus.eMachineState <> E_MachineState.PowerUp);
-GVL_MASTER.stStationEvents[0].aEvents[3].bEventText := 'Right safety flap active';
-GVL_MASTER.stStationEvents[0].aEvents[3].sSolution := 'Clear right flap and reset Safety';
+GVL_MASTER.stStationEvents[0].aEvents[3].bEventText := 'Left safety flap active';
+GVL_MASTER.stStationEvents[0].aEvents[3].sSolution := 'Clear left flap and reset Safety';
 
 
 GVL_MASTER.stStationEvents[0].aEvents[4].bCycleStopRequest := TRUE;
@@ -416,9 +416,9 @@ GVL_MASTER.stStationEvents[3].aEvents[25].bEventFlag :=
     GVL_MASTER.stStatus.stVision.bCommissioned
     AND NOT GVL_EtherCAT.stVSKeyenceCamera.bRunStatus;
 GVL_MASTER.stStationEvents[3].aEvents[25].bEventText :=
-    'Vision camera not in RUN - Setup or camera unavailable';
+    'Camera not in RUN mode';
 GVL_MASTER.stStationEvents[3].aEvents[25].sSolution :=
-    'Select RUN in VS Creator. If already in RUN, check camera power and EtherNet/IP communication.';
+    'In Manual Mode, open the camera interface and select RUN.';
 
 
 
