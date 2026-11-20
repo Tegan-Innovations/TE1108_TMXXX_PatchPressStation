@@ -30,6 +30,8 @@ VAR
     bRotate0RawInternal : BOOL;
     bRotate180RawInternal : BOOL;
     bCameraTriggerAcceptedInternal : BOOL;
+    bCameraReadyForFlipInternal : BOOL;
+    bUseOptimizedSequenceTimingInternal : BOOL;
     rtRotate0Raw : R_TRIG;
     tonFlipDeparture : TON;
     tFlipDepartureFilter : TIME := T#20MS;
@@ -183,7 +185,8 @@ bTriggerRequestInternal :=
     AND (
         ((usiStepInternal = 100) AND (nCurrentProgramNumberInternal = 1)
             AND bFlipTriggerLatched AND NOT bFlipCaptureWindowMissed)
-        OR ((usiStepInternal = 10) AND (nCurrentProgramNumberInternal = 0))
+        OR ((usiStepInternal = 10) AND (nCurrentProgramNumberInternal = 0)
+            AND NOT tonCameraTriggerDelay[2].IN)
         OR ((usiStepInternal = 110) AND tonCamera110Rearm.Q)
         OR ((usiStepInternal = 180) AND (nCurrentProgramNumberInternal = 3))
     );
@@ -191,7 +194,13 @@ bGetResultsRequestInternal := FALSE;
 bAcknowledgeResultsInternal := FALSE;
 bChangeProgramRequestInternal := FALSE;
 tonCameraTriggerDelay[1](PT := T#500MS);
-tonCameraTriggerDelay[2](PT := T#500MS);
+// Keep the program 0-to-1 timer running while pick and mounting proceed.
+IF (eStateInternal = E_PatchStationState.Processing)
+    AND ((usiStepInternal = 10) OR (bUseOptimizedSequenceTimingInternal AND (usiStepInternal <= 90))) THEN
+    tonCameraTriggerDelay[2](PT := T#200MS);
+ELSE
+    tonCameraTriggerDelay[2](PT := T#500MS);
+END_IF
 tonDelayInspectionPlaceHolder(PT := tDelayInspectionPlaceHolder);
 
  // ============================================================================
@@ -581,68 +590,36 @@ ELSE
             // Each scan must prove completion of the active step.
             bStepTargetReached := FALSE;
 
+            // Continue the first camera handshake while automatic tooling moves.
+            IF (usiStepInternal = 10) OR (bUseOptimizedSequenceTimingInternal AND (usiStepInternal <= 90)) THEN
+                IF tonCameraTriggerDelay[1].Q THEN
+                    tonCameraTriggerDelay[1].IN := FALSE;
+                    tonCameraTriggerDelay[2].IN := TRUE;
+                END_IF
+
+                IF tonCameraTriggerDelay[2].IN THEN
+                    nSetProgramNumberInternal := 1;
+                    bChangeProgramRequestInternal := (nCurrentProgramNumberInternal <> 1);
+                ELSIF (usiStepInternal = 10) AND (nCurrentProgramNumberInternal = 0)
+                    AND bCameraResultsReadyInternal THEN
+                    bGetResultsRequestInternal := TRUE;
+                    bAcknowledgeResultsInternal := TRUE;
+                    tonCameraTriggerDelay[1].IN := TRUE;
+                ELSIF (usiStepInternal = 10) AND NOT tonCameraTriggerDelay[1].IN
+                    AND (nCurrentProgramNumberInternal <> 0) THEN
+                    nSetProgramNumberInternal := 0;
+                    bChangeProgramRequestInternal := TRUE;
+                END_IF
+            END_IF
+
             CASE usiStepInternal OF
 
-
-				// ------------------------------------------------------------
-                // STEP 10 - CAMERA PROGRAM 0 - FIRST INSPECTION
-                // ------------------------------------------------------------
-				10:
-                    // Acquire program 0, then confirm the change to program 1.
-                    // Recover an interrupted cycle before accepting the first result.
-                    // Once acquisition/program-1 change starts, do not request 0 again.
-                    IF (nCurrentProgramNumberInternal <> 0)
-                        AND NOT tonCameraTriggerDelay[1].IN
-                        AND NOT tonCameraTriggerDelay[2].IN
-                    THEN
-                        nSetProgramNumberInternal := 0;
-                        bChangeProgramRequestInternal := TRUE;
-                    END_IF
-
-                    
-					
-					
-					IF (nCurrentProgramNumberInternal = 0)
-                        AND bCameraResultsReadyInternal AND NOT tonCameraTriggerDelay[2].IN THEN
-						
-						bGetResultsRequestInternal			:= TRUE;
-						bAcknowledgeResultsInternal			:= TRUE;
-						tonCameraTriggerDelay[1].IN			:= TRUE;
-						
-						
-					END_IF
-					
-					IF tonCameraTriggerDelay[1].Q THEN
-							
-							bGetResultsRequestInternal			:= FALSE;
-							bAcknowledgeResultsInternal			:= FALSE;
-							nSetProgramNumberInternal			:= 1;
-							bChangeProgramRequestInternal		:= TRUE;
-							tonCameraTriggerDelay[2].IN			:= TRUE;
-							tonCameraTriggerDelay[1].IN			:= FALSE;
-							
-							
-					END_IF
-					// Hold program selection until the camera reports the requested program.
-                    IF tonCameraTriggerDelay[2].IN THEN
-                        nSetProgramNumberInternal := 1;
-                        bChangeProgramRequestInternal := (nCurrentProgramNumberInternal <> 1);
-                    END_IF
-                    IF tonCameraTriggerDelay[2].Q AND (nCurrentProgramNumberInternal = 1) THEN
-							
-							
-							bChangeProgramRequestInternal		:= FALSE;
-							bStepTargetReached					:= TRUE;
-                            // Keep delay 2 complete until this step advances.
-							
-							
-					END_IF
-						
-                    sDiagnosticInternal := 'Vision: Camera first inspection ';
-					
-
-                // ------------------------------------------------------------
-                // ------------------------------------------------------------
+                10: // Keep the part stationary until the first result has been copied.
+                    bStepTargetReached := nVisionResultsInternal.aInspectionCompleted[1]
+                        AND (tonCameraTriggerDelay[1].IN OR tonCameraTriggerDelay[2].IN)
+                        AND (bUseOptimizedSequenceTimingInternal
+                            OR (tonCameraTriggerDelay[2].Q AND (nCurrentProgramNumberInternal = 1)));
+                    sDiagnosticInternal := 'Vision: Camera first inspection';
 
                 20: // Prepare existing tooling for pick.
                     bHorizontalBackRequestInternal := NOT bHorizontalBackInternal;
@@ -785,7 +762,14 @@ ELSE
                     bRotate0RequestInternal := NOT bRotate0Internal;
                     bStepTargetReached := bVerticalUpInternal AND NOT bVerticalDownInternal
                         AND bRotate0Internal AND NOT bRotate180Internal;
-                    sDiagnosticInternal := 'Vision: verify UP before flip';
+                    IF bUseOptimizedSequenceTimingInternal
+                        AND NOT (tonCameraTriggerDelay[2].Q AND (nCurrentProgramNumberInternal = 1)
+                            AND bCameraReadyForFlipInternal) THEN
+                        bStepTargetReached := FALSE;
+                        sDiagnosticInternal := 'Vision: waiting for camera program 1 ready';
+                    ELSE
+                        sDiagnosticInternal := 'Vision: verify UP before flip';
+                    END_IF
 
                 100: // Support retraction was confirmed in step 90.
 
@@ -1087,6 +1071,10 @@ ELSE
                 eStateInternal := E_PatchStationState.Fault;
                 usiStepInternal := 0;
 
+                bChangeProgramRequestInternal := FALSE;
+                bGetResultsRequestInternal := FALSE;
+                bAcknowledgeResultsInternal := FALSE;
+
                 sDiagnosticInternal := 'Vision: tooling movement or camera handshake timeout';
 
                 stResultInternal.bValid := TRUE;
@@ -1113,9 +1101,11 @@ ELSE
 
                 // Advance through the active steps in increments of 10.
               
-                // The next step must start with fresh camera delays.
-                tonCameraTriggerDelay[1](IN := FALSE);
-                tonCameraTriggerDelay[2](IN := FALSE);
+                // Keep the first camera handshake through step 90.
+                IF NOT bUseOptimizedSequenceTimingInternal OR (usiStepInternal >= 90) THEN
+                    tonCameraTriggerDelay[1](IN := FALSE);
+                    tonCameraTriggerDelay[2](IN := FALSE);
+                END_IF
                 usiStepInternal := usiStepInternal + 10;
             ELSIF usiStepInternal = 190 THEN
 
@@ -1567,6 +1557,8 @@ VAR_INPUT
     bRotate0Raw : BOOL;
     bRotate180Raw : BOOL;
     bCameraTriggerAccepted : BOOL;
+    bCameraReadyForFlip : BOOL;
+    bUseOptimizedSequenceTiming : BOOL;
 	
 	//CAMERA
 	nCurrentProgramNumber: UDINT;
@@ -1624,6 +1616,8 @@ bRotate180Internal := bRotate180;
 bRotate0RawInternal := bRotate0Raw;
 bRotate180RawInternal := bRotate180Raw;
 bCameraTriggerAcceptedInternal := bCameraTriggerAccepted;
+bCameraReadyForFlipInternal := bCameraReadyForFlip;
+bUseOptimizedSequenceTimingInternal := bUseOptimizedSequenceTiming;
 
 
 // Camera inputs must be current when reset and Cyclic evaluate the handshake.

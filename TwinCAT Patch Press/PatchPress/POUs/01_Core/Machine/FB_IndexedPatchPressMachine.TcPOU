@@ -1915,6 +1915,15 @@ fbVision.Update(stProcessSettings := GVL_Persistent.stVisionProcessSettings,
     bRotate0Raw 			:= stInputs.bRotaryGripperPick0,
     bRotate180Raw 			:= stInputs.bRotaryGripperPlace180,
     bCameraTriggerAccepted 	:= bVisionTriggerAccepted,
+    bUseOptimizedSequenceTiming := (eMachineState = E_MachineState.AutoCycle)
+        OR ((eMachineState = E_MachineState.Manual) AND bVisionManualSequenceActive),
+    bCameraReadyForFlip := GVL_EtherCAT.stVSKeyenceCamera.bRunStatus
+        AND NOT bVisionCameraStartBlocked
+        AND GVL_EtherCAT.stVSKeyenceCamera.bTriggerReady
+        AND NOT GVL_EtherCAT.stVSKeyenceCamera.bTriggerAcknowledge
+        AND NOT GVL_EtherCAT.stVSKeyenceCamera.bResultsReady
+        AND NOT GVL_EtherCAT.stVSKeyenceCamera.bResultAck
+        AND NOT GVL_EtherCAT.stVSKeyenceCamera.bProgramLoadExecute,
 	
     tSupportTimeout 		:= stConfig.tStationSupportTimeout,
 	nCurrentProgramNumber	:= bVisionGetCurrentProgram,
